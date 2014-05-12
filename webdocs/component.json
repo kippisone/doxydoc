@@ -1,0 +1,13 @@
+{
+	"name": "doxit",
+	"description": "",
+	"version": "0.0.1",
+	"main": "index.js",
+	"scripts": [
+		"index.js",
+		"presenter/main.presenter.js"
+	],
+	"styles": [
+		
+	]
+}

@@ -1,0 +1,8 @@
+section class=page
+	nav class=modules
+		ul
+		:each $modules
+			li
+				a href=$link
+					$module
+	section class=content
