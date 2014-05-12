@@ -1,0 +1,26 @@
+{
+  "name": "DoxIt",
+  "version": "0.0.1",
+  "description": "Source code documentation",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:NonameMedia/doxit.git"
+  },
+  "keywords": [
+    "dox",
+    "docu",
+    "documentation"
+  ],
+  "author": "Andi Heinkelein <andi@noname-media.com> (http://noname-media.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NonameMedia/doxit/issues"
+  },
+  "dependencies": {
+    "express-server": "~0.1.1"
+  }
+}
