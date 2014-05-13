@@ -1,0 +1,12 @@
+a:link,
+a:active {
+  color: #000;
+  text-decoration: none;
+}
+a:hover {
+  color: #123446;
+}
+.modules {
+  border-left: 2px solid #c0c0c0;
+  background-color: #efefef;
+}
