@@ -1,6 +1,2 @@
-module.exports = function() {
-	'use strict';
-	
-	var mainPresenter = require('./presenter/main.presenter');
+var mainPresenter = require('./presenter/main.presenter');
 	mainPresenter.init();
-};

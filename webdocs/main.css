@@ -9,4 +9,12 @@ a:hover {
 .modules {
   border-left: 2px solid #c0c0c0;
   background-color: #efefef;
+  float: left;
+  width: 300px;
+}
+.module-listing,
+.module-item {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }

@@ -61,6 +61,17 @@ module.exports = function(grunt) {
 		// 		'webdocs/build/xqcore-minimal.min.js'
 		// 	]
 		// },
+		
+		browserify: {
+			dist: {
+				options: {
+					require: ['firetpl']
+				},
+				files: {
+					'webdocs/bundle.js': ['webdocs/index.js']
+				}
+			}
+		},
 		doxit: {
 			dst: {
 				options: {},
@@ -71,7 +82,6 @@ module.exports = function(grunt) {
 		},
 		less: {
 			dist: {
-
 				options: {
 
 				},
@@ -81,8 +91,14 @@ module.exports = function(grunt) {
 			}
 		},
 		watch: {
-			files: 'webdocs/js/**/*.js',
-			tasks: ['build']
+			less: {
+				files: 'webdocs/less/**/*.less',
+				tasks: ['less']
+			},
+			browserify: {
+				files: 'webdocs/**/*.js',
+				tasks: ['browserify']
+			}
 		}
 	});
 

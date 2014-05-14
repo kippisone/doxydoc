@@ -16,24 +16,36 @@ module.exports = function() {
 			this.set(models);
 		}.bind(this));
 
+		/**
+		 * Parse a doxit file
+		 *
+		 * [{
+		 *     file: FileName
+		 *     module: ModuleName
+		 *     package: PackageName
+		 *     requires: [],
+		 *     data: []
+		 * }]
+		 * @param  {[type]} data [description]
+		 * @return {[type]}      [description]
+		 */
 		self.prepare = function(data) {
-			console.log('Prepare modules',data);
-			var modules = {
-				modules: []
+			console.log('Prepare modules', data);
+
+			var modules = [];
+
+			for (var module in data.modules) {
+				if (data.modules.hasOwnProperty(module)) {
+					modules.push(data.modules[module]);
+				}
+			}
+
+			var listing = {
+				data: data,
+				modules: modules
 			};
 
-			data.forEach(function(module) {
-				if (module.data.tags && module.data.tags.module) {
-					module.module = module.data.tags.module;
-				}
-				else {
-					module.module = path.basename(module.file, path.extname(module.file));
-				}
-
-				modules.modules.push(module);
-			});
-
-			return modules;
+			return listing;
 		};
 	});
 	
