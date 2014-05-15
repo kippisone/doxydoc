@@ -65,7 +65,7 @@ module.exports = function(grunt) {
 		browserify: {
 			dist: {
 				options: {
-					require: ['firetpl']
+					require: ['firetpl', 'xqcore']
 				},
 				files: {
 					'webdocs/bundle.js': ['webdocs/index.js']

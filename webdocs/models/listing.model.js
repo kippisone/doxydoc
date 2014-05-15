@@ -36,7 +36,9 @@ module.exports = function() {
 
 			for (var module in data.modules) {
 				if (data.modules.hasOwnProperty(module)) {
-					modules.push(data.modules[module]);
+					var m = data.modules[module];
+					m.link = m.name.replace(/^[a-zA-Z0-9_-]/g, '');
+					modules.push(m);
 				}
 			}
 

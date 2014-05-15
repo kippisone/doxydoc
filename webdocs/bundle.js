@@ -291,11 +291,9 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],"firetpl":[function(require,module,exports){
-module.exports=require('1VDRCs');
 },{}],"1VDRCs":[function(require,module,exports){
 /*!
- * FireTPL template engine v0.1.0-0
+ * FireTPL template engine v0.1.0
  * 
  * FireTPL is a pretty Javascript template engine
  *
@@ -324,7 +322,7 @@ var FireTPL;
 	'use strict';
 
 	FireTPL = {
-		version: '0.1.0-0'
+		version: '0.1.0'
 	};
 
 	return FireTPL;
@@ -342,11 +340,7 @@ var FireTPL;
 	/*global define:false */
 	'use strict';
 
-	var Compiler = function(options) {
-		options = options || {};
-
-		this.scopeTags = !!options.scopeTags;
-
+	var Compiler = function() {
 		this.indentionPattern = /\t/g;
 		this.pattern = /^([ \t]*)?(\/\/.*)?(?:\:([a-zA-Z0-9]+))?([a-zA-Z0-9]+=(?:(?:\"[^\"]+\")|(?:\'[^\']+\')|(?:\S+)))?([a-z0-9]+)?([\"].*[\"]?)?([\'].*[\']?)?(.*)?$/gm;
 		this.voidElements = ['area', 'base', 'br', 'col', 'embed', 'img', 'input', 'link', 'meta', 'param', 'source', 'wbr'];
@@ -568,7 +562,8 @@ var FireTPL;
 		}
 
 		if (tag) {
-			this.parseTag(tag, tagAttrs);
+			this.parseTag(tag, tagAttrs + ' xq-scope=scope' + scopeId + ' xq-path=' + content.trim().replace(/^\$/, ''));
+			this.injectClass('xq-scope xq-scope' + scopeId);
 		}
 		else {
 			this.closer.push('');
@@ -579,13 +574,7 @@ var FireTPL;
 			content = this.parseVariables(content, true);
 		}
 
-		if (this.scopeTags) {
-			this.append('str', '<scope id="scope' + scopeId + '" path="' + content + '"></scope>');
-		}
-		else {
-			this.append('code', 's+=scopes.scope' + scopeId + '(' + content + ',data);');
-		}
-		
+		this.append('code', 's+=scopes.scope' + scopeId + '(' + content + ',data);');
 		this.newScope('scope' + scopeId);
 
 		if (helper === 'if') {
@@ -716,73 +705,12 @@ var FireTPL;
 
 	Compiler.prototype.parseVariables = function(str, isCode) {
 		var opener = '',
-			closer = '',
-			altOpener = '',
-			altCloser = '',
-			prefix = 'data.',
-			self = this;
+			closer = '';
 
-		if (this.scopeTags && !isCode) {
-			opener = '<scope path="';
-			closer = '"></scope>';
-			altOpener = '\'+';
-			altCloser = '+\'';
-			prefix = '';
-		}
-		else if (!this.scopeTags && !isCode) {
+		if (!isCode) {
 			opener = '\'+';
 			closer = '+\'';
 		}
-
-		var parseVar = function(m) {
-			if (m === '') {
-				if (self.scopeTags) {
-					return '\'+data+\'';
-				}
-				return opener + 'data' + closer;
-			}
-
-			if (/^(parent\b)/.test(m) && (self.curScope[1] === 'root' || !self.scopeTags)) {
-				if (self.scopeTags) {
-					m = m.replace(/^parent\.?/, '');
-				}
-
-				if (m) {
-					return opener + m + closer;
-				}
-				else if (self.scopeTags) {
-					return altOpener + 'parent' + altCloser;
-				}
-				else {
-					return opener + 'parent' + closer;
-				}
-			}
-			else if (/^(root\b)/.test(m)) {
-				if (self.scopeTags) {
-					m = m.replace(/^root\.?/, '');
-				}
-				
-				if (m) {
-					return opener + m + closer;
-				}
-				else if (self.scopeTags) {
-					return altOpener + 'root' + altCloser;
-				}
-				else {
-					return opener + 'root' + closer;
-				}
-			}
-			else if (self.curScope[0] === 'root' && !isCode) {
-				return opener + prefix + m + closer;
-			}
-			else if (self.scopeTags) {
-				prefix = isCode ? '' : 'data.';
-				return altOpener + prefix + m + altCloser;
-			}
-			else {
-				return opener + 'data.' + m + closer;
-			}
-		};
 
 		str = str
 			.replace(/\'/g, '\\\'')
@@ -790,10 +718,13 @@ var FireTPL;
 			.replace(/\$((\{([a-zA-Z0-9._-]+)\})|([a-zA-Z0-9._-]+))/g, function(match, p1, p2, p3, p4) {
 				var m = p3 || p4;
 				if (/^this\b/.test(m)) {
-					return parseVar(m.replace(/^this\.?/, ''));
+					return opener + m.replace(/^this/, 'data') + closer;
+				}
+				else if (/^(parent\b|root\b)/.test(m)) {
+					return opener + m + closer;
 				}
 				
-				return parseVar(m);
+				return opener + 'data.' + m + closer;
 				
 			})
 			.replace(/@([a-zA-Z0-9._-]+)/g, '\'+lang.$1+\'');
@@ -1078,9 +1009,9 @@ var FireTPL;
 		return content;
 	};
 
-	FireTPL.precompile = function(tmpl, type, options) {
-		var compiler = new FireTPL.Compiler(options);
-		compiler.precompile(tmpl, type);
+	FireTPL.precompile = function(tmpl) {
+		var compiler = new FireTPL.Compiler();
+		compiler.precompile(tmpl);
 		return compiler.getOutStream();
 	};
 
@@ -1322,6 +1253,8 @@ FireTPL.Compiler.prototype.syntax["hbs"] = {
 	FireTPL.registerCoreHelper();
 
 })(FireTPL);
+},{}],"firetpl":[function(require,module,exports){
+module.exports=require('1VDRCs');
 },{}],5:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.1
@@ -10514,9 +10447,11 @@ return jQuery;
 
 }));
 
-},{}],6:[function(require,module,exports){
+},{}],"xqcore":[function(require,module,exports){
+module.exports=require('XuSIbL');
+},{}],"XuSIbL":[function(require,module,exports){
 /*!
- * XQCore - +0.7.3-16
+ * XQCore - +0.8.0-12
  * 
  * Model View Presenter Javascript Framework
  *
@@ -10526,7 +10461,7 @@ return jQuery;
  * Copyright (c) 2012 - 2014 Noname Media, http://noname-media.com
  * Author Andi Heinkelein
  *
- * Creation Date: 2014-05-01
+ * Creation Date: 2014-05-04
  */
 
 /*global XQCore:true */
@@ -10553,7 +10488,7 @@ var XQCore;
 	 * @type {Object}
 	 */
 	XQCore = {
-		version: '0.7.3-16',
+		version: '0.8.0-12',
 		defaultRoute: 'index',
 		html5Routes: false,
 		hashBang: '#!',
@@ -12788,7 +12723,7 @@ XQCore.GetSet = XQCore.Model;
 	if (typeof define === 'function' && define.amd) {
 		define('xqcore', [XQCore.templateEngine], factory);
 	} else if (typeof module !== 'undefined' && module.exports) {
-		module.exports = factory(require(XQCore.templateEngine));
+		module.exports = factory(require('/' + XQCore.templateEngine));
 	} else {
 		var engine = XQCore.templateEngine === 'firetpl' ? 'FireTPL' : 'Handlebars';
 		root.XQCore = factory(root[engine]);
@@ -13308,7 +13243,8 @@ XQCore.GetSet = XQCore.Model;
 	 * @return {String} compiled html
 	 */
 	View.prototype.parse = function(template, data) {
-		var html;
+		var html,
+			$newEl;
 
 		template.scopeStore = {};
 		template.scopes = {};
@@ -13324,7 +13260,7 @@ XQCore.GetSet = XQCore.Model;
 
 		if (html) {
 			html = $.parseHTML(html);
-			var $newEl = $(html);
+			$newEl = $(html);
 			var els = $newEl.find('scope');
 			console.log('EL', els.length);
 			els.each(function() {
@@ -13336,7 +13272,7 @@ XQCore.GetSet = XQCore.Model;
 				content = {};
 				if (scopeId) {
 					content.value = $.parseHTML(template.scopes[scopeId](data[path], data));
-					content.id = scopeId
+					content.id = scopeId;
 				}
 				else {
 					content.value = $.parseHTML(data[path]);
@@ -13596,74 +13532,6 @@ XQCore.GetSet = XQCore.Model;
 		return newObj;
 	};
 
-	
-
-	/**
-	 * Check length of a string or number
-	 *
-	 * @param {String or Number} input this will be checked
-	 * @param {Number} min String can't be shorter than n, Number can't be lower than n
-	 * @param {Number} max String can't be longer than n, Number can't be greater than n
-	 *
-	 * @returns {String} errorMessage on invalid or void on valid
-	 */
-/*	util.checkLength = function(input, min, max) {
-		if (typeof input === 'Number') {
-			if (input < min) {
-				return 'num-to-small';
-			}
-			else if (input > max) {
-				return 'num-to-large';
-			}
-		}
-		else {
-			console.log(input, input.length);
-			if (input.length < min) {
-				return 'str-to-short';
-			}
-			else if (input.length > max) {
-				return 'str-to-long';
-			}
-		}
-	};*/
-
-	/**
-	 * Checks the equality of two strings
-	 *
-	 * @param {String} str1 First string
-	 * @param {String} str2 Second string
-	 *
-	 * @returns {String} errorMessage on invalid or void on valid
-	 */
-	/*util.checkEqual = function(str1, str2) {
-		if (str1 !== str2) {
-			return 'str-not-equal';
-		}
-	};*/
-
-	/**
-	 * Checks the validity of an email address
-	 *
-	 * @param {String} email e-Mail address
-	 */
-	/*util.checkEmail = function(email) {
-		if (!/^\S+\@\S+\.[a-z]{2,10}$/.test(email)) {
-			return 'invalid-email';
-		}
-	};*/
-
-	/**
-	 * Checks the validity of an url
-	 *
-	 * @param {String} url URL
-	 */
-	// util.checkUrl = function(url) {
-
-	/*	if (!/^http(s)?:\/\/\S\.[a-zA-Z]{2,10}\/?$/.test(url)) {
-			return 'invalid-url';
-		}
-	};*/
-
 })(XQCore);
 /*jshint -W014 */
 /**
@@ -13909,15 +13777,16 @@ XQCore.GetSet = XQCore.Model;
 
 
 		this.sockJS = new SockJS(url, null, options);
+		console.log('Connect to socket server ', url, 'using options:', options);
 
 		this.sockJS.onopen = function() {
-			this.log('Connection was successful!');
+			console.log('Connection was successful!');
 			if (typeof callback === 'function') {
 				callback();
 			}
 
 			self.setReady();
-		};
+		}.bind(this);
 
 		this.sockJS.onmessage = function(e) {
 			var msg;
@@ -13926,16 +13795,16 @@ XQCore.GetSet = XQCore.Model;
 				msg = JSON.parse(e.data);
 			}
 			catch(err) {
-				this.error('Could\'t parse socket message!', e.data);
+				console.error('Could\'t parse socket message!', e.data);
 			}
 
-			this.log('Got message', msg.eventName, msg.data);
+			console.log('Got message', msg.eventName, msg.data);
 			self.__eventEmitter.emit(msg.eventName, msg.data);
-		};
+		}.bind(this);
 
 		this.sockJS.onclose = function() {
-			this.log('Connection closed!');
-		};
+			console.log('Connection closed!');
+		}.bind(this);
 	};
 
 	/**
@@ -13945,12 +13814,12 @@ XQCore.GetSet = XQCore.Model;
 	 */
 	Socket.prototype.emit = function(eventName, data) {
 		this.ready(function() {
-			this.log('Send message ', eventName, data);
+			console.log('Send message ', eventName, data);
 			this.sockJS.send(JSON.stringify({
 				eventName: eventName,
 				data: data
 			}));
-		});
+		}.bind(this));
 	};
 
 	/**
@@ -14006,8 +13875,6 @@ XQCore.GetSet = XQCore.Model;
 	XQCore.Socket = Socket;
 
 })(XQCore);
-/*global SockJS:false */
-
 /**
  *	@requires XQCore.Model
  *	@requires XQCore.Socket
@@ -14020,9 +13887,9 @@ XQCore.GetSet = XQCore.Model;
 		//Call XQCore.Model constructor
 		XQCore.Model.call(this, name, conf);
 
-		this.server = location.protocol + '//' + location.hostname;
-		this.port = 9999;
-		this.path = 'xqmodel';
+		this.server = conf.server || location.protocol + '//' + location.hostname;
+		this.port = conf.port || 9999;
+		this.path = conf.path || 'xqsocket/' + name;
 		this.syncEnabled = false;
 	};
 
@@ -14055,13 +13922,14 @@ XQCore.GetSet = XQCore.Model;
 
 		this.syncEnabled = !!enableSync;
 
+		console.log('register model at server');
 		this.socket.emit('syncmodel.register', {
 			name: modelName
 		});
 
 		this.socket.on('syncmodel.change', function(data) {
 			var opts = {
-				sync: 'false'
+				sync: false
 			};
 
 			var args = data.slice(1);
@@ -14120,11 +13988,25 @@ XQCore.GetSet = XQCore.Model;
 
 	XQCore.SyncModel = SyncModel;
 })(XQCore);
-},{"jquery":5}],7:[function(require,module,exports){
+},{"jquery":5}],8:[function(require,module,exports){
 var mainPresenter = require('./presenter/main.presenter');
 	mainPresenter.init();
 
-},{"./presenter/main.presenter":9}],8:[function(require,module,exports){
+},{"./presenter/main.presenter":11}],9:[function(require,module,exports){
+module.exports = function() {
+	'use strict';
+
+	var XQCore = require('xqcore');
+
+	var itemModel = new XQCore.Model('item', function(self) {
+
+	});
+	
+	itemModel.init();
+
+	return itemModel;
+}();
+},{"xqcore":"XuSIbL"}],10:[function(require,module,exports){
 module.exports = function() {
 	'use strict';
 
@@ -14163,7 +14045,9 @@ module.exports = function() {
 
 			for (var module in data.modules) {
 				if (data.modules.hasOwnProperty(module)) {
-					modules.push(data.modules[module]);
+					var m = data.modules[module];
+					m.link = m.name.replace(/^[a-zA-Z0-9_-]/g, '');
+					modules.push(m);
 				}
 			}
 
@@ -14181,23 +14065,38 @@ module.exports = function() {
 	return listingModel;
 
 }();
-},{"path":1,"xqcore":6}],9:[function(require,module,exports){
+},{"path":1,"xqcore":"XuSIbL"}],11:[function(require,module,exports){
 module.exports = function() {
 	'use strict';
 
 	var XQCore = require('xqcore'),
-		listingModel = require('../models/listing.model');
+		listingModel = require('../models/listing.model'),
+		itemModel = require('../models/item.model');
 
 	XQCore.debug = true;
 	var presenter = new XQCore.Presenter('main', function(self) {
 		var mainView = self.initView('main', 'body');
+		var itemView = self.initView('item', '.content', {
+
+		});
 
 		self.couple({
 			view: mainView,
 			model: listingModel
 		});
+
+		self.couple({
+			view: itemView,
+			model: itemModel
+		});
+
+		self.route('module/:module', function(moduleName) {
+			console.log('Load module', moduleName);
+			var mod = listingModel.getModule(moduleName);
+			itemModel.set(mod);
+		});
 	});
 
 	return presenter;
 }();
-},{"../models/listing.model":8,"xqcore":6}]},{},[7])
+},{"../models/item.model":9,"../models/listing.model":10,"xqcore":"XuSIbL"}]},{},[8])

@@ -3,6 +3,6 @@ section class=page
 		ul class=module-listing
 		:each $modules
 			li class=module-item
-				a class=module-link href=$link
+				a class=module-link href="#!module/$link"
 					$name
 	section class=content
