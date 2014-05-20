@@ -52,3547 +52,6 @@ require.define = function (name, exports) {
     exports: exports
   };
 };
-require.register("nonamemedia~xqcore@0.8.0", function (exports, module) {
-/*!
- * XQCore - +0.8.0-18
- * 
- * Model View Presenter Javascript Framework
- *
- * XQCore is licenced under MIT Licence
- * http://opensource.org/licenses/MIT
- *
- * Copyright (c) 2012 - 2014 Noname Media, http://noname-media.com
- * Author Andi Heinkelein
- *
- * Creation Date: 2014-05-19
- */
-
-/*global XQCore:true */
-var XQCore;
-
-(function (root, factory) {
-	/*global define:false */
-	'use strict';
-
-	if (typeof define === 'function' && define.amd) {
-		define('xqcore', ['jquery'], factory);
-	} else if (typeof module !== 'undefined' && module.exports) {
-		module.exports = factory(require("jquery"));
-	} else {
-		root.XQCore = factory(root.jQuery);
-	}
-}(this, function (jQuery) {
-	'use strict';
-
-	/**
-	 * XQCore main object
-	 *
-	 * @package XQcore
-	 * @type {Object}
-	 */
-	XQCore = {
-		version: '0.8.0-18',
-		defaultRoute: 'index',
-		html5Routes: false,
-		hashBang: '#!',
-		callerEvent: 'callerEvent',
-		objectIdPattern: /^[a-zA-Z0-9]{24}$/,
-		templateEngine: 'firetpl',
-		viewsDir: './views/',
-		viewExt: '.fire'
-	};
-
-	//XQCore helper functions
-	XQCore.extend = jQuery.extend;
-	XQCore.isEmptyObject = jQuery.isEmptyObject;
-	XQCore.isPlainObject = jQuery.isPlainObject;
-	XQCore.isFunction = jQuery.isFunction;
-	
-	/**
-	 * Checks for a valid ObjectId
-	 * 
-	 * The pattern of an objectId can be overwritten by setting the XQCore.objectIdPattern property
-	 *
-	 * @return {Boolean} Returns true if value is an valid objectId
-	 */
-	XQCore.isObjectId = function(value) {
-		return this.objectIdPattern.test(value);
-	};
-
-	XQCore._dump = {};
-	XQCore.dump = function(componentName) {
-		if (XQCore._dump[componentName]) {
-			console.log('[XQCore dump]', componentName, XQCore._dump[componentName]);
-			return XQCore._dump[componentName];
-		}
-
-		return false;
-	};
-
-	XQCore.require = function(moduleName) {
-		if (moduleName === 'jquery') {
-			return jQuery;
-		}
-	};
-
-	return XQCore;
-}));
-
-
-/**
- * XQCore EventEmitter
- *
- * Based on EventEmitter v4.2.5 by Oliver Caldwell
- * http://git.io/ee
- *
- */
-(function(XQCore, undefined) {
-	'use strict';
-
-	//EventEmitter.js
-
-	/*!
-	 * EventEmitter v4.2.5 - git.io/ee
-	 * Oliver Caldwell
-	 * MIT license
-	 * @preserve
-	 */
-
-
-	/**
-	 * Class for managing events.
-	 * Can be extended to provide event functionality in other classes.
-	 *
-	 * @class EventEmitter Manages event registering and emitting.
-	 */
-	function EventEmitter() {}
-
-	// Shortcuts to improve speed and size
-	var proto = EventEmitter.prototype;
-
-	/**
-	 * Finds the index of the listener for the event in it's storage array.
-	 *
-	 * @param {Function[]} listeners Array of listeners to search through.
-	 * @param {Function} listener Method to look for.
-	 * @return {Number} Index of the specified listener, -1 if not found
-	 * @api private
-	 */
-	function indexOfListener(listeners, listener) {
-		var i = listeners.length;
-		while (i--) {
-			if (listeners[i].listener === listener) {
-				return i;
-			}
-		}
-
-		return -1;
-	}
-
-	/**
-	 * Alias a method while keeping the context correct, to allow for overwriting of target method.
-	 *
-	 * @param {String} name The name of the target method.
-	 * @return {Function} The aliased method
-	 * @api private
-	 */
-	function alias(name) {
-		return function aliasClosure() {
-			return this[name].apply(this, arguments);
-		};
-	}
-
-	/**
-	 * Returns the listener array for the specified event.
-	 * Will initialise the event object and listener arrays if required.
-	 * Will return an object if you use a regex search. The object contains keys for each matched event. So /ba[rz]/ might return an object containing bar and baz. But only if you have either defined them with defineEvent or added some listeners to them.
-	 * Each property in the object response is an array of listener functions.
-	 *
-	 * @param {String|RegExp} evt Name of the event to return the listeners from.
-	 * @return {Function[]|Object} All listener functions for the event.
-	 */
-	proto.getListeners = function getListeners(evt) {
-		var events = this._getEvents();
-		var response;
-		var key;
-
-		// Return a concatenated array of all matching events if
-		// the selector is a regular expression.
-		if (typeof evt === 'object') {
-			response = {};
-			for (key in events) {
-				if (events.hasOwnProperty(key) && evt.test(key)) {
-					response[key] = events[key];
-				}
-			}
-		}
-		else {
-			response = events[evt] || (events[evt] = []);
-		}
-
-		return response;
-	};
-
-	/**
-	 * Takes a list of listener objects and flattens it into a list of listener functions.
-	 *
-	 * @param {Object[]} listeners Raw listener objects.
-	 * @return {Function[]} Just the listener functions.
-	 */
-	proto.flattenListeners = function flattenListeners(listeners) {
-		var flatListeners = [];
-		var i;
-
-		for (i = 0; i < listeners.length; i += 1) {
-			flatListeners.push(listeners[i].listener);
-		}
-
-		return flatListeners;
-	};
-
-	/**
-	 * Fetches the requested listeners via getListeners but will always return the results inside an object. This is mainly for internal use but others may find it useful.
-	 *
-	 * @param {String|RegExp} evt Name of the event to return the listeners from.
-	 * @return {Object} All listener functions for an event in an object.
-	 */
-	proto.getListenersAsObject = function getListenersAsObject(evt) {
-		var listeners = this.getListeners(evt);
-		var response;
-
-		if (listeners instanceof Array) {
-			response = {};
-			response[evt] = listeners;
-		}
-
-		return response || listeners;
-	};
-
-	/**
-	 * Adds a listener function to the specified event.
-	 * The listener will not be added if it is a duplicate.
-	 * If the listener returns true then it will be removed after it is called.
-	 * If you pass a regular expression as the event name then the listener will be added to all events that match it.
-	 *
-	 * @param {String|RegExp} evt Name of the event to attach the listener to.
-	 * @param {Function} listener Method to be called when the event is emitted. If the function returns true then it will be removed after calling.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.addListener = function addListener(evt, listener) {
-		var listeners = this.getListenersAsObject(evt);
-		var listenerIsWrapped = typeof listener === 'object';
-		var key;
-
-		for (key in listeners) {
-			if (listeners.hasOwnProperty(key) && indexOfListener(listeners[key], listener) === -1) {
-				listeners[key].push(listenerIsWrapped ? listener : {
-					listener: listener,
-					once: false
-				});
-			}
-		}
-
-		return this;
-	};
-
-	/**
-	 * Alias of addListener
-	 */
-	proto.on = alias('addListener');
-
-	/**
-	 * Semi-alias of addListener. It will add a listener that will be
-	 * automatically removed after it's first execution.
-	 *
-	 * @param {String|RegExp} evt Name of the event to attach the listener to.
-	 * @param {Function} listener Method to be called when the event is emitted. If the function returns true then it will be removed after calling.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.addOnceListener = function addOnceListener(evt, listener) {
-		return this.addListener(evt, {
-			listener: listener,
-			once: true
-		});
-	};
-
-	/**
-	 * Alias of addOnceListener.
-	 */
-	proto.once = alias('addOnceListener');
-
-	/**
-	 * Defines an event name. This is required if you want to use a regex to add a listener to multiple events at once. If you don't do this then how do you expect it to know what event to add to? Should it just add to every possible match for a regex? No. That is scary and bad.
-	 * You need to tell it what event names should be matched by a regex.
-	 *
-	 * @param {String} evt Name of the event to create.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.defineEvent = function defineEvent(evt) {
-		this.getListeners(evt);
-		return this;
-	};
-
-	/**
-	 * Uses defineEvent to define multiple events.
-	 *
-	 * @param {String[]} evts An array of event names to define.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.defineEvents = function defineEvents(evts) {
-		for (var i = 0; i < evts.length; i += 1) {
-			this.defineEvent(evts[i]);
-		}
-		return this;
-	};
-
-	/**
-	 * Removes a listener function from the specified event.
-	 * When passed a regular expression as the event name, it will remove the listener from all events that match it.
-	 *
-	 * @param {String|RegExp} evt Name of the event to remove the listener from.
-	 * @param {Function} listener Method to remove from the event.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.removeListener = function removeListener(evt, listener) {
-		var listeners = this.getListenersAsObject(evt);
-		var index;
-		var key;
-
-		for (key in listeners) {
-			if (listeners.hasOwnProperty(key)) {
-				index = indexOfListener(listeners[key], listener);
-
-				if (index !== -1) {
-					listeners[key].splice(index, 1);
-				}
-			}
-		}
-
-		return this;
-	};
-
-	/**
-	 * Alias of removeListener
-	 */
-	proto.off = alias('removeListener');
-
-	/**
-	 * Adds listeners in bulk using the manipulateListeners method.
-	 * If you pass an object as the second argument you can add to multiple events at once. The object should contain key value pairs of events and listeners or listener arrays. You can also pass it an event name and an array of listeners to be added.
-	 * You can also pass it a regular expression to add the array of listeners to all events that match it.
-	 * Yeah, this function does quite a bit. That's probably a bad thing.
-	 *
-	 * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to add to multiple events at once.
-	 * @param {Function[]} [listeners] An optional array of listener functions to add.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.addListeners = function addListeners(evt, listeners) {
-		// Pass through to manipulateListeners
-		return this.manipulateListeners(false, evt, listeners);
-	};
-
-	/**
-	 * Removes listeners in bulk using the manipulateListeners method.
-	 * If you pass an object as the second argument you can remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
-	 * You can also pass it an event name and an array of listeners to be removed.
-	 * You can also pass it a regular expression to remove the listeners from all events that match it.
-	 *
-	 * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to remove from multiple events at once.
-	 * @param {Function[]} [listeners] An optional array of listener functions to remove.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.removeListeners = function removeListeners(evt, listeners) {
-		// Pass through to manipulateListeners
-		return this.manipulateListeners(true, evt, listeners);
-	};
-
-	/**
-	 * Edits listeners in bulk. The addListeners and removeListeners methods both use this to do their job. You should really use those instead, this is a little lower level.
-	 * The first argument will determine if the listeners are removed (true) or added (false).
-	 * If you pass an object as the second argument you can add/remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
-	 * You can also pass it an event name and an array of listeners to be added/removed.
-	 * You can also pass it a regular expression to manipulate the listeners of all events that match it.
-	 *
-	 * @param {Boolean} remove True if you want to remove listeners, false if you want to add.
-	 * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to add/remove from multiple events at once.
-	 * @param {Function[]} [listeners] An optional array of listener functions to add/remove.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.manipulateListeners = function manipulateListeners(remove, evt, listeners) {
-		var i;
-		var value;
-		var single = remove ? this.removeListener : this.addListener;
-		var multiple = remove ? this.removeListeners : this.addListeners;
-
-		// If evt is an object then pass each of it's properties to this method
-		if (typeof evt === 'object' && !(evt instanceof RegExp)) {
-			for (i in evt) {
-				if (evt.hasOwnProperty(i) && (value = evt[i])) {
-					// Pass the single listener straight through to the singular method
-					if (typeof value === 'function') {
-						single.call(this, i, value);
-					}
-					else {
-						// Otherwise pass back to the multiple function
-						multiple.call(this, i, value);
-					}
-				}
-			}
-		}
-		else {
-			// So evt must be a string
-			// And listeners must be an array of listeners
-			// Loop over it and pass each one to the multiple method
-			i = listeners.length;
-			while (i--) {
-				single.call(this, evt, listeners[i]);
-			}
-		}
-
-		return this;
-	};
-
-	/**
-	 * Removes all listeners from a specified event.
-	 * If you do not specify an event then all listeners will be removed.
-	 * That means every event will be emptied.
-	 * You can also pass a regex to remove all events that match it.
-	 *
-	 * @param {String|RegExp} [evt] Optional name of the event to remove all listeners for. Will remove from every event if not passed.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.removeEvent = function removeEvent(evt) {
-		var type = typeof evt;
-		var events = this._getEvents();
-		var key;
-
-		// Remove different things depending on the state of evt
-		if (type === 'string') {
-			// Remove all listeners for the specified event
-			delete events[evt];
-		}
-		else if (type === 'object') {
-			// Remove all events matching the regex.
-			for (key in events) {
-				if (events.hasOwnProperty(key) && evt.test(key)) {
-					delete events[key];
-				}
-			}
-		}
-		else {
-			// Remove all listeners in all events
-			delete this._events;
-		}
-
-		return this;
-	};
-
-	/**
-	 * Alias of removeEvent.
-	 *
-	 * Added to mirror the node API.
-	 */
-	proto.removeAllListeners = alias('removeEvent');
-
-	/**
-	 * Emits an event of your choice.
-	 * When emitted, every listener attached to that event will be executed.
-	 * If you pass the optional argument array then those arguments will be passed to every listener upon execution.
-	 * Because it uses `apply`, your array of arguments will be passed as if you wrote them out separately.
-	 * So they will not arrive within the array on the other side, they will be separate.
-	 * You can also pass a regular expression to emit to all events that match it.
-	 *
-	 * @param {String|RegExp} evt Name of the event to emit and execute listeners for.
-	 * @param {Array} [args] Optional array of arguments to be passed to each listener.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.emitEvent = function emitEvent(evt, args) {
-		var listeners = this.getListenersAsObject(evt);
-		var listener;
-		var i;
-		var key;
-		var response;
-
-		for (key in listeners) {
-			if (listeners.hasOwnProperty(key)) {
-				i = listeners[key].length;
-
-				while (i--) {
-					// If the listener returns true then it shall be removed from the event
-					// The function is executed either with a basic call or an apply if there is an args array
-					listener = listeners[key][i];
-
-					if (listener.once === true) {
-						this.removeListener(evt, listener.listener);
-					}
-
-					response = listener.listener.apply(this, args || []);
-
-					if (response === this._getOnceReturnValue()) {
-						this.removeListener(evt, listener.listener);
-					}
-				}
-			}
-		}
-
-		return this;
-	};
-
-	/**
-	 * Alias of emitEvent
-	 */
-	proto.trigger = alias('emitEvent');
-
-	/**
-	 * Subtly different from emitEvent in that it will pass its arguments on to the listeners, as opposed to taking a single array of arguments to pass on.
-	 * As with emitEvent, you can pass a regex in place of the event name to emit to all events that match it.
-	 *
-	 * @param {String|RegExp} evt Name of the event to emit and execute listeners for.
-	 * @param {...*} Optional additional arguments to be passed to each listener.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.emit = function emit(evt) {
-		var args = Array.prototype.slice.call(arguments, 1);
-		return this.emitEvent(evt, args);
-	};
-
-	/**
-	 * Sets the current value to check against when executing listeners. If a
-	 * listeners return value matches the one set here then it will be removed
-	 * after execution. This value defaults to true.
-	 *
-	 * @param {*} value The new value to check for when executing listeners.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.setOnceReturnValue = function setOnceReturnValue(value) {
-		this._onceReturnValue = value;
-		return this;
-	};
-
-	/**
-	 * Fetches the current value to check against when executing listeners. If
-	 * the listeners return value matches this one then it should be removed
-	 * automatically. It will return true by default.
-	 *
-	 * @return {*|Boolean} The current value to check for or the default, true.
-	 * @api private
-	 */
-	proto._getOnceReturnValue = function _getOnceReturnValue() {
-		if (this.hasOwnProperty('_onceReturnValue')) {
-			return this._onceReturnValue;
-		}
-		else {
-			return true;
-		}
-	};
-
-	/**
-	 * Fetches the events object and creates one if required.
-	 *
-	 * @return {Object} The events storage object.
-	 * @api private
-	 */
-	proto._getEvents = function _getEvents() {
-		return this._events || (this._events = {});
-	};
-
-	XQCore.Event = EventEmitter;
-
-})(XQCore);
-
-/**
- * XQCore Logger
- *
- * Based on EventEmitter.js
- * 
- * 
- */
-(function(XQCore, undefined) {
-	'use strict';
-
-	//var timerStore = {};
-
-	function getHumanTime(time) {
-		if (time < 1000) {
-			return time + ' ms';
-		}
-		else if (time < 60000) {
-			return (Math.round(time / 100) / 10) + ' sec';
-		}
-		else {
-			return (Math.round(time / 60000)) + ' min ' + Math.round(time % 60000 / 1000) + ' sec';
-		}
-	}
-
-	/**
-	 * XQCore Logger is a logging tool to log messages, warnings, errors to the browser or onscreen console
-	 *
-	 * @module XQCore.Logger
-	 * @class XQCore.Logger
-	 *
-	 */
-	var Logger = function() {
-		
-	};
-
-	/**
-	 * Loggs a message to the console
-	 *
-	 * @method log
-	 *
-	 * @param {Any} msg logs all arguments to the console
-	 */
-	Logger.prototype.log = function() {
-		var args;
-
-		if (this.debug) {
-			args = Array.prototype.slice.call(arguments);
-			args.unshift('[' + this.name + ']');
-			console.log.apply(console, args);
-		}
-	};
-
-	/**
-	 * Loggs a warning to the console
-	 *
-	 * @method warn
-	 * @param {Any} msg logs all arguments to the console
-	 */
-	Logger.prototype.warn = function() {
-		var args;
-
-		if (this.debug) {
-			args = Array.prototype.slice.call(arguments);
-			args.unshift('[' + this.name + ']');
-			console.warn.apply(console, args);
-		}
-	};
-
-	/**
-	 * Loggs a error message to the console
-	 *
-	 * @method error
-	 * @param {Any} msg logs all arguments to the console
-	 */
-	Logger.prototype.error = function() {
-		var args;
-
-		if (this.debug) {
-			args = Array.prototype.slice.call(arguments);
-			args.unshift('[' + this.name + ']');
-			console.error.apply(console, args);
-		}
-	};
-
-	/**
-	 * Start a timeTracer
-	 *
-	 * @method timer
-	 * @param {String} timerName Set the name for your (Optional)
-	 * @return {Object} Returns a TimerObject
-	 */
-	Logger.prototype.timer = function(name) {
-		var timer = {
-			start: null,
-			stop: null,
-			name: name,
-			logger: this,
-			end: function() {
-				this.stop = Date.now();
-				this.logger.log('Timer ' + this.name + ' runs: ', getHumanTime(this.stop - this.start));
-			}
-		};
-
-		/*if (name) {
-			this.timerStore[name] = timer;
-		}*/
-
-		this.log('Start Timer', name);
-
-		//Set timer start time
-		timer.start = Date.now();
-		return timer;
-	};
-
-	Logger.prototype.__scope = {
-		getHumanTime: getHumanTime
-	};
-	
-
-	XQCore.Logger = Logger;
-
-})(XQCore);
-/**
- * XQCore Presenter
- *
- * @module XQCore Presenter
- */
-(function(XQCore, undefined) {
-	'use strict';
-
-	var $ = XQCore.require("jquery");
-
-	/**
-	 * XQCore.Presenter base class
-	 *
-	 * @class XQCore.Presenter
-	 * @constructor
-	 *
-	 * @uses XQCore.Logger
-	 * @uses XQCore.Event
-	 *
-	 * @param {Object} conf Presenter extend object
-	 */
-	var Presenter = function(name, conf) {
-
-		if (typeof arguments[0] === 'object') {
-			conf = name;
-			name = conf.name;
-		}
-		
-		/**
-		 * Stores registered views
-		 * @private
-		 * @type {Array}
-		 */
-		this.__views = [];
-		
-		/**
-		 * Enable debug mode
-		 * @public
-		 * @type {Boolean}
-		 */
-		this.debug = XQCore.debug;
-
-		/**
-		 * Set presenter name
-		 * @public
-		 * @type {String}
-		 */
-		this.name = (name ? name.replace(/Presenter$/, '') : 'Nameless') + 'Presenter';
-
-		/* ++++++++++ old stuff +++++++++++++ */
-
-		this.routes = [];
-		
-		conf = conf || {};
-
-		this.conf = conf;
-
-		this.eventCallbacks = {};
-
-		/**
-		 * Points to the last shown view
-		 *
-		 * @property {Object} lastShownView Points to the last shown view
-		 */
-		this.lastShownView = null;
-
-		this.registeredViews = [];
-		this.registeredModels = [];
-		this.fireViewInit = function(view) {
-			var allReady = true;
-			this.registeredViews.forEach(function(item) {
-				if (view === item.view) {
-					item.isReady = true;
-				}
-
-				if (item.isReady === false) {
-					allReady = false;
-				}
-			});
-
-			this.viewInit(view);
-
-			if (allReady === true) {
-				this.emit('views.ready');
-			}
-		};
-
-		/**
-		 * @deprecated
-		 */
-		this.registerView = function(view) {
-			this.warn('presenter.registerView was deprecated since XQCore 0.7.0');
-
-			var i;
-			if (view instanceof Array) {
-				for (i = 0; i < view.length; i++) {
-					this.registeredViews.push({
-						view: view[i],
-						isReady: false
-					});
-				}
-			}
-			else {
-				this.registeredViews.push({
-					view: view,
-					isReady: false
-				});
-			}
-		};
-
-		/**
-		 * @deprecated
-		 */
-		this.registerModel = function(model) {
-			this.warn('presenter.registerModel was deprecated since XQCore 0.7.0');
-
-			var i;
-			if (model instanceof Array) {
-				for (i = 0; i < model.length; i++) {
-					this.registeredModels.push({
-						model: model[i],
-						isReady: false
-					});
-				}
-			}
-			else {
-				this.registeredModels.push({
-					model: model,
-					isReady: false
-				});
-			}
-		};
-
-		
-		this.__Router = new XQCore.Router();
-	};
-
-
-	XQCore.extend(Presenter.prototype, new XQCore.Event(), new XQCore.Logger());
-
-	/**
-	 * Listen View events
-	 * @property {Array} events Observed view events
-	 */
-	Presenter.prototype.events = {};
-
-	Presenter.prototype.init = function(views) {
-		var i,
-			self = this,
-			conf = this.conf;
-
-		if (typeof conf === 'function') {
-			conf.call(this, self);
-		}
-		else {
-			XQCore.extend(this, conf);
-		}
-
-		//Setup popstate listener
-		if (conf.routes) {
-
-			//Add routes
-			Object.keys(conf.routes).forEach(function(route) {
-				var callback = this.routes[route];
-				if (typeof callback === 'string') {
-					callback = this[callback];
-				}
-
-				if (typeof callback === 'function') {
-					this.__Router.addRoute(route, callback);
-				}
-				else {
-					this.warn('Router callback isn\'t a function', callback, 'of route', route);
-				}
-			}.bind(this));
-		}
-
-		window.addEventListener('popstate', function(e) {
-			self.__onPopstate(e.state);
-		}, false);
-
-		var route = XQCore.defaultRoute;
-		if (/^#![a-zA-Z0-9]+/.test(self.getHash())) {
-			route = self.getHash().substr(2);
-		}
-
-		route = self.__Router.match(route);
-		if (route) {
-			var data = route.params;
-			if (XQCore.callerEvent) {
-				data[XQCore.callerEvent] = 'pageload';
-			}
-
-			$(function() {
-				self.log('Trigger route', route, data);
-				route.fn.call(self, route.params);
-			});
-		}
-
-		// custom init (deprecated)
-		if (typeof conf.init === 'function') {
-			conf.init.call(this);
-		}
-
-		//Initialize views
-		if (views instanceof Array) {
-			for (i = 0; i < views.length; i++) {
-				this.registerView(views[i]);
-			}
-		}
-		else if (views) {
-			this.registerView(views);
-		}
-
-		this.registeredViews.forEach(function(view) {
-			view.view.init(self);
-		});
-
-		this.registeredModels.forEach(function(model) {
-			model.model.init(self);
-		});
-	};
-
-	/**
-	 * Calling on view init
-	 *
-	 * @param {object} view The initializing view
-	 */
-	Presenter.prototype.viewInit = function(view) {
-
-	};
-
-	/**
-	 * Add a history item to the browser history
-	 *
-	 * @param {Object} data Data object
-	 * @param {String} url Page URL (Optional) defaults to the curent URL
-	 */
-	Presenter.prototype.pushState = function(data, url) {
-		/*this.log('Check State', data, history.state, XQCore.compare(data, history.state));
-		if (XQCore.compare(data, history.state)) {
-			this.warn('Abborting history.pushState because data are equale to current history state');
-		}*/
-		var hash = XQCore.html5Routes || url.charAt(0) === '/' ? '' : XQCore.hashBang;
-		url = hash + url;
-		history.pushState(data, '', url || null);
-		this.log('Update history with pushState', data, url);
-	};
-
-	/**
-	 * Add a history item to the browser history
-	 *
-	 * @param {Object} data Data object
-	 * @param {String} url Page URL (Optional) defaults to the current URL
-	 */
-	Presenter.prototype.replaceState = function(data, url) {
-		/*if (data === history.state) {
-			this.warn('Abborting history.replaceState because data are equale to current history state');
-		}*/
-		var hash = XQCore.html5Routes || url.charAt(0) === '/' ? '' : XQCore.hashBang;
-		url = hash + url;
-		history.replaceState(data, '', url || null);
-		this.log('Update history with replaceState', data, url);
-	};
-
-	/**
-	 * Navigates to a given route
-	 *
-	 * @param {String} route Route url
-	 * @param {Object} data Data object
-	 * @param {Boolean} replace Replace current history entry with route
-	 */
-	Presenter.prototype.navigateTo = function(route, data, replace) {
-		this.log('Navigate to route: ', route, data, replace);
-		if (replace) {
-			this.replaceState(data, route);
-		} else {
-			this.pushState(data, route);
-		}
-
-		// this.__onPopstate(data);
-		/*global PopStateEvent:false */
-		var evt = new PopStateEvent('popstate', {
-			bubbles: false,
-			cancelable: false,
-			state: null
-		});
-		window.dispatchEvent(evt);
-	};
-
-	/**
-	 * Gets a view by it's name
-	 *
-	 * @method getView
-	 * @param {String} viewName Required view name
-	 * @return {Object} Returns view object or null if no view was found
-	 */
-	Presenter.prototype.getView = function(viewName) {
-		var i, view;
-
-		for (i = 0; i < this.registeredViews.length; i++) {
-			view = this.registeredViews[i].view;
-			if (view.name === viewName) {
-				return view;
-			}
-		}
-
-		return null;
-	};
-
-
-	/**
-	 * Show a view if it's not visible and update the history state
-	 *
-	 * @method showView
-	 *
-	 * @param  {String} viewName The name of the view
-	 * @param  {Object} data Data it's neede to showing the view
-	 *
-	 */
-	Presenter.prototype.showView = function(viewName, data) {
-		var view = this.getView(viewName + 'View');
-		if (!view) {
-			this.warn('View not defined!', viewName);
-			return;
-		}
-
-		this.log('Show view:', viewName, data);
-		this.log('Hide view:', this.lastShownView);
-
-		if (this.lastShownView !== view) {
-			if (this.lastShownView && typeof this.lastShownView.hide === 'function') {
-				this.lastShownView.hide();
-				view.show();
-			}
-			else {
-				view.show(true);
-			}
-		}
-	};
-
-	/**
-	 * Returns the current hash
-	 *
-	 * @method getHash
-	 * @returns {String} Returns the current value from location.hash
-	 */
-	Presenter.prototype.getHash = function() {
-		return location.hash;
-	};
-
-	/**
-	 * Returns the current pathname
-	 *
-	 * @method getPathname
-	 * @returns {String} Returns the current value from location.pathname
-	 */
-	Presenter.prototype.getPathname = function() {
-		return location.pathname;
-	};
-
-	/**
-	 * Couple a model with a view
-	 *
-	 * @method couple
-	 * @chainable
-	 * @param {Object} conf Configuration object
-	 *
-	 * conf: {
-	 *   model: String modelname
-	 *   view: String viewname
-	 *   route String routename
-	 * }
-	 */
-	Presenter.prototype.couple = function(conf) {
-		var view = conf.view,
-			model = conf.model,
-			key;
-
-		var modelEventConf = XQCore.extend({
-			'data.replace': 'render',
-			'data.item': 'update',
-			'data.append': 'append',
-			'data.prepend': 'prepend',
-			'data.insert': 'insert',
-			'data.remove': 'remove',
-			'validation.error': 'validationFailed',
-			'state.change': 'stateChanged'
-		}, conf.modelEvents);
-
-		var viewEventConf = XQCore.extend({
-			'form.submit': 'setData'
-		}, conf.viewEvents);
-
-		if (!view instanceof XQCore.View) {
-			this.error('Can\'t couple view with model! View isn\'t a XQCore.View');
-			return;
-		}
-
-		if (!model instanceof XQCore.Model) {
-			this.error('Can\'t couple model with model! Model isn\'t a XQCore.Model');
-			return;
-		}
-
-		this.log('Couple view ', view.name, 'with model', model.name);
-
-		if (!view.__coupledWith) {
-			view.__coupledWith = [];
-		}
-
-		if (!model.__coupledWith) {
-			model.__coupledWith = [];
-		}
-
-		if (!view.__coupledWith.some(function(m) { return (m === model); })) {
-			view.__coupledWith.push(model);
-		}
-		
-		if (!model.__coupledWith.some(function(v) { return (v === view); })) {
-			model.__coupledWith.push(view);
-		}
-
-		var registerModelListener = function(listener, func) {
-			model.on(listener, function() {
-				var args = Array.prototype.slice.call(arguments);
-				args.push(model.name);
-				view[func].apply(view, args);
-			});
-		};
-
-		var registerViewListener = function(listener, func) {
-			view.on(listener, function(arg, arg2) {
-				model[func](arg, arg2, view.name);
-			});
-		};
-
-		for (key in modelEventConf) {
-			if (modelEventConf.hasOwnProperty(key)) {
-				registerModelListener(key, modelEventConf[key]);
-				if (key === 'data.replace') {
-					model.emit(key, model.get());
-				}
-			}
-		}
-
-		for (key in viewEventConf) {
-			if (viewEventConf.hasOwnProperty(key)) {
-				registerViewListener(key, viewEventConf[key]);
-			}
-		}
-
-		return this;
-	};
-
-	/**
-	 * Triggers a view event to the presenter
-	 *
-	 * @method triggerEvent
-	 *
-	 * @param {String} eventName Event of the triggered event
-	 * @param {Object} e EventObject
-	 * @param {Object} tag Tag data
-	 * @param {Object} data Event data
-	 */
-	Presenter.prototype.triggerEvent = function(v, eventName, e, tag, data) {
-		if (this.events[eventName]) {
-			this.events[eventName].call(this, e, tag, data);
-		}
-		else {
-			e.preventDefault();
-			e.stopPropagation();
-			v.__coupledWith.forEach(function(m) {
-				if (typeof m[eventName] === 'function') {
-					this.log('Autotrigger to model ', m.name, ' - ', eventName, data);
-					m[eventName](data);
-				}
-				else {
-					this.warn('Autotrigger to model failed! Function doesn\'t exists:', eventName, data);
-				}
-			});
-		}
-	};
-
-
-	/**
-	 * PopstateEvent
-	 *
-	 * @method __onPopstate
-	 * @param {Object} data Event data
-	 * @private
-	 */
-	Presenter.prototype.__onPopstate = function(data) {
-		var self = this;
-
-		self.log('popstate event recived', data, self);
-
-		var route = XQCore.defaultRoute;
-		if (XQCore.html5Routes) {
-			var pattern = new RegExp('^' + self.root);
-			route = self.getPathname().replace(pattern, '');
-		}
-		else {
-			if (/^#!\S+/.test(this.getHash())) {
-				route = self.getHash().substr(2);
-			}
-		}
-
-		route = self.__Router.match(route);
-		if (route) {
-			data = data || route.params;
-			if (XQCore.callerEvent) {
-				data[XQCore.callerEvent] = 'popstate';
-			}
-
-			self.log('Trigger route', route, data);
-
-			route.fn.call(self, data);
-		}
-	};
-
-
-	/* ++++++++++++ v0.7.0 +++++++++++++++++ */
-
-
-	/**
-	 * Initialize a new view into the presenter scope
-	 *
-	 * options: {
-	 *   mode: String       Insert mode, (append, prepend or replace) replace is default
-	 *   inject: Boolean    Set to false to disable injecting view into the DOM
-	 * }
-	 * 
-	 * @method initView
-	 * @public
-	 * @param  {String} viewName  Name of the view
-	 * @param  {String} container Container selector, default is 'body'
-	 * @param  {Object} options   View options
-	 * @return {Object}           Returns a view object
-	 */
-	Presenter.prototype.initView = function(viewName, container, options) {
-		options = options || {};
-
-		if (this.__views[viewName]) {
-			this.warn('View allready registered!', viewName);
-			return;
-		}
-
-		if (this.debug) {
-			this.log('Init view', viewName);
-		}
-
-		var view = new XQCore.View(viewName, function(self) {
-			self.template = XQCore.Tmpl.getTemplate(viewName);
-			self.mode = options.mode || 'replace';
-			self.container = container || 'body';
-			if (options.inject === false) {
-				self.autoInject = false;
-			}
-		});
-		this.__views[viewName] = view;
-		view.init(this);
-		return view;
-	};
-
-	/**
-	 * Register a route listen
-	 *
-	 * @public
-	 * @method route
-	 * @param {String | Array} route Route string
-	 * @param {Function} callback Callback function
-	 */
-	Presenter.prototype.route = function(route, callback) {
-		if (typeof callback === 'string') {
-			callback = this[callback];
-		}
-
-		if (typeof callback === 'function') {
-			if (typeof route === 'string') {
-				this.log('Register route', route, 'with callback', callback);
-				this.__Router.addRoute(route, callback);
-			}
-			else if (Array.isArray(route)) {
-				route.forEach(function(r) {
-					this.log('Register route', r, 'with callback', callback);
-					this.__Router.addRoute(r, callback);
-				}.bind(this));
-			}
-
-		}
-		else {
-			this.warn('Router callback isn\'t a function', callback, 'of route', route);
-		}
-	};
-
-	XQCore.Presenter = Presenter;
-
-})(XQCore);
-
-(function(XQCore, undefined) {
-	'use strict';
-
-	var $ = XQCore.require("jquery");
-
-	var Sync = function() {
-
-	};
-
-	/**
-	 * Called on before sending an ajax request
-	 * You can use this function to manipulate all data they be send to the server
-	 *
-	 * @param {Object} data The data to send to the server
-	 * @return {Object} data
-	 */
-	Sync.prototype.onSend = function(data) {
-		return data;
-	};
-
-	/**
-	 * Send an ajax request to the webserver.
-	 *
-	 * You must set the server URI first with model.server = 'http://example.com/post'
-	 *
-	 * @param {String} Method send method, GET, POST, PUT, DELETE (default POST)
-	 * @param {String} url Server URL (optional, then model.server must be set)
-	 * @param {Object} data The data to sent to the server
-	 * @param {Function} callback Calls callback(err, data, status, jqXHR) if response was receiving
-	 */
-	Sync.prototype.send = function(method, url, data, callback) {
-
-		if (typeof url === 'object') {
-			callback = data;
-			data = url;
-			url = this.server;
-			method = method;
-		}
-		else if (typeof data === 'function') {
-			callback = data;
-			data = this.get();
-		}
-		else if (data === undefined) {
-			data = this.get();
-		}
-
-		if (method === undefined) {
-			method = 'POST';
-		}
-
-		if (!url) {
-			url = this.server;
-		}
-
-		//Handle onSend
-		if (typeof this.onSend === 'function') {
-			data = this.onSend.call(this, data);
-		}
-
-		this.log('Sending an ajax call to ', url, 'with data: ', data);
-		this.state('syncing');
-
-		$.ajax({
-			url: url,
-			type: method,
-			data: data,
-			dataType: 'json',
-			success: function(data, status, jqXHR) {
-				if (typeof callback === 'function') {
-					callback.call(this, null, data, status, jqXHR);
-				}
-				this.state('success');
-			}.bind(this),
-			error: function(jqXHR, status, error) {
-				if (typeof callback === 'function') {
-					callback.call(this, {
-						type: status,
-						http: error
-					}, null, status, jqXHR);
-				}
-				this.state('failed');
-			}.bind(this)
-		});
-	};
-
-	/**
-	 * Sends a POST to the Datastore
-	 *
-	 * @param {String} url Server URL (optional, then model.server must be set)
-	 * @param  {Object}   data     Dato to sending
-	 * @param  {Function} callback Calling on response
-	 *
-	 * callback: void function(err, data, status, jqXHR)
-	 *
-	 */
-	Sync.prototype.sendPOST = function(url, data, callback) {
-		this.send('POST', url, data, callback);
-	};
-
-	/**
-	 * Sends a GET to the Datastore
-	 *
-	 * @param {String} url Server URL (optional, then model.server must be set)
-	 * @param  {Object}   data     Dato to sending
-	 * @param  {Function} callback Calling on response
-	 *
-	 * callback: void function(err, data, status, jqXHR)
-	 *
-	 */
-	Sync.prototype.sendGET = function(url, data, callback) {
-		this.send('GET', url, data, callback);
-	};
-
-	/**
-	 * Sends a PUT to the Datastore
-	 *
-	 * @param {String} url Server URL (optional, then model.server must be set)
-	 * @param  {Object}   data     Dato to sending
-	 * @param  {Function} callback Calling on response
-	 *
-	 * callback: void function(err, data, status, jqXHR)
-	 *
-	 */
-	Sync.prototype.sendPUT = function(url, data, callback) {
-		this.send('PUT', url, data, callback);
-	};
-
-	/**
-	 * Sends a DELETE to the Datastore
-	 *
-	 * @param {String} url Server URL (optional, then model.server must be set)
-	 * @param  {Object}   data     Dato to sending
-	 * @param  {Function} callback Calling on response
-	 *
-	 * callback: void function(err, data, status, jqXHR)
-	 *
-	 */
-	Sync.prototype.sendDELETE = function(url, data, callback) {
-		this.send('DELETE', url, data, callback);
-	};
-
-	/**
-	 * Check if model is ready and call func or wait for ready state
-	 */
-	Sync.prototype.ready = function(func) {
-		if (func === true) {
-			//Call ready funcs
-			if (Array.isArray(this.__callbacksOnReady)) {
-				this.log('Trigger ready state');
-				this.__callbacksOnReady.forEach(function(func) {
-					func.call(this);
-				}.bind(this));
-			}
-
-			this.__isReady = true;
-			delete this.__callbacksOnReady;
-		}
-		else if (typeof func === 'function') {
-			if (this.__isReady === true) {
-				func();
-			}
-			else {
-				if (!this.__callbacksOnReady) {
-					this.__callbacksOnReady = [];
-				}
-				this.__callbacksOnReady.push(func);
-			}
-		}
-		else {
-			this.warn('arg0 isn\'t a callback in model.ready()!');
-		}
-	};
-
-	/**
-	 * Fetch data from server
-	 *
-	 * @param {Object} query MongoDB query 
-	 * @param {Function} callback Callback function
-	 */
-	Sync.prototype.fetch = function(query, callback) {
-		this.sendGET(query, callback);
-	};
-
-	/**
-	 * Save a model if it's valid
-	 */
-	Sync.prototype.save = function(callback) {
-		if (this.isValid()) {
-			this.sendPOST(this.get(), callback);
-		}
-		else {
-			if (typeof callback === 'function') {
-				callback({
-					msg: 'Model isn\'t valid. Cancle save'
-				});
-			}
-		}
-	};
-
-	/**
-	 * Update a model if it's valid
-	 */
-	Sync.prototype.update = function(callback) {
-		if (this.isValid()) {
-			this.sendPUT(this.get(), callback);
-		}
-		else {
-			if (typeof callback === 'function') {
-				callback({
-					msg: 'Model isn\'t valid. Cancle update'
-				});
-			}
-		}
-	};
-
-	XQCore.Sync = Sync;
-
-})(XQCore);
-/**
- *	@requires XQCore.Utils
- *	@requires XQCore.Event
- *	@requires XQCore.Logger
- */
-(function(XQCore, undefined) {
-	'use strict';
-	var Model;
-
-	Model = function(name, conf) {
-		if (typeof arguments[0] === 'object') {
-			conf = name;
-			name = conf.name;
-		}
-
-		/**
-		 * Enable debug mode
-		 * @public
-		 * @type {Boolean}
-		 */
-		this.debug = XQCore.debug;
-
-		if (conf === undefined) {
-			conf = {};
-		}
-
-		this.__state = 'starting';
-		this.__unfiltered = {};
-
-		this.customValidate = conf.validate;
-		delete conf.validate;
-
-		this.conf = conf;
-
-		this.name = (name ? name.replace(/Model$/, '') : 'Nameless') + 'Model';
-		this._isValid = false;
-		this.properties = {};
-		this.schema = conf.schema;
-	};
-
-
-	XQCore.extend(Model.prototype, new XQCore.Event(), new XQCore.Logger());
-
-	if (XQCore.Sync) {
-		XQCore.extend(Model.prototype, XQCore.Sync.prototype);
-	}
-
-	Model.prototype.init = function() {
-		var self = this,
-			conf = this.conf;
-
-		if (typeof conf === 'function') {
-			conf.call(this, self);
-		}
-		else {
-			XQCore.extend(this, conf);
-		}
-
-		if (this.debug) {
-			XQCore._dump[this.name] = this;
-		}
-
-		//Add default values
-		if (this.defaults && !XQCore.isEmptyObject(this.defaults)) {
-			this.set(this.defaults);
-		}
-
-		this.state('ready');
-	};
-
-	/**
-	 * Change the model state
-	 *
-	 * @method state
-	 * @param {String} state New state
-	 */
-	Model.prototype.state = function(state) {
-		this.__state = state;
-		this.emit('state.' + state);
-		this.emit('state.change', state);
-	};
-
-	/**
-	 * Get the current model state
-	 *
-	 * @method getState
-	 */
-	Model.prototype.getState = function() {
-		return this.__state;
-	};
-
-	/**
-	 * Set model data
-	 *
-	 * Triggers a data.change event if data was set succesfully
-	 *
-	 * @method set
-	 * @param {Object} data
-	 */
-	
-	/**
-	 * Set model data
-	 *
-	 * Triggers these events if data was set succesfully<br>
-	 * data.change<br>
-	 * &lt;key&gt;.change
-	 *
-	 * options: {
-	 *   silent: <Boolean> Don't trigger any events
-	 *   noValidation: <Boolean> Don't validate
-	 *   validateOne: <Boolean> Only if setting one item, validate the item only
-	 * }
-	 *
-	 * @method set
-	 * @param {String} key
-	 * @param {Object} value Data value
-	 * @param {Object} options Options
-	 */
-	Model.prototype.set = function(key, value, options) {
-		var newData = {},
-			oldData = this.get(),
-			validateResult,
-			setItem = false,
-			setAll = false;
-
-		options = options || {};
-
-		if (arguments[0] === null) {
-			newData = arguments[1];
-			setAll = true;
-			this.log('Set data', newData, oldData);
-		}
-		else if (typeof arguments[0] === 'object') {
-			//Add a dataset
-			key = null;
-			options = value || {};
-			newData = options.extend ? XQCore.extend(newData, oldData, arguments[0]) : arguments[0];
-			setAll = true;
-			this.log('Set data', newData, oldData);
-		}
-		else if (typeof arguments[0] === 'string') {
-			newData = XQCore.extend({}, this.get());
-			setItem = true;
-			XQCore.dedotify(newData, key, value);
-			this.log('Set data', newData, oldData);
-
-			options = options || {};
-			if (!this.customValidate && options.validateOne) {
-				options.noValidation = true;
-				validateResult = this.validateOne(this.schema[key], value);
-				if (validateResult.isValid === false) {
-					this.warn('Validate error in model.set', validateResult);
-					if (options.silent !== true) {
-						this.emit('validation.error', validateResult, newData);
-					}
-					return false;
-				}
-			}
-		}
-		else {
-			this.warn('Data are incorrect in model.set()', arguments);
-		}
-
-		options = options || {};
-
-		if (!this.customValidate && this.schema && options.noValidation !== true) {
-			validateResult = this.validate(newData);
-			if (validateResult !== null) {
-				this.warn('Validate error in model.set', validateResult);
-				if (options.silent !== true) {
-					this.emit('validation.error', validateResult, newData);
-				}
-				return false;
-			}
-		}
-
-		if (this.customValidate && options.noValidation !== true) {
-			validateResult = this.customValidate(newData);
-			this.log('Using a custom validation which returns:', validateResult);
-			if (validateResult !== null) {
-				this.warn('Validate error in model.set', validateResult);
-				this.emit('validation.error', validateResult, newData);
-				return false;
-			}
-		}
-
-		this.properties = newData;
-		if (options.silent !== true) {
-			if (setAll) {
-				if (typeof this.sync === 'function' && options.sync !== false) {
-					this.sync('replace', newData);
-				}
-
-				this.emit('data.replace', newData, oldData);
-			}
-			else if (setItem){
-				if (typeof this.sync === 'function' && options.sync !== false) {
-					this.sync('item', key, value);
-				}
-				
-				this.emit('data.item', key, value);
-			}
-
-			this.emit('data.change', newData, oldData);
-		}
-
-		return true;
-	};
-
-	/**
-	 * Get one or all properties from a dataset
-	 *
-	 * @param  {String} key Data key
-	 *
-	 * @return {Object}     model dataset
-	 */
-	Model.prototype.get = function(key) {
-		if (key === undefined) {
-			return this.properties;
-		}
-		else {
-			return XQCore.undotify(key, this.properties);
-		}
-	};
-
-	/**
-	 * Check wether model has a dataset
-	 *
-	 * @param {String} key Dataset key
-	 * @return {Boolean} Returns true if model has a dataset with key
-	 */
-	Model.prototype.has = function(key) {
-		return !!this.properties[key];
-	};
-
-	/**
-	 * Remove all data from model
-	 */
-	Model.prototype.reset = function() {
-		this.log('Reset model');
-		this.properties = {};
-		// this.removeAllListeners();
-	};
-
-	/**
-	 * Append data to a subset
-	 *
-	 * @param {String} path path to subset
-	 * @param {Object} data data to add
-	 */
-	Model.prototype.append = function(path, data, options) {
-		var dataset = XQCore.undotify(path, this.properties);
-
-		options = options || {};
-
-		if (dataset instanceof Array) {
-			dataset.push(data);
-		}
-		else if (typeof dataset === 'undefined') {
-			XQCore.dedotify(this.properties, path, [data]);
-		}
-		else if (typeof dataset === 'object' && !path && XQCore.isEmptyObject(this.properties)) {
-			this.properties = [data];
-		}
-		else {
-			this.error('Model.append requires an array. Dataset isn\'t an array. Path: ', path);
-			return;
-		}
-
-		if (options.silent !== true) {
-			if (typeof this.sync === 'function' && options.sync !== false) {
-				this.sync('append', path, data);
-			}
-
-			this.emit('data.append', path, data);
-			this.emit('data.change', this.properties);
-		}
-	};
-
-	/**
-	 * Prepend data to a subset
-	 *
-	 * @param {String} path path to subset
-	 * @param {Object} data data to add
-	 */
-	Model.prototype.prepend = function(path, data, options) {
-		var dataset = XQCore.undotify(path, this.properties);
-
-		options = options || {};
-
-		if (dataset instanceof Array) {
-			dataset.unshift(data);
-		}
-		else if (typeof dataset === 'undefined') {
-			XQCore.dedotify(this.properties, path, [data]);
-		}
-		else if (typeof dataset === 'object' && !path && XQCore.isEmptyObject(this.properties)) {
-			this.properties = [data];
-		}
-		else {
-			this.error('Model.prepend requires an array. Dataset isn\'t an array. Path: ', path);
-			return;
-		}
-
-		if (options.silent !== true) {
-			if (typeof this.sync === 'function' && options.sync !== false) {
-				this.sync('prepend', path, data);
-			}
-
-			this.emit('data.prepend', path, data);
-			this.emit('data.change', this.properties);
-		}
-	};
-
-	Model.prototype.insert = function(path, index, data, options) {
-		var dataset = XQCore.undotify(path, this.properties);
-
-		options = options || {};
-
-		if (dataset instanceof Array) {
-			dataset.splice(index, 0, data);
-		}
-		else if (typeof dataset === 'undefined') {
-			XQCore.dedotify(this.properties, path, [data]);
-		}
-		else if (typeof dataset === 'object' && !path && XQCore.isEmptyObject(this.properties)) {
-			this.properties = [data];
-		}
-		else {
-			this.error('Model.insert requires an array. Dataset isn\'t an array. Path: ', path);
-			return;
-		}
-
-		if (options.silent !== true) {
-			if (typeof this.sync === 'function' && options.sync !== false) {
-				this.sync('insert', path, 1, data);
-			}
-
-			this.emit('data.insert', path, index, data);
-			this.emit('data.change', this.properties);
-		}
-	};
-
-	/**
-	 * Remove a subset
-	 *
-	 * @param {String} path path to subset
-	 * @param {Number} index Index of the subsut to remove
-	 * @param {Object} options Remove options
-	 *
-	 * @return {Object} removed subset
-	 */
-	Model.prototype.remove = function(path, index, options) {
-		var dataset = XQCore.undotify(path, this.properties),
-			removed = null;
-
-
-		options = options || {};
-
-		if (dataset instanceof Array) {
-			removed = dataset.splice(index, 1);
-		}
-		else if (typeof dataset === 'object') {
-			this.error('Model.remove requires an array. Dataset isn\'t an array. Path: ', path);
-			return;
-		}
-
-		if (removed && options.silent !== true) {
-			if (typeof this.sync === 'function' && options.sync !== false) {
-				this.sync('remove', path, index);
-			}
-
-			this.emit('data.remove', path, index, removed[0]);
-			this.emit('data.change', this.properties);
-		}
-
-		return removed;
-	};
-
-	/**
-	 * Search an item in models properties
-	 *
-	 * @param {String} path Path to the parent property. We use dot notation to navigate to subproperties. (data.bla.blub) (Optional)
-	 * @param {Object} searchfor Searching for object
-	 * @return {Object} Returns the first matched item or null
-	 */
-	Model.prototype.search = function(path, searchfor) {
-		var parent;
-
-		if (arguments.length === 1) {
-			searchfor = path;
-			path = '';
-			parent = this.properties;
-		}
-		else {
-			parent = XQCore.undotify(path, this.properties);
-		}
-
-		if (parent) {
-			for (var i = 0; i < parent.length; i++) {
-				var prop = parent[i],
-					matching;
-
-				for (var p in searchfor) {
-					if (searchfor.hasOwnProperty(p)) {
-						if (prop[p] && prop[p] === searchfor[p]) {
-							matching = true;
-						}
-						else {
-							matching = false;
-							break;
-						}
-					}
-				}
-
-				if (matching === true) {
-					return prop;
-				}
-
-			}
-		}
-
-		return null;
-	};
-
-	/**
-	 * Sort an array collection by a given attribute
-	 *
-	 * @param {String} path Path to the collection
-	 * @param {Object} sortKeys Sort by key
-	 *
-	 * sortKeys: {
-	 *   'key': 1 // Sort ascend by key,
-	 *   'second.key': -1 // Sort descand by second.key
-	 * }
-	 *
-	 * ascend, a -> z, 0 - > 9 (-1)
-	 * descend, z -> a, 9 -> 0 (1)
-	 * 
-	 */
-	Model.prototype.sortBy = function(path, sortKeys) {
-		if (arguments.length === 1) {
-			sortKeys = path;
-			path = null;
-		}
-
-		var data = XQCore.undotify(path, this.properties),
-			order;
-
-		data.sort(function(a, b) {
-			order = -1;
-			for (var key in sortKeys) {
-				if (sortKeys.hasOwnProperty(key)) {
-					order = String(XQCore.undotify(key, a)).localeCompare(String(XQCore.undotify(key, b)));
-					if (order === 0) {
-						continue;
-					}
-					else if(sortKeys[key] === -1) {
-						order = order > 0 ? -1 : 1;
-					}
-
-					break;
-				}
-			}
-
-			return order;
-		});
-
-		this.set(path, data);
-		return data;
-	};
-
-	/**
-	 * Filter an array collection by a given filter function
-	 *
-	 * @param {String} path Path to the collection
-	 * @param {String | Function} filter Filter function
-	 *
-	 */
-	Model.prototype.filter = function(path, property, query, fn) {
-		if (arguments.length === 1) {
-			fn = path;
-			path = null;
-		}
-
-		if (typeof fn === 'string') {
-			if (this.__registeredFilter[fn]) {
-				fn = this.__registeredFilter[fn];
-			}
-			else {
-				throw new Error('Filter ' + fn + ' not registered!');
-			}
-		}
-
-		//We use a for i instead of Array.filter because it's faster!
-		var data = XQCore.undotify(path, this.__unfiltered.data || this.properties);
-		var filtered = [];
-		for (var i = 0, len = data.length; i < len; i++) {
-			if (fn(property, query, data[i])) {
-				filtered.push(data[i]);
-			}
-		}
-
-		this.__unfiltered = {
-			path: path,
-			data: data
-		};
-
-		this.set(path, filtered);
-		return filtered;
-	};
-
-	/**
-	 * Resets a filter
-	 * @method filterReset
-	 * @param {Object} options Set options
-	 */
-	Model.prototype.filterReset = function(options) {
-		if (this.__unfiltered) {
-			this.set(this.__unfiltered.path, this.__unfiltered.data, options);
-		}
-	};
-
-	Model.prototype.validate = function(data, schema) {
-		var failed = [];
-			
-		schema = schema || this.schema;
-
-		if (schema) {
-			Object.keys(schema).forEach(function(key) {
-				if (typeof data[key] === 'object' && typeof schema[key].type === 'undefined') {
-					var subFailed = this.validate(XQCore.extend({}, data[key]), XQCore.extend({}, schema[key]));
-					if (Array.isArray(subFailed) && subFailed.length > 0) {
-						failed = failed.concat(subFailed);
-					}
-					return;
-				}
-				
-				var validationResult = this.validateOne(schema[key], data[key]);
-
-				if (validationResult.isValid === true) {
-					data[key] = validationResult.value;
-				}
-				else {
-					validationResult.error.property = key;
-					failed.push(validationResult.error);
-				}
-			}.bind(this));
-		}
-
-		if (failed.length === 0) {
-			this._isValid = true;
-			return null;
-		}
-		else {
-			this._isValid = false;
-			return failed;
-		}
-	};
-
-	/**
-	 * Validate one property
-	 *
-	 * ValidatorResultItemObject
-	 * {
-	 *   isValid: Boolean,
-	 *   value: Any,
-	 *   error: Object
-	 * }
-	 *
-	 * @param  {Any} schema Schema for the check
-	 * @param  {Any} value Property value
-	 *
-	 * @return {Object}       Returns a ValidatorResultItemObject
-	 */
-	Model.prototype.validateOne = function(schema, value) {
-		var failed = null,
-			schemaType = typeof schema.type === 'function' ? typeof schema.type() : schema.type.toLowerCase();
-
-		if (value === '' && schema.noEmpty === true) {
-			value = undefined;
-		}
-
-		if ((value === undefined || value === null) && schema.default) {
-			value = schema.default;
-		}
-
-		if ((value === undefined || value === null || value === '')) {
-			if (schema.required === true) {
-				failed = {
-					msg: 'Property is undefined or null, but it\'s required',
-					errCode: 10
-				};
-			}
-		}
-		else if (schemaType === 'string') {
-			if (schema.convert && typeof(value) === 'number') {
-				value = String(value);
-			}
-
-			if (schemaType !== typeof(value)) {
-				failed = {
-					msg: 'Property type is a ' + typeof(value) + ', but a string is required',
-					errCode: 11
-				};
-			}
-			else if(schema.min && schema.min > value.length) {
-				failed = {
-					msg: 'String length is too short',
-					errCode: 12
-				};
-			}
-			else if(schema.max && schema.max < value.length) {
-				failed = {
-					msg: 'String length is too long',
-					errCode: 13
-				};
-			}
-			else if(schema.match && !schema.match.test(value)) {
-				failed = {
-					msg: 'String doesn\'t match regexp',
-					errCode: 14
-				};
-			}
-
-		}
-		else if(schemaType === 'number') {
-			if (schema.convert && typeof(value) === 'string') {
-				value = parseInt(value, 10);
-			}
-
-			if (schemaType !== typeof(value)) {
-				failed = {
-					msg: 'Property type is a ' + typeof(value) + ', but a number is required',
-					errCode: 21
-				};
-			}
-			else if(schema.min && schema.min > value) {
-				failed = {
-					msg: 'Number is too low',
-					errCode: 22
-				};
-			}
-			else if(schema.max && schema.max < value) {
-				failed = {
-					msg: 'Number is too high',
-					errCode: 23
-				};
-			}
-		}
-		else if(schemaType === 'date') {
-			if (value) {
-				var date = Date.parse(value);
-				if (isNaN(date)) {
-					failed = {
-						msg: 'Property isn\'t a valid date',
-						errCode: 31
-					};
-				}
-			}
-		}
-		else if(schemaType === 'array') {
-			if (!Array.isArray(value)) {
-				failed = {
-					msg: 'Property type is a ' + typeof(value) + ', but an array is required',
-					errCode: 41
-				};
-			}
-			else if(schema.min && schema.min > value.length) {
-				failed = {
-					msg: 'Array length is ' + value.length + ' but must be greater than ' + schema.min,
-					errCode: 42
-				};
-			}
-			else if(schema.max && schema.max < value.length) {
-				failed = {
-					msg: 'Array length is ' + value.length + ' but must be lesser than ' + schema.max,
-					errCode: 43
-				};
-			}
-		}
-		else if(schemaType === 'object') {
-			if (typeof(value) !== 'object') {
-				failed = {
-					msg: 'Property isn\'t a valid object',
-					errCode: 51
-				};
-			}
-		}
-		else if(schemaType === 'objectid') {
-			if (!/^[a-zA-Z0-9]{24}$/.test(value)) {
-				failed = {
-					msg: 'Property isn\'t a valid objectId',
-					errCode: 52
-				};
-			}
-		}
-		else if(schemaType === 'boolean') {
-			if (typeof(value) !== 'boolean') {
-				failed = {
-					msg: 'Property isn\'t a valid boolean',
-					errCode: 61
-				};
-			}
-		}
-
-		if (failed === null) {
-			failed = {
-				isValid: true,
-				value: value,
-				error: null
-			};
-		}
-		else {
-			this.warn('Validation error on property', failed, 'Data:', value);
-			failed = {
-				isValid: false,
-				value: value,
-				error: failed
-			};
-		}
-
-		return failed;
-	};
-
-	Model.prototype.isValid = function() {
-		return this._isValid;
-	};
-
-	Model.prototype.setData = function(data, caller) {
-		return this.set(data, {
-			extend: true
-		});
-	};
-
-	/**
-	 * Register a filter function 
-	 *
-	 * XQCore.Model.registerFilter('myfilter', fn);
-	 * Registers a filter for all models
-	 *
-	 * instance.registerFilter('myfilter', fn);
-	 * Registers a filter for the instance only.
-	 * 
-	 * @method registerFilter
-	 * @param {String} filterName [description]
-	 * @param {Function} filterFunction [description]
-	 */
-	Model.registerFilter = function(filterName, filterFunction) {
-		if (typeof filterFunction !== 'function') {
-			throw new Error('Filter function isn\'t a function');
-		}
-
-		var obj = typeof this === 'function' ? Model.prototype : this;
-		obj.__registeredFilter[filterName] = filterFunction;
-	};
-
-	Model.prototype.registerFilter = Model.registerFilter;
-
-	Model.prototype.__registeredFilter = {
-		quicksearch: function(property, query, item) {
-			// console.log('Filter item:', property, query, item);
-			var value = XQCore.undotify(property, item);
-			var pat = new RegExp(query.replace(/[a-z0-9äüöß]/g, '$&.*'), 'i');
-			// console.log('Pat:', pat.source);
-			return pat.test(value);
-		}
-	};
-
-	XQCore.Model = Model;
-})(XQCore);
-
-/**
- * XQCore.GetSet
- *
- * @module XQCore.GetSet
- * @requires XQCore.Logger
- * @requires XQCore.Event
- */
-XQCore.GetSet = XQCore.Model;
-/*global define:false */
-(function (root, factory) {
-	'use strict';
-
-	if (typeof define === 'function' && define.amd) {
-		define('xqcore', [XQCore.templateEngine], factory);
-	} else if (typeof module !== 'undefined' && module.exports) {
-		module.exports = factory(require('/' + XQCore.templateEngine));
-	} else {
-		var engine = XQCore.templateEngine === 'firetpl' ? 'FireTPL' : 'Handlebars';
-		root.XQCore = factory(root[engine]);
-	}
-
-}(this, function (TemplateEngine) {
-	'use strict';
-
-	XQCore.Tmpl = {
-		type: XQCore.templateEngine,
-		compile: TemplateEngine.compile,
-		getTemplate: function(viewName) {
-			if (XQCore.templateEngine === 'firetpl') {
-				var FireTPL = TemplateEngine;
-				if (FireTPL.templateCache && FireTPL.templateCache[viewName]) {
-					return FireTPL.templateCache[viewName];
-				}
-				else if(!FireTPL.loadFile) {
-					throw new Error('FireTPL runtime is being used. Please preload the ' + viewName + 'View');
-				}
-				else {
-					var tmpl = FireTPL.loadFile(XQCore.viewsDir.replace(/\/$/, '') + '/' + viewName + '.' + XQCore.viewExt.replace(/^\./, ''));
-					return FireTPL.compile(tmpl);
-				}
-			}
-		}
-	};
-
-	return XQCore;
-}));
-
-/**
- * XQCore View module
- *
- * @module XQCore.View
- * @returns {object} Returns a XQCore.View prototype object
- */
-(function(XQCore, undefined) {
-	'use strict';
-
-	var $ = XQCore.require("jquery");
-
-	/**
-	 * XQCore.View
-	 *
-	 * @class XQCore.View
-	 * @constructor
-	 *
-	 * @uses XQCore.Logger
-	 * @uses XQCore.Event
-	 * 
-	 * @param {object} conf View configuration
-	 */
-	var View = function(name, initFunc) {
-		var conf;
-
-		if (typeof arguments[0] === 'object') {
-			conf = name;
-			name = conf.name;
-		}
-		
-		/**
-		 * Enable debug mode
-		 * @public
-		 * @type {Boolean}
-		 */
-		this.debug = XQCore.debug;
-
-		/**
-		 * Set presenter name
-		 * @public
-		 * @type {String}
-		 */
-		this.name = (name ? name.replace(/View$/, '') : 'Nameless') + 'View';
-
-		/**
-		 * Sets the container element
-		 * @property container
-		 * @type Selector
-		 * @default 'body'
-		 */
-		this.container = 'body';
-
-		/**
-		 * Set the view element tag
-		 *
-		 * @property tag
-		 * @type {String}
-		 * @default 'div'
-		 */
-		this.tag = 'div';
-
-		/**
-		 * Set the insert mode
-		 *
-		 * @property mode
-		 * @type {String}
-		 * @default	replace
-		 */
-		this.mode = 'replace';
-
-		/**
-		 * Enable/Disable autoInjection of the view into the DOM
-		 *
-		 * @property autoInject
-		 * @type {Boolean}
-		 * @default true
-		 */
-		this.autoInject = true;
-
-		/**
-		 * Set initFunc
-		 *
-		 * @method initFunc
-		 * @protected
-		 */
-		this.initFunc = initFunc;
-
-		/**
-		 * Holds the domReady state
-		 *
-		 * @property __domReady
-		 * @type {Boolean}
-		 * @default false
-		 * @private
-		 */
-		this.__domReady = false;
-
-
-		/* ++++++++++ old stuff +++++++++++++ */
-
-		conf = conf || {
-			events: null
-		};
-
-		this.conf = conf;
-	};
-
-	XQCore.extend(View.prototype, new XQCore.Event(), new XQCore.Logger());
-
-	/**
-	 * Init function
-	 *
-	 * @method init
-	 *
-	 * @param  {Object} presenter Views presenter object
-	 */
-	View.prototype.init = function(presenter) {
-		var self = this,
-			conf = this.conf;
-
-
-		if (typeof this.initFunc === 'function') {
-			this.initFunc.call(this, self);
-		}
-
-		if (typeof presenter !== 'object') {
-			throw new Error('No presenter was set in view.init()');
-		}
-
-		//Register view at presenter
-		this.presenter = presenter;
-
-		$(function() {
-
-			if (this.container.length > 0) {
-				window.addEventListener('resize', function(e) {
-					self.resize(e);
-				}, false);
-
-				this.log('Initialize view with conf:', conf);
-				this.log('  ... using Presenter:', this.presenter.name);
-				this.log('  ... using Container:', this.container);
-
-				//Send events to presenter
-				if (this.events) {
-					Object.keys(this.events).forEach(function(key) {
-						var spacePos = key.indexOf(' '),
-							eventFunc = this.events[key],
-							eventName = key.substr(0, spacePos),
-							selector = key.substr(spacePos + 1) || this.container,
-							self = this,
-							eventDest;
-
-						if (typeof eventFunc === 'function') {
-							eventDest = this;
-						}
-						else if (eventFunc.indexOf('view:') === 0) {
-							eventFunc = this[eventFunc.substr(5)];
-							eventDest = this;
-						}
-						else if (typeof this.presenter.events[this.events[key]] === 'function') {
-							eventFunc = this.presenter.events[this.events[key]];
-							eventDest = this.presenter;
-						}
-						else {
-							var eventFuncStr = eventFunc;
-							eventFunc = function(e, tag, data) {
-								this.triggerEvent(eventFuncStr, e, tag, data);
-							}.bind(this);
-							eventDest = this;
-						}
-
-						if (eventFunc && eventName) {
-
-							if (typeof eventFunc === 'function') {
-								//Register event listener
-								this.container.delegate(selector, eventName, function(e) {
-									var formData = null,
-										tagData = null;
-
-									if (e.type === 'submit') {
-										formData = XQCore.Util.serializeForm(e.currentTarget);
-									}
-									else if (e.type === 'keydown' || e.type === 'keyup' || e.type === 'keypress') {
-										formData = $(e.currentTarget).val();
-									}
-
-									tagData = $.extend($(e.currentTarget).data(), {
-										itemIndex: getItemIndex.call(self, e.currentTarget)
-									});
-
-									eventFunc.call(eventDest, e, tagData, formData);
-								}.bind(this));
-								this.log('Register Event:', eventName, 'on selector', selector, 'with callback', eventFunc);
-							}
-							else {
-								this.warn('Event handler callback not defined in Presenter:', this.events[key]);
-							}
-						}
-						else {
-							this.warn('Incorect event configuration', key);
-						}
-					}, this);
-				}
-
-				// custom init
-				if (typeof this.customInit === 'function') {
-					this.customInit.call(this);
-				}
-
-				//Call presenter.initView()
-				// this.presenter.fireViewInit(this);
-			}
-			else {
-				this.error('Can\'t initialize View, Container not found!', this.container);
-			}
-
-			//Set DOM ready state
-			this.__domReady = true;
-			if (this.__initialData) {
-				this.render(this.__initialData);
-				delete this.__initialData;
-			}
-			
-		}.bind(this));
-
-	};
-
-	View.prototype.show = function() {
-		this.$el.show();
-	};
-
-	View.prototype.hide = function() {
-		this.$el.hide();
-	};
-
-	View.prototype.renderHTML = function(template, data) {
-		this.log('Render view html snipet', template, 'with data:', data);
-		template = typeof template === 'function' ? template : XQCore.Tmpl.compile(template);
-		return template(data);
-	};
-
-	View.prototype.resize = function() {
-
-	};
-
-	/**
-	 * Gets the data of an element
-	 *
-	 * @param {Object} selector DOM el or a jQuery selector of the element
-	 *
-	 * @return {Object} Returns the data of an element or null
-	 */
-	View.prototype.getElementData = function(selector) {
-		var el = $(selector, this.container);
-		if (el.length) {
-			var data = {},
-				attrs = el.get(0).attributes,
-				i;
-
-			for (i = 0; i < attrs.length; i++) {
-				if (attrs[i].name.indexOf('data-') === 0) {
-					var name = attrs[i].name.substr(5),
-						value = attrs[i].value;
-
-					if (typeof value === 'string') {
-						try {
-							if (value === 'true' || value === 'TRUE') {
-								value = true;
-							}
-							else if (value === 'false' || value === 'FALSE') {
-								value = false;
-							}
-							else if (value === 'null' || value === 'NULL') {
-								value = null;
-							}
-							else if (value === 'undefined') {
-								value = undefined;
-							}
-							else if (+value + '' === value) {
-								value = +value;
-							}
-							else {
-								value = JSON.parse(value);
-							}
-						}
-						catch(err) {
-
-						}
-					}
-
-					data[name] = value;
-				}
-			}
-
-			return data;
-		}
-		else {
-			return null;
-		}
-	};
-
-	/**
-	 * Triggers a view event to the presenter
-	 *
-	 * @method triggerEvent
-	 *
-	 * @param {String} eventName Event of the triggered event
-	 * @param {Object} e EventObject
-	 * @param {Object} tag Tag data
-	 * @param {Object} data Event data
-	 */
-	View.prototype.triggerEvent = function(eventName, e, tag, data) {
-		if (this.presenter.events[eventName]) {
-			this.presenter.events[eventName].call(this.presenter, e, tag, data);
-		}
-		else {
-			if (e) {
-				e.preventDefault();
-				e.stopPropagation();
-			}
-			
-			if (this.__coupledWith) {
-				this.__coupledWith.forEach(function(m) {
-					if (typeof m[eventName] === 'function') {
-						this.log('Autotrigger to model:', eventName, data);
-						m[eventName](data);
-					}
-					else {
-						this.warn('Autotrigger to model failed! Function doesn\'t exists:', eventName, data);
-					}
-				}.bind(this));
-			}
-		}
-	};
-
-	/**
-	 * Navigate to a given route
-	 *
-	 * @method navigateTo
-	 *
-	 * @param {String} route Route url
-	 * @param {Object} data Data object
-	 * @param {Boolean} replace Replace current history entry with route
-	 */
-	View.prototype.navigateTo = function(route, data, replace) {
-		this.presenter.navigateTo(route, data, replace);
-	};
-
-	/**
-	 * If a validation failed (Automaticly called in a coupled view)
-	 *
-	 * @method validationFailed
-	 * @param {Object} err Validation error object
-	 */
-	View.prototype.validationFailed = function(err, data) {
-		console.log(err, data);
-		err.forEach(function(item) {
-			this.$el.find('[name="' + item.property + '"]').addClass('xq-invalid');
-		}.bind(this));
-	};
-
-	/**
-	 * Recive a state.change event from a coupled model
-	 *
-	 * @param {String} state Model state
-	 */
-	View.prototype.stateChanged = function(state) {
-		
-	};
-
-	/**
-	 * Wait til view is ready
-	 *
-	 * @method ready
-	 * @param {Function} callback Callback
-	 */
-	View.prototype.ready = function(callback) {
-		if (this.isReady) {
-			callback.call(this);
-		}
-		else {
-			if (!this.__readyCallbacks) {
-				this.__readyCallbacks = [];
-			}
-
-			this.__readyCallbacks.push(callback);
-		}
-	};
-
-	View.prototype.__setReadyState = function() {
-		this.isReady = true;
-		if (this.__readyCallbacks) {
-			this.__readyCallbacks.forEach(function(fn) {
-				fn.call(this);
-			}.bind(this));
-		}
-	};
-
-	/**
-	 * Gets the index of a subSelector item
-	 * This function must binded to the view
-	 *
-	 * @param  {Object} el Start element.
-	 *
-	 * @return {Number}    index of the element or null
-	 */
-	var getItemIndex = function(el) {
-		var index = null,
-			container = $(this.container).get(0),
-			curEl = $(el),
-			nextEl = curEl.parent(),
-			subSelector = $(this.subSelector).get(0),
-			d = 0;
-
-		if (this.subSelector) {
-			do {
-				if (nextEl.get(0) === subSelector) {
-					return $(curEl).index();
-				}
-				curEl = curEl.parent();
-				nextEl = curEl.parent();
-
-				if (++d > 100) {
-					console.error('Break loop!');
-					break;
-				}
-			} while(curEl.length && curEl.get(0) !== container);
-		}
-
-		return index;
-	};
-
-	/* +---------- new since v0.7.0 ----------+ */
-
-	/**
-	 * Inject element into the DOM
-	 *
-	 * @public
-	 * @method inject
-	 */
-	View.prototype.inject = function() {
-		this.$ct = $(this.container);
-		this.log('Inject view into container', this.$ct);
-
-		this.el = this.$el.get(0);
-		this.$el.addClass('xq-view xq-view-' + this.name.toLowerCase());
-		this.ct = this.$ct.get(0);
-
-		if (this.hidden === true) {
-			this.$el.hide();
-		}
-
-		if (this.id) {
-			this.$el.attr('id', this.id);
-		}
-
-		if (this.className) {
-			this.$el.addClass(this.className);
-		}
-		
-		if (this.mode === 'replace') {
-			this.$ct.contents().detach();
-			this.$ct.append(this.$el);
-			// this.$ct.children().replaceWith(this.$el);
-		}
-		else if(this.mode === 'append') {
-			this.$ct.append(this.$el);
-		}
-		else if (this.mode === 'prepend') {
-			this.$ct.prepend(this.$el);
-		}
-		else {
-			throw new Error('Unknow insert mode in view.init()');
-		}
-	};
-
-	/**
-	 * Parse a precompiled template and returns a html string
-	 *
-	 * @method parse
-	 *
-	 * @param {Function} template Precompiled template
-	 * @param {Object} data Data object
-	 *
-	 * @return {String} compiled html
-	 */
-	View.prototype.parse = function(template, data) {
-		var html,
-			$newEl;
-
-		template.scopeStore = {};
-		template.scopes = {};
-
-		try {
-			html = template(data || {}, template.scopes);
-		}
-		catch(err) {
-			html = '<p class="renderError"><b>View render error!</b><br>' + err.message + '</p>';
-			this.error('View render error!', err);
-		}
-
-
-		if (html) {
-			html = $.parseHTML(html);
-			$newEl = $(html);
-			var els = $newEl.find('scope');
-			console.log('EL', els.length);
-			els.each(function() {
-				var scopeId = $(this).attr('id'),
-					path = $(this).attr('path'),
-					content;
-
-				console.log('Parse path', path);
-				content = {};
-				if (scopeId) {
-					content.value = $.parseHTML(template.scopes[scopeId](data[path], data));
-					content.id = scopeId;
-				}
-				else {
-					content.value = $.parseHTML(data[path]);
-				}
-
-				template.scopeStore[path] = template.scopeStore[path] || [];
-				template.scopeStore[path].push(content);
-
-				console.log('EL', $(this).get(0).outerHTML);
-				console.log('CONTENT', $(content.value).get(0).outerHTML);
-				$(this).replaceWith($(content.value));
-				console.log('REPLACETD', $newEl.get(0).outerHTML);
-			});
-		}
-
-		return $newEl;
-	};
-
-	/**
-	 * Render view
-	 *
-	 * @method render
-	 * @emits content.change
-	 *
-	 * @param  {Object} data Render data
-	 *
-	 */
-	View.prototype.render = function(data) {
-		if (this.__domReady === false) {
-			this.__initialData = data || {};
-			return;
-		}
-
-		var $newEl,
-			html,
-			isInitialRender = false;
-
-		//Initial render and injection
-		if (!this.$el) {
-			isInitialRender = true;
-		}
-
-		this.log('Render view template', this.template, 'with data:', data);
-
-		var template = typeof this.template === 'function' ? this.template : XQCore.Tmpl.compile(this.template);
-		this.scopes = {};
-		/*if (this.$el) {
-			this.$el.remove();
-		}*/
-
-		try {
-			html = template(data || {}, this.scopes);
-		}
-		catch(err) {
-			html = '<p class="renderError"><b>View render error!</b><br>' + err.message + '</p>';
-			this.error('View render error!', err);
-		}
-
-		html = $.parseHTML(html);
-		$newEl = $(html);
-		
-		if (this.$el) {
-			this.$el.replaceWith($newEl);
-		}
-
-		this.$el = $newEl;
-
-		if (isInitialRender) {
-			if (this.autoInject) {
-				this.inject();
-			}
-			//Set ready state
-			this.__setReadyState();
-		}
-
-		this.registerListener(this.$el);
-		this.emit('content.change', data);
-	};
-
-	View.prototype.registerListener = function($el) {
-		var self = this;
-
-		//TODO get form data on submit event
-		$el.find('[on]').addBack('[on]').each(function() {
-			var $cur = $(this);
-			var events = $(this).attr('on');
-			var data = $(this).data();
-			var listenerFunc;
-			$cur.removeAttr('on');
-
-			events = events.split(';');
-			events.forEach(function(ev) {
-				ev = ev.split(':');
-
-				if (ev[0] === 'submit') {
-					listenerFunc = function(e) {
-						e.preventDefault();
-						data = self.serializeForm(e.target);
-						self.presenter.emit(ev[1], data, e);
-						self.emit('form.submit', data);
-					}.bind(this);
-				}
-				else {
-					listenerFunc = function(e) {
-						e.preventDefault();
-						var value = e.currentTarget.value || '';
-						self.presenter.emit(ev[1], value, data, e);
-					}.bind(this);
-				}
-
-				$cur.bind(ev[0], listenerFunc);
-			});
-		});
-	};
-
-	/**
-	 * Serialize a form and return its values as JSON
-	 *
-	 * @param {Object} Form selector
-	 * @return {Object} FormData as JSON
-	 */
-	View.prototype.serializeForm = function(selector) {
-		var formData = {},
-			formSelector = $(selector);
-
-		if (formSelector.get(0).tagName !== 'INPUT') {
-			formSelector = formSelector.find(':input');
-		}
-
-		formSelector.serializeArray().forEach(function(item) {
-			XQCore.dedotify(formData, item.name, item.value);
-		});
-
-		if (this.debug) {
-			console.log('XQCore - Serialize form:', formSelector, formData);
-		}
-
-		return formData;
-	};
-
-	/**
-	 * Insert a subset
-	 * @param  {String} path  Data path
-	 * @param  {Number} index Index after which item the insert should be happen or use -1 to prepend
-	 * @param  {Object} data  Item data
-	 */
-	View.prototype.insert = function(path, index, data) {
-		var self = this;
-		var $scope = this.$el.find('.xq-scope[xq-path="' + path + '"]');
-		if ($scope.length) {
-			$scope.each(function() {
-				var scope = $(this).attr('xq-scope');
-				var html = self.scopes[scope]([data]);
-
-				var $childs = $(this).children();
-				if (index > -1) {
-					if (index > $childs.length - 1) {
-						index = $childs.length - 1;
-					}
-
-					$childs.eq(index).before(html);
-				}
-				else {
-					$childs.eq(index).after(html);
-				}
-			});
-		}
-	};
-
-	View.prototype.update = function(path, data) {
-		console.warn('XQCore doesn`t support update event yet');
-	};
-
-	View.prototype.append = function(path, data) {
-		this.insert(path, -1, data);
-	};
-
-	View.prototype.prepend = function(path, data) {
-		this.insert(path, 0, data);
-	};
-
-	/**
-	 * Remove an item from a subset. Removes the item with the given index.
-	 * If index is negative number it will be removed from the end
-	 * 
-	 * @param  {String} path  data path
-	 * @param  {Number} index Index of the item
-	 */
-	View.prototype.remove = function(path, index) {
-		var $scope = this.$el.find('.xq-scope[xq-path="' + path + '"]');
-		$scope.children(':eq(' + index + ')').remove();
-	};
-
-
-	XQCore.View = View;
-
-})(XQCore);
-
-/**
- * Extends XQCore with some usefull functions
- */
-(function(XQCore, undefined) {
-	'use strict';
-
-	XQCore.undotify = function(path, obj) {
-		if(path) {
-			path = path.split('.');
-			path.forEach(function(key) {
-				obj = obj[key];
-			});
-		}
-
-		return obj;
-	};
-
-	/**
-	 * Creates a object from an dotified key and a value
-	 *
-	 * @public
-	 * @method dedotify
-	 * 
-	 * @param {Object} obj Add new value to obj. This param is optional.
-	 * @param {String} key The dotified key
-	 * @param {Any} value The value
-	 *
-	 * @returns {Object} Returns the extended object if obj was set otherwis a new object will be returned
-	 */
-	XQCore.dedotify = function(obj, key, value) {
-
-		if (typeof obj === 'string') {
-			value = key;
-			key = obj;
-			obj = {};
-		}
-
-		var newObj = obj;
-
-		if(key) {
-			key = key.split('.');
-			var len = key.length;
-			key.forEach(function(k, i) {
-				if (i === len - 1) {
-					obj[k] = value;
-					return;
-				}
-
-				if (!obj[k]) {
-					obj[k] = {};
-				}
-
-				obj = obj[k];
-			});
-		}
-
-		obj = value;
-
-		return newObj;
-	};
-
-})(XQCore);
-/*jshint -W014 */
-/**
- * XQCore Router API
- *
- * @author Andi Heinkelein - noname-media.com
- * @copyright Andi Heinkelein - noname-media.com
- * @package XQCore
- *
- * Based on router.js v0.2.0
- * Copyright Aaron Blohowiak and TJ Holowaychuk 2011.
- * https://github.com/aaronblohowiak/routes.js
- */
-(function(XQCore, undefined) {
-	'use strict';
-
-	/**
-	 * Convert path to route object
-	 *
-	 * A string or RegExp should be passed,
-	 * will return { re, src, keys} obj
-	 *
-	 * @param  {String / RegExp} path
-	 * @return {Object}
-	 */
-	var Route = function(path) {
-		//using 'new' is optional
-		
-		var src, re, keys = [];
-		
-		if (path instanceof RegExp) {
-			re = path;
-			src = path.toString();
-		} else {
-			re = pathToRegExp(path, keys);
-			src = path;
-		}
-
-		return {
-			re: re,
-			src: path.toString(),
-			keys: keys
-		};
-	};
-
-	/**
-	 * Normalize the given path string,
-	 * returning a regular expression.
-	 *
-	 * An empty array should be passed,
-	 * which will contain the placeholder
-	 * key names. For example "/user/:id" will
-	 * then contain ["id"].
-	 *
-	 * @param  {String} path
-	 * @param  {Array} keys
-	 * @return {RegExp}
-	 */
-	var pathToRegExp = function (path, keys) {
-		path = path
-			.concat('/?')
-			.replace(/\/\(/g, '(?:/')
-			.replace(/(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?/g, function(_, slash, format, key, capture, optional){
-				keys.push(key);
-				slash = slash || '';
-				return ''
-					+ (optional ? '' : slash)
-					+ '(?:'
-					+ (optional ? slash : '')
-					+ (format || '') + (capture || '([^/]+?)') + ')'
-					+ (optional || '');
-			})
-			.replace(/([\/.])/g, '\\$1')
-			.replace(/\*/g, '(.+)');
-		return new RegExp('^' + path + '$', 'i');
-	};
-
-	/**
-	 * Attempt to match the given request to
-	 * one of the routes. When successful
-	 * a  {fn, params, splats} obj is returned
-	 *
-	 * @param  {Array} routes
-	 * @param  {String} uri
-	 * @return {Object}
-	 */
-	var match = function (routes, uri) {
-		var captures, i = 0;
-
-		for (var len = routes.length; i < len; ++i) {
-			var route = routes[i],
-				re = route.re,
-				keys = route.keys,
-				splats = [],
-				params = {},
-				j;
-
-			captures = re.exec(uri);
-			if (captures) {
-				for (j = 1, len = captures.length; j < len; ++j) {
-					var key = keys[j-1],
-						val = typeof captures[j] === 'string'
-							? decodeURIComponent(captures[j])
-							: captures[j];
-					if (key) {
-						params[key] = val;
-					} else {
-						splats.push(val);
-					}
-				}
-
-				return {
-					params: params,
-					splats: splats,
-					route: route.src
-				};
-			}
-		}
-	};
-
-	/**
-	 * Default "normal" router constructor.
-	 * accepts path, fn tuples via addRoute
-	 * returns {fn, params, splats, route}
-	 *  via match
-	 *
-	 * @return {Object}
-	 */
-	// var getRouter = function() {
-	//   //using 'new' is optional
-	//   return {
-	//     routes: [],
-	//     routeMap : {},
-	//     addRoute: function(path, fn) {
-	//       if (!path) {
-	//         throw new Error(' route requires a path');
-	//       }
-
-	//       if (!fn) {
-	//        throw new Error(' route ' + path.toString() + ' requires a callback');
-	//       }
-
-	//       var route = new Route(path);
-	//       route.fn = fn;
-
-	//       this.routes.push(route);
-	//       this.routeMap[path] = fn;
-	//     },
-
-	//     match: function(pathname) {
-	//       var route = match(this.routes, pathname);
-	//       if(route){
-	//         route.fn = this.routeMap[route.route];
-	//       }
-	//       return route;
-	//     }
-	//   };
-	// };
-
-	var Router = function(conf) {
-		conf = XQCore.extend({
-			debug: false
-		}, conf);
-
-		this.debug = Boolean(conf.debug);
-
-		this.routes = [];
-		this.routeMap = {};
-	};
-
-	Router.prototype.addRoute = function(path, fn) {
-		if (!path) {
-			throw new Error(' route requires a path');
-		}
-
-		if (!fn) {
-			throw new Error(' route ' + path.toString() + ' requires a callback');
-		}
-
-		var route = new Route(path);
-		route.fn = fn;
-
-		this.routes.push(route);
-		this.routeMap[path] = fn;
-	};
-
-	Router.prototype.match = function(pathname) {
-		var route = match(this.routes, pathname);
-		if(route){
-			route.fn = this.routeMap[route.route];
-		}
-		return route;
-	};
-
-	/**
-	 * Fires a give route
-	 *
-	 * @param  {String} route	The route to fire
-	 * @param  {Object}	data	Callback data
-	 *
-	 * @return {Boolean}       Returns the matched route
-	 */
-	Router.prototype.fire = function(route, data) {
-		route = this.match(route);
-		if (route) {
-			route.fn(data);
-		}
-	};
-
-	XQCore.Router = Router;
-
-})(XQCore);
-/*global SockJS:false */
-
-/**
- * XQCore.Socket module
- * @module XQCore.Socket
- * @requires XQCore.Logger
- * @requires sockJS-client
- */
-(function(XQCore, undefined) {
-	'use strict';
-
-	var Socket = function() {
-		this.__isReady = false;
-		this.__onReadyCallbacks = [];
-		this.__eventEmitter = new XQCore.Event();
-	};
-
-
-	XQCore.extend(Socket.prototype, new XQCore.Logger());
-
-	/**
-	 * Connect to a socket server
-	 *
-	 * @method connect
-	 * @param  {String}   url      Socket server url
-	 * @param  {Object}   options  SockJS options
-	 * @param  {Function} callback Callback function. Its called if connection was successful and its called before ready state becomes true
-	 */
-	Socket.prototype.connect = function(url, options, callback) {
-		var self = this;
-
-
-		this.sockJS = new SockJS(url, null, options);
-		console.log('Connect to socket server ', url, 'using options:', options);
-
-		this.sockJS.onopen = function() {
-			console.log('Connection was successful!');
-			if (typeof callback === 'function') {
-				callback();
-			}
-
-			self.setReady();
-		}.bind(this);
-
-		this.sockJS.onmessage = function(e) {
-			var msg;
-
-			try {
-				msg = JSON.parse(e.data);
-			}
-			catch(err) {
-				console.error('Could\'t parse socket message!', e.data);
-			}
-
-			console.log('Got message', msg.eventName, msg.data);
-			self.__eventEmitter.emit(msg.eventName, msg.data);
-		}.bind(this);
-
-		this.sockJS.onclose = function() {
-			console.log('Connection closed!');
-		}.bind(this);
-	};
-
-	/**
-	 * send a message to a socket server
-	 * @param  {String} eventName Event name
-	 * @param  {Object} data      Data
-	 */
-	Socket.prototype.emit = function(eventName, data) {
-		this.ready(function() {
-			console.log('Send message ', eventName, data);
-			this.sockJS.send(JSON.stringify({
-				eventName: eventName,
-				data: data
-			}));
-		}.bind(this));
-	};
-
-	/**
-	 * Register a listener for an incoming socket message
-	 * @param  {String}   eventName Event name
-	 * @param  {Function} callback  Listener callback
-	 */
-	Socket.prototype.on = function(eventName, callback) {
-		this.__eventEmitter.on(eventName, callback);
-	};
-
-
-	/**
-	 * Register a once-listener for an incoming socket message
-	 * @param  {String}   eventName Event name
-	 * @param  {Function} callback  Listener callback
-	 */
-	Socket.prototype.once = function(eventName, callback) {
-		this.__eventEmitter.once(eventName, callback);
-	};
-
-	/**
-	 * Unregister a socket listener
-	 * @param  {String}   eventName Event name
-	 * @param  {Function} callback  Listener callback (Optional)
-	 */
-	Socket.prototype.off = function(eventName, callback) {
-		this.__eventEmitter.off(eventName, callback);
-	};
-
-	/**
-	 * Call function when socket is ready
-	 * @param  {Function} fn Function to be called if socket is ready
-	 */
-	Socket.prototype.ready = function(fn) {
-		if (this.__isReady) {
-			fn.call(this);
-		}
-		else {
-			this.__onReadyCallbacks.push(fn);
-		}
-	};
-
-	Socket.prototype.setReady = function() {
-		this.__isReady = true;
-		this.__onReadyCallbacks.forEach(function(fn) {
-			fn.call(this);
-		}.bind(this));
-
-		this.__onReadyCallbacks = [];
-	};
-
-	XQCore.Socket = Socket;
-
-})(XQCore);
-/**
- *	@requires XQCore.Model
- *	@requires XQCore.Socket
- */
-(function(XQCore, undefined) {
-	'use strict';
-	var SyncModel;
-
-	SyncModel = function(name, conf) {
-		//Call XQCore.Model constructor
-		XQCore.Model.call(this, name, conf);
-
-		this.server = conf.server || location.protocol + '//' + location.hostname;
-		this.port = conf.port || 9999;
-		this.path = conf.path || 'xqsocket/' + name;
-		this.syncEnabled = false;
-	};
-
-	SyncModel.prototype = Object.create(XQCore.Model.prototype);
-	SyncModel.prototype.constructor = SyncModel;
-
-	SyncModel.prototype.init = function() {
-		//Call XQCore.Model constructor
-		XQCore.Model.prototype.init.call(this);
-
-		this.connectToSocket();
-	};
-
-	/**
-	 * Connect to a socket server
-	 *
-	 * @method connectToSocket
-	 */
-	SyncModel.prototype.connectToSocket = function() {
-		var socketServer = this.server + ':' + this.port + '/' + this.path;
-		if (!this.socket) {
-			this.socket = new XQCore.Socket();
-			this.socket.connect(socketServer);
-		}
-	};
-
-	SyncModel.prototype.register = function(enableSync) {
-		var self = this,
-			modelName = this.conf.syncWith || this.name.replace(/Model$/,'');
-
-		this.syncEnabled = !!enableSync;
-
-		console.log('register model at server');
-		this.socket.emit('syncmodel.register', {
-			name: modelName
-		});
-
-		this.socket.on('syncmodel.change', function(data) {
-			var opts = {
-				sync: false
-			};
-
-			var args = data.slice(1);
-			args.push(opts);
-
-			switch (data[0]) {
-				case 'replace':
-				case 'item':
-					self.set.apply(self, args);
-					break;
-				case 'append':
-					self.append.apply(self, args);
-					break;
-				case 'prepend':
-					self.prepend.apply(self, args);
-					break;
-				case 'insert':
-					self.insert.apply(self, args);
-					break;
-				case 'remove':
-					self.remove.apply(self, args);
-					break;
-
-				default:
-					self.warn('Unknown syncmodel event', data[0]);
-			}
-		});
-	};
-
-	SyncModel.prototype.unregister = function() {
-		var modelName = this.conf.syncWith || this.name.replace(/Model$/,'');
-		this.socket.emit('syncmodel.unregister', {
-			name: modelName
-		});
-
-		this.socket.off('syncmodel.change');
-	};
-
-	/**
-	 * Send a socket emit to the server
-	 * @param  {String} eventName Event name
-	 * @param  {Object} data      Data object
-	 */
-	SyncModel.prototype.emitRemote = function(eventName, data) {
-		this.socket.emit(eventName, data);
-	};
-
-	SyncModel.prototype.sync = function() {
-		if (!this.syncEnabled) {
-			return;
-		}
-
-		var args = Array.prototype.slice.call(arguments);
-		this.emitRemote('syncmodel.change', args);
-	};
-
-	XQCore.SyncModel = SyncModel;
-})(XQCore);
-});
-
 require.register("components~jquery@2.1.0", function (exports, module) {
 /*!
  * jQuery JavaScript Library v2.1.0
@@ -12708,6 +9167,4511 @@ return jQuery;
 
 });
 
+require.register("nonamemedia~firetpl@0.1.0", function (exports, module) {
+/*!
+ * FireTPL template engine v0.1.0
+ * 
+ * FireTPL is a pretty Javascript template engine
+ *
+ * FireTPL is licenced under MIT Licence
+ * http://opensource.org/licenses/MIT
+ *
+ * Copyright (c) 2013 - 2014 Noname Media, http://noname-media.com
+ * Author Andi Heinkelein
+ *
+ */
+
+var FireTPL;
+
+(function (root, factory) {
+	/*global define:false */
+	'use strict';
+
+	if (typeof define === 'function' && define.amd) {
+		define('xqcore', [], factory);
+	} else if (typeof module !== 'undefined' && module.exports) {
+		module.exports = factory();
+	} else {
+		root.FireTPL = factory();
+	}
+}(this, function () {
+	'use strict';
+
+	FireTPL = {
+		version: '0.1.0'
+	};
+
+	return FireTPL;
+}));
+/**
+ * FireTPL compiler module
+ *
+ * Usage:
+ * var fireTPLCompiler = new FireTPL.Compiler();
+ * var precompiled = fireTPLCompiler.precompile('./views/template.ftl');
+ *
+ * @module FireTPL.Compiler
+ */
+(function(FireTPL, undefined) {
+	/*global define:false */
+	'use strict';
+
+	var Compiler = function() {
+		this.indentionPattern = /\t/g;
+		this.pattern = /^([ \t]*)?(\/\/.*)?(?:\:([a-zA-Z0-9]+))?([a-zA-Z0-9]+=(?:(?:\"[^\"]+\")|(?:\'[^\']+\')|(?:\S+)))?([a-z0-9]+)?([\"].*[\"]?)?([\'].*[\']?)?(.*)?$/gm;
+		this.voidElements = ['area', 'base', 'br', 'col', 'embed', 'img', 'input', 'link', 'meta', 'param', 'source', 'wbr'];
+
+		this.reset();
+		
+		/**
+		 * Set the log level.
+		 * 
+		 * Levels are:
+		 *
+		 * 4 DEBUG
+		 * 3 INFO
+		 * 2 WARN
+		 * 1 ERROR
+		 * @type {Number}
+		 */
+		this.logLevel = 1;
+	};
+
+	Compiler.prototype.reset = function() {
+		this.pattern.lastIndex = 0;
+		this.indention = 0;
+		this.closer = [];
+		this.curScope = ['root'];
+		this.out = { root: '' };
+		this.lastItemType = 'code';
+		this.nextScope = 0;
+		this.pos = 0;
+		this.addEmptyCloseTags = false;
+
+	};
+
+	Compiler.prototype.getPattern = function(type) {
+		var pattern = this.syntax[type].patterns.map(function(pat) {
+			return pat.match;
+		});
+
+		pattern = pattern.join('|');
+
+		var modifer = this.syntax[type].modifer;
+
+		var scopes = this.syntax[type].scopes;
+
+		return {
+			pattern: new RegExp(pattern, modifer),
+			scopes: scopes
+		};
+	};
+
+	Compiler.prototype.parse = function(tmpl, type) {
+		type = type || 'fire';
+
+		if (this.logLevel & 4) {
+			console.log('Parse a .' + type + ' Template');
+		}
+
+		this.reset();
+		this.addEmptyCloseTags = this.syntax[type].addEmptyCloseTags || false;
+		var syntaxConf = this.getPattern(type);
+
+		var match,
+			attrs = '',
+			res,
+			statement,
+			curItem = null,
+			prevItem = null,
+			cmd,
+			data;
+
+		if (!tmpl && this.tmpl) {
+			tmpl = this.tmpl;
+		}
+
+		var d = 10000;
+
+		prevItem = curItem;
+		curItem = null;
+
+		do {
+			syntaxConf.pattern.lastIndex = this.pos;
+			match = syntaxConf.pattern.exec(tmpl);
+			this.pos = syntaxConf.pattern.lastIndex;
+
+			// console.log('Pat:', syntaxConf.pattern.lastIndex, syntaxConf.pattern.source, tmpl);
+			if (this.logLevel & 4) {
+				console.log('Match:', match);
+			}
+			// console.log('Pos start:', this.pos, tmpl.substr(this.pos, 20));
+
+			if (!match) {
+				break;
+			}
+
+			cmd = null;
+			data = {};
+			for (var i = 1, len = match.length; i < len; i++) {
+				if (match[i] !== undefined) {
+					if (cmd === null) {
+						cmd = syntaxConf.scopes[i];
+					}
+
+					data[syntaxConf.scopes[i]] = match[i];
+				}
+			}
+
+			if (this.logLevel & 4) {
+				console.log('  cmd:', cmd, 'data:', data);
+			}
+
+			switch(cmd) {
+				case 'indention':
+					this.handleIndention(data.indention);
+					break;
+				case 'tag':
+					this.parseTag(data.tag, data.tagAttributes);
+					break;
+				case 'endtag':
+					this.parseEndTag(data.endtag);
+					break;
+				case 'helper':
+					this.parseHelper(data.helper, (type === 'hbs' ? '$' : '') + data.expression);
+					break;
+				case 'helperEnd':
+					this.parseHelperEnd(data.helperEnd);
+					break;
+				case 'attribute':
+					this.parseAttribute(data.attribute);
+					break;
+				case 'string':
+					this.parseString(tmpl, data.string);
+					break;
+				case 'variable':
+					this.parseVariable(data.variable);
+					break;
+				case 'newline':
+					this.handleIndention(data.newline);
+					break;
+				case 'unused':
+					break;
+				default:
+					throw new Error('Parse error!');
+			}
+
+
+		} while (true);
+
+		while (this.closer.length > 0) {
+			this.appendCloser();
+		}
+
+		return this.getOutStream();
+	};
+
+	/**
+	 * Precompiles a .tmpl file
+	 * 
+	 * @method precompile
+	 * @param {String} tmpl Tmpl source
+	 * @return {Function} Returns a parsed tmpl source as a function.
+	 */
+	Compiler.prototype.precompile = function(tmpl, type) {
+		return this.parse(tmpl, type);
+	};
+
+	Compiler.prototype.getOutStream = function() {
+		var outStream = 'scopes=scopes||{};var root=data,parent=data;';
+		var keys = Object.keys(this.out);
+
+		keys = keys.sort(function(a, b) {
+			return b.localeCompare(a);
+		});
+
+		keys.forEach(function(key) {
+			if (key === 'root') {
+				return;
+			}
+
+			outStream += 'scopes.' + key + '=function(data,parent){var s=\'\';' + this.out[key] + 'return s;};';
+		}.bind(this));
+
+		outStream += 'var s=\'\';';
+		outStream += this.out.root;
+
+		if (this.lastItemType === 'str') {
+			outStream += '\';';
+		}
+
+		return outStream;
+	};
+
+	Compiler.prototype.parseHelper = function(helper, content) {
+		// console.log('Parse helper', helper, content);
+		var scopeId,
+			tag = null,
+			tagAttrs = '';
+
+		if (helper === 'else') {
+			this.closer.push(['code', '']);
+			this.newScope(this.lastIfScope);
+			this.append('code', 'if(!r){s+=h.exec(\'else\',c,parent,root,function(data){var s=\'\';');
+			this.closer.push(['code', 'return s;});}']);
+			this.closer.push('scope');
+			return;
+		}
+
+		// this.lastIfScope = null;
+		scopeId = this.getNextScope();
+
+		if (content) {
+			var pattern = /(".*")?(?:\s*:\s*)([a-zA-Z0-9]+)(.*)/;
+			var match = content.split(pattern);
+			// console.log('Split', match);
+			if (match && match[2]) {
+				tag = match[2];
+				tagAttrs = match[3];
+				content = match[0] + (match[1] ? match[1] : '');
+			}
+		}
+
+		if (tag) {
+			this.parseTag(tag, tagAttrs + ' xq-scope=scope' + scopeId + ' xq-path=' + content.trim().replace(/^\$/, ''));
+			this.injectClass('xq-scope xq-scope' + scopeId);
+		}
+		else {
+			this.closer.push('');
+		}
+
+		if (content) {
+			content = content.trim();
+			content = this.parseVariables(content, true);
+		}
+
+		this.append('code', 's+=scopes.scope' + scopeId + '(' + content + ',data);');
+		this.newScope('scope' + scopeId);
+
+		if (helper === 'if') {
+			// this.lastIfScope = scopeId;
+			this.append('code', 'var c=data;var r=h.exec(\'if\',c,parent,root,function(data){var s=\'\';');
+			this.closer.push(['code', 'return s;});s+=r;']);
+		}
+		else {
+			this.append('code', 's+=h.exec(\'' + helper + '\',data,parent,root,function(data){var s=\'\';');
+			this.closer.push(['code', 'return s;});']);
+		}
+
+		this.closer.push('scope');
+		// this.appendCloser();
+	};
+
+	Compiler.prototype.parseTag = function(tag, content) {
+		var tagContent = '',
+			res,
+			attrs = [];
+
+		if (content) {
+			res = this.stripAttributes(content);
+			if (res) {
+				if (res.attrs) {
+					attrs = attrs.concat(res.attrs);
+				}
+
+				if (res.events.length !== 0) {
+					//this.registerEvent(res.events);
+					//TODO better event register method
+					var events = res.events;
+					attrs.push('on="' + events.join(';') + '"');
+				}
+
+				if (res.content) {
+					tagContent = res.content.join(' ');
+				}
+			}
+		}
+
+		attrs = attrs.join(' ');
+		if (attrs) {
+			attrs = ' ' + attrs;
+		}
+
+		this.append('str', '<' + tag + this.parseVariables(attrs) + '>');
+		this.append('str', tagContent);
+		if (this.voidElements.indexOf(tag) === -1) {
+				this.closer.push('</' + tag + '>');
+		}
+		else {
+			if (this.addEmptyCloseTags) {
+				this.closer.push('');
+			}
+		}
+	};
+
+	Compiler.prototype.parseAttribute = function(attribute) {
+		var res = this.stripAttributes(attribute);
+		if (res) {
+			var attrs = ' ' + res.attrs.join(' ');
+
+			if (res.events.length !== 0) {
+				this.registerEvent(res.events);
+			}
+
+			this.out[this.curScope[0]] = this.out[this.curScope[0]].replace(/\>$/, this.parseVariables(attrs) + '>');
+		}
+		else {
+			throw 'FireTPL parse error (3)';
+		}
+
+		this.closer.push('');
+	};
+
+	Compiler.prototype.parseString = function(tmpl, matchString) {
+		var strPattern,
+			strMatch;
+
+		//Remove multiplr whitespaces
+		matchString = matchString.replace(/\s+/g, ' ');
+
+		if (matchString.charAt(0) === '"') {
+			if (matchString.substr(-1) === '"') {
+				matchString = matchString.substr(1, matchString.length - 2);
+			}
+			else {
+				strPattern = /([^\"]*)\"/g;
+				strPattern.lastIndex = this.pos;
+				strMatch = strPattern.exec(tmpl);
+				matchString = matchString.substr(1) + ' ' + strMatch[1].trim();
+				this.pos = strPattern.lastIndex;
+			}
+
+			//Check for multi text blocks
+			while (true) {
+				strPattern = /^(\n[\t]*)?(\n[\t]*)*\"([^\"]*)\"/g;
+				strMatch = strPattern.exec(tmpl.substr(this.pos));
+				if (strMatch) {
+					this.pos += strPattern.lastIndex;
+					if (strMatch[2]) {
+						matchString += '<br>';
+					}
+
+					matchString += '<br>' + strMatch[3].replace(/\s+/g, ' ');
+				}
+				else {
+					break;
+				}
+			}
+		}
+
+		this.append('str', this.parseVariables(matchString));
+		if (this.addEmptyCloseTags) {
+			this.closer.push('');
+		}
+	};
+
+	Compiler.prototype.parseEndTag = function(tag) {
+		// console.log('Parse end tag', tag, this.closer);
+		this.appendCloser();
+	};
+
+	Compiler.prototype.parseHelperEnd = function() {
+		this.appendCloser();
+	};
+
+	Compiler.prototype.parseVariables = function(str, isCode) {
+		var opener = '',
+			closer = '';
+
+		if (!isCode) {
+			opener = '\'+';
+			closer = '+\'';
+		}
+
+		str = str
+			.replace(/\'/g, '\\\'')
+			// .replace(/\$([a-zA-Z0-9._-]+)/g, function(match, p1) {
+			.replace(/\$((\{([a-zA-Z0-9._-]+)\})|([a-zA-Z0-9._-]+))/g, function(match, p1, p2, p3, p4) {
+				var m = p3 || p4;
+				if (/^this\b/.test(m)) {
+					return opener + m.replace(/^this/, 'data') + closer;
+				}
+				else if (/^(parent\b|root\b)/.test(m)) {
+					return opener + m + closer;
+				}
+				
+				return opener + 'data.' + m + closer;
+				
+			})
+			.replace(/@([a-zA-Z0-9._-]+)/g, '\'+lang.$1+\'');
+
+		return str;
+	};
+
+	Compiler.prototype.parseVariable = function(matchVariable) {
+		this.append('str', this.parseVariables(matchVariable));
+		this.closer.push('');
+	};
+
+	/**
+	 * Append something to the out String
+	 *
+	 * @method append
+	 * @private
+	 * @param String type Content type (str|code)
+	 * @param String str Output str
+	 */
+	Compiler.prototype.append = function(type, str) {
+		if (type === this.lastItemType) {
+			this.out[this.curScope[0]] += str;
+		}
+		else if(type === 'str') {
+			this.out[this.curScope[0]] += 's+=\'' + str;
+		}
+		else if(type === 'code') {
+			this.out[this.curScope[0]] += '\';' + str;
+		}
+		else {
+			throw 'Wrong data type in .appand()';
+		}
+
+		this.lastItemType = type;
+
+		return str;
+	};
+
+	/**
+	 * Append closer tag to outstr	
+	 *
+	 * @method appendCloser
+	 * @private
+	 */
+	Compiler.prototype.appendCloser = function() {
+		var el = this.closer.pop() || '';
+		if (!el) {
+			return;
+		}
+
+		if (el === 'scope') {
+			//Scope change
+			this.appendCloser();
+			this.append('code', '');
+			var scope = this.curScope.shift();
+			this.lastIfScope = scope;
+			this.appendCloser();
+		}
+		else if (Array.isArray(el)) {
+			this.append(el[0], el[1]);
+		}
+		else {
+			this.append('str', el);
+		}
+	};
+
+	/**
+	 * Get indention of current line
+	 * 
+	 * @method getIndention
+	 * @private
+	 * @param {String} str Line string
+	 * @returns {Number} Returns num of indention
+	 */
+	Compiler.prototype.getIndention = function(str) {
+		var i = 0;
+
+		this.indentionPattern.lastIndex = 0;
+		while(this.indentionPattern.test(str)) {
+			i++;
+		}
+
+		return i;
+	};
+
+	/**
+	 * Strip all attributes and events from a string
+	 *
+	 * returns: {
+	 *   attrs: ['foo=bar', 'bal=blubb']
+	 *   events: [['eventName', 'eventTrigger'], n...]
+	 * }
+	 *
+	 * @method getIndention
+	 * @private
+	 * @param  {String} str Strong to parse
+	 * @return {Object}     Returns an object with all atttibutes and events or null
+	 */
+	Compiler.prototype.stripAttributes = function(str) {
+		var pattern = /(?:@([a-zA-Z0-9._-]+))|(?:(\$[a-zA-Z0-9._-]+))|(?:(?:(on[A-Z][a-zA-Z0-9-]+)|([a-zA-Z0-9-]+))=((?:\"[^\"]*\")|(?:\'[^\']+\')|(?:\S+))|(\"[^\"]*\"))/g;
+		var attrs = [],
+			events = [],
+			content = [],
+			d = 1000,
+			match;
+
+		match = pattern.exec(str);
+		while (match) {
+			if (!match[0]) {
+				break;
+			}
+
+			if (--d < 0) {
+				throw 'Never ending loop!';
+			}
+
+			if (match[1]) {
+				content.push('\'+lang.' + match[1] + '+\'');
+			}
+			if (match[2]) {
+				content.push(this.parseVariables(match[2]));
+			}
+			if (match[3]) {
+				events.push(match[3].substr(2).toLowerCase() + ':' + match[5].replace(/^\"|\'/, '').replace(/\"|\'$/, ''));
+			}
+			else if (match[4]) {
+				attrs.push(match[4] + '="' + match[5].replace(/^\"|\'/, '').replace(/\"|\'$/, '') + '"');
+			}
+			else if (match[6]) {
+				content.push(match[6].replace(/^\"|\'/, '').replace(/\"|\'$/, ''));
+			}
+
+			match = pattern.exec(str);
+		}
+
+		return attrs.length || events.length || content.length ? {
+			attrs: attrs,
+			events: events,
+			content: content
+		} : null;
+	};
+
+	/**
+	 * Parse a statement string
+	 *
+	 * @method parseStatement
+	 * @private
+	 * @param String statement Statemant
+	 * @param String str Input string
+	 */
+	Compiler.prototype.parseStatement = function(statement, str) {
+		if (str) {
+			str = str.trim();
+			str = this.parseVariables(str);
+		}
+
+		if (statement === 'if') {
+			return ['var c=' + str + ';var r=h.if(c,function(data){var s=\'\';', 'return s;});s+=r;'];
+		}
+		else if (statement === 'else') {
+			return ['if(!r){s+=h.else(c,function(data){var s=\'\';', 'return s;});}'];
+		}
+		else {
+			return ['s+=h.' + statement + '(' + str + ',function(data){var s=\'\';', 'return s;});'];
+		}
+	};
+
+	/**
+	 * Handle indention
+	 *
+	 * @param {String} str Indention string
+	 * @method handleIndention
+	 */
+	Compiler.prototype.handleIndention = function(str) {
+		var indention = this.getIndention(str),
+			newIndent = indention - this.indention,
+			el;
+
+		if (this.logLevel & 4) {
+			console.log('  Parse indention:', indention, this.indention, newIndent);
+		}
+
+		if (newIndent === 0) {
+			this.appendCloser();
+		}
+		else {
+			while (newIndent < 1) {
+				el = this.appendCloser();
+				newIndent++;
+			}
+		}
+				
+		this.indention = indention;
+	};
+
+	/**
+	 * Get next scope id
+	 *
+	 * @method getNextScope
+	 */
+	Compiler.prototype.getNextScope = function() {
+		return this.nextScope < 1000 ? '00' + String(++this.nextScope).substr(-3) : '' + (++this.nextScope);
+	};
+
+	/**
+	 * Inject a previous tag with a class
+	 *
+	 * @method injectClass
+	 * @param {String} className Class names to be injected
+	 */
+	Compiler.prototype.injectClass = function(className) {
+		var startPos = this.out[this.curScope[0]].lastIndexOf('<');
+		var tag = this.out[this.curScope[0]].slice(startPos);
+		// console.log('Out before inject: ', this.out[this.curScope[0]], tag);
+		
+		if (!/^<[a-z0-9]+/.test(tag)) {
+			throw 'An each statement must be within a block element!';
+		}
+
+		tag = tag.replace(/(?:class="([^"]*)")|(>)$/, function(match, p1, p2) {
+			// console.log('Inject args:', match, p1, p2);
+			if (p1) {
+				return 'class="' + p1 + ' ' + className + '"';
+			}
+
+			return ' class="' + className + '">';
+		});
+
+		this.out[this.curScope[0]] = this.out[this.curScope[0]].slice(0, startPos) + tag;
+	};
+
+	/**
+	 * Add and change scope
+	 * @method newScope
+	 * @param {String} scope New scope
+	 */
+	Compiler.prototype.newScope = function(scope) {
+		this.append('code', '');
+		this.curScope.unshift(scope);
+		this.out[scope] = this.out[scope] || '';
+	};
+
+	Compiler.prototype.getPatternByName = function(type, name) {
+		var pattern = this.syntax[type].patterns;
+		for (var i = 0, len = pattern.length; i < len; i++) {
+			if (pattern[i].name === name) {
+				return pattern[i].match;
+			} 
+		}
+	};
+
+	FireTPL.Compiler = Compiler;
+
+	/* +---------- FireTPL methods ---------- */
+
+	FireTPL.loadFile = function(src) {
+		var content = '';
+
+		if (typeof XMLHttpRequest === 'undefined') {
+			console.warn('Don\'t use FireTPL.loadFile() on node.js');
+			return;
+		}
+
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', src, false);
+		xhr.send();
+
+
+		if (xhr.readyState === 4) {
+			if (xhr.status === 200) {
+				content = xhr.responseText;
+			}
+			else if (xhr.status === 404) {
+				console.error('Loading a FireTPL template failed! Template wasn\'t found!');
+			}
+			else {
+				console.error('Loading a FireTPL template failed! Server response was: ' + xhr.status + ' ' + xhr.statusText);
+			}
+		}
+
+		return content;
+	};
+
+	FireTPL.precompile = function(tmpl) {
+		var compiler = new FireTPL.Compiler();
+		compiler.precompile(tmpl);
+		return compiler.getOutStream();
+	};
+
+})(FireTPL);
+FireTPL.Compiler.prototype.syntax = FireTPL.Compiler.prototype.syntax || {};
+FireTPL.Compiler.prototype.syntax["fire"] = {
+	"name": "FireTPL",
+	"patterns": [
+		{
+			"name": "empty-line",
+			"match": "(\\n?^\\s+$)"
+		}, {
+			"name": "indention",
+			"match": "(^[ \\t]+)"
+		}, {
+			"name": "helper",
+			"match": "(?::([a-zA-Z][a-zA-Z0-9_-]*)\\s*((?:\\$[a-zA-Z][a-zA-Z0-9._-]*)(?:\\s*:.*)?)?)"
+		}, {
+			"name": "string",
+			"match": "(\\\"[^\\\"]*\\\")"
+		}, {
+			"name": "attribute",
+			"match": "(\\b[a-zA-Z0-9_]+=(?:(?:\\\"[^\\\"]*\\\")|(?:\\S+)))"
+		}, {
+			"name": "tag",
+			"match": "(?:([a-zA-Z][a-zA-Z0-9:_-]*)+(?:(.*))?)"
+		}, {
+			"name": "variable",
+			"match": "([@\\$][a-zA-Z][a-zA-Z0-9._-]*)"
+		}, {
+			"name": "new-line",
+			"match": "(?:\n([ \\t]*))"
+		}
+	],
+	"modifer": "gm",
+	"scopes": {
+		"1": "unused",
+		"2": "indention",
+		"3": "helper",
+		"4": "expression",
+		"5": "string",
+		"6": "attribute",
+		"7": "tag",
+		"8": "tagAttributes",
+		"9": "variable",
+		"10": "newline"
+	},
+	"addEmptyCloseTags": true
+};
+FireTPL.Compiler.prototype.syntax["hbs"] = {
+	"name": "Handelbars",
+	"patterns": [
+		{
+			"name": "unused",
+			"match": "^([ \\t]+)"
+		}, {
+			"name": "tag",
+			"match": "(?:<([a-zA-Z][a-zA-Z0-9:_-]*)\\b([^>]*)>)"
+		}, {
+			"name": "endtag",
+			"match": "(?:<\\/([a-zA-Z][a-zA-Z0-9:_-]+)>)"
+		}, {
+			"name": "helper",
+			"match": "(?:\\{\\{#([a-zA-Z][a-zA-Z0-9_-]*)(?:\\s+([^\\}]*)\\}\\})?)"
+		}, {
+			"name": "helperEnd",
+			"match": "(?:\\{\\{\\/([a-zA-Z][a-zA-Z0-9_-]*)\\}\\})"
+		}, {
+			"name": "attribute",
+			"match": "([a-zA-Z0-9_]+=(?:(?:\\\"[^\\\"]*\\\")|(?:\\'[^\\']*\\')|(?:\\S)))"
+		}, {
+			"name": "string",
+			"match": "((?:.(?!<))+.)"
+		}
+	],
+	"modifer": "gm",
+	"scopes": {
+		"1": "unused",
+		"2": "tag",
+		"3": "tagAttributes",
+		"4": "endtag",
+		"5": "helper",
+		"6": "expression",
+		"7": "helperEnd",
+		"8": "attributes",
+		"9": "string"
+	}
+};
+/**
+ * FireTPL runtime module
+ */
+(function(FireTPL, undefined) {
+	/*global define:false */
+	'use strict';
+
+	FireTPL.helpers = {};
+	FireTPL.templateCache = {};
+
+	/**
+	 * Register a block helper
+	 *
+	 * @method registerHelper
+	 * @param {String} helper Helper name
+	 * @param {Function} fn Helper function
+	 */
+	FireTPL.registerHelper = function(helper, fn) {
+		this.helpers[helper] = fn;
+	};
+
+	/**
+	 * Register core helper
+	 *
+	 * @private
+	 * @method registerCoreHelper
+	 */
+	FireTPL.registerCoreHelper = function() {
+		this.registerHelper('if', function(context, fn) {
+			var s = '';
+
+			if (context.data) {
+				s += fn(context.parent, context.root);
+			}
+
+			return s;
+		});
+		
+		this.registerHelper('else', function(context, fn) {
+			return fn(context.parent);
+		});
+
+		this.registerHelper('unless', function(context, fn) {
+			var s = '';
+
+			if (!(context.data)) {
+				s += fn(context.parent);
+			}
+
+			return s;
+		});
+
+		this.registerHelper('each', function(context, fn) {
+			var s = '';
+
+			if (context.data) {
+				context.data.forEach(function(item) {
+					s += fn(item);
+				});
+			}
+
+			return s;
+		});
+	};
+
+	FireTPL.Runtime = function() {
+
+	};
+
+	FireTPL.Runtime.prototype.exec = function(helper, data, parent, root, fn) {
+		if (!FireTPL.helpers[helper]) {
+			throw new Error('Helper ' + helper + ' not registered!');
+		}
+
+		return FireTPL.helpers[helper]({
+			data: data,
+			parent: parent,
+			root: root
+		}, fn);
+	};
+
+	/**
+	 * Executes a precompiled
+	 * @method compile
+	 * 
+	 * @param {String} template Template string or precompiled tempalte
+	 * 
+	 * @returns {String} Returns executed template
+	 */
+	FireTPL.compile = function(template) {
+		if (!/^scopes=scopes/.test(template)) {
+			var fireTpl = new FireTPL.Compiler();
+			template = fireTpl.precompile(template);
+		}
+
+		return function(data, scopes) {
+			var h = new FireTPL.Runtime();
+			var s;
+
+			//jshint evil:true
+			try {
+				var tmpl = '(function(data, scopes) {\n' + template + 'return s;})(data, scopes)';
+				return eval(tmpl);
+			}
+			catch (err) {
+				console.error('FireTPL parse error', err);
+				console.log('----- Template source -----');
+				console.log(prettify(tmpl));
+				console.log('----- Template source -----');
+			}
+
+			return s;
+		};
+	};
+
+	var prettify = function(str) {
+		var indention = 0,
+			out = '';
+
+		var repeat = function(str, i) {
+			var out = '';
+			while (i > 0) {
+				out += str;
+				i--;
+			}
+			return out;
+		};
+
+		for (var i = 0; i < str.length; i++) {
+			var c = str.charAt(i);
+			
+			if(c === '}' && str.charAt(i - 1) !== '{') {
+				indention--;
+				out += '\n' + repeat('\t', indention);
+			}
+
+			out += c;
+
+			if (c === '{' && str.charAt(i + 1) !== '}') {
+				indention++;
+				out += '\n' + repeat('\t', indention);
+			}
+			else if(c === ';') {
+				out += '\n' + repeat('\t', indention);
+			}
+		}
+
+		return out;
+	};
+
+	FireTPL.registerCoreHelper();
+
+})(FireTPL);
+});
+
+require.register("nonamemedia~xqcore@0.8.0", function (exports, module) {
+/*!
+ * XQCore - +0.8.0-22
+ * 
+ * Model View Presenter Javascript Framework
+ *
+ * XQCore is licenced under MIT Licence
+ * http://opensource.org/licenses/MIT
+ *
+ * Copyright (c) 2012 - 2014 Noname Media, http://noname-media.com
+ * Author Andi Heinkelein
+ *
+ * Creation Date: 2014-05-20
+ */
+
+/*global XQCore:true */
+var XQCore;
+
+(function (root, factory) {
+	/*global define:false */
+	'use strict';
+
+	if (typeof define === 'function' && define.amd) {
+		define('xqcore', ['jquery'], factory);
+	} else if (typeof module !== 'undefined' && module.exports) {
+		module.exports = factory(require("components~jquery@2.1.0"));
+	} else {
+		root.XQCore = factory(root.jQuery);
+	}
+}(this, function (jQuery) {
+	'use strict';
+
+	/**
+	 * XQCore main object
+	 *
+	 * @package XQcore
+	 * @type {Object}
+	 */
+	XQCore = {
+		version: '0.8.0-22',
+		defaultRoute: 'index',
+		html5Routes: false,
+		hashBang: '#!',
+		callerEvent: 'callerEvent',
+		objectIdPattern: /^[a-zA-Z0-9]{24}$/,
+		templateEngine: 'firetpl',
+		viewsDir: './views/',
+		viewExt: '.fire'
+	};
+
+	//XQCore helper functions
+	XQCore.extend = jQuery.extend;
+	XQCore.isEmptyObject = jQuery.isEmptyObject;
+	XQCore.isPlainObject = jQuery.isPlainObject;
+	XQCore.isFunction = jQuery.isFunction;
+	
+	/**
+	 * Checks for a valid ObjectId
+	 * 
+	 * The pattern of an objectId can be overwritten by setting the XQCore.objectIdPattern property
+	 *
+	 * @return {Boolean} Returns true if value is an valid objectId
+	 */
+	XQCore.isObjectId = function(value) {
+		return this.objectIdPattern.test(value);
+	};
+
+	XQCore._dump = {};
+	XQCore.dump = function(componentName) {
+		if (XQCore._dump[componentName]) {
+			console.log('[XQCore dump]', componentName, XQCore._dump[componentName]);
+			return XQCore._dump[componentName];
+		}
+
+		return false;
+	};
+
+	XQCore.require = function(moduleName) {
+		if (moduleName === 'jquery') {
+			return jQuery;
+		}
+	};
+
+	return XQCore;
+}));
+
+
+/**
+ * XQCore EventEmitter
+ *
+ * Based on EventEmitter v4.2.5 by Oliver Caldwell
+ * http://git.io/ee
+ *
+ */
+(function(XQCore, undefined) {
+	'use strict';
+
+	//EventEmitter.js
+
+	/*!
+	 * EventEmitter v4.2.5 - git.io/ee
+	 * Oliver Caldwell
+	 * MIT license
+	 * @preserve
+	 */
+
+
+	/**
+	 * Class for managing events.
+	 * Can be extended to provide event functionality in other classes.
+	 *
+	 * @class EventEmitter Manages event registering and emitting.
+	 */
+	function EventEmitter() {}
+
+	// Shortcuts to improve speed and size
+	var proto = EventEmitter.prototype;
+
+	/**
+	 * Finds the index of the listener for the event in it's storage array.
+	 *
+	 * @param {Function[]} listeners Array of listeners to search through.
+	 * @param {Function} listener Method to look for.
+	 * @return {Number} Index of the specified listener, -1 if not found
+	 * @api private
+	 */
+	function indexOfListener(listeners, listener) {
+		var i = listeners.length;
+		while (i--) {
+			if (listeners[i].listener === listener) {
+				return i;
+			}
+		}
+
+		return -1;
+	}
+
+	/**
+	 * Alias a method while keeping the context correct, to allow for overwriting of target method.
+	 *
+	 * @param {String} name The name of the target method.
+	 * @return {Function} The aliased method
+	 * @api private
+	 */
+	function alias(name) {
+		return function aliasClosure() {
+			return this[name].apply(this, arguments);
+		};
+	}
+
+	/**
+	 * Returns the listener array for the specified event.
+	 * Will initialise the event object and listener arrays if required.
+	 * Will return an object if you use a regex search. The object contains keys for each matched event. So /ba[rz]/ might return an object containing bar and baz. But only if you have either defined them with defineEvent or added some listeners to them.
+	 * Each property in the object response is an array of listener functions.
+	 *
+	 * @param {String|RegExp} evt Name of the event to return the listeners from.
+	 * @return {Function[]|Object} All listener functions for the event.
+	 */
+	proto.getListeners = function getListeners(evt) {
+		var events = this._getEvents();
+		var response;
+		var key;
+
+		// Return a concatenated array of all matching events if
+		// the selector is a regular expression.
+		if (typeof evt === 'object') {
+			response = {};
+			for (key in events) {
+				if (events.hasOwnProperty(key) && evt.test(key)) {
+					response[key] = events[key];
+				}
+			}
+		}
+		else {
+			response = events[evt] || (events[evt] = []);
+		}
+
+		return response;
+	};
+
+	/**
+	 * Takes a list of listener objects and flattens it into a list of listener functions.
+	 *
+	 * @param {Object[]} listeners Raw listener objects.
+	 * @return {Function[]} Just the listener functions.
+	 */
+	proto.flattenListeners = function flattenListeners(listeners) {
+		var flatListeners = [];
+		var i;
+
+		for (i = 0; i < listeners.length; i += 1) {
+			flatListeners.push(listeners[i].listener);
+		}
+
+		return flatListeners;
+	};
+
+	/**
+	 * Fetches the requested listeners via getListeners but will always return the results inside an object. This is mainly for internal use but others may find it useful.
+	 *
+	 * @param {String|RegExp} evt Name of the event to return the listeners from.
+	 * @return {Object} All listener functions for an event in an object.
+	 */
+	proto.getListenersAsObject = function getListenersAsObject(evt) {
+		var listeners = this.getListeners(evt);
+		var response;
+
+		if (listeners instanceof Array) {
+			response = {};
+			response[evt] = listeners;
+		}
+
+		return response || listeners;
+	};
+
+	/**
+	 * Adds a listener function to the specified event.
+	 * The listener will not be added if it is a duplicate.
+	 * If the listener returns true then it will be removed after it is called.
+	 * If you pass a regular expression as the event name then the listener will be added to all events that match it.
+	 *
+	 * @param {String|RegExp} evt Name of the event to attach the listener to.
+	 * @param {Function} listener Method to be called when the event is emitted. If the function returns true then it will be removed after calling.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.addListener = function addListener(evt, listener) {
+		var listeners = this.getListenersAsObject(evt);
+		var listenerIsWrapped = typeof listener === 'object';
+		var key;
+
+		for (key in listeners) {
+			if (listeners.hasOwnProperty(key) && indexOfListener(listeners[key], listener) === -1) {
+				listeners[key].push(listenerIsWrapped ? listener : {
+					listener: listener,
+					once: false
+				});
+			}
+		}
+
+		return this;
+	};
+
+	/**
+	 * Alias of addListener
+	 */
+	proto.on = alias('addListener');
+
+	/**
+	 * Semi-alias of addListener. It will add a listener that will be
+	 * automatically removed after it's first execution.
+	 *
+	 * @param {String|RegExp} evt Name of the event to attach the listener to.
+	 * @param {Function} listener Method to be called when the event is emitted. If the function returns true then it will be removed after calling.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.addOnceListener = function addOnceListener(evt, listener) {
+		return this.addListener(evt, {
+			listener: listener,
+			once: true
+		});
+	};
+
+	/**
+	 * Alias of addOnceListener.
+	 */
+	proto.once = alias('addOnceListener');
+
+	/**
+	 * Defines an event name. This is required if you want to use a regex to add a listener to multiple events at once. If you don't do this then how do you expect it to know what event to add to? Should it just add to every possible match for a regex? No. That is scary and bad.
+	 * You need to tell it what event names should be matched by a regex.
+	 *
+	 * @param {String} evt Name of the event to create.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.defineEvent = function defineEvent(evt) {
+		this.getListeners(evt);
+		return this;
+	};
+
+	/**
+	 * Uses defineEvent to define multiple events.
+	 *
+	 * @param {String[]} evts An array of event names to define.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.defineEvents = function defineEvents(evts) {
+		for (var i = 0; i < evts.length; i += 1) {
+			this.defineEvent(evts[i]);
+		}
+		return this;
+	};
+
+	/**
+	 * Removes a listener function from the specified event.
+	 * When passed a regular expression as the event name, it will remove the listener from all events that match it.
+	 *
+	 * @param {String|RegExp} evt Name of the event to remove the listener from.
+	 * @param {Function} listener Method to remove from the event.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.removeListener = function removeListener(evt, listener) {
+		var listeners = this.getListenersAsObject(evt);
+		var index;
+		var key;
+
+		for (key in listeners) {
+			if (listeners.hasOwnProperty(key)) {
+				index = indexOfListener(listeners[key], listener);
+
+				if (index !== -1) {
+					listeners[key].splice(index, 1);
+				}
+			}
+		}
+
+		return this;
+	};
+
+	/**
+	 * Alias of removeListener
+	 */
+	proto.off = alias('removeListener');
+
+	/**
+	 * Adds listeners in bulk using the manipulateListeners method.
+	 * If you pass an object as the second argument you can add to multiple events at once. The object should contain key value pairs of events and listeners or listener arrays. You can also pass it an event name and an array of listeners to be added.
+	 * You can also pass it a regular expression to add the array of listeners to all events that match it.
+	 * Yeah, this function does quite a bit. That's probably a bad thing.
+	 *
+	 * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to add to multiple events at once.
+	 * @param {Function[]} [listeners] An optional array of listener functions to add.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.addListeners = function addListeners(evt, listeners) {
+		// Pass through to manipulateListeners
+		return this.manipulateListeners(false, evt, listeners);
+	};
+
+	/**
+	 * Removes listeners in bulk using the manipulateListeners method.
+	 * If you pass an object as the second argument you can remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
+	 * You can also pass it an event name and an array of listeners to be removed.
+	 * You can also pass it a regular expression to remove the listeners from all events that match it.
+	 *
+	 * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to remove from multiple events at once.
+	 * @param {Function[]} [listeners] An optional array of listener functions to remove.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.removeListeners = function removeListeners(evt, listeners) {
+		// Pass through to manipulateListeners
+		return this.manipulateListeners(true, evt, listeners);
+	};
+
+	/**
+	 * Edits listeners in bulk. The addListeners and removeListeners methods both use this to do their job. You should really use those instead, this is a little lower level.
+	 * The first argument will determine if the listeners are removed (true) or added (false).
+	 * If you pass an object as the second argument you can add/remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
+	 * You can also pass it an event name and an array of listeners to be added/removed.
+	 * You can also pass it a regular expression to manipulate the listeners of all events that match it.
+	 *
+	 * @param {Boolean} remove True if you want to remove listeners, false if you want to add.
+	 * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to add/remove from multiple events at once.
+	 * @param {Function[]} [listeners] An optional array of listener functions to add/remove.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.manipulateListeners = function manipulateListeners(remove, evt, listeners) {
+		var i;
+		var value;
+		var single = remove ? this.removeListener : this.addListener;
+		var multiple = remove ? this.removeListeners : this.addListeners;
+
+		// If evt is an object then pass each of it's properties to this method
+		if (typeof evt === 'object' && !(evt instanceof RegExp)) {
+			for (i in evt) {
+				if (evt.hasOwnProperty(i) && (value = evt[i])) {
+					// Pass the single listener straight through to the singular method
+					if (typeof value === 'function') {
+						single.call(this, i, value);
+					}
+					else {
+						// Otherwise pass back to the multiple function
+						multiple.call(this, i, value);
+					}
+				}
+			}
+		}
+		else {
+			// So evt must be a string
+			// And listeners must be an array of listeners
+			// Loop over it and pass each one to the multiple method
+			i = listeners.length;
+			while (i--) {
+				single.call(this, evt, listeners[i]);
+			}
+		}
+
+		return this;
+	};
+
+	/**
+	 * Removes all listeners from a specified event.
+	 * If you do not specify an event then all listeners will be removed.
+	 * That means every event will be emptied.
+	 * You can also pass a regex to remove all events that match it.
+	 *
+	 * @param {String|RegExp} [evt] Optional name of the event to remove all listeners for. Will remove from every event if not passed.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.removeEvent = function removeEvent(evt) {
+		var type = typeof evt;
+		var events = this._getEvents();
+		var key;
+
+		// Remove different things depending on the state of evt
+		if (type === 'string') {
+			// Remove all listeners for the specified event
+			delete events[evt];
+		}
+		else if (type === 'object') {
+			// Remove all events matching the regex.
+			for (key in events) {
+				if (events.hasOwnProperty(key) && evt.test(key)) {
+					delete events[key];
+				}
+			}
+		}
+		else {
+			// Remove all listeners in all events
+			delete this._events;
+		}
+
+		return this;
+	};
+
+	/**
+	 * Alias of removeEvent.
+	 *
+	 * Added to mirror the node API.
+	 */
+	proto.removeAllListeners = alias('removeEvent');
+
+	/**
+	 * Emits an event of your choice.
+	 * When emitted, every listener attached to that event will be executed.
+	 * If you pass the optional argument array then those arguments will be passed to every listener upon execution.
+	 * Because it uses `apply`, your array of arguments will be passed as if you wrote them out separately.
+	 * So they will not arrive within the array on the other side, they will be separate.
+	 * You can also pass a regular expression to emit to all events that match it.
+	 *
+	 * @param {String|RegExp} evt Name of the event to emit and execute listeners for.
+	 * @param {Array} [args] Optional array of arguments to be passed to each listener.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.emitEvent = function emitEvent(evt, args) {
+		var listeners = this.getListenersAsObject(evt);
+		var listener;
+		var i;
+		var key;
+		var response;
+
+		for (key in listeners) {
+			if (listeners.hasOwnProperty(key)) {
+				i = listeners[key].length;
+
+				while (i--) {
+					// If the listener returns true then it shall be removed from the event
+					// The function is executed either with a basic call or an apply if there is an args array
+					listener = listeners[key][i];
+
+					if (listener.once === true) {
+						this.removeListener(evt, listener.listener);
+					}
+
+					response = listener.listener.apply(this, args || []);
+
+					if (response === this._getOnceReturnValue()) {
+						this.removeListener(evt, listener.listener);
+					}
+				}
+			}
+		}
+
+		return this;
+	};
+
+	/**
+	 * Alias of emitEvent
+	 */
+	proto.trigger = alias('emitEvent');
+
+	/**
+	 * Subtly different from emitEvent in that it will pass its arguments on to the listeners, as opposed to taking a single array of arguments to pass on.
+	 * As with emitEvent, you can pass a regex in place of the event name to emit to all events that match it.
+	 *
+	 * @param {String|RegExp} evt Name of the event to emit and execute listeners for.
+	 * @param {...*} Optional additional arguments to be passed to each listener.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.emit = function emit(evt) {
+		var args = Array.prototype.slice.call(arguments, 1);
+		return this.emitEvent(evt, args);
+	};
+
+	/**
+	 * Sets the current value to check against when executing listeners. If a
+	 * listeners return value matches the one set here then it will be removed
+	 * after execution. This value defaults to true.
+	 *
+	 * @param {*} value The new value to check for when executing listeners.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.setOnceReturnValue = function setOnceReturnValue(value) {
+		this._onceReturnValue = value;
+		return this;
+	};
+
+	/**
+	 * Fetches the current value to check against when executing listeners. If
+	 * the listeners return value matches this one then it should be removed
+	 * automatically. It will return true by default.
+	 *
+	 * @return {*|Boolean} The current value to check for or the default, true.
+	 * @api private
+	 */
+	proto._getOnceReturnValue = function _getOnceReturnValue() {
+		if (this.hasOwnProperty('_onceReturnValue')) {
+			return this._onceReturnValue;
+		}
+		else {
+			return true;
+		}
+	};
+
+	/**
+	 * Fetches the events object and creates one if required.
+	 *
+	 * @return {Object} The events storage object.
+	 * @api private
+	 */
+	proto._getEvents = function _getEvents() {
+		return this._events || (this._events = {});
+	};
+
+	XQCore.Event = EventEmitter;
+
+})(XQCore);
+
+/**
+ * XQCore Logger
+ *
+ * Based on EventEmitter.js
+ * 
+ * 
+ */
+(function(XQCore, undefined) {
+	'use strict';
+
+	//var timerStore = {};
+
+	function getHumanTime(time) {
+		if (time < 1000) {
+			return time + ' ms';
+		}
+		else if (time < 60000) {
+			return (Math.round(time / 100) / 10) + ' sec';
+		}
+		else {
+			return (Math.round(time / 60000)) + ' min ' + Math.round(time % 60000 / 1000) + ' sec';
+		}
+	}
+
+	/**
+	 * XQCore Logger is a logging tool to log messages, warnings, errors to the browser or onscreen console
+	 *
+	 * @module XQCore.Logger
+	 * @class XQCore.Logger
+	 *
+	 */
+	var Logger = function() {
+		
+	};
+
+	/**
+	 * Loggs a message to the console
+	 *
+	 * @method log
+	 *
+	 * @param {Any} msg logs all arguments to the console
+	 */
+	Logger.prototype.log = function() {
+		var args;
+
+		if (this.debug) {
+			args = Array.prototype.slice.call(arguments);
+			args.unshift('[' + this.name + ']');
+			console.log.apply(console, args);
+		}
+	};
+
+	/**
+	 * Loggs a warning to the console
+	 *
+	 * @method warn
+	 * @param {Any} msg logs all arguments to the console
+	 */
+	Logger.prototype.warn = function() {
+		var args;
+
+		if (this.debug) {
+			args = Array.prototype.slice.call(arguments);
+			args.unshift('[' + this.name + ']');
+			console.warn.apply(console, args);
+		}
+	};
+
+	/**
+	 * Loggs a error message to the console
+	 *
+	 * @method error
+	 * @param {Any} msg logs all arguments to the console
+	 */
+	Logger.prototype.error = function() {
+		var args;
+
+		if (this.debug) {
+			args = Array.prototype.slice.call(arguments);
+			args.unshift('[' + this.name + ']');
+			console.error.apply(console, args);
+		}
+	};
+
+	/**
+	 * Start a timeTracer
+	 *
+	 * @method timer
+	 * @param {String} timerName Set the name for your (Optional)
+	 * @return {Object} Returns a TimerObject
+	 */
+	Logger.prototype.timer = function(name) {
+		var timer = {
+			start: null,
+			stop: null,
+			name: name,
+			logger: this,
+			end: function() {
+				this.stop = Date.now();
+				this.logger.log('Timer ' + this.name + ' runs: ', getHumanTime(this.stop - this.start));
+			}
+		};
+
+		/*if (name) {
+			this.timerStore[name] = timer;
+		}*/
+
+		this.log('Start Timer', name);
+
+		//Set timer start time
+		timer.start = Date.now();
+		return timer;
+	};
+
+	Logger.prototype.__scope = {
+		getHumanTime: getHumanTime
+	};
+	
+
+	XQCore.Logger = Logger;
+
+})(XQCore);
+/**
+ * XQCore Presenter
+ *
+ * @module XQCore Presenter
+ */
+(function(XQCore, undefined) {
+	'use strict';
+
+	var $ = XQCore.require("components~jquery@2.1.0");
+
+	/**
+	 * XQCore.Presenter base class
+	 *
+	 * @class XQCore.Presenter
+	 * @constructor
+	 *
+	 * @uses XQCore.Logger
+	 * @uses XQCore.Event
+	 *
+	 * @param {Object} conf Presenter extend object
+	 */
+	var Presenter = function(name, conf) {
+
+		if (typeof arguments[0] === 'object') {
+			conf = name;
+			name = conf.name;
+		}
+		
+		/**
+		 * Stores registered views
+		 * @private
+		 * @type {Array}
+		 */
+		this.__views = [];
+		
+		/**
+		 * Enable debug mode
+		 * @public
+		 * @type {Boolean}
+		 */
+		this.debug = XQCore.debug;
+
+		/**
+		 * Set presenter name
+		 * @public
+		 * @type {String}
+		 */
+		this.name = (name ? name.replace(/Presenter$/, '') : 'Nameless') + 'Presenter';
+
+		/* ++++++++++ old stuff +++++++++++++ */
+
+		this.routes = [];
+		
+		conf = conf || {};
+
+		this.conf = conf;
+
+		this.eventCallbacks = {};
+
+		/**
+		 * Points to the last shown view
+		 *
+		 * @property {Object} lastShownView Points to the last shown view
+		 */
+		this.lastShownView = null;
+
+		this.registeredViews = [];
+		this.registeredModels = [];
+		this.fireViewInit = function(view) {
+			var allReady = true;
+			this.registeredViews.forEach(function(item) {
+				if (view === item.view) {
+					item.isReady = true;
+				}
+
+				if (item.isReady === false) {
+					allReady = false;
+				}
+			});
+
+			this.viewInit(view);
+
+			if (allReady === true) {
+				this.emit('views.ready');
+			}
+		};
+
+		/**
+		 * @deprecated
+		 */
+		this.registerView = function(view) {
+			this.warn('presenter.registerView was deprecated since XQCore 0.7.0');
+
+			var i;
+			if (view instanceof Array) {
+				for (i = 0; i < view.length; i++) {
+					this.registeredViews.push({
+						view: view[i],
+						isReady: false
+					});
+				}
+			}
+			else {
+				this.registeredViews.push({
+					view: view,
+					isReady: false
+				});
+			}
+		};
+
+		/**
+		 * @deprecated
+		 */
+		this.registerModel = function(model) {
+			this.warn('presenter.registerModel was deprecated since XQCore 0.7.0');
+
+			var i;
+			if (model instanceof Array) {
+				for (i = 0; i < model.length; i++) {
+					this.registeredModels.push({
+						model: model[i],
+						isReady: false
+					});
+				}
+			}
+			else {
+				this.registeredModels.push({
+					model: model,
+					isReady: false
+				});
+			}
+		};
+
+		
+		this.__Router = new XQCore.Router();
+	};
+
+
+	XQCore.extend(Presenter.prototype, new XQCore.Event(), new XQCore.Logger());
+
+	/**
+	 * Listen View events
+	 * @property {Array} events Observed view events
+	 */
+	Presenter.prototype.events = {};
+
+	Presenter.prototype.init = function(views) {
+		var i,
+			self = this,
+			conf = this.conf;
+
+		if (typeof conf === 'function') {
+			conf.call(this, self);
+		}
+		else {
+			XQCore.extend(this, conf);
+		}
+
+		//Setup popstate listener
+		if (conf.routes) {
+
+			//Add routes
+			Object.keys(conf.routes).forEach(function(route) {
+				var callback = this.routes[route];
+				if (typeof callback === 'string') {
+					callback = this[callback];
+				}
+
+				if (typeof callback === 'function') {
+					this.__Router.addRoute(route, callback);
+				}
+				else {
+					this.warn('Router callback isn\'t a function', callback, 'of route', route);
+				}
+			}.bind(this));
+		}
+
+		window.addEventListener('popstate', function(e) {
+			self.__onPopstate(e.state);
+		}, false);
+
+		var route = XQCore.defaultRoute;
+		if (/^#![a-zA-Z0-9]+/.test(self.getHash())) {
+			route = self.getHash().substr(2);
+		}
+
+		route = self.__Router.match(route);
+		if (route) {
+			var data = route.params;
+			if (XQCore.callerEvent) {
+				data[XQCore.callerEvent] = 'pageload';
+			}
+
+			$(function() {
+				self.log('Trigger route', route, data);
+				route.fn.call(self, route.params);
+			});
+		}
+
+		// custom init (deprecated)
+		if (typeof conf.init === 'function') {
+			conf.init.call(this);
+		}
+
+		//Initialize views
+		if (views instanceof Array) {
+			for (i = 0; i < views.length; i++) {
+				this.registerView(views[i]);
+			}
+		}
+		else if (views) {
+			this.registerView(views);
+		}
+
+		this.registeredViews.forEach(function(view) {
+			view.view.init(self);
+		});
+
+		this.registeredModels.forEach(function(model) {
+			model.model.init(self);
+		});
+	};
+
+	/**
+	 * Calling on view init
+	 *
+	 * @param {object} view The initializing view
+	 */
+	Presenter.prototype.viewInit = function(view) {
+
+	};
+
+	/**
+	 * Add a history item to the browser history
+	 *
+	 * @param {Object} data Data object
+	 * @param {String} url Page URL (Optional) defaults to the curent URL
+	 */
+	Presenter.prototype.pushState = function(data, url) {
+		/*this.log('Check State', data, history.state, XQCore.compare(data, history.state));
+		if (XQCore.compare(data, history.state)) {
+			this.warn('Abborting history.pushState because data are equale to current history state');
+		}*/
+		var hash = XQCore.html5Routes || url.charAt(0) === '/' ? '' : XQCore.hashBang;
+		url = hash + url;
+		history.pushState(data, '', url || null);
+		this.log('Update history with pushState', data, url);
+	};
+
+	/**
+	 * Add a history item to the browser history
+	 *
+	 * @param {Object} data Data object
+	 * @param {String} url Page URL (Optional) defaults to the current URL
+	 */
+	Presenter.prototype.replaceState = function(data, url) {
+		/*if (data === history.state) {
+			this.warn('Abborting history.replaceState because data are equale to current history state');
+		}*/
+		var hash = XQCore.html5Routes || url.charAt(0) === '/' ? '' : XQCore.hashBang;
+		url = hash + url;
+		history.replaceState(data, '', url || null);
+		this.log('Update history with replaceState', data, url);
+	};
+
+	/**
+	 * Navigates to a given route
+	 *
+	 * @param {String} route Route url
+	 * @param {Object} data Data object
+	 * @param {Boolean} replace Replace current history entry with route
+	 */
+	Presenter.prototype.navigateTo = function(route, data, replace) {
+		this.log('Navigate to route: ', route, data, replace);
+		if (replace) {
+			this.replaceState(data, route);
+		} else {
+			this.pushState(data, route);
+		}
+
+		// this.__onPopstate(data);
+		/*global PopStateEvent:false */
+		var evt = new PopStateEvent('popstate', {
+			bubbles: false,
+			cancelable: false,
+			state: null
+		});
+		window.dispatchEvent(evt);
+	};
+
+	/**
+	 * Gets a view by it's name
+	 *
+	 * @method getView
+	 * @param {String} viewName Required view name
+	 * @return {Object} Returns view object or null if no view was found
+	 */
+	Presenter.prototype.getView = function(viewName) {
+		var i, view;
+
+		for (i = 0; i < this.registeredViews.length; i++) {
+			view = this.registeredViews[i].view;
+			if (view.name === viewName) {
+				return view;
+			}
+		}
+
+		return null;
+	};
+
+
+	/**
+	 * Show a view if it's not visible and update the history state
+	 *
+	 * @method showView
+	 *
+	 * @param  {String} viewName The name of the view
+	 * @param  {Object} data Data it's neede to showing the view
+	 *
+	 */
+	Presenter.prototype.showView = function(viewName, data) {
+		var view = this.getView(viewName + 'View');
+		if (!view) {
+			this.warn('View not defined!', viewName);
+			return;
+		}
+
+		this.log('Show view:', viewName, data);
+		this.log('Hide view:', this.lastShownView);
+
+		if (this.lastShownView !== view) {
+			if (this.lastShownView && typeof this.lastShownView.hide === 'function') {
+				this.lastShownView.hide();
+				view.show();
+			}
+			else {
+				view.show(true);
+			}
+		}
+	};
+
+	/**
+	 * Returns the current hash
+	 *
+	 * @method getHash
+	 * @returns {String} Returns the current value from location.hash
+	 */
+	Presenter.prototype.getHash = function() {
+		return location.hash;
+	};
+
+	/**
+	 * Returns the current pathname
+	 *
+	 * @method getPathname
+	 * @returns {String} Returns the current value from location.pathname
+	 */
+	Presenter.prototype.getPathname = function() {
+		return location.pathname;
+	};
+
+	/**
+	 * Couple a model with a view
+	 *
+	 * @method couple
+	 * @chainable
+	 * @param {Object} conf Configuration object
+	 *
+	 * conf: {
+	 *   model: String modelname
+	 *   view: String viewname
+	 *   route String routename
+	 * }
+	 */
+	Presenter.prototype.couple = function(conf) {
+		var view = conf.view,
+			model = conf.model,
+			key;
+
+		var modelEventConf = XQCore.extend({
+			'data.replace': 'render',
+			'data.item': 'update',
+			'data.append': 'append',
+			'data.prepend': 'prepend',
+			'data.insert': 'insert',
+			'data.remove': 'remove',
+			'validation.error': 'validationFailed',
+			'state.change': 'stateChanged'
+		}, conf.modelEvents);
+
+		var viewEventConf = XQCore.extend({
+			'form.submit': 'setData'
+		}, conf.viewEvents);
+
+		if (!view instanceof XQCore.View) {
+			this.error('Can\'t couple view with model! View isn\'t a XQCore.View');
+			return;
+		}
+
+		if (!model instanceof XQCore.Model) {
+			this.error('Can\'t couple model with model! Model isn\'t a XQCore.Model');
+			return;
+		}
+
+		this.log('Couple view ', view.name, 'with model', model.name);
+
+		if (!view.__coupledWith) {
+			view.__coupledWith = [];
+		}
+
+		if (!model.__coupledWith) {
+			model.__coupledWith = [];
+		}
+
+		if (!view.__coupledWith.some(function(m) { return (m === model); })) {
+			view.__coupledWith.push(model);
+		}
+		
+		if (!model.__coupledWith.some(function(v) { return (v === view); })) {
+			model.__coupledWith.push(view);
+		}
+
+		var registerModelListener = function(listener, func) {
+			model.on(listener, function() {
+				var args = Array.prototype.slice.call(arguments);
+				args.push(model.name);
+				view[func].apply(view, args);
+			});
+		};
+
+		var registerViewListener = function(listener, func) {
+			view.on(listener, function(arg, arg2) {
+				model[func](arg, arg2, view.name);
+			});
+		};
+
+		for (key in modelEventConf) {
+			if (modelEventConf.hasOwnProperty(key)) {
+				registerModelListener(key, modelEventConf[key]);
+				if (key === 'data.replace') {
+					model.emit(key, model.get());
+				}
+			}
+		}
+
+		for (key in viewEventConf) {
+			if (viewEventConf.hasOwnProperty(key)) {
+				registerViewListener(key, viewEventConf[key]);
+			}
+		}
+
+		return this;
+	};
+
+	/**
+	 * Triggers a view event to the presenter
+	 *
+	 * @method triggerEvent
+	 *
+	 * @param {String} eventName Event of the triggered event
+	 * @param {Object} e EventObject
+	 * @param {Object} tag Tag data
+	 * @param {Object} data Event data
+	 */
+	Presenter.prototype.triggerEvent = function(v, eventName, e, tag, data) {
+		if (this.events[eventName]) {
+			this.events[eventName].call(this, e, tag, data);
+		}
+		else {
+			e.preventDefault();
+			e.stopPropagation();
+			v.__coupledWith.forEach(function(m) {
+				if (typeof m[eventName] === 'function') {
+					this.log('Autotrigger to model ', m.name, ' - ', eventName, data);
+					m[eventName](data);
+				}
+				else {
+					this.warn('Autotrigger to model failed! Function doesn\'t exists:', eventName, data);
+				}
+			});
+		}
+	};
+
+
+	/**
+	 * PopstateEvent
+	 *
+	 * @method __onPopstate
+	 * @param {Object} data Event data
+	 * @private
+	 */
+	Presenter.prototype.__onPopstate = function(data) {
+		var self = this;
+
+		self.log('popstate event recived', data, self);
+
+		var route = XQCore.defaultRoute;
+		if (XQCore.html5Routes) {
+			var pattern = new RegExp('^' + self.root);
+			route = self.getPathname().replace(pattern, '');
+		}
+		else {
+			if (/^#!\S+/.test(this.getHash())) {
+				route = self.getHash().substr(2);
+			}
+		}
+
+		route = self.__Router.match(route);
+		if (route) {
+			data = data || route.params;
+			if (XQCore.callerEvent) {
+				data[XQCore.callerEvent] = 'popstate';
+			}
+
+			self.log('Trigger route', route, data);
+
+			route.fn.call(self, data);
+		}
+	};
+
+
+	/* ++++++++++++ v0.7.0 +++++++++++++++++ */
+
+
+	/**
+	 * Initialize a new view into the presenter scope
+	 *
+	 * options: {
+	 *   mode: String       Insert mode, (append, prepend or replace) replace is default
+	 *   inject: Boolean    Set to false to disable injecting view into the DOM
+	 * }
+	 * 
+	 * @method initView
+	 * @public
+	 * @param  {String} viewName  Name of the view
+	 * @param  {String} container Container selector, default is 'body'
+	 * @param  {Object} options   View options
+	 * @return {Object}           Returns a view object
+	 */
+	Presenter.prototype.initView = function(viewName, container, options) {
+		options = options || {};
+
+		if (this.__views[viewName]) {
+			this.warn('View allready registered!', viewName);
+			return;
+		}
+
+		if (this.debug) {
+			this.log('Init view', viewName);
+		}
+
+		var view = new XQCore.View(viewName, function(self) {
+			self.template = XQCore.Tmpl.getTemplate(viewName);
+			self.mode = options.mode || 'replace';
+			self.container = container || 'body';
+			if (options.inject === false) {
+				self.autoInject = false;
+			}
+		});
+		this.__views[viewName] = view;
+		view.init(this);
+		return view;
+	};
+
+	/**
+	 * Register a route listen
+	 *
+	 * @public
+	 * @method route
+	 * @param {String | Array} route Route string
+	 * @param {Function} callback Callback function
+	 */
+	Presenter.prototype.route = function(route, callback) {
+		if (typeof callback === 'string') {
+			callback = this[callback];
+		}
+
+		if (typeof callback === 'function') {
+			if (typeof route === 'string') {
+				this.log('Register route', route, 'with callback', callback);
+				this.__Router.addRoute(route, callback);
+			}
+			else if (Array.isArray(route)) {
+				route.forEach(function(r) {
+					this.log('Register route', r, 'with callback', callback);
+					this.__Router.addRoute(r, callback);
+				}.bind(this));
+			}
+
+		}
+		else {
+			this.warn('Router callback isn\'t a function', callback, 'of route', route);
+		}
+	};
+
+	XQCore.Presenter = Presenter;
+
+})(XQCore);
+
+(function(XQCore, undefined) {
+	'use strict';
+
+	var $ = XQCore.require("components~jquery@2.1.0");
+
+	var Sync = function() {
+
+	};
+
+	/**
+	 * Called on before sending an ajax request
+	 * You can use this function to manipulate all data they be send to the server
+	 *
+	 * @param {Object} data The data to send to the server
+	 * @return {Object} data
+	 */
+	Sync.prototype.onSend = function(data) {
+		return data;
+	};
+
+	/**
+	 * Send an ajax request to the webserver.
+	 *
+	 * You must set the server URI first with model.server = 'http://example.com/post'
+	 *
+	 * @param {String} Method send method, GET, POST, PUT, DELETE (default POST)
+	 * @param {String} url Server URL (optional, then model.server must be set)
+	 * @param {Object} data The data to sent to the server
+	 * @param {Function} callback Calls callback(err, data, status, jqXHR) if response was receiving
+	 */
+	Sync.prototype.send = function(method, url, data, callback) {
+
+		if (typeof url === 'object') {
+			callback = data;
+			data = url;
+			url = this.server;
+			method = method;
+		}
+		else if (typeof data === 'function') {
+			callback = data;
+			data = this.get();
+		}
+		else if (data === undefined) {
+			data = this.get();
+		}
+
+		if (method === undefined) {
+			method = 'POST';
+		}
+
+		if (!url) {
+			url = this.server;
+		}
+
+		//Handle onSend
+		if (typeof this.onSend === 'function') {
+			data = this.onSend.call(this, data);
+		}
+
+		this.log('Sending an ajax call to ', url, 'with data: ', data);
+		this.state('syncing');
+
+		$.ajax({
+			url: url,
+			type: method,
+			data: data,
+			dataType: 'json',
+			success: function(data, status, jqXHR) {
+				if (typeof callback === 'function') {
+					callback.call(this, null, data, status, jqXHR);
+				}
+				this.state('success');
+			}.bind(this),
+			error: function(jqXHR, status, error) {
+				if (typeof callback === 'function') {
+					callback.call(this, {
+						type: status,
+						http: error
+					}, null, status, jqXHR);
+				}
+				this.state('failed');
+			}.bind(this)
+		});
+	};
+
+	/**
+	 * Sends a POST to the Datastore
+	 *
+	 * @param {String} url Server URL (optional, then model.server must be set)
+	 * @param  {Object}   data     Dato to sending
+	 * @param  {Function} callback Calling on response
+	 *
+	 * callback: void function(err, data, status, jqXHR)
+	 *
+	 */
+	Sync.prototype.sendPOST = function(url, data, callback) {
+		this.send('POST', url, data, callback);
+	};
+
+	/**
+	 * Sends a GET to the Datastore
+	 *
+	 * @param {String} url Server URL (optional, then model.server must be set)
+	 * @param  {Object}   data     Dato to sending
+	 * @param  {Function} callback Calling on response
+	 *
+	 * callback: void function(err, data, status, jqXHR)
+	 *
+	 */
+	Sync.prototype.sendGET = function(url, data, callback) {
+		this.send('GET', url, data, callback);
+	};
+
+	/**
+	 * Sends a PUT to the Datastore
+	 *
+	 * @param {String} url Server URL (optional, then model.server must be set)
+	 * @param  {Object}   data     Dato to sending
+	 * @param  {Function} callback Calling on response
+	 *
+	 * callback: void function(err, data, status, jqXHR)
+	 *
+	 */
+	Sync.prototype.sendPUT = function(url, data, callback) {
+		this.send('PUT', url, data, callback);
+	};
+
+	/**
+	 * Sends a DELETE to the Datastore
+	 *
+	 * @param {String} url Server URL (optional, then model.server must be set)
+	 * @param  {Object}   data     Dato to sending
+	 * @param  {Function} callback Calling on response
+	 *
+	 * callback: void function(err, data, status, jqXHR)
+	 *
+	 */
+	Sync.prototype.sendDELETE = function(url, data, callback) {
+		this.send('DELETE', url, data, callback);
+	};
+
+	/**
+	 * Check if model is ready and call func or wait for ready state
+	 */
+	Sync.prototype.ready = function(func) {
+		if (func === true) {
+			//Call ready funcs
+			if (Array.isArray(this.__callbacksOnReady)) {
+				this.log('Trigger ready state');
+				this.__callbacksOnReady.forEach(function(func) {
+					func.call(this);
+				}.bind(this));
+			}
+
+			this.__isReady = true;
+			delete this.__callbacksOnReady;
+		}
+		else if (typeof func === 'function') {
+			if (this.__isReady === true) {
+				func();
+			}
+			else {
+				if (!this.__callbacksOnReady) {
+					this.__callbacksOnReady = [];
+				}
+				this.__callbacksOnReady.push(func);
+			}
+		}
+		else {
+			this.warn('arg0 isn\'t a callback in model.ready()!');
+		}
+	};
+
+	/**
+	 * Fetch data from server
+	 *
+	 * @param {Object} query MongoDB query 
+	 * @param {Function} callback Callback function
+	 */
+	Sync.prototype.fetch = function(query, callback) {
+		this.sendGET(query, callback);
+	};
+
+	/**
+	 * Save a model if it's valid
+	 */
+	Sync.prototype.save = function(callback) {
+		if (this.isValid()) {
+			this.sendPOST(this.get(), callback);
+		}
+		else {
+			if (typeof callback === 'function') {
+				callback({
+					msg: 'Model isn\'t valid. Cancle save'
+				});
+			}
+		}
+	};
+
+	/**
+	 * Update a model if it's valid
+	 */
+	Sync.prototype.update = function(callback) {
+		if (this.isValid()) {
+			this.sendPUT(this.get(), callback);
+		}
+		else {
+			if (typeof callback === 'function') {
+				callback({
+					msg: 'Model isn\'t valid. Cancle update'
+				});
+			}
+		}
+	};
+
+	XQCore.Sync = Sync;
+
+})(XQCore);
+/**
+ *	@requires XQCore.Utils
+ *	@requires XQCore.Event
+ *	@requires XQCore.Logger
+ */
+(function(XQCore, undefined) {
+	'use strict';
+	var Model;
+
+	Model = function(name, conf) {
+		if (typeof arguments[0] === 'object') {
+			conf = name;
+			name = conf.name;
+		}
+
+		/**
+		 * Enable debug mode
+		 * @public
+		 * @type {Boolean}
+		 */
+		this.debug = XQCore.debug;
+
+		if (conf === undefined) {
+			conf = {};
+		}
+
+		this.__state = 'starting';
+		this.__unfiltered = {};
+
+		this.customValidate = conf.validate;
+		delete conf.validate;
+
+		this.conf = conf;
+
+		this.name = (name ? name.replace(/Model$/, '') : 'Nameless') + 'Model';
+		this._isValid = false;
+		this.properties = {};
+		this.schema = conf.schema;
+	};
+
+
+	XQCore.extend(Model.prototype, new XQCore.Event(), new XQCore.Logger());
+
+	if (XQCore.Sync) {
+		XQCore.extend(Model.prototype, XQCore.Sync.prototype);
+	}
+
+	Model.prototype.init = function() {
+		var self = this,
+			conf = this.conf;
+
+		if (typeof conf === 'function') {
+			conf.call(this, self);
+		}
+		else {
+			XQCore.extend(this, conf);
+		}
+
+		if (this.debug) {
+			XQCore._dump[this.name] = this;
+		}
+
+		//Add default values
+		if (this.defaults && !XQCore.isEmptyObject(this.defaults)) {
+			this.set(this.defaults);
+		}
+
+		this.state('ready');
+	};
+
+	/**
+	 * Change the model state
+	 *
+	 * @method state
+	 * @param {String} state New state
+	 */
+	Model.prototype.state = function(state) {
+		this.__state = state;
+		this.emit('state.' + state);
+		this.emit('state.change', state);
+	};
+
+	/**
+	 * Get the current model state
+	 *
+	 * @method getState
+	 */
+	Model.prototype.getState = function() {
+		return this.__state;
+	};
+
+	/**
+	 * Set model data
+	 *
+	 * Triggers a data.change event if data was set succesfully
+	 *
+	 * @method set
+	 * @param {Object} data
+	 */
+	
+	/**
+	 * Set model data
+	 *
+	 * Triggers these events if data was set succesfully<br>
+	 * data.change<br>
+	 * &lt;key&gt;.change
+	 *
+	 * options: {
+	 *   silent: <Boolean> Don't trigger any events
+	 *   noValidation: <Boolean> Don't validate
+	 *   validateOne: <Boolean> Only if setting one item, validate the item only
+	 * }
+	 *
+	 * @method set
+	 * @param {String} key
+	 * @param {Object} value Data value
+	 * @param {Object} options Options
+	 */
+	Model.prototype.set = function(key, value, options) {
+		var newData = {},
+			oldData = this.get(),
+			validateResult,
+			setItem = false,
+			setAll = false;
+
+		options = options || {};
+
+		if (arguments[0] === null) {
+			newData = arguments[1];
+			setAll = true;
+			this.log('Set data', newData, oldData);
+		}
+		else if (typeof arguments[0] === 'object') {
+			//Add a dataset
+			key = null;
+			options = value || {};
+			newData = options.extend ? XQCore.extend(newData, oldData, arguments[0]) : arguments[0];
+			setAll = true;
+			this.log('Set data', newData, oldData);
+		}
+		else if (typeof arguments[0] === 'string') {
+			newData = XQCore.extend({}, this.get());
+			setItem = true;
+			XQCore.dedotify(newData, key, value);
+			this.log('Set data', newData, oldData);
+
+			options = options || {};
+			if (!this.customValidate && options.validateOne) {
+				options.noValidation = true;
+				validateResult = this.validateOne(this.schema[key], value);
+				if (validateResult.isValid === false) {
+					this.warn('Validate error in model.set', validateResult);
+					if (options.silent !== true) {
+						this.emit('validation.error', validateResult, newData);
+					}
+					return false;
+				}
+			}
+		}
+		else {
+			this.warn('Data are incorrect in model.set()', arguments);
+		}
+
+		options = options || {};
+
+		if (!this.customValidate && this.schema && options.noValidation !== true) {
+			validateResult = this.validate(newData);
+			if (validateResult !== null) {
+				this.warn('Validate error in model.set', validateResult);
+				if (options.silent !== true) {
+					this.emit('validation.error', validateResult, newData);
+				}
+				return false;
+			}
+		}
+
+		if (this.customValidate && options.noValidation !== true) {
+			validateResult = this.customValidate(newData);
+			this.log('Using a custom validation which returns:', validateResult);
+			if (validateResult !== null) {
+				this.warn('Validate error in model.set', validateResult);
+				this.emit('validation.error', validateResult, newData);
+				return false;
+			}
+		}
+
+		this.properties = newData;
+		if (options.silent !== true) {
+			if (setAll) {
+				if (typeof this.sync === 'function' && options.sync !== false) {
+					this.sync('replace', newData);
+				}
+
+				this.emit('data.replace', newData, oldData);
+			}
+			else if (setItem){
+				if (typeof this.sync === 'function' && options.sync !== false) {
+					this.sync('item', key, value);
+				}
+				
+				this.emit('data.item', key, value);
+			}
+
+			this.emit('data.change', newData, oldData);
+		}
+
+		return true;
+	};
+
+	/**
+	 * Get one or all properties from a dataset
+	 *
+	 * @param  {String} key Data key
+	 *
+	 * @return {Object}     model dataset
+	 */
+	Model.prototype.get = function(key) {
+		if (key === undefined) {
+			return this.properties;
+		}
+		else {
+			return XQCore.undotify(key, this.properties);
+		}
+	};
+
+	/**
+	 * Check wether model has a dataset
+	 *
+	 * @param {String} key Dataset key
+	 * @return {Boolean} Returns true if model has a dataset with key
+	 */
+	Model.prototype.has = function(key) {
+		return !!this.properties[key];
+	};
+
+	/**
+	 * Remove all data from model
+	 */
+	Model.prototype.reset = function() {
+		this.log('Reset model');
+		this.properties = {};
+		// this.removeAllListeners();
+	};
+
+	/**
+	 * Append data to a subset
+	 *
+	 * @param {String} path path to subset
+	 * @param {Object} data data to add
+	 */
+	Model.prototype.append = function(path, data, options) {
+		var dataset = XQCore.undotify(path, this.properties);
+
+		options = options || {};
+
+		if (dataset instanceof Array) {
+			dataset.push(data);
+		}
+		else if (typeof dataset === 'undefined') {
+			XQCore.dedotify(this.properties, path, [data]);
+		}
+		else if (typeof dataset === 'object' && !path && XQCore.isEmptyObject(this.properties)) {
+			this.properties = [data];
+		}
+		else {
+			this.error('Model.append requires an array. Dataset isn\'t an array. Path: ', path);
+			return;
+		}
+
+		if (options.silent !== true) {
+			if (typeof this.sync === 'function' && options.sync !== false) {
+				this.sync('append', path, data);
+			}
+
+			this.emit('data.append', path, data);
+			this.emit('data.change', this.properties);
+		}
+	};
+
+	/**
+	 * Prepend data to a subset
+	 *
+	 * @param {String} path path to subset
+	 * @param {Object} data data to add
+	 */
+	Model.prototype.prepend = function(path, data, options) {
+		var dataset = XQCore.undotify(path, this.properties);
+
+		options = options || {};
+
+		if (dataset instanceof Array) {
+			dataset.unshift(data);
+		}
+		else if (typeof dataset === 'undefined') {
+			XQCore.dedotify(this.properties, path, [data]);
+		}
+		else if (typeof dataset === 'object' && !path && XQCore.isEmptyObject(this.properties)) {
+			this.properties = [data];
+		}
+		else {
+			this.error('Model.prepend requires an array. Dataset isn\'t an array. Path: ', path);
+			return;
+		}
+
+		if (options.silent !== true) {
+			if (typeof this.sync === 'function' && options.sync !== false) {
+				this.sync('prepend', path, data);
+			}
+
+			this.emit('data.prepend', path, data);
+			this.emit('data.change', this.properties);
+		}
+	};
+
+	Model.prototype.insert = function(path, index, data, options) {
+		var dataset = XQCore.undotify(path, this.properties);
+
+		options = options || {};
+
+		if (dataset instanceof Array) {
+			dataset.splice(index, 0, data);
+		}
+		else if (typeof dataset === 'undefined') {
+			XQCore.dedotify(this.properties, path, [data]);
+		}
+		else if (typeof dataset === 'object' && !path && XQCore.isEmptyObject(this.properties)) {
+			this.properties = [data];
+		}
+		else {
+			this.error('Model.insert requires an array. Dataset isn\'t an array. Path: ', path);
+			return;
+		}
+
+		if (options.silent !== true) {
+			if (typeof this.sync === 'function' && options.sync !== false) {
+				this.sync('insert', path, 1, data);
+			}
+
+			this.emit('data.insert', path, index, data);
+			this.emit('data.change', this.properties);
+		}
+	};
+
+	/**
+	 * Remove a subset
+	 *
+	 * @param {String} path path to subset
+	 * @param {Number} index Index of the subsut to remove
+	 * @param {Object} options Remove options
+	 *
+	 * @return {Object} removed subset
+	 */
+	Model.prototype.remove = function(path, index, options) {
+		var dataset = XQCore.undotify(path, this.properties),
+			removed = null;
+
+
+		options = options || {};
+
+		if (dataset instanceof Array) {
+			removed = dataset.splice(index, 1);
+		}
+		else if (typeof dataset === 'object') {
+			this.error('Model.remove requires an array. Dataset isn\'t an array. Path: ', path);
+			return;
+		}
+
+		if (removed && options.silent !== true) {
+			if (typeof this.sync === 'function' && options.sync !== false) {
+				this.sync('remove', path, index);
+			}
+
+			this.emit('data.remove', path, index, removed[0]);
+			this.emit('data.change', this.properties);
+		}
+
+		return removed;
+	};
+
+	/**
+	 * Search an item in models properties
+	 *
+	 * @param {String} path Path to the parent property. We use dot notation to navigate to subproperties. (data.bla.blub) (Optional)
+	 * @param {Object} searchfor Searching for object
+	 * @return {Object} Returns the first matched item or null
+	 */
+	Model.prototype.search = function(path, searchfor) {
+		var parent;
+
+		if (arguments.length === 1) {
+			searchfor = path;
+			path = '';
+			parent = this.properties;
+		}
+		else {
+			parent = XQCore.undotify(path, this.properties);
+		}
+
+		if (parent) {
+			for (var i = 0; i < parent.length; i++) {
+				var prop = parent[i],
+					matching;
+
+				for (var p in searchfor) {
+					if (searchfor.hasOwnProperty(p)) {
+						if (prop[p] && prop[p] === searchfor[p]) {
+							matching = true;
+						}
+						else {
+							matching = false;
+							break;
+						}
+					}
+				}
+
+				if (matching === true) {
+					return prop;
+				}
+
+			}
+		}
+
+		return null;
+	};
+
+	/**
+	 * Sort an array collection by a given attribute
+	 *
+	 * @param {String} path Path to the collection
+	 * @param {Object} sortKeys Sort by key
+	 *
+	 * sortKeys: {
+	 *   'key': 1 // Sort ascend by key,
+	 *   'second.key': -1 // Sort descand by second.key
+	 * }
+	 *
+	 * ascend, a -> z, 0 - > 9 (-1)
+	 * descend, z -> a, 9 -> 0 (1)
+	 * 
+	 */
+	Model.prototype.sortBy = function(path, sortKeys) {
+		if (arguments.length === 1) {
+			sortKeys = path;
+			path = null;
+		}
+
+		var data = XQCore.undotify(path, this.properties),
+			order;
+
+		data.sort(function(a, b) {
+			order = -1;
+			for (var key in sortKeys) {
+				if (sortKeys.hasOwnProperty(key)) {
+					order = String(XQCore.undotify(key, a)).localeCompare(String(XQCore.undotify(key, b)));
+					if (order === 0) {
+						continue;
+					}
+					else if(sortKeys[key] === -1) {
+						order = order > 0 ? -1 : 1;
+					}
+
+					break;
+				}
+			}
+
+			return order;
+		});
+
+		this.set(path, data);
+		return data;
+	};
+
+	/**
+	 * Filter an array collection by a given filter function
+	 *
+	 * @param {String} path Path to the collection
+	 * @param {String | Function} filter Filter function
+	 *
+	 */
+	Model.prototype.filter = function(path, property, query, fn) {
+		if (arguments.length === 1) {
+			fn = path;
+			path = null;
+		}
+
+		if (typeof fn === 'string') {
+			if (this.__registeredFilter[fn]) {
+				fn = this.__registeredFilter[fn];
+			}
+			else {
+				throw new Error('Filter ' + fn + ' not registered!');
+			}
+		}
+
+		//We use a for i instead of Array.filter because it's faster!
+		var data = XQCore.undotify(path, this.__unfiltered.data || this.properties);
+		var filtered = [];
+		for (var i = 0, len = data.length; i < len; i++) {
+			if (fn(property, query, data[i])) {
+				filtered.push(data[i]);
+			}
+		}
+
+		this.__unfiltered = {
+			path: path,
+			data: data
+		};
+
+		this.set(path, filtered);
+		return filtered;
+	};
+
+	/**
+	 * Resets a filter
+	 * @method filterReset
+	 * @param {Object} options Set options
+	 */
+	Model.prototype.filterReset = function(options) {
+		if (this.__unfiltered) {
+			this.set(this.__unfiltered.path, this.__unfiltered.data, options);
+		}
+	};
+
+	Model.prototype.validate = function(data, schema) {
+		var failed = [];
+			
+		schema = schema || this.schema;
+
+		if (schema) {
+			Object.keys(schema).forEach(function(key) {
+				if (typeof data[key] === 'object' && typeof schema[key].type === 'undefined') {
+					var subFailed = this.validate(XQCore.extend({}, data[key]), XQCore.extend({}, schema[key]));
+					if (Array.isArray(subFailed) && subFailed.length > 0) {
+						failed = failed.concat(subFailed);
+					}
+					return;
+				}
+				
+				var validationResult = this.validateOne(schema[key], data[key]);
+
+				if (validationResult.isValid === true) {
+					data[key] = validationResult.value;
+				}
+				else {
+					validationResult.error.property = key;
+					failed.push(validationResult.error);
+				}
+			}.bind(this));
+		}
+
+		if (failed.length === 0) {
+			this._isValid = true;
+			return null;
+		}
+		else {
+			this._isValid = false;
+			return failed;
+		}
+	};
+
+	/**
+	 * Validate one property
+	 *
+	 * ValidatorResultItemObject
+	 * {
+	 *   isValid: Boolean,
+	 *   value: Any,
+	 *   error: Object
+	 * }
+	 *
+	 * @param  {Any} schema Schema for the check
+	 * @param  {Any} value Property value
+	 *
+	 * @return {Object}       Returns a ValidatorResultItemObject
+	 */
+	Model.prototype.validateOne = function(schema, value) {
+		var failed = null,
+			schemaType = typeof schema.type === 'function' ? typeof schema.type() : schema.type.toLowerCase();
+
+		if (value === '' && schema.noEmpty === true) {
+			value = undefined;
+		}
+
+		if ((value === undefined || value === null) && schema.default) {
+			value = schema.default;
+		}
+
+		if ((value === undefined || value === null || value === '')) {
+			if (schema.required === true) {
+				failed = {
+					msg: 'Property is undefined or null, but it\'s required',
+					errCode: 10
+				};
+			}
+		}
+		else if (schemaType === 'string') {
+			if (schema.convert && typeof(value) === 'number') {
+				value = String(value);
+			}
+
+			if (schemaType !== typeof(value)) {
+				failed = {
+					msg: 'Property type is a ' + typeof(value) + ', but a string is required',
+					errCode: 11
+				};
+			}
+			else if(schema.min && schema.min > value.length) {
+				failed = {
+					msg: 'String length is too short',
+					errCode: 12
+				};
+			}
+			else if(schema.max && schema.max < value.length) {
+				failed = {
+					msg: 'String length is too long',
+					errCode: 13
+				};
+			}
+			else if(schema.match && !schema.match.test(value)) {
+				failed = {
+					msg: 'String doesn\'t match regexp',
+					errCode: 14
+				};
+			}
+
+		}
+		else if(schemaType === 'number') {
+			if (schema.convert && typeof(value) === 'string') {
+				value = parseInt(value, 10);
+			}
+
+			if (schemaType !== typeof(value)) {
+				failed = {
+					msg: 'Property type is a ' + typeof(value) + ', but a number is required',
+					errCode: 21
+				};
+			}
+			else if(schema.min && schema.min > value) {
+				failed = {
+					msg: 'Number is too low',
+					errCode: 22
+				};
+			}
+			else if(schema.max && schema.max < value) {
+				failed = {
+					msg: 'Number is too high',
+					errCode: 23
+				};
+			}
+		}
+		else if(schemaType === 'date') {
+			if (value) {
+				var date = Date.parse(value);
+				if (isNaN(date)) {
+					failed = {
+						msg: 'Property isn\'t a valid date',
+						errCode: 31
+					};
+				}
+			}
+		}
+		else if(schemaType === 'array') {
+			if (!Array.isArray(value)) {
+				failed = {
+					msg: 'Property type is a ' + typeof(value) + ', but an array is required',
+					errCode: 41
+				};
+			}
+			else if(schema.min && schema.min > value.length) {
+				failed = {
+					msg: 'Array length is ' + value.length + ' but must be greater than ' + schema.min,
+					errCode: 42
+				};
+			}
+			else if(schema.max && schema.max < value.length) {
+				failed = {
+					msg: 'Array length is ' + value.length + ' but must be lesser than ' + schema.max,
+					errCode: 43
+				};
+			}
+		}
+		else if(schemaType === 'object') {
+			if (typeof(value) !== 'object') {
+				failed = {
+					msg: 'Property isn\'t a valid object',
+					errCode: 51
+				};
+			}
+		}
+		else if(schemaType === 'objectid') {
+			if (!/^[a-zA-Z0-9]{24}$/.test(value)) {
+				failed = {
+					msg: 'Property isn\'t a valid objectId',
+					errCode: 52
+				};
+			}
+		}
+		else if(schemaType === 'boolean') {
+			if (typeof(value) !== 'boolean') {
+				failed = {
+					msg: 'Property isn\'t a valid boolean',
+					errCode: 61
+				};
+			}
+		}
+
+		if (failed === null) {
+			failed = {
+				isValid: true,
+				value: value,
+				error: null
+			};
+		}
+		else {
+			this.warn('Validation error on property', failed, 'Data:', value);
+			failed = {
+				isValid: false,
+				value: value,
+				error: failed
+			};
+		}
+
+		return failed;
+	};
+
+	Model.prototype.isValid = function() {
+		return this._isValid;
+	};
+
+	Model.prototype.setData = function(data, caller) {
+		return this.set(data, {
+			extend: true
+		});
+	};
+
+	/**
+	 * Register a filter function 
+	 *
+	 * XQCore.Model.registerFilter('myfilter', fn);
+	 * Registers a filter for all models
+	 *
+	 * instance.registerFilter('myfilter', fn);
+	 * Registers a filter for the instance only.
+	 * 
+	 * @method registerFilter
+	 * @param {String} filterName [description]
+	 * @param {Function} filterFunction [description]
+	 */
+	Model.registerFilter = function(filterName, filterFunction) {
+		if (typeof filterFunction !== 'function') {
+			throw new Error('Filter function isn\'t a function');
+		}
+
+		var obj = typeof this === 'function' ? Model.prototype : this;
+		obj.__registeredFilter[filterName] = filterFunction;
+	};
+
+	Model.prototype.registerFilter = Model.registerFilter;
+
+	Model.prototype.__registeredFilter = {
+		quicksearch: function(property, query, item) {
+			// console.log('Filter item:', property, query, item);
+			var value = XQCore.undotify(property, item);
+			var pat = new RegExp(query.replace(/[a-z0-9äüöß]/g, '$&.*'), 'i');
+			// console.log('Pat:', pat.source);
+			return pat.test(value);
+		}
+	};
+
+	XQCore.Model = Model;
+})(XQCore);
+
+/**
+ * XQCore.GetSet
+ *
+ * @module XQCore.GetSet
+ * @requires XQCore.Logger
+ * @requires XQCore.Event
+ */
+XQCore.GetSet = XQCore.Model;
+/*global define:false */
+(function (root, factory) {
+	'use strict';
+
+	if (typeof define === 'function' && define.amd) {
+		define('xqcore', [XQCore.templateEngine], factory);
+	} else if (typeof module !== 'undefined' && module.exports) {
+		module.exports = factory(require(XQCore.templateEngine));
+	} else {
+		var engine = XQCore.templateEngine === 'firetpl' ? 'FireTPL' : 'Handlebars';
+		root.XQCore = factory(root[engine]);
+	}
+
+}(this, function (TemplateEngine) {
+	'use strict';
+
+	XQCore.Tmpl = {
+		type: XQCore.templateEngine,
+		compile: TemplateEngine.compile,
+		getTemplate: function(viewName) {
+			if (XQCore.templateEngine === 'firetpl') {
+				var FireTPL = TemplateEngine;
+				if (FireTPL.templateCache && FireTPL.templateCache[viewName]) {
+					return FireTPL.templateCache[viewName];
+				}
+				else if(!FireTPL.loadFile) {
+					throw new Error('FireTPL runtime is being used. Please preload the ' + viewName + 'View');
+				}
+				else {
+					var tmpl = FireTPL.loadFile(XQCore.viewsDir.replace(/\/$/, '') + '/' + viewName + '.' + XQCore.viewExt.replace(/^\./, ''));
+					return FireTPL.compile(tmpl);
+				}
+			}
+		}
+	};
+
+	return XQCore;
+}));
+
+/**
+ * XQCore View module
+ *
+ * @module XQCore.View
+ * @returns {object} Returns a XQCore.View prototype object
+ */
+(function(XQCore, undefined) {
+	'use strict';
+
+	var $ = XQCore.require("components~jquery@2.1.0");
+
+	/**
+	 * XQCore.View
+	 *
+	 * @class XQCore.View
+	 * @constructor
+	 *
+	 * @uses XQCore.Logger
+	 * @uses XQCore.Event
+	 * 
+	 * @param {object} conf View configuration
+	 */
+	var View = function(name, initFunc) {
+		var conf;
+
+		if (typeof arguments[0] === 'object') {
+			conf = name;
+			name = conf.name;
+		}
+		
+		/**
+		 * Enable debug mode
+		 * @public
+		 * @type {Boolean}
+		 */
+		this.debug = XQCore.debug;
+
+		/**
+		 * Set presenter name
+		 * @public
+		 * @type {String}
+		 */
+		this.name = (name ? name.replace(/View$/, '') : 'Nameless') + 'View';
+
+		/**
+		 * Sets the container element
+		 * @property container
+		 * @type Selector
+		 * @default 'body'
+		 */
+		this.container = 'body';
+
+		/**
+		 * Set the view element tag
+		 *
+		 * @property tag
+		 * @type {String}
+		 * @default 'div'
+		 */
+		this.tag = 'div';
+
+		/**
+		 * Set the insert mode
+		 *
+		 * @property mode
+		 * @type {String}
+		 * @default	replace
+		 */
+		this.mode = 'replace';
+
+		/**
+		 * Enable/Disable autoInjection of the view into the DOM
+		 *
+		 * @property autoInject
+		 * @type {Boolean}
+		 * @default true
+		 */
+		this.autoInject = true;
+
+		/**
+		 * Set initFunc
+		 *
+		 * @method initFunc
+		 * @protected
+		 */
+		this.initFunc = initFunc;
+
+		/**
+		 * Holds the domReady state
+		 *
+		 * @property __domReady
+		 * @type {Boolean}
+		 * @default false
+		 * @private
+		 */
+		this.__domReady = false;
+
+
+		/* ++++++++++ old stuff +++++++++++++ */
+
+		conf = conf || {
+			events: null
+		};
+
+		this.conf = conf;
+	};
+
+	XQCore.extend(View.prototype, new XQCore.Event(), new XQCore.Logger());
+
+	/**
+	 * Init function
+	 *
+	 * @method init
+	 *
+	 * @param  {Object} presenter Views presenter object
+	 */
+	View.prototype.init = function(presenter) {
+		var self = this,
+			conf = this.conf;
+
+
+		if (typeof this.initFunc === 'function') {
+			this.initFunc.call(this, self);
+		}
+
+		if (typeof presenter !== 'object') {
+			throw new Error('No presenter was set in view.init()');
+		}
+
+		//Register view at presenter
+		this.presenter = presenter;
+
+		$(function() {
+
+			if (this.container.length > 0) {
+				window.addEventListener('resize', function(e) {
+					self.resize(e);
+				}, false);
+
+				this.log('Initialize view with conf:', conf);
+				this.log('  ... using Presenter:', this.presenter.name);
+				this.log('  ... using Container:', this.container);
+
+				//Send events to presenter
+				if (this.events) {
+					Object.keys(this.events).forEach(function(key) {
+						var spacePos = key.indexOf(' '),
+							eventFunc = this.events[key],
+							eventName = key.substr(0, spacePos),
+							selector = key.substr(spacePos + 1) || this.container,
+							self = this,
+							eventDest;
+
+						if (typeof eventFunc === 'function') {
+							eventDest = this;
+						}
+						else if (eventFunc.indexOf('view:') === 0) {
+							eventFunc = this[eventFunc.substr(5)];
+							eventDest = this;
+						}
+						else if (typeof this.presenter.events[this.events[key]] === 'function') {
+							eventFunc = this.presenter.events[this.events[key]];
+							eventDest = this.presenter;
+						}
+						else {
+							var eventFuncStr = eventFunc;
+							eventFunc = function(e, tag, data) {
+								this.triggerEvent(eventFuncStr, e, tag, data);
+							}.bind(this);
+							eventDest = this;
+						}
+
+						if (eventFunc && eventName) {
+
+							if (typeof eventFunc === 'function') {
+								//Register event listener
+								this.container.delegate(selector, eventName, function(e) {
+									var formData = null,
+										tagData = null;
+
+									if (e.type === 'submit') {
+										formData = XQCore.Util.serializeForm(e.currentTarget);
+									}
+									else if (e.type === 'keydown' || e.type === 'keyup' || e.type === 'keypress') {
+										formData = $(e.currentTarget).val();
+									}
+
+									tagData = $.extend($(e.currentTarget).data(), {
+										itemIndex: getItemIndex.call(self, e.currentTarget)
+									});
+
+									eventFunc.call(eventDest, e, tagData, formData);
+								}.bind(this));
+								this.log('Register Event:', eventName, 'on selector', selector, 'with callback', eventFunc);
+							}
+							else {
+								this.warn('Event handler callback not defined in Presenter:', this.events[key]);
+							}
+						}
+						else {
+							this.warn('Incorect event configuration', key);
+						}
+					}, this);
+				}
+
+				// custom init
+				if (typeof this.customInit === 'function') {
+					this.customInit.call(this);
+				}
+
+				//Call presenter.initView()
+				// this.presenter.fireViewInit(this);
+			}
+			else {
+				this.error('Can\'t initialize View, Container not found!', this.container);
+			}
+
+			//Set DOM ready state
+			this.__domReady = true;
+			if (this.__initialData) {
+				this.render(this.__initialData);
+				delete this.__initialData;
+			}
+			
+		}.bind(this));
+
+	};
+
+	View.prototype.show = function() {
+		this.$el.show();
+	};
+
+	View.prototype.hide = function() {
+		this.$el.hide();
+	};
+
+	View.prototype.renderHTML = function(template, data) {
+		this.log('Render view html snipet', template, 'with data:', data);
+		template = typeof template === 'function' ? template : XQCore.Tmpl.compile(template);
+		return template(data);
+	};
+
+	View.prototype.resize = function() {
+
+	};
+
+	/**
+	 * Gets the data of an element
+	 *
+	 * @param {Object} selector DOM el or a jQuery selector of the element
+	 *
+	 * @return {Object} Returns the data of an element or null
+	 */
+	View.prototype.getElementData = function(selector) {
+		var el = $(selector, this.container);
+		if (el.length) {
+			var data = {},
+				attrs = el.get(0).attributes,
+				i;
+
+			for (i = 0; i < attrs.length; i++) {
+				if (attrs[i].name.indexOf('data-') === 0) {
+					var name = attrs[i].name.substr(5),
+						value = attrs[i].value;
+
+					if (typeof value === 'string') {
+						try {
+							if (value === 'true' || value === 'TRUE') {
+								value = true;
+							}
+							else if (value === 'false' || value === 'FALSE') {
+								value = false;
+							}
+							else if (value === 'null' || value === 'NULL') {
+								value = null;
+							}
+							else if (value === 'undefined') {
+								value = undefined;
+							}
+							else if (+value + '' === value) {
+								value = +value;
+							}
+							else {
+								value = JSON.parse(value);
+							}
+						}
+						catch(err) {
+
+						}
+					}
+
+					data[name] = value;
+				}
+			}
+
+			return data;
+		}
+		else {
+			return null;
+		}
+	};
+
+	/**
+	 * Triggers a view event to the presenter
+	 *
+	 * @method triggerEvent
+	 *
+	 * @param {String} eventName Event of the triggered event
+	 * @param {Object} e EventObject
+	 * @param {Object} tag Tag data
+	 * @param {Object} data Event data
+	 */
+	View.prototype.triggerEvent = function(eventName, e, tag, data) {
+		if (this.presenter.events[eventName]) {
+			this.presenter.events[eventName].call(this.presenter, e, tag, data);
+		}
+		else {
+			if (e) {
+				e.preventDefault();
+				e.stopPropagation();
+			}
+			
+			if (this.__coupledWith) {
+				this.__coupledWith.forEach(function(m) {
+					if (typeof m[eventName] === 'function') {
+						this.log('Autotrigger to model:', eventName, data);
+						m[eventName](data);
+					}
+					else {
+						this.warn('Autotrigger to model failed! Function doesn\'t exists:', eventName, data);
+					}
+				}.bind(this));
+			}
+		}
+	};
+
+	/**
+	 * Navigate to a given route
+	 *
+	 * @method navigateTo
+	 *
+	 * @param {String} route Route url
+	 * @param {Object} data Data object
+	 * @param {Boolean} replace Replace current history entry with route
+	 */
+	View.prototype.navigateTo = function(route, data, replace) {
+		this.presenter.navigateTo(route, data, replace);
+	};
+
+	/**
+	 * If a validation failed (Automaticly called in a coupled view)
+	 *
+	 * @method validationFailed
+	 * @param {Object} err Validation error object
+	 */
+	View.prototype.validationFailed = function(err, data) {
+		console.log(err, data);
+		err.forEach(function(item) {
+			this.$el.find('[name="' + item.property + '"]').addClass('xq-invalid');
+		}.bind(this));
+	};
+
+	/**
+	 * Recive a state.change event from a coupled model
+	 *
+	 * @param {String} state Model state
+	 */
+	View.prototype.stateChanged = function(state) {
+		
+	};
+
+	/**
+	 * Wait til view is ready
+	 *
+	 * @method ready
+	 * @param {Function} callback Callback
+	 */
+	View.prototype.ready = function(callback) {
+		if (this.isReady) {
+			callback.call(this);
+		}
+		else {
+			if (!this.__readyCallbacks) {
+				this.__readyCallbacks = [];
+			}
+
+			this.__readyCallbacks.push(callback);
+		}
+	};
+
+	View.prototype.__setReadyState = function() {
+		this.isReady = true;
+		if (this.__readyCallbacks) {
+			this.__readyCallbacks.forEach(function(fn) {
+				fn.call(this);
+			}.bind(this));
+		}
+	};
+
+	/**
+	 * Gets the index of a subSelector item
+	 * This function must binded to the view
+	 *
+	 * @param  {Object} el Start element.
+	 *
+	 * @return {Number}    index of the element or null
+	 */
+	var getItemIndex = function(el) {
+		var index = null,
+			container = $(this.container).get(0),
+			curEl = $(el),
+			nextEl = curEl.parent(),
+			subSelector = $(this.subSelector).get(0),
+			d = 0;
+
+		if (this.subSelector) {
+			do {
+				if (nextEl.get(0) === subSelector) {
+					return $(curEl).index();
+				}
+				curEl = curEl.parent();
+				nextEl = curEl.parent();
+
+				if (++d > 100) {
+					console.error('Break loop!');
+					break;
+				}
+			} while(curEl.length && curEl.get(0) !== container);
+		}
+
+		return index;
+	};
+
+	/* +---------- new since v0.7.0 ----------+ */
+
+	/**
+	 * Inject element into the DOM
+	 *
+	 * @public
+	 * @method inject
+	 */
+	View.prototype.inject = function() {
+		this.$ct = $(this.container);
+		this.log('Inject view into container', this.$ct);
+
+		this.el = this.$el.get(0);
+		this.$el.addClass('xq-view xq-view-' + this.name.toLowerCase());
+		this.ct = this.$ct.get(0);
+
+		if (this.hidden === true) {
+			this.$el.hide();
+		}
+
+		if (this.id) {
+			this.$el.attr('id', this.id);
+		}
+
+		if (this.className) {
+			this.$el.addClass(this.className);
+		}
+		
+		if (this.mode === 'replace') {
+			this.$ct.contents().detach();
+			this.$ct.append(this.$el);
+			// this.$ct.children().replaceWith(this.$el);
+		}
+		else if(this.mode === 'append') {
+			this.$ct.append(this.$el);
+		}
+		else if (this.mode === 'prepend') {
+			this.$ct.prepend(this.$el);
+		}
+		else {
+			throw new Error('Unknow insert mode in view.init()');
+		}
+	};
+
+	/**
+	 * Parse a precompiled template and returns a html string
+	 *
+	 * @method parse
+	 *
+	 * @param {Function} template Precompiled template
+	 * @param {Object} data Data object
+	 *
+	 * @return {String} compiled html
+	 */
+	View.prototype.parse = function(template, data) {
+		var html,
+			$newEl;
+
+		template.scopeStore = {};
+		template.scopes = {};
+
+		try {
+			html = template(data || {}, template.scopes);
+		}
+		catch(err) {
+			html = '<p class="renderError"><b>View render error!</b><br>' + err.message + '</p>';
+			this.error('View render error!', err);
+		}
+
+
+		if (html) {
+			html = $.parseHTML(html);
+			$newEl = $(html);
+			var els = $newEl.find('scope');
+			console.log('EL', els.length);
+			els.each(function() {
+				var scopeId = $(this).attr('id'),
+					path = $(this).attr('path'),
+					content;
+
+				console.log('Parse path', path);
+				content = {};
+				if (scopeId) {
+					content.value = $.parseHTML(template.scopes[scopeId](data[path], data));
+					content.id = scopeId;
+				}
+				else {
+					content.value = $.parseHTML(data[path]);
+				}
+
+				template.scopeStore[path] = template.scopeStore[path] || [];
+				template.scopeStore[path].push(content);
+
+				console.log('EL', $(this).get(0).outerHTML);
+				console.log('CONTENT', $(content.value).get(0).outerHTML);
+				$(this).replaceWith($(content.value));
+				console.log('REPLACETD', $newEl.get(0).outerHTML);
+			});
+		}
+
+		return $newEl;
+	};
+
+	/**
+	 * Render view
+	 *
+	 * @method render
+	 * @emits content.change
+	 *
+	 * @param  {Object} data Render data
+	 *
+	 */
+	View.prototype.render = function(data) {
+		if (this.__domReady === false) {
+			this.__initialData = data || {};
+			return;
+		}
+
+		var $newEl,
+			html,
+			isInitialRender = false;
+
+		//Initial render and injection
+		if (!this.$el) {
+			isInitialRender = true;
+		}
+
+		this.log('Render view template', this.template, 'with data:', data);
+
+		var template = typeof this.template === 'function' ? this.template : XQCore.Tmpl.compile(this.template);
+		this.scopes = {};
+		/*if (this.$el) {
+			this.$el.remove();
+		}*/
+
+		try {
+			html = template(data || {}, this.scopes);
+		}
+		catch(err) {
+			html = '<p class="renderError"><b>View render error!</b><br>' + err.message + '</p>';
+			this.error('View render error!', err);
+		}
+
+		html = $.parseHTML(html);
+		$newEl = $(html);
+		
+		if (this.$el) {
+			this.$el.replaceWith($newEl);
+		}
+
+		this.$el = $newEl;
+
+		if (isInitialRender) {
+			if (this.autoInject) {
+				this.inject();
+			}
+			//Set ready state
+			this.__setReadyState();
+		}
+
+		this.registerListener(this.$el);
+		this.emit('content.change', data);
+	};
+
+	View.prototype.registerListener = function($el) {
+		var self = this;
+
+		//TODO get form data on submit event
+		$el.find('[on]').addBack('[on]').each(function() {
+			var $cur = $(this);
+			var events = $(this).attr('on');
+			var data = $(this).data();
+			var listenerFunc;
+			$cur.removeAttr('on');
+
+			events = events.split(';');
+			events.forEach(function(ev) {
+				ev = ev.split(':');
+
+				if (ev[0] === 'submit') {
+					listenerFunc = function(e) {
+						e.preventDefault();
+						data = self.serializeForm(e.target);
+						self.presenter.emit(ev[1], data, e);
+						self.emit('form.submit', data);
+					}.bind(this);
+				}
+				else {
+					listenerFunc = function(e) {
+						e.preventDefault();
+						var value = e.currentTarget.value || '';
+						self.presenter.emit(ev[1], value, data, e);
+					}.bind(this);
+				}
+
+				$cur.bind(ev[0], listenerFunc);
+			});
+		});
+	};
+
+	/**
+	 * Serialize a form and return its values as JSON
+	 *
+	 * @param {Object} Form selector
+	 * @return {Object} FormData as JSON
+	 */
+	View.prototype.serializeForm = function(selector) {
+		var formData = {},
+			formSelector = $(selector);
+
+		if (formSelector.get(0).tagName !== 'INPUT') {
+			formSelector = formSelector.find(':input');
+		}
+
+		formSelector.serializeArray().forEach(function(item) {
+			XQCore.dedotify(formData, item.name, item.value);
+		});
+
+		if (this.debug) {
+			console.log('XQCore - Serialize form:', formSelector, formData);
+		}
+
+		return formData;
+	};
+
+	/**
+	 * Insert a subset
+	 * @param  {String} path  Data path
+	 * @param  {Number} index Index after which item the insert should be happen or use -1 to prepend
+	 * @param  {Object} data  Item data
+	 */
+	View.prototype.insert = function(path, index, data) {
+		var self = this;
+		var $scope = this.$el.find('.xq-scope[xq-path="' + path + '"]');
+		if ($scope.length) {
+			$scope.each(function() {
+				var scope = $(this).attr('xq-scope');
+				var html = self.scopes[scope]([data]);
+
+				var $childs = $(this).children();
+				if (index > -1) {
+					if (index > $childs.length - 1) {
+						index = $childs.length - 1;
+					}
+
+					$childs.eq(index).before(html);
+				}
+				else {
+					$childs.eq(index).after(html);
+				}
+			});
+		}
+	};
+
+	View.prototype.update = function(path, data) {
+		console.warn('XQCore doesn`t support update event yet');
+	};
+
+	View.prototype.append = function(path, data) {
+		this.insert(path, -1, data);
+	};
+
+	View.prototype.prepend = function(path, data) {
+		this.insert(path, 0, data);
+	};
+
+	/**
+	 * Remove an item from a subset. Removes the item with the given index.
+	 * If index is negative number it will be removed from the end
+	 * 
+	 * @param  {String} path  data path
+	 * @param  {Number} index Index of the item
+	 */
+	View.prototype.remove = function(path, index) {
+		var $scope = this.$el.find('.xq-scope[xq-path="' + path + '"]');
+		$scope.children(':eq(' + index + ')').remove();
+	};
+
+
+	XQCore.View = View;
+
+})(XQCore);
+
+/**
+ * Extends XQCore with some usefull functions
+ */
+(function(XQCore, undefined) {
+	'use strict';
+
+	XQCore.undotify = function(path, obj) {
+		if(path) {
+			path = path.split('.');
+			path.forEach(function(key) {
+				obj = obj[key];
+			});
+		}
+
+		return obj;
+	};
+
+	/**
+	 * Creates a object from an dotified key and a value
+	 *
+	 * @public
+	 * @method dedotify
+	 * 
+	 * @param {Object} obj Add new value to obj. This param is optional.
+	 * @param {String} key The dotified key
+	 * @param {Any} value The value
+	 *
+	 * @returns {Object} Returns the extended object if obj was set otherwis a new object will be returned
+	 */
+	XQCore.dedotify = function(obj, key, value) {
+
+		if (typeof obj === 'string') {
+			value = key;
+			key = obj;
+			obj = {};
+		}
+
+		var newObj = obj;
+
+		if(key) {
+			key = key.split('.');
+			var len = key.length;
+			key.forEach(function(k, i) {
+				if (i === len - 1) {
+					obj[k] = value;
+					return;
+				}
+
+				if (!obj[k]) {
+					obj[k] = {};
+				}
+
+				obj = obj[k];
+			});
+		}
+
+		obj = value;
+
+		return newObj;
+	};
+
+})(XQCore);
+/*jshint -W014 */
+/**
+ * XQCore Router API
+ *
+ * @author Andi Heinkelein - noname-media.com
+ * @copyright Andi Heinkelein - noname-media.com
+ * @package XQCore
+ *
+ * Based on router.js v0.2.0
+ * Copyright Aaron Blohowiak and TJ Holowaychuk 2011.
+ * https://github.com/aaronblohowiak/routes.js
+ */
+(function(XQCore, undefined) {
+	'use strict';
+
+	/**
+	 * Convert path to route object
+	 *
+	 * A string or RegExp should be passed,
+	 * will return { re, src, keys} obj
+	 *
+	 * @param  {String / RegExp} path
+	 * @return {Object}
+	 */
+	var Route = function(path) {
+		//using 'new' is optional
+		
+		var src, re, keys = [];
+		
+		if (path instanceof RegExp) {
+			re = path;
+			src = path.toString();
+		} else {
+			re = pathToRegExp(path, keys);
+			src = path;
+		}
+
+		return {
+			re: re,
+			src: path.toString(),
+			keys: keys
+		};
+	};
+
+	/**
+	 * Normalize the given path string,
+	 * returning a regular expression.
+	 *
+	 * An empty array should be passed,
+	 * which will contain the placeholder
+	 * key names. For example "/user/:id" will
+	 * then contain ["id"].
+	 *
+	 * @param  {String} path
+	 * @param  {Array} keys
+	 * @return {RegExp}
+	 */
+	var pathToRegExp = function (path, keys) {
+		path = path
+			.concat('/?')
+			.replace(/\/\(/g, '(?:/')
+			.replace(/(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?/g, function(_, slash, format, key, capture, optional){
+				keys.push(key);
+				slash = slash || '';
+				return ''
+					+ (optional ? '' : slash)
+					+ '(?:'
+					+ (optional ? slash : '')
+					+ (format || '') + (capture || '([^/]+?)') + ')'
+					+ (optional || '');
+			})
+			.replace(/([\/.])/g, '\\$1')
+			.replace(/\*/g, '(.+)');
+		return new RegExp('^' + path + '$', 'i');
+	};
+
+	/**
+	 * Attempt to match the given request to
+	 * one of the routes. When successful
+	 * a  {fn, params, splats} obj is returned
+	 *
+	 * @param  {Array} routes
+	 * @param  {String} uri
+	 * @return {Object}
+	 */
+	var match = function (routes, uri) {
+		var captures, i = 0;
+
+		for (var len = routes.length; i < len; ++i) {
+			var route = routes[i],
+				re = route.re,
+				keys = route.keys,
+				splats = [],
+				params = {},
+				j;
+
+			captures = re.exec(uri);
+			if (captures) {
+				for (j = 1, len = captures.length; j < len; ++j) {
+					var key = keys[j-1],
+						val = typeof captures[j] === 'string'
+							? decodeURIComponent(captures[j])
+							: captures[j];
+					if (key) {
+						params[key] = val;
+					} else {
+						splats.push(val);
+					}
+				}
+
+				return {
+					params: params,
+					splats: splats,
+					route: route.src
+				};
+			}
+		}
+	};
+
+	/**
+	 * Default "normal" router constructor.
+	 * accepts path, fn tuples via addRoute
+	 * returns {fn, params, splats, route}
+	 *  via match
+	 *
+	 * @return {Object}
+	 */
+	// var getRouter = function() {
+	//   //using 'new' is optional
+	//   return {
+	//     routes: [],
+	//     routeMap : {},
+	//     addRoute: function(path, fn) {
+	//       if (!path) {
+	//         throw new Error(' route requires a path');
+	//       }
+
+	//       if (!fn) {
+	//        throw new Error(' route ' + path.toString() + ' requires a callback');
+	//       }
+
+	//       var route = new Route(path);
+	//       route.fn = fn;
+
+	//       this.routes.push(route);
+	//       this.routeMap[path] = fn;
+	//     },
+
+	//     match: function(pathname) {
+	//       var route = match(this.routes, pathname);
+	//       if(route){
+	//         route.fn = this.routeMap[route.route];
+	//       }
+	//       return route;
+	//     }
+	//   };
+	// };
+
+	var Router = function(conf) {
+		conf = XQCore.extend({
+			debug: false
+		}, conf);
+
+		this.debug = Boolean(conf.debug);
+
+		this.routes = [];
+		this.routeMap = {};
+	};
+
+	Router.prototype.addRoute = function(path, fn) {
+		if (!path) {
+			throw new Error(' route requires a path');
+		}
+
+		if (!fn) {
+			throw new Error(' route ' + path.toString() + ' requires a callback');
+		}
+
+		var route = new Route(path);
+		route.fn = fn;
+
+		this.routes.push(route);
+		this.routeMap[path] = fn;
+	};
+
+	Router.prototype.match = function(pathname) {
+		var route = match(this.routes, pathname);
+		if(route){
+			route.fn = this.routeMap[route.route];
+		}
+		return route;
+	};
+
+	/**
+	 * Fires a give route
+	 *
+	 * @param  {String} route	The route to fire
+	 * @param  {Object}	data	Callback data
+	 *
+	 * @return {Boolean}       Returns the matched route
+	 */
+	Router.prototype.fire = function(route, data) {
+		route = this.match(route);
+		if (route) {
+			route.fn(data);
+		}
+	};
+
+	XQCore.Router = Router;
+
+})(XQCore);
+/*global SockJS:false */
+
+/**
+ * XQCore.Socket module
+ * @module XQCore.Socket
+ * @requires XQCore.Logger
+ * @requires sockJS-client
+ */
+(function(XQCore, undefined) {
+	'use strict';
+
+	var Socket = function() {
+		this.__isReady = false;
+		this.__onReadyCallbacks = [];
+		this.__eventEmitter = new XQCore.Event();
+	};
+
+
+	XQCore.extend(Socket.prototype, new XQCore.Logger());
+
+	/**
+	 * Connect to a socket server
+	 *
+	 * @method connect
+	 * @param  {String}   url      Socket server url
+	 * @param  {Object}   options  SockJS options
+	 * @param  {Function} callback Callback function. Its called if connection was successful and its called before ready state becomes true
+	 */
+	Socket.prototype.connect = function(url, options, callback) {
+		var self = this;
+
+
+		this.sockJS = new SockJS(url, null, options);
+		console.log('Connect to socket server ', url, 'using options:', options);
+
+		this.sockJS.onopen = function() {
+			console.log('Connection was successful!');
+			if (typeof callback === 'function') {
+				callback();
+			}
+
+			self.setReady();
+		}.bind(this);
+
+		this.sockJS.onmessage = function(e) {
+			var msg;
+
+			try {
+				msg = JSON.parse(e.data);
+			}
+			catch(err) {
+				console.error('Could\'t parse socket message!', e.data);
+			}
+
+			console.log('Got message', msg.eventName, msg.data);
+			self.__eventEmitter.emit(msg.eventName, msg.data);
+		}.bind(this);
+
+		this.sockJS.onclose = function() {
+			console.log('Connection closed!');
+		}.bind(this);
+	};
+
+	/**
+	 * send a message to a socket server
+	 * @param  {String} eventName Event name
+	 * @param  {Object} data      Data
+	 */
+	Socket.prototype.emit = function(eventName, data) {
+		this.ready(function() {
+			console.log('Send message ', eventName, data);
+			this.sockJS.send(JSON.stringify({
+				eventName: eventName,
+				data: data
+			}));
+		}.bind(this));
+	};
+
+	/**
+	 * Register a listener for an incoming socket message
+	 * @param  {String}   eventName Event name
+	 * @param  {Function} callback  Listener callback
+	 */
+	Socket.prototype.on = function(eventName, callback) {
+		this.__eventEmitter.on(eventName, callback);
+	};
+
+
+	/**
+	 * Register a once-listener for an incoming socket message
+	 * @param  {String}   eventName Event name
+	 * @param  {Function} callback  Listener callback
+	 */
+	Socket.prototype.once = function(eventName, callback) {
+		this.__eventEmitter.once(eventName, callback);
+	};
+
+	/**
+	 * Unregister a socket listener
+	 * @param  {String}   eventName Event name
+	 * @param  {Function} callback  Listener callback (Optional)
+	 */
+	Socket.prototype.off = function(eventName, callback) {
+		this.__eventEmitter.off(eventName, callback);
+	};
+
+	/**
+	 * Call function when socket is ready
+	 * @param  {Function} fn Function to be called if socket is ready
+	 */
+	Socket.prototype.ready = function(fn) {
+		if (this.__isReady) {
+			fn.call(this);
+		}
+		else {
+			this.__onReadyCallbacks.push(fn);
+		}
+	};
+
+	Socket.prototype.setReady = function() {
+		this.__isReady = true;
+		this.__onReadyCallbacks.forEach(function(fn) {
+			fn.call(this);
+		}.bind(this));
+
+		this.__onReadyCallbacks = [];
+	};
+
+	XQCore.Socket = Socket;
+
+})(XQCore);
+/**
+ *	@requires XQCore.Model
+ *	@requires XQCore.Socket
+ */
+(function(XQCore, undefined) {
+	'use strict';
+	var SyncModel;
+
+	SyncModel = function(name, conf) {
+		//Call XQCore.Model constructor
+		XQCore.Model.call(this, name, conf);
+
+		this.server = conf.server || location.protocol + '//' + location.hostname;
+		this.port = conf.port || 9999;
+		this.path = conf.path || 'xqsocket/' + name;
+		this.syncEnabled = false;
+	};
+
+	SyncModel.prototype = Object.create(XQCore.Model.prototype);
+	SyncModel.prototype.constructor = SyncModel;
+
+	SyncModel.prototype.init = function() {
+		//Call XQCore.Model constructor
+		XQCore.Model.prototype.init.call(this);
+
+		this.connectToSocket();
+	};
+
+	/**
+	 * Connect to a socket server
+	 *
+	 * @method connectToSocket
+	 */
+	SyncModel.prototype.connectToSocket = function() {
+		var socketServer = this.server + ':' + this.port + '/' + this.path;
+		if (!this.socket) {
+			this.socket = new XQCore.Socket();
+			this.socket.connect(socketServer);
+		}
+	};
+
+	SyncModel.prototype.register = function(enableSync) {
+		var self = this,
+			modelName = this.conf.syncWith || this.name.replace(/Model$/,'');
+
+		this.syncEnabled = !!enableSync;
+
+		console.log('register model at server');
+		this.socket.emit('syncmodel.register', {
+			name: modelName
+		});
+
+		this.socket.on('syncmodel.change', function(data) {
+			var opts = {
+				sync: false
+			};
+
+			var args = data.slice(1);
+			args.push(opts);
+
+			switch (data[0]) {
+				case 'replace':
+				case 'item':
+					self.set.apply(self, args);
+					break;
+				case 'append':
+					self.append.apply(self, args);
+					break;
+				case 'prepend':
+					self.prepend.apply(self, args);
+					break;
+				case 'insert':
+					self.insert.apply(self, args);
+					break;
+				case 'remove':
+					self.remove.apply(self, args);
+					break;
+
+				default:
+					self.warn('Unknown syncmodel event', data[0]);
+			}
+		});
+	};
+
+	SyncModel.prototype.unregister = function() {
+		var modelName = this.conf.syncWith || this.name.replace(/Model$/,'');
+		this.socket.emit('syncmodel.unregister', {
+			name: modelName
+		});
+
+		this.socket.off('syncmodel.change');
+	};
+
+	/**
+	 * Send a socket emit to the server
+	 * @param  {String} eventName Event name
+	 * @param  {Object} data      Data object
+	 */
+	SyncModel.prototype.emitRemote = function(eventName, data) {
+		this.socket.emit(eventName, data);
+	};
+
+	SyncModel.prototype.sync = function() {
+		if (!this.syncEnabled) {
+			return;
+		}
+
+		var args = Array.prototype.slice.call(arguments);
+		this.emitRemote('syncmodel.change', args);
+	};
+
+	XQCore.SyncModel = SyncModel;
+})(XQCore);
+});
+
 require.register("doxit", function (exports, module) {
 module.exports = function() {
 	'use strict';
@@ -12794,8 +13758,6 @@ module.exports = function() {
 require.register("doxit/models/listing.model.js", function (exports, module) {
 module.exports = function() {
 	'use strict';
-
-	var path = require("path");
 
 	var XQCore = require("nonamemedia~xqcore@0.8.0");
 

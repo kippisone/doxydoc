@@ -3,10 +3,12 @@
   "description": "",
   "version": "0.0.1",
   "main": "index.js",
-  "paths": ["./components"],
+  "paths": [
+    "./components"
+  ],
   "dependencies": {
-    "nonamemedia/xqcore": "*",
-    "components/jquery": "^2.1.0"
+    "components/jquery": "^2.1.0",
+    "nonamemedia/xqcore": "*"
   },
   "scripts": [
     "index.js",

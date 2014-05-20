@@ -1,8 +1,6 @@
 module.exports = function() {
 	'use strict';
 
-	var path = require('path');
-
 	var XQCore = require('xqcore');
 
 	var listingModel = new XQCore.Model('listing', function(self) {
