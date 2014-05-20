@@ -1,0 +1,10 @@
+{
+	"project": "DoxIt-Frontend",
+	"browser": true,
+	"files": "build/doxit.js",
+	"watch": "**/!(build)/*.js",
+	"tests": "tests/*.spec.js",
+	"grunt": {
+		"task": ["componentbuild"]
+	}
+}

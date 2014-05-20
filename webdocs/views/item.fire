@@ -1,2 +1,7 @@
 div class=module-item
 	h1 $name
+	h4 $file
+	div class=description $description
+	div class=content
+		:each $classes
+			h3 $name

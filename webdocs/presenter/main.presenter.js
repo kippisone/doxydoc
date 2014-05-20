@@ -6,11 +6,11 @@ module.exports = function() {
 		itemModel = require('../models/item.model');
 
 	XQCore.debug = true;
+	
 	var presenter = new XQCore.Presenter('main', function(self) {
+		listingModel.fetch();
 		var mainView = self.initView('main', 'body');
-		var itemView = self.initView('item', '.content', {
-
-		});
+		var itemView = self.initView('item', '.content');
 
 		self.couple({
 			view: mainView,

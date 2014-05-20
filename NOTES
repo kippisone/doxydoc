@@ -1,0 +1,2677 @@
+listingData: {
+    "project": {
+        "name": "XQCore",
+        "description": "Model View Presenter Javascript Framework",
+        "version": "0.8.0-13",
+        "url": ""
+    },
+    "files": {
+        "src/cache/xqcore-cache.js": {
+            "name": "src/cache/xqcore-cache.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/core/xqcore-core.js": {
+            "name": "src/core/xqcore-core.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/event/xqcore-event.js": {
+            "name": "src/event/xqcore-event.js",
+            "modules": {},
+            "classes": {
+                "EventEmitter Manages event registering and emitting.": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/getset/xqcore-getset.js": {
+            "name": "src/getset/xqcore-getset.js",
+            "modules": {
+                "XQCore.GetSet": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/logger/xqcore-logger.js": {
+            "name": "src/logger/xqcore-logger.js",
+            "modules": {
+                "XQCore.Logger": 1
+            },
+            "classes": {
+                "XQCore.Logger": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/model/xqcore-model.js": {
+            "name": "src/model/xqcore-model.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/presenter/xqcore-presenter.js": {
+            "name": "src/presenter/xqcore-presenter.js",
+            "modules": {
+                "XQCore Presenter": 1
+            },
+            "classes": {
+                "XQCore.Presenter": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/router/xqcore-router.js": {
+            "name": "src/router/xqcore-router.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/socket/xqcore-socket.js": {
+            "name": "src/socket/xqcore-socket.js",
+            "modules": {
+                "XQCore.Socket": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/sync/xqcore-sync.js": {
+            "name": "src/sync/xqcore-sync.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/syncmodel/xqcore-syncmodel.js": {
+            "name": "src/syncmodel/xqcore-syncmodel.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/utils/xqcore-utils.js": {
+            "name": "src/utils/xqcore-utils.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/view/xqcore-view.js": {
+            "name": "src/view/xqcore-view.js",
+            "modules": {
+                "XQCore.View": 1
+            },
+            "classes": {
+                "XQCore.View": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "XQCore.GetSet": {
+            "name": "XQCore.GetSet",
+            "submodules": {},
+            "classes": {
+                "EventEmitter Manages event registering and emitting.": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src/event/xqcore-event.js",
+            "line": 21,
+            "description": "XQCore.GetSet",
+            "requires": [
+                "XQCore.Logger",
+                "XQCore.Event"
+            ],
+            "link": "XQCoreGetSet"
+        },
+        "XQCore.Logger": {
+            "name": "XQCore.Logger",
+            "submodules": {},
+            "classes": {
+                "XQCore.Logger": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src/logger/xqcore-logger.js",
+            "line": 25,
+            "description": "XQCore Logger is a logging tool to log messages, warnings, errors to the browser or onscreen console",
+            "link": "XQCoreLogger"
+        },
+        "XQCore Presenter": {
+            "name": "XQCore Presenter",
+            "submodules": {},
+            "classes": {
+                "XQCore.Presenter": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 11,
+            "description": "XQCore Presenter",
+            "link": "XQCorePresenter"
+        },
+        "XQCore.Socket": {
+            "name": "XQCore.Socket",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src/socket/xqcore-socket.js",
+            "line": 3,
+            "description": "XQCore.Socket module",
+            "requires": [
+                "XQCore.Logger",
+                "sockJS-client"
+            ],
+            "link": "XQCoreSocket"
+        },
+        "XQCore.View": {
+            "name": "XQCore.View",
+            "submodules": {},
+            "classes": {
+                "XQCore.View": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src/view/xqcore-view.js",
+            "line": 12,
+            "description": "XQCore View module",
+            "return": {
+                "description": "Returns a XQCore.View prototype object",
+                "type": "Object"
+            },
+            "link": "XQCoreView"
+        }
+    },
+    "classes": {
+        "EventEmitter Manages event registering and emitting.": {
+            "name": "EventEmitter Manages event registering and emitting.",
+            "shortname": "EventEmitter Manages event registering and emitting.",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "XQCore.GetSet",
+            "file": "src/event/xqcore-event.js",
+            "line": 21,
+            "description": "Class for managing events.\nCan be extended to provide event functionality in other classes."
+        },
+        "XQCore.Logger": {
+            "name": "XQCore.Logger",
+            "shortname": "XQCore.Logger",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [
+                "XQCore.Presenter",
+                "XQCore.View"
+            ],
+            "module": "XQCore.Logger",
+            "namespace": "",
+            "file": "src/logger/xqcore-logger.js",
+            "line": 25,
+            "description": "XQCore Logger is a logging tool to log messages, warnings, errors to the browser or onscreen console"
+        },
+        "XQCore.Presenter": {
+            "name": "XQCore.Presenter",
+            "shortname": "XQCore.Presenter",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "XQCore Presenter",
+            "namespace": "",
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 11,
+            "description": "XQCore.Presenter base class",
+            "is_constructor": 1,
+            "uses": [
+                "XQCore.Logger",
+                "XQCore.Event"
+            ],
+            "params": [
+                {
+                    "name": "conf",
+                    "description": "Presenter extend object",
+                    "type": "Object"
+                }
+            ]
+        },
+        "XQCore.View": {
+            "name": "XQCore.View",
+            "shortname": "XQCore.View",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "XQCore.View",
+            "namespace": "",
+            "file": "src/view/xqcore-view.js",
+            "line": 12,
+            "description": "XQCore.View",
+            "is_constructor": 1,
+            "uses": [
+                "XQCore.Logger",
+                "XQCore.Event"
+            ],
+            "params": [
+                {
+                    "name": "conf",
+                    "description": "View configuration",
+                    "type": "Object"
+                }
+            ]
+        }
+    },
+    "classitems": [
+        {
+            "file": "src/cache/xqcore-cache.js",
+            "line": 15,
+            "description": "Calculate expiry",
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/cache/xqcore-cache.js",
+            "line": 24,
+            "description": "Add data to cache",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "Data key",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Chache data",
+                    "type": "Any"
+                }
+            ],
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/core/xqcore-core.js",
+            "line": 32,
+            "description": "XQCore main object",
+            "package": "XQcore",
+            "type": "{Object}",
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/core/xqcore-core.js",
+            "line": 56,
+            "description": "Checks for a valid ObjectId\n\nThe pattern of an objectId can be overwritten by setting the XQCore.objectIdPattern property",
+            "return": {
+                "description": "Returns true if value is an valid objectId",
+                "type": "Boolean"
+            },
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 1,
+            "description": "XQCore EventEmitter\n\nBased on EventEmitter v4.2.5 by Oliver Caldwell\nhttp://git.io/ee",
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 32,
+            "description": "Finds the index of the listener for the event in it's storage array.",
+            "params": [
+                {
+                    "name": "listeners",
+                    "description": "Array of listeners to search through.",
+                    "type": "Function[]"
+                },
+                {
+                    "name": "listener",
+                    "description": "Method to look for.",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "Index of the specified listener, -1 if not found",
+                "type": "Number"
+            },
+            "api": "private",
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 51,
+            "description": "Alias a method while keeping the context correct, to allow for overwriting of target method.",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "The name of the target method.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The aliased method",
+                "type": "Function"
+            },
+            "api": "private",
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 64,
+            "description": "Returns the listener array for the specified event.\nWill initialise the event object and listener arrays if required.\nWill return an object if you use a regex search. The object contains keys for each matched event. So /ba[rz]/ might return an object containing bar and baz. But only if you have either defined them with defineEvent or added some listeners to them.\nEach property in the object response is an array of listener functions.",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "Name of the event to return the listeners from.",
+                    "type": "String|RegExp"
+                }
+            ],
+            "return": {
+                "description": "All listener functions for the event.",
+                "type": "Function[]|Object"
+            },
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 95,
+            "description": "Takes a list of listener objects and flattens it into a list of listener functions.",
+            "params": [
+                {
+                    "name": "listeners",
+                    "description": "Raw listener objects.",
+                    "type": "Object[]"
+                }
+            ],
+            "return": {
+                "description": "Just the listener functions.",
+                "type": "Function[]"
+            },
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 112,
+            "description": "Fetches the requested listeners via getListeners but will always return the results inside an object. This is mainly for internal use but others may find it useful.",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "Name of the event to return the listeners from.",
+                    "type": "String|RegExp"
+                }
+            ],
+            "return": {
+                "description": "All listener functions for an event in an object.",
+                "type": "Object"
+            },
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 130,
+            "description": "Adds a listener function to the specified event.\nThe listener will not be added if it is a duplicate.\nIf the listener returns true then it will be removed after it is called.\nIf you pass a regular expression as the event name then the listener will be added to all events that match it.",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "Name of the event to attach the listener to.",
+                    "type": "String|RegExp"
+                },
+                {
+                    "name": "listener",
+                    "description": "Method to be called when the event is emitted. If the function returns true then it will be removed after calling.",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "Current instance of EventEmitter for chaining.",
+                "type": "Object"
+            },
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 157,
+            "description": "Alias of addListener",
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 162,
+            "description": "Semi-alias of addListener. It will add a listener that will be\nautomatically removed after it's first execution.",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "Name of the event to attach the listener to.",
+                    "type": "String|RegExp"
+                },
+                {
+                    "name": "listener",
+                    "description": "Method to be called when the event is emitted. If the function returns true then it will be removed after calling.",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "Current instance of EventEmitter for chaining.",
+                "type": "Object"
+            },
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 177,
+            "description": "Alias of addOnceListener.",
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 182,
+            "description": "Defines an event name. This is required if you want to use a regex to add a listener to multiple events at once. If you don't do this then how do you expect it to know what event to add to? Should it just add to every possible match for a regex? No. That is scary and bad.\nYou need to tell it what event names should be matched by a regex.",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "Name of the event to create.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Current instance of EventEmitter for chaining.",
+                "type": "Object"
+            },
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 194,
+            "description": "Uses defineEvent to define multiple events.",
+            "params": [
+                {
+                    "name": "evts",
+                    "description": "An array of event names to define.",
+                    "type": "String[]"
+                }
+            ],
+            "return": {
+                "description": "Current instance of EventEmitter for chaining.",
+                "type": "Object"
+            },
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 207,
+            "description": "Removes a listener function from the specified event.\nWhen passed a regular expression as the event name, it will remove the listener from all events that match it.",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "Name of the event to remove the listener from.",
+                    "type": "String|RegExp"
+                },
+                {
+                    "name": "listener",
+                    "description": "Method to remove from the event.",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "Current instance of EventEmitter for chaining.",
+                "type": "Object"
+            },
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 233,
+            "description": "Alias of removeListener",
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 238,
+            "description": "Adds listeners in bulk using the manipulateListeners method.\nIf you pass an object as the second argument you can add to multiple events at once. The object should contain key value pairs of events and listeners or listener arrays. You can also pass it an event name and an array of listeners to be added.\nYou can also pass it a regular expression to add the array of listeners to all events that match it.\nYeah, this function does quite a bit. That's probably a bad thing.",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "An event name if you will pass an array of listeners next. An object if you wish to add to multiple events at once.",
+                    "type": "String|Object|RegExp"
+                },
+                {
+                    "name": "listeners",
+                    "description": "An optional array of listener functions to add.",
+                    "type": "Function[]",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "Current instance of EventEmitter for chaining.",
+                "type": "Object"
+            },
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 253,
+            "description": "Removes listeners in bulk using the manipulateListeners method.\nIf you pass an object as the second argument you can remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.\nYou can also pass it an event name and an array of listeners to be removed.\nYou can also pass it a regular expression to remove the listeners from all events that match it.",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "An event name if you will pass an array of listeners next. An object if you wish to remove from multiple events at once.",
+                    "type": "String|Object|RegExp"
+                },
+                {
+                    "name": "listeners",
+                    "description": "An optional array of listener functions to remove.",
+                    "type": "Function[]",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "Current instance of EventEmitter for chaining.",
+                "type": "Object"
+            },
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 268,
+            "description": "Edits listeners in bulk. The addListeners and removeListeners methods both use this to do their job. You should really use those instead, this is a little lower level.\nThe first argument will determine if the listeners are removed (true) or added (false).\nIf you pass an object as the second argument you can add/remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.\nYou can also pass it an event name and an array of listeners to be added/removed.\nYou can also pass it a regular expression to manipulate the listeners of all events that match it.",
+            "params": [
+                {
+                    "name": "remove",
+                    "description": "True if you want to remove listeners, false if you want to add.",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "evt",
+                    "description": "An event name if you will pass an array of listeners next. An object if you wish to add/remove from multiple events at once.",
+                    "type": "String|Object|RegExp"
+                },
+                {
+                    "name": "listeners",
+                    "description": "An optional array of listener functions to add/remove.",
+                    "type": "Function[]",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "Current instance of EventEmitter for chaining.",
+                "type": "Object"
+            },
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 314,
+            "description": "Removes all listeners from a specified event.\nIf you do not specify an event then all listeners will be removed.\nThat means every event will be emptied.\nYou can also pass a regex to remove all events that match it.",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "Optional name of the event to remove all listeners for. Will remove from every event if not passed.",
+                    "type": "String|RegExp",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "Current instance of EventEmitter for chaining.",
+                "type": "Object"
+            },
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 349,
+            "description": "Alias of removeEvent.\n\nAdded to mirror the node API.",
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 356,
+            "description": "Emits an event of your choice.\nWhen emitted, every listener attached to that event will be executed.\nIf you pass the optional argument array then those arguments will be passed to every listener upon execution.\nBecause it uses `apply`, your array of arguments will be passed as if you wrote them out separately.\nSo they will not arrive within the array on the other side, they will be separate.\nYou can also pass a regular expression to emit to all events that match it.",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "Name of the event to emit and execute listeners for.",
+                    "type": "String|RegExp"
+                },
+                {
+                    "name": "args",
+                    "description": "Optional array of arguments to be passed to each listener.",
+                    "type": "Array",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "Current instance of EventEmitter for chaining.",
+                "type": "Object"
+            },
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 400,
+            "description": "Alias of emitEvent",
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 405,
+            "description": "Subtly different from emitEvent in that it will pass its arguments on to the listeners, as opposed to taking a single array of arguments to pass on.\nAs with emitEvent, you can pass a regex in place of the event name to emit to all events that match it.",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "Name of the event to emit and execute listeners for.",
+                    "type": "String|RegExp"
+                },
+                {
+                    "name": "Optional",
+                    "description": "additional arguments to be passed to each listener.",
+                    "type": "...*"
+                }
+            ],
+            "return": {
+                "description": "Current instance of EventEmitter for chaining.",
+                "type": "Object"
+            },
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 418,
+            "description": "Sets the current value to check against when executing listeners. If a\nlisteners return value matches the one set here then it will be removed\nafter execution. This value defaults to true.",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "The new value to check for when executing listeners.",
+                    "type": "*"
+                }
+            ],
+            "return": {
+                "description": "Current instance of EventEmitter for chaining.",
+                "type": "Object"
+            },
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 431,
+            "description": "Fetches the current value to check against when executing listeners. If\nthe listeners return value matches this one then it should be removed\nautomatically. It will return true by default.",
+            "return": {
+                "description": "The current value to check for or the default, true.",
+                "type": "*|Boolean"
+            },
+            "api": "private",
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/event/xqcore-event.js",
+            "line": 448,
+            "description": "Fetches the events object and creates one if required.",
+            "return": {
+                "description": "The events storage object.",
+                "type": "Object"
+            },
+            "api": "private",
+            "class": "EventEmitter Manages event registering and emitting."
+        },
+        {
+            "file": "src/logger/xqcore-logger.js",
+            "line": 1,
+            "description": "XQCore Logger\n\nBased on EventEmitter.js",
+            "class": "XQCore.Logger",
+            "module": "XQCore.GetSet"
+        },
+        {
+            "file": "src/logger/xqcore-logger.js",
+            "line": 36,
+            "description": "Loggs a message to the console",
+            "itemtype": "method",
+            "name": "log",
+            "params": [
+                {
+                    "name": "msg",
+                    "description": "logs all arguments to the console",
+                    "type": "Any"
+                }
+            ],
+            "class": "XQCore.Logger",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/logger/xqcore-logger.js",
+            "line": 53,
+            "description": "Loggs a warning to the console",
+            "itemtype": "method",
+            "name": "warn",
+            "params": [
+                {
+                    "name": "msg",
+                    "description": "logs all arguments to the console",
+                    "type": "Any"
+                }
+            ],
+            "class": "XQCore.Logger",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/logger/xqcore-logger.js",
+            "line": 69,
+            "description": "Loggs a error message to the console",
+            "itemtype": "method",
+            "name": "error",
+            "params": [
+                {
+                    "name": "msg",
+                    "description": "logs all arguments to the console",
+                    "type": "Any"
+                }
+            ],
+            "class": "XQCore.Logger",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/logger/xqcore-logger.js",
+            "line": 85,
+            "description": "Start a timeTracer",
+            "itemtype": "method",
+            "name": "timer",
+            "params": [
+                {
+                    "name": "timerName",
+                    "description": "Set the name for your (Optional)",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Returns a TimerObject",
+                "type": "Object"
+            },
+            "class": "XQCore.Logger",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/model/xqcore-model.js",
+            "line": 1,
+            "requires": [
+                "XQCore.Utils",
+                "XQCore.Event",
+                "XQCore.Logger"
+            ],
+            "class": "XQCore.Presenter",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/model/xqcore-model.js",
+            "line": 16,
+            "description": "Enable debug mode",
+            "access": "public",
+            "tagname": "",
+            "type": "{Boolean}",
+            "class": "XQCore.Presenter",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/model/xqcore-model.js",
+            "line": 71,
+            "description": "Change the model state",
+            "itemtype": "method",
+            "name": "state",
+            "params": [
+                {
+                    "name": "state",
+                    "description": "New state",
+                    "type": "String"
+                }
+            ],
+            "class": "XQCore.Presenter",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/model/xqcore-model.js",
+            "line": 83,
+            "description": "Get the current model state",
+            "itemtype": "method",
+            "name": "getState",
+            "class": "XQCore.Presenter",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/model/xqcore-model.js",
+            "line": 92,
+            "description": "Set model data\n\nTriggers a data.change event if data was set succesfully",
+            "itemtype": "method",
+            "name": "set",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "XQCore.Presenter",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/model/xqcore-model.js",
+            "line": 101,
+            "description": "Set model data\n\nTriggers these events if data was set succesfully<br>\ndata.change<br>\n&lt;key&gt;.change\n\noptions: {\n  silent: <Boolean> Don't trigger any events\n  noValidation: <Boolean> Don't validate\n  validateOne: <Boolean> Only if setting one item, validate the item only\n}",
+            "itemtype": "method",
+            "name": "set",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "Data value",
+                    "type": "Object"
+                },
+                {
+                    "name": "options",
+                    "description": "Options",
+                    "type": "Object"
+                }
+            ],
+            "class": "XQCore.Presenter",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/model/xqcore-model.js",
+            "line": 210,
+            "description": "Get one or all properties from a dataset",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "Data key",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "model dataset",
+                "type": "Object"
+            },
+            "class": "XQCore.Presenter",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/model/xqcore-model.js",
+            "line": 226,
+            "description": "Check wether model has a dataset",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "Dataset key",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Returns true if model has a dataset with key",
+                "type": "Boolean"
+            },
+            "class": "XQCore.Presenter",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/model/xqcore-model.js",
+            "line": 236,
+            "description": "Remove all data from model",
+            "class": "XQCore.Presenter",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/model/xqcore-model.js",
+            "line": 245,
+            "description": "Append data to a subset",
+            "params": [
+                {
+                    "name": "path",
+                    "description": "path to subset",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "data to add",
+                    "type": "Object"
+                }
+            ],
+            "class": "XQCore.Presenter",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/model/xqcore-model.js",
+            "line": 280,
+            "description": "Prepend data to a subset",
+            "params": [
+                {
+                    "name": "path",
+                    "description": "path to subset",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "data to add",
+                    "type": "Object"
+                }
+            ],
+            "class": "XQCore.Presenter",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/model/xqcore-model.js",
+            "line": 344,
+            "description": "Remove a subset",
+            "params": [
+                {
+                    "name": "path",
+                    "description": "path to subset",
+                    "type": "String"
+                },
+                {
+                    "name": "index",
+                    "description": "Index of the subsut to remove",
+                    "type": "Number"
+                },
+                {
+                    "name": "options",
+                    "description": "Remove options",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "removed subset",
+                "type": "Object"
+            },
+            "class": "XQCore.Presenter",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/model/xqcore-model.js",
+            "line": 380,
+            "description": "Search a item in models properties",
+            "params": [
+                {
+                    "name": "path",
+                    "description": "Path to the parent property. We use dot notation to navigate to subproperties. (data.bla.blub) (Optional)",
+                    "type": "String"
+                },
+                {
+                    "name": "searchfor",
+                    "description": "Searching for object",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "Returns the first matched item or null",
+                "type": "Object"
+            },
+            "class": "XQCore.Presenter",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/model/xqcore-model.js",
+            "line": 426,
+            "description": "Sort an array collection by a given attribute",
+            "params": [
+                {
+                    "name": "path",
+                    "description": "Path to the collection",
+                    "type": "String"
+                },
+                {
+                    "name": "sortKeys",
+                    "description": "Sort by key\n\nsortKeys: {\n  'key': 1 // Sort ascend by key,\n  'second.key': -1 // Sort descand by second.key\n}\n\nascend, a -> z, 0 - > 9 (-1)\ndescend, z -> a, 9 -> 0 (1)",
+                    "type": "Object"
+                }
+            ],
+            "class": "XQCore.Presenter",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/model/xqcore-model.js",
+            "line": 473,
+            "description": "Filter an array collection by a given filter function",
+            "params": [
+                {
+                    "name": "path",
+                    "description": "Path to the collection",
+                    "type": "String"
+                },
+                {
+                    "name": "filter",
+                    "description": "Filter function",
+                    "type": "String | Function"
+                }
+            ],
+            "class": "XQCore.Presenter",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/model/xqcore-model.js",
+            "line": 513,
+            "description": "Resets a filter",
+            "itemtype": "method",
+            "name": "filterReset",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Set options",
+                    "type": "Object"
+                }
+            ],
+            "class": "XQCore.Presenter",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/model/xqcore-model.js",
+            "line": 561,
+            "description": "Validate one property\n\nValidatorResultItemObject\n{\n  isValid: Boolean,\n  value: Any,\n  error: Object\n}",
+            "params": [
+                {
+                    "name": "schema",
+                    "description": "Schema for the check",
+                    "type": "Any"
+                },
+                {
+                    "name": "value",
+                    "description": "Property value",
+                    "type": "Any"
+                }
+            ],
+            "return": {
+                "description": "Returns a ValidatorResultItemObject",
+                "type": "Object"
+            },
+            "class": "XQCore.Presenter",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/model/xqcore-model.js",
+            "line": 736,
+            "description": "Register a filter function \n\nXQCore.Model.registerFilter('myfilter', fn);\nRegisters a filter for all models\n\ninstance.registerFilter('myfilter', fn);\nRegisters a filter for the instance only.",
+            "itemtype": "method",
+            "name": "registerFilter",
+            "params": [
+                {
+                    "name": "filterName",
+                    "description": "[description]",
+                    "type": "String"
+                },
+                {
+                    "name": "filterFunction",
+                    "description": "[description]",
+                    "type": "Function"
+                }
+            ],
+            "class": "XQCore.Presenter",
+            "module": "XQCore.Logger"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 29,
+            "description": "Stores registered views",
+            "access": "private",
+            "tagname": "",
+            "type": "{Array}",
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 36,
+            "description": "Enable debug mode",
+            "access": "public",
+            "tagname": "",
+            "type": "{Boolean}",
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 43,
+            "description": "Set presenter name",
+            "access": "public",
+            "tagname": "",
+            "type": "{String}",
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 60,
+            "description": "Points to the last shown view",
+            "itemtype": "property",
+            "name": "lastShownView Points to the last shown view",
+            "type": "Object",
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 88,
+            "deprecated": true,
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 111,
+            "deprecated": true,
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 141,
+            "description": "Listen View events",
+            "itemtype": "property",
+            "name": "events Observed view events",
+            "type": "Array",
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 224,
+            "description": "Calling on view init",
+            "params": [
+                {
+                    "name": "view",
+                    "description": "The initializing view",
+                    "type": "Object"
+                }
+            ],
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 233,
+            "description": "Add a history item to the browser history",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "Data object",
+                    "type": "Object"
+                },
+                {
+                    "name": "url",
+                    "description": "Page URL (Optional) defaults to the curent URL",
+                    "type": "String"
+                }
+            ],
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 250,
+            "description": "Add a history item to the browser history",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "Data object",
+                    "type": "Object"
+                },
+                {
+                    "name": "url",
+                    "description": "Page URL (Optional) defaults to the current URL",
+                    "type": "String"
+                }
+            ],
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 266,
+            "description": "Navigates to a given route",
+            "params": [
+                {
+                    "name": "route",
+                    "description": "Route url",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Data object",
+                    "type": "Object"
+                },
+                {
+                    "name": "replace",
+                    "description": "Replace current history entry with route",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 291,
+            "description": "Gets a view by it's name",
+            "itemtype": "method",
+            "name": "getView",
+            "params": [
+                {
+                    "name": "viewName",
+                    "description": "Required view name",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Returns view object or null if no view was found",
+                "type": "Object"
+            },
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 312,
+            "description": "Show a view if it's not visible and update the history state",
+            "itemtype": "method",
+            "name": "showView",
+            "params": [
+                {
+                    "name": "viewName",
+                    "description": "The name of the view",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Data it's neede to showing the view",
+                    "type": "Object"
+                }
+            ],
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 342,
+            "description": "Returns the current hash",
+            "itemtype": "method",
+            "name": "getHash",
+            "return": {
+                "description": "Returns the current value from location.hash",
+                "type": "String"
+            },
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 352,
+            "description": "Returns the current pathname",
+            "itemtype": "method",
+            "name": "getPathname",
+            "return": {
+                "description": "Returns the current value from location.pathname",
+                "type": "String"
+            },
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 362,
+            "description": "Couple a model with a view",
+            "itemtype": "method",
+            "name": "couple",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "conf",
+                    "description": "Configuration object\n\nconf: {\n  model: String modelname\n  view: String viewname\n  route String routename\n}",
+                    "type": "Object"
+                }
+            ],
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 455,
+            "description": "Triggers a view event to the presenter",
+            "itemtype": "method",
+            "name": "triggerEvent",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "Event of the triggered event",
+                    "type": "String"
+                },
+                {
+                    "name": "e",
+                    "description": "EventObject",
+                    "type": "Object"
+                },
+                {
+                    "name": "tag",
+                    "description": "Tag data",
+                    "type": "Object"
+                },
+                {
+                    "name": "data",
+                    "description": "Event data",
+                    "type": "Object"
+                }
+            ],
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 485,
+            "description": "PopstateEvent",
+            "itemtype": "method",
+            "name": "__onPopstate",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "Event data",
+                    "type": "Object"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 525,
+            "description": "Initialize a new view into the presenter scope\n\noptions: {\n  mode: String       Insert mode, (append, prepend or replace) replace is default\n  inject: Boolean    Set to false to disable injecting view into the DOM\n}",
+            "itemtype": "method",
+            "name": "initView",
+            "access": "public",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "viewName",
+                    "description": "Name of the view",
+                    "type": "String"
+                },
+                {
+                    "name": "container",
+                    "description": "Container selector, default is 'body'",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "View options",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "Returns a view object",
+                "type": "Object"
+            },
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/presenter/xqcore-presenter.js",
+            "line": 565,
+            "description": "Register a route listen",
+            "access": "public",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "route",
+            "params": [
+                {
+                    "name": "route",
+                    "description": "Route string",
+                    "type": "String | Array"
+                },
+                {
+                    "name": "callback",
+                    "description": "Callback function",
+                    "type": "Function"
+                }
+            ],
+            "class": "XQCore.Presenter",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/router/xqcore-router.js",
+            "line": 2,
+            "description": "XQCore Router API",
+            "author": "Andi Heinkelein - noname-media.com",
+            "copyright": "Andi Heinkelein - noname-media.com",
+            "package": "XQCore\n\nBased on router.js v0.2.0\nCopyright Aaron Blohowiak and TJ Holowaychuk 2011.\nhttps://github.com/aaronblohowiak/routes.js",
+            "class": "XQCore.View",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/router/xqcore-router.js",
+            "line": 16,
+            "description": "Convert path to route object\n\nA string or RegExp should be passed,\nwill return { re, src, keys} obj",
+            "params": [
+                {
+                    "name": "path",
+                    "description": "",
+                    "type": "String / RegExp"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "XQCore.View",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/router/xqcore-router.js",
+            "line": 45,
+            "description": "Normalize the given path string,\nreturning a regular expression.\n\nAn empty array should be passed,\nwhich will contain the placeholder\nkey names. For example \"/user/:id\" will\nthen contain [\"id\"].",
+            "params": [
+                {
+                    "name": "path",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "keys",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "RegExp"
+            },
+            "class": "XQCore.View",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/router/xqcore-router.js",
+            "line": 77,
+            "description": "Attempt to match the given request to\none of the routes. When successful\na  {fn, params, splats} obj is returned",
+            "params": [
+                {
+                    "name": "routes",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "uri",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "XQCore.View",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/router/xqcore-router.js",
+            "line": 120,
+            "description": "Default \"normal\" router constructor.\naccepts path, fn tuples via addRoute\nreturns {fn, params, splats, route}\n via match",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "XQCore.View",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/router/xqcore-router.js",
+            "line": 194,
+            "description": "Fires a give route",
+            "params": [
+                {
+                    "name": "route",
+                    "description": "The route to fire",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Callback data",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "Returns the matched route",
+                "type": "Boolean"
+            },
+            "class": "XQCore.View",
+            "module": "XQCore Presenter"
+        },
+        {
+            "file": "src/socket/xqcore-socket.js",
+            "line": 21,
+            "description": "Connect to a socket server",
+            "itemtype": "method",
+            "name": "connect",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "Socket server url",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "SockJS options",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "Callback function. Its called if connection was successful and its called before ready state becomes true",
+                    "type": "Function"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/socket/xqcore-socket.js",
+            "line": 64,
+            "description": "send a message to a socket server",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "Event name",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Data",
+                    "type": "Object"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/socket/xqcore-socket.js",
+            "line": 79,
+            "description": "Register a listener for an incoming socket message",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "Event name",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "Listener callback",
+                    "type": "Function"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/socket/xqcore-socket.js",
+            "line": 89,
+            "description": "Register a once-listener for an incoming socket message",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "Event name",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "Listener callback",
+                    "type": "Function"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/socket/xqcore-socket.js",
+            "line": 98,
+            "description": "Unregister a socket listener",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "Event name",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "Listener callback (Optional)",
+                    "type": "Function"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/socket/xqcore-socket.js",
+            "line": 107,
+            "description": "Call function when socket is ready",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "Function to be called if socket is ready",
+                    "type": "Function"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/sync/xqcore-sync.js",
+            "line": 10,
+            "description": "Called on before sending an ajax request\nYou can use this function to manipulate all data they be send to the server",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "The data to send to the server",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "data",
+                "type": "Object"
+            },
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/sync/xqcore-sync.js",
+            "line": 21,
+            "description": "Send an ajax request to the webserver.\n\nYou must set the server URI first with model.server = 'http://example.com/post'",
+            "params": [
+                {
+                    "name": "Method",
+                    "description": "send method, GET, POST, PUT, DELETE (default POST)",
+                    "type": "String"
+                },
+                {
+                    "name": "url",
+                    "description": "Server URL (optional, then model.server must be set)",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "The data to sent to the server",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "Calls callback(err, data, status, jqXHR) if response was receiving",
+                    "type": "Function"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/sync/xqcore-sync.js",
+            "line": 86,
+            "description": "Sends a POST to the Datastore",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "Server URL (optional, then model.server must be set)",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Dato to sending",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "Calling on response\n\ncallback: void function(err, data, status, jqXHR)",
+                    "type": "Function"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/sync/xqcore-sync.js",
+            "line": 100,
+            "description": "Sends a GET to the Datastore",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "Server URL (optional, then model.server must be set)",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Dato to sending",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "Calling on response\n\ncallback: void function(err, data, status, jqXHR)",
+                    "type": "Function"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/sync/xqcore-sync.js",
+            "line": 114,
+            "description": "Sends a PUT to the Datastore",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "Server URL (optional, then model.server must be set)",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Dato to sending",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "Calling on response\n\ncallback: void function(err, data, status, jqXHR)",
+                    "type": "Function"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/sync/xqcore-sync.js",
+            "line": 128,
+            "description": "Sends a DELETE to the Datastore",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "Server URL (optional, then model.server must be set)",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Dato to sending",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "Calling on response\n\ncallback: void function(err, data, status, jqXHR)",
+                    "type": "Function"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/sync/xqcore-sync.js",
+            "line": 142,
+            "description": "Check if model is ready and call func or wait for ready state",
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/sync/xqcore-sync.js",
+            "line": 174,
+            "description": "Fetch data from server",
+            "params": [
+                {
+                    "name": "query",
+                    "description": "MongoDB query",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "Callback function",
+                    "type": "Function"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/sync/xqcore-sync.js",
+            "line": 184,
+            "description": "Save a model if it's valid",
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/sync/xqcore-sync.js",
+            "line": 200,
+            "description": "Update a model if it's valid",
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/syncmodel/xqcore-syncmodel.js",
+            "line": 1,
+            "requires": [
+                "XQCore.Model",
+                "XQCore.Socket"
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/syncmodel/xqcore-syncmodel.js",
+            "line": 29,
+            "description": "Connect to a socket server",
+            "itemtype": "method",
+            "name": "connectToSocket",
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/syncmodel/xqcore-syncmodel.js",
+            "line": 94,
+            "description": "Send a socket emit to the server",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "Event name",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Data object",
+                    "type": "Object"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/utils/xqcore-utils.js",
+            "line": 1,
+            "description": "Extends XQCore with some usefull functions",
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/utils/xqcore-utils.js",
+            "line": 18,
+            "description": "Creates a object from an dotified key and a value",
+            "access": "public",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "dedotify",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "Add new value to obj. This param is optional.",
+                    "type": "Object"
+                },
+                {
+                    "name": "key",
+                    "description": "The dotified key",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "The value",
+                    "type": "Any"
+                }
+            ],
+            "return": {
+                "description": "Returns the extended object if obj was set otherwis a new object will be returned",
+                "type": "Object"
+            },
+            "class": "XQCore.View",
+            "module": "XQCore.Socket"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 31,
+            "description": "Enable debug mode",
+            "access": "public",
+            "tagname": "",
+            "type": "{Boolean}",
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 38,
+            "description": "Set presenter name",
+            "access": "public",
+            "tagname": "",
+            "type": "{String}",
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 45,
+            "description": "Sets the container element",
+            "itemtype": "property",
+            "name": "container",
+            "type": "Selector",
+            "default": "'body'",
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 53,
+            "description": "Set the view element tag",
+            "itemtype": "property",
+            "name": "tag",
+            "type": "{String}",
+            "default": "'div'",
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 62,
+            "description": "Set the insert mode",
+            "itemtype": "property",
+            "name": "mode",
+            "type": "{String}",
+            "default": "replace",
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 71,
+            "description": "Enable/Disable autoInjection of the view into the DOM",
+            "itemtype": "property",
+            "name": "autoInject",
+            "type": "{Boolean}",
+            "default": "true",
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 80,
+            "description": "Set initFunc",
+            "itemtype": "method",
+            "name": "initFunc",
+            "access": "protected",
+            "tagname": "",
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 88,
+            "description": "Holds the domReady state",
+            "itemtype": "property",
+            "name": "__domReady",
+            "type": "{Boolean}",
+            "default": "false",
+            "access": "private",
+            "tagname": "",
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 110,
+            "description": "Init function",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "presenter",
+                    "description": "Views presenter object",
+                    "type": "Object"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 247,
+            "description": "Gets the data of an element",
+            "params": [
+                {
+                    "name": "selector",
+                    "description": "DOM el or a jQuery selector of the element",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "Returns the data of an element or null",
+                "type": "Object"
+            },
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 303,
+            "description": "Triggers a view event to the presenter",
+            "itemtype": "method",
+            "name": "triggerEvent",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "Event of the triggered event",
+                    "type": "String"
+                },
+                {
+                    "name": "e",
+                    "description": "EventObject",
+                    "type": "Object"
+                },
+                {
+                    "name": "tag",
+                    "description": "Tag data",
+                    "type": "Object"
+                },
+                {
+                    "name": "data",
+                    "description": "Event data",
+                    "type": "Object"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 337,
+            "description": "Navigate to a given route",
+            "itemtype": "method",
+            "name": "navigateTo",
+            "params": [
+                {
+                    "name": "route",
+                    "description": "Route url",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Data object",
+                    "type": "Object"
+                },
+                {
+                    "name": "replace",
+                    "description": "Replace current history entry with route",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 350,
+            "description": "If a validation failed (Automaticly called in a coupled view)",
+            "itemtype": "method",
+            "name": "validationFailed",
+            "params": [
+                {
+                    "name": "err",
+                    "description": "Validation error object",
+                    "type": "Object"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 363,
+            "description": "Recive a state.change event from a coupled model",
+            "params": [
+                {
+                    "name": "state",
+                    "description": "Model state",
+                    "type": "String"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 372,
+            "description": "Wait til view is ready",
+            "itemtype": "method",
+            "name": "ready",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Callback",
+                    "type": "Function"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 400,
+            "description": "Gets the index of a subSelector item\nThis function must binded to the view",
+            "params": [
+                {
+                    "name": "el",
+                    "description": "Start element.",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "index of the element or null",
+                "type": "Number"
+            },
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 436,
+            "description": "Inject element into the DOM",
+            "access": "public",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "inject",
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 478,
+            "description": "Parse a precompiled template and returns a html string",
+            "itemtype": "method",
+            "name": "parse",
+            "params": [
+                {
+                    "name": "template",
+                    "description": "Precompiled template",
+                    "type": "Function"
+                },
+                {
+                    "name": "data",
+                    "description": "Data object",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "compiled html",
+                "type": "String"
+            },
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 537,
+            "description": "Render view",
+            "itemtype": "method",
+            "name": "render",
+            "emits": "content.change",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "Render data",
+                    "type": "Object"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 634,
+            "description": "Serialize a form and return its values as JSON",
+            "params": [
+                {
+                    "name": "Form",
+                    "description": "selector",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "FormData as JSON",
+                "type": "Object"
+            },
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 659,
+            "description": "Insert a subset",
+            "params": [
+                {
+                    "name": "path",
+                    "description": "Data path",
+                    "type": "String"
+                },
+                {
+                    "name": "index",
+                    "description": "Index after which item the insert should be happen or use -1 to prepend",
+                    "type": "Number"
+                },
+                {
+                    "name": "data",
+                    "description": "Item data",
+                    "type": "Object"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        },
+        {
+            "file": "src/view/xqcore-view.js",
+            "line": 700,
+            "description": "Remove an item from a subset. Removes the item with the given index.\nIf index is negative number it will be removed from the end",
+            "params": [
+                {
+                    "name": "path",
+                    "description": "data path",
+                    "type": "String"
+                },
+                {
+                    "name": "index",
+                    "description": "Index of the item",
+                    "type": "Number"
+                }
+            ],
+            "class": "XQCore.View",
+            "module": "XQCore.View"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "unknown tag: package",
+            "line": " src/core/xqcore-core.js:32"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " src/event/xqcore-event.js:32"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " src/event/xqcore-event.js:51"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " src/event/xqcore-event.js:431"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " src/event/xqcore-event.js:448"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/presenter/xqcore-presenter.js:342"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/presenter/xqcore-presenter.js:352"
+        },
+        {
+            "message": "unknown tag: copyright",
+            "line": " src/router/xqcore-router.js:2"
+        },
+        {
+            "message": "unknown tag: package",
+            "line": " src/router/xqcore-router.js:2"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/utils/xqcore-utils.js:18"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/view/xqcore-view.js:1"
+        },
+        {
+            "message": "unknown tag: emits",
+            "line": " src/view/xqcore-view.js:537"
+        },
+        {
+            "message": "Missing item type\nCalculate expiry",
+            "line": " src/cache/xqcore-cache.js:15"
+        },
+        {
+            "message": "Missing item type\nAdd data to cache",
+            "line": " src/cache/xqcore-cache.js:24"
+        },
+        {
+            "message": "Missing item type\nXQCore main object",
+            "line": " src/core/xqcore-core.js:32"
+        },
+        {
+            "message": "Missing item type\nChecks for a valid ObjectId\n\nThe pattern of an objectId can be overwritten by setting the XQCore.objectIdPattern property",
+            "line": " src/core/xqcore-core.js:56"
+        },
+        {
+            "message": "Missing item type\nXQCore EventEmitter\n\nBased on EventEmitter v4.2.5 by Oliver Caldwell\nhttp://git.io/ee",
+            "line": " src/event/xqcore-event.js:1"
+        },
+        {
+            "message": "Missing item type\nFinds the index of the listener for the event in it's storage array.",
+            "line": " src/event/xqcore-event.js:32"
+        },
+        {
+            "message": "Missing item type\nAlias a method while keeping the context correct, to allow for overwriting of target method.",
+            "line": " src/event/xqcore-event.js:51"
+        },
+        {
+            "message": "Missing item type\nReturns the listener array for the specified event.\nWill initialise the event object and listener arrays if required.\nWill return an object if you use a regex search. The object contains keys for each matched event. So /ba[rz]/ might return an object containing bar and baz. But only if you have either defined them with defineEvent or added some listeners to them.\nEach property in the object response is an array of listener functions.",
+            "line": " src/event/xqcore-event.js:64"
+        },
+        {
+            "message": "Missing item type\nTakes a list of listener objects and flattens it into a list of listener functions.",
+            "line": " src/event/xqcore-event.js:95"
+        },
+        {
+            "message": "Missing item type\nFetches the requested listeners via getListeners but will always return the results inside an object. This is mainly for internal use but others may find it useful.",
+            "line": " src/event/xqcore-event.js:112"
+        },
+        {
+            "message": "Missing item type\nAdds a listener function to the specified event.\nThe listener will not be added if it is a duplicate.\nIf the listener returns true then it will be removed after it is called.\nIf you pass a regular expression as the event name then the listener will be added to all events that match it.",
+            "line": " src/event/xqcore-event.js:130"
+        },
+        {
+            "message": "Missing item type\nAlias of addListener",
+            "line": " src/event/xqcore-event.js:157"
+        },
+        {
+            "message": "Missing item type\nSemi-alias of addListener. It will add a listener that will be\nautomatically removed after it's first execution.",
+            "line": " src/event/xqcore-event.js:162"
+        },
+        {
+            "message": "Missing item type\nAlias of addOnceListener.",
+            "line": " src/event/xqcore-event.js:177"
+        },
+        {
+            "message": "Missing item type\nDefines an event name. This is required if you want to use a regex to add a listener to multiple events at once. If you don't do this then how do you expect it to know what event to add to? Should it just add to every possible match for a regex? No. That is scary and bad.\nYou need to tell it what event names should be matched by a regex.",
+            "line": " src/event/xqcore-event.js:182"
+        },
+        {
+            "message": "Missing item type\nUses defineEvent to define multiple events.",
+            "line": " src/event/xqcore-event.js:194"
+        },
+        {
+            "message": "Missing item type\nRemoves a listener function from the specified event.\nWhen passed a regular expression as the event name, it will remove the listener from all events that match it.",
+            "line": " src/event/xqcore-event.js:207"
+        },
+        {
+            "message": "Missing item type\nAlias of removeListener",
+            "line": " src/event/xqcore-event.js:233"
+        },
+        {
+            "message": "Missing item type\nAdds listeners in bulk using the manipulateListeners method.\nIf you pass an object as the second argument you can add to multiple events at once. The object should contain key value pairs of events and listeners or listener arrays. You can also pass it an event name and an array of listeners to be added.\nYou can also pass it a regular expression to add the array of listeners to all events that match it.\nYeah, this function does quite a bit. That's probably a bad thing.",
+            "line": " src/event/xqcore-event.js:238"
+        },
+        {
+            "message": "Missing item type\nRemoves listeners in bulk using the manipulateListeners method.\nIf you pass an object as the second argument you can remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.\nYou can also pass it an event name and an array of listeners to be removed.\nYou can also pass it a regular expression to remove the listeners from all events that match it.",
+            "line": " src/event/xqcore-event.js:253"
+        },
+        {
+            "message": "Missing item type\nEdits listeners in bulk. The addListeners and removeListeners methods both use this to do their job. You should really use those instead, this is a little lower level.\nThe first argument will determine if the listeners are removed (true) or added (false).\nIf you pass an object as the second argument you can add/remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.\nYou can also pass it an event name and an array of listeners to be added/removed.\nYou can also pass it a regular expression to manipulate the listeners of all events that match it.",
+            "line": " src/event/xqcore-event.js:268"
+        },
+        {
+            "message": "Missing item type\nRemoves all listeners from a specified event.\nIf you do not specify an event then all listeners will be removed.\nThat means every event will be emptied.\nYou can also pass a regex to remove all events that match it.",
+            "line": " src/event/xqcore-event.js:314"
+        },
+        {
+            "message": "Missing item type\nAlias of removeEvent.\n\nAdded to mirror the node API.",
+            "line": " src/event/xqcore-event.js:349"
+        },
+        {
+            "message": "Missing item type\nEmits an event of your choice.\nWhen emitted, every listener attached to that event will be executed.\nIf you pass the optional argument array then those arguments will be passed to every listener upon execution.\nBecause it uses `apply`, your array of arguments will be passed as if you wrote them out separately.\nSo they will not arrive within the array on the other side, they will be separate.\nYou can also pass a regular expression to emit to all events that match it.",
+            "line": " src/event/xqcore-event.js:356"
+        },
+        {
+            "message": "Missing item type\nAlias of emitEvent",
+            "line": " src/event/xqcore-event.js:400"
+        },
+        {
+            "message": "Missing item type\nSubtly different from emitEvent in that it will pass its arguments on to the listeners, as opposed to taking a single array of arguments to pass on.\nAs with emitEvent, you can pass a regex in place of the event name to emit to all events that match it.",
+            "line": " src/event/xqcore-event.js:405"
+        },
+        {
+            "message": "Missing item type\nSets the current value to check against when executing listeners. If a\nlisteners return value matches the one set here then it will be removed\nafter execution. This value defaults to true.",
+            "line": " src/event/xqcore-event.js:418"
+        },
+        {
+            "message": "Missing item type\nFetches the current value to check against when executing listeners. If\nthe listeners return value matches this one then it should be removed\nautomatically. It will return true by default.",
+            "line": " src/event/xqcore-event.js:431"
+        },
+        {
+            "message": "Missing item type\nFetches the events object and creates one if required.",
+            "line": " src/event/xqcore-event.js:448"
+        },
+        {
+            "message": "Missing item type\nXQCore Logger\n\nBased on EventEmitter.js",
+            "line": " src/logger/xqcore-logger.js:1"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/model/xqcore-model.js:1"
+        },
+        {
+            "message": "Missing item type\nEnable debug mode",
+            "line": " src/model/xqcore-model.js:16"
+        },
+        {
+            "message": "Missing item type\nGet one or all properties from a dataset",
+            "line": " src/model/xqcore-model.js:210"
+        },
+        {
+            "message": "Missing item type\nCheck wether model has a dataset",
+            "line": " src/model/xqcore-model.js:226"
+        },
+        {
+            "message": "Missing item type\nRemove all data from model",
+            "line": " src/model/xqcore-model.js:236"
+        },
+        {
+            "message": "Missing item type\nAppend data to a subset",
+            "line": " src/model/xqcore-model.js:245"
+        },
+        {
+            "message": "Missing item type\nPrepend data to a subset",
+            "line": " src/model/xqcore-model.js:280"
+        },
+        {
+            "message": "Missing item type\nRemove a subset",
+            "line": " src/model/xqcore-model.js:344"
+        },
+        {
+            "message": "Missing item type\nSearch a item in models properties",
+            "line": " src/model/xqcore-model.js:380"
+        },
+        {
+            "message": "Missing item type\nSort an array collection by a given attribute",
+            "line": " src/model/xqcore-model.js:426"
+        },
+        {
+            "message": "Missing item type\nFilter an array collection by a given filter function",
+            "line": " src/model/xqcore-model.js:473"
+        },
+        {
+            "message": "Missing item type\nValidate one property\n\nValidatorResultItemObject\n{\n  isValid: Boolean,\n  value: Any,\n  error: Object\n}",
+            "line": " src/model/xqcore-model.js:561"
+        },
+        {
+            "message": "Missing item type\nStores registered views",
+            "line": " src/presenter/xqcore-presenter.js:29"
+        },
+        {
+            "message": "Missing item type\nEnable debug mode",
+            "line": " src/presenter/xqcore-presenter.js:36"
+        },
+        {
+            "message": "Missing item type\nSet presenter name",
+            "line": " src/presenter/xqcore-presenter.js:43"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/presenter/xqcore-presenter.js:88"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/presenter/xqcore-presenter.js:111"
+        },
+        {
+            "message": "Missing item type\nCalling on view init",
+            "line": " src/presenter/xqcore-presenter.js:224"
+        },
+        {
+            "message": "Missing item type\nAdd a history item to the browser history",
+            "line": " src/presenter/xqcore-presenter.js:233"
+        },
+        {
+            "message": "Missing item type\nAdd a history item to the browser history",
+            "line": " src/presenter/xqcore-presenter.js:250"
+        },
+        {
+            "message": "Missing item type\nNavigates to a given route",
+            "line": " src/presenter/xqcore-presenter.js:266"
+        },
+        {
+            "message": "Missing item type\nXQCore Router API",
+            "line": " src/router/xqcore-router.js:2"
+        },
+        {
+            "message": "Missing item type\nConvert path to route object\n\nA string or RegExp should be passed,\nwill return { re, src, keys} obj",
+            "line": " src/router/xqcore-router.js:16"
+        },
+        {
+            "message": "Missing item type\nNormalize the given path string,\nreturning a regular expression.\n\nAn empty array should be passed,\nwhich will contain the placeholder\nkey names. For example \"/user/:id\" will\nthen contain [\"id\"].",
+            "line": " src/router/xqcore-router.js:45"
+        },
+        {
+            "message": "Missing item type\nAttempt to match the given request to\none of the routes. When successful\na  {fn, params, splats} obj is returned",
+            "line": " src/router/xqcore-router.js:77"
+        },
+        {
+            "message": "Missing item type\nDefault \"normal\" router constructor.\naccepts path, fn tuples via addRoute\nreturns {fn, params, splats, route}\n via match",
+            "line": " src/router/xqcore-router.js:120"
+        },
+        {
+            "message": "Missing item type\nFires a give route",
+            "line": " src/router/xqcore-router.js:194"
+        },
+        {
+            "message": "Missing item type\nsend a message to a socket server",
+            "line": " src/socket/xqcore-socket.js:64"
+        },
+        {
+            "message": "Missing item type\nRegister a listener for an incoming socket message",
+            "line": " src/socket/xqcore-socket.js:79"
+        },
+        {
+            "message": "Missing item type\nRegister a once-listener for an incoming socket message",
+            "line": " src/socket/xqcore-socket.js:89"
+        },
+        {
+            "message": "Missing item type\nUnregister a socket listener",
+            "line": " src/socket/xqcore-socket.js:98"
+        },
+        {
+            "message": "Missing item type\nCall function when socket is ready",
+            "line": " src/socket/xqcore-socket.js:107"
+        },
+        {
+            "message": "Missing item type\nCalled on before sending an ajax request\nYou can use this function to manipulate all data they be send to the server",
+            "line": " src/sync/xqcore-sync.js:10"
+        },
+        {
+            "message": "Missing item type\nSend an ajax request to the webserver.\n\nYou must set the server URI first with model.server = 'http://example.com/post'",
+            "line": " src/sync/xqcore-sync.js:21"
+        },
+        {
+            "message": "Missing item type\nSends a POST to the Datastore",
+            "line": " src/sync/xqcore-sync.js:86"
+        },
+        {
+            "message": "Missing item type\nSends a GET to the Datastore",
+            "line": " src/sync/xqcore-sync.js:100"
+        },
+        {
+            "message": "Missing item type\nSends a PUT to the Datastore",
+            "line": " src/sync/xqcore-sync.js:114"
+        },
+        {
+            "message": "Missing item type\nSends a DELETE to the Datastore",
+            "line": " src/sync/xqcore-sync.js:128"
+        },
+        {
+            "message": "Missing item type\nCheck if model is ready and call func or wait for ready state",
+            "line": " src/sync/xqcore-sync.js:142"
+        },
+        {
+            "message": "Missing item type\nFetch data from server",
+            "line": " src/sync/xqcore-sync.js:174"
+        },
+        {
+            "message": "Missing item type\nSave a model if it's valid",
+            "line": " src/sync/xqcore-sync.js:184"
+        },
+        {
+            "message": "Missing item type\nUpdate a model if it's valid",
+            "line": " src/sync/xqcore-sync.js:200"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/syncmodel/xqcore-syncmodel.js:1"
+        },
+        {
+            "message": "Missing item type\nSend a socket emit to the server",
+            "line": " src/syncmodel/xqcore-syncmodel.js:94"
+        },
+        {
+            "message": "Missing item type\nExtends XQCore with some usefull functions",
+            "line": " src/utils/xqcore-utils.js:1"
+        },
+        {
+            "message": "Missing item type\nEnable debug mode",
+            "line": " src/view/xqcore-view.js:31"
+        },
+        {
+            "message": "Missing item type\nSet presenter name",
+            "line": " src/view/xqcore-view.js:38"
+        },
+        {
+            "message": "Missing item type\nGets the data of an element",
+            "line": " src/view/xqcore-view.js:247"
+        },
+        {
+            "message": "Missing item type\nRecive a state.change event from a coupled model",
+            "line": " src/view/xqcore-view.js:363"
+        },
+        {
+            "message": "Missing item type\nGets the index of a subSelector item\nThis function must binded to the view",
+            "line": " src/view/xqcore-view.js:400"
+        },
+        {
+            "message": "Missing item type\nSerialize a form and return its values as JSON",
+            "line": " src/view/xqcore-view.js:634"
+        },
+        {
+            "message": "Missing item type\nInsert a subset",
+            "line": " src/view/xqcore-view.js:659"
+        },
+        {
+            "message": "Missing item type\nRemove an item from a subset. Removes the item with the given index.\nIf index is negative number it will be removed from the end",
+            "line": " src/view/xqcore-view.js:700"
+        }
+    ]
+}

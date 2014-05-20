@@ -6,28 +6,30 @@ module.exports = function() {
 	var XQCore = require('xqcore');
 
 	var listingModel = new XQCore.Model('listing', function(self) {
-		self.sendGET('/data', function(err, data) {
-			if (err) {
-				console.error(err);
-				return;
-			}
+		
+		/**
+		 * Fetch data from server
+		 *
+		 * @method fetch
+		 * @public
+		 */
+		self.fetch = function() {
+			self.sendGET('/data', function(err, data) {
+				if (err) {
+					console.error(err);
+					return;
+				}
 
-			var models = this.prepare(data);
-			this.set(models);
-		}.bind(this));
+				var models = self.prepare(data);
+				self.set(models);
+			});
+		};
 
 		/**
-		 * Parse a doxit file
-		 *
-		 * [{
-		 *     file: FileName
-		 *     module: ModuleName
-		 *     package: PackageName
-		 *     requires: [],
-		 *     data: []
-		 * }]
-		 * @param  {[type]} data [description]
-		 * @return {[type]}      [description]
+		 * Prepare data
+		 * 
+		 * @param  {Object} data Raw data
+		 * @return {Object}      Returns an array of the listing data
 		 */
 		self.prepare = function(data) {
 			console.log('Prepare modules', data);
@@ -37,7 +39,7 @@ module.exports = function() {
 			for (var module in data.modules) {
 				if (data.modules.hasOwnProperty(module)) {
 					var m = data.modules[module];
-					m.link = m.name.replace(/^[a-zA-Z0-9_-]/g, '');
+					m.link = m.name.replace(/[^a-zA-Z0-9_-]/g, '');
 					modules.push(m);
 				}
 			}
@@ -48,6 +50,28 @@ module.exports = function() {
 			};
 
 			return listing;
+		};
+
+		self.getModule = function(data) {
+			console.log('Get module', data.module);
+			var module = this.search('modules', {
+				link: data.module
+			});
+
+			console.log('... matched:', module);
+
+			//Add classes
+			var classes = [];
+			for (var el in module.classes) {
+				if (module.classes.hasOwnProperty(el)) {
+					var allClasses = this.get('data.classes');
+					classes.push(allClasses[el]);
+				}
+			}
+
+			module.classes = classes;
+
+			return module;
 		};
 	});
 	

@@ -61,7 +61,20 @@ module.exports = function(grunt) {
 		// 		'webdocs/build/xqcore-minimal.min.js'
 		// 	]
 		// },
-		
+		clean: {
+			build: [
+				'webdocs/build/'
+			]
+		},
+		componentbuild: {
+			dist: {
+				options: {
+					name: 'doxit'
+				},
+				src: './webdocs/',
+				dest: './webdocs/build/'
+			}
+		},
 		browserify: {
 			dist: {
 				options: {
@@ -69,14 +82,6 @@ module.exports = function(grunt) {
 				},
 				files: {
 					'webdocs/bundle.js': ['webdocs/index.js']
-				}
-			}
-		},
-		doxit: {
-			dst: {
-				options: {},
-				files: {
-					'docs/': ['src/**/*.js']
 				}
 			}
 		},
@@ -110,10 +115,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	// grunt.loadNpmTasks('grunt-contrib-uglify');
 	// grunt.loadNpmTasks('grunt-bumpup');
-	grunt.loadNpmTasks('grunt-browserify');
-	grunt.loadNpmTasks('grunt-doxit');
+	grunt.loadNpmTasks('grunt-component-build');
 
 	grunt.registerTask('default', 'jshint');
-	grunt.registerTask('doc', 'doxit');
-	grunt.registerTask('build', ['less', 'browserify']);
+	grunt.registerTask('build', ['less', 'componentbuild']);
 };
