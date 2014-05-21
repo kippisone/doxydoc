@@ -9169,7 +9169,7 @@ return jQuery;
 
 require.register("nonamemedia~firetpl@0.1.0", function (exports, module) {
 /*!
- * FireTPL template engine v0.1.0
+ * FireTPL template engine v0.1.0-3
  * 
  * FireTPL is a pretty Javascript template engine
  *
@@ -9198,7 +9198,7 @@ var FireTPL;
 	'use strict';
 
 	FireTPL = {
-		version: '0.1.0'
+		version: '0.1.0-3'
 	};
 
 	return FireTPL;
@@ -9216,7 +9216,11 @@ var FireTPL;
 	/*global define:false */
 	'use strict';
 
-	var Compiler = function() {
+	var Compiler = function(options) {
+		options = options || {};
+
+		this.scopeTags = !!options.scopeTags;
+
 		this.indentionPattern = /\t/g;
 		this.pattern = /^([ \t]*)?(\/\/.*)?(?:\:([a-zA-Z0-9]+))?([a-zA-Z0-9]+=(?:(?:\"[^\"]+\")|(?:\'[^\']+\')|(?:\S+)))?([a-z0-9]+)?([\"].*[\"]?)?([\'].*[\']?)?(.*)?$/gm;
 		this.voidElements = ['area', 'base', 'br', 'col', 'embed', 'img', 'input', 'link', 'meta', 'param', 'source', 'wbr'];
@@ -9438,8 +9442,7 @@ var FireTPL;
 		}
 
 		if (tag) {
-			this.parseTag(tag, tagAttrs + ' xq-scope=scope' + scopeId + ' xq-path=' + content.trim().replace(/^\$/, ''));
-			this.injectClass('xq-scope xq-scope' + scopeId);
+			this.parseTag(tag, tagAttrs);
 		}
 		else {
 			this.closer.push('');
@@ -9450,7 +9453,13 @@ var FireTPL;
 			content = this.parseVariables(content, true);
 		}
 
-		this.append('code', 's+=scopes.scope' + scopeId + '(' + content + ',data);');
+		if (this.scopeTags) {
+			this.append('str', '<scope id="scope' + scopeId + '" path="' + content + '"></scope>');
+		}
+		else {
+			this.append('code', 's+=scopes.scope' + scopeId + '(' + content + ',data);');
+		}
+		
 		this.newScope('scope' + scopeId);
 
 		if (helper === 'if') {
@@ -9581,12 +9590,73 @@ var FireTPL;
 
 	Compiler.prototype.parseVariables = function(str, isCode) {
 		var opener = '',
-			closer = '';
+			closer = '',
+			altOpener = '',
+			altCloser = '',
+			prefix = 'data.',
+			self = this;
 
-		if (!isCode) {
+		if (this.scopeTags && !isCode) {
+			opener = '<scope path="';
+			closer = '"></scope>';
+			altOpener = '\'+';
+			altCloser = '+\'';
+			prefix = '';
+		}
+		else if (!this.scopeTags && !isCode) {
 			opener = '\'+';
 			closer = '+\'';
 		}
+
+		var parseVar = function(m) {
+			if (m === '') {
+				if (self.scopeTags) {
+					return '\'+data+\'';
+				}
+				return opener + 'data' + closer;
+			}
+
+			if (/^(parent\b)/.test(m) && (self.curScope[1] === 'root' || !self.scopeTags)) {
+				if (self.scopeTags) {
+					m = m.replace(/^parent\.?/, '');
+				}
+
+				if (m) {
+					return opener + m + closer;
+				}
+				else if (self.scopeTags) {
+					return altOpener + 'parent' + altCloser;
+				}
+				else {
+					return opener + 'parent' + closer;
+				}
+			}
+			else if (/^(root\b)/.test(m)) {
+				if (self.scopeTags) {
+					m = m.replace(/^root\.?/, '');
+				}
+				
+				if (m) {
+					return opener + m + closer;
+				}
+				else if (self.scopeTags) {
+					return altOpener + 'root' + altCloser;
+				}
+				else {
+					return opener + 'root' + closer;
+				}
+			}
+			else if (self.curScope[0] === 'root' && !isCode) {
+				return opener + prefix + m + closer;
+			}
+			else if (self.scopeTags) {
+				prefix = isCode ? '' : 'data.';
+				return altOpener + prefix + m + altCloser;
+			}
+			else {
+				return opener + 'data.' + m + closer;
+			}
+		};
 
 		str = str
 			.replace(/\'/g, '\\\'')
@@ -9594,13 +9664,10 @@ var FireTPL;
 			.replace(/\$((\{([a-zA-Z0-9._-]+)\})|([a-zA-Z0-9._-]+))/g, function(match, p1, p2, p3, p4) {
 				var m = p3 || p4;
 				if (/^this\b/.test(m)) {
-					return opener + m.replace(/^this/, 'data') + closer;
-				}
-				else if (/^(parent\b|root\b)/.test(m)) {
-					return opener + m + closer;
+					return parseVar(m.replace(/^this\.?/, ''));
 				}
 				
-				return opener + 'data.' + m + closer;
+				return parseVar(m);
 				
 			})
 			.replace(/@([a-zA-Z0-9._-]+)/g, '\'+lang.$1+\'');
@@ -9885,9 +9952,9 @@ var FireTPL;
 		return content;
 	};
 
-	FireTPL.precompile = function(tmpl) {
-		var compiler = new FireTPL.Compiler();
-		compiler.precompile(tmpl);
+	FireTPL.precompile = function(tmpl, type, options) {
+		var compiler = new FireTPL.Compiler(options);
+		compiler.precompile(tmpl, type);
 		return compiler.getOutStream();
 	};
 
@@ -10133,7 +10200,7 @@ FireTPL.Compiler.prototype.syntax["hbs"] = {
 
 require.register("nonamemedia~xqcore@0.8.0", function (exports, module) {
 /*!
- * XQCore - +0.8.0-22
+ * XQCore - +0.8.0-24
  * 
  * Model View Presenter Javascript Framework
  *
@@ -10143,7 +10210,7 @@ require.register("nonamemedia~xqcore@0.8.0", function (exports, module) {
  * Copyright (c) 2012 - 2014 Noname Media, http://noname-media.com
  * Author Andi Heinkelein
  *
- * Creation Date: 2014-05-20
+ * Creation Date: 2014-05-21
  */
 
 /*global XQCore:true */
@@ -10170,7 +10237,7 @@ var XQCore;
 	 * @type {Object}
 	 */
 	XQCore = {
-		version: '0.8.0-22',
+		version: '0.8.0-24',
 		defaultRoute: 'index',
 		html5Routes: false,
 		hashBang: '#!',
@@ -10208,7 +10275,7 @@ var XQCore;
 		return false;
 	};
 
-	XQCore.require = function(moduleName) {
+	XQCore.include = function(moduleName) {
 		if (moduleName === 'jquery') {
 			return jQuery;
 		}
@@ -10809,7 +10876,7 @@ var XQCore;
 (function(XQCore, undefined) {
 	'use strict';
 
-	var $ = XQCore.require("components~jquery@2.1.0");
+	var $ = XQCore.include('jquery');
 
 	/**
 	 * XQCore.Presenter base class
@@ -11403,7 +11470,7 @@ var XQCore;
 (function(XQCore, undefined) {
 	'use strict';
 
-	var $ = XQCore.require("components~jquery@2.1.0");
+	var $ = XQCore.include('jquery');
 
 	var Sync = function() {
 
@@ -12446,7 +12513,7 @@ XQCore.GetSet = XQCore.Model;
 (function(XQCore, undefined) {
 	'use strict';
 
-	var $ = XQCore.require("components~jquery@2.1.0");
+	var $ = XQCore.include('jquery');
 
 	/**
 	 * XQCore.View
@@ -13673,12 +13740,22 @@ XQCore.GetSet = XQCore.Model;
 });
 
 require.register("doxit", function (exports, module) {
+Object.keys(require.modules).forEach(function(m) {
+	'use strict';
+	var match = m.match(/~([a-zA-Z0-9_.-]+)@/);
+	if (match) {
+		require.register(match[1], require.modules[m].definition);
+	}
+});
+
 module.exports = function() {
 	'use strict';
 	
+	console.log('init()');
 	var mainPresenter = require("doxit/presenter/main.presenter.js");
 	mainPresenter.init();
 };
+
 });
 
 require.register("doxit/presenter/main.presenter.js", function (exports, module) {

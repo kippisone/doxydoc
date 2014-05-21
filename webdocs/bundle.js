@@ -1,301 +1,8 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-(function (process){
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-// resolves . and .. elements in a path array with directory names there
-// must be no slashes, empty elements, or device names (c:\) in the array
-// (so also no leading and trailing slashes - it does not distinguish
-// relative and absolute paths)
-function normalizeArray(parts, allowAboveRoot) {
-  // if the path tries to go above the root, `up` ends up > 0
-  var up = 0;
-  for (var i = parts.length - 1; i >= 0; i--) {
-    var last = parts[i];
-    if (last === '.') {
-      parts.splice(i, 1);
-    } else if (last === '..') {
-      parts.splice(i, 1);
-      up++;
-    } else if (up) {
-      parts.splice(i, 1);
-      up--;
-    }
-  }
-
-  // if the path is allowed to go above the root, restore leading ..s
-  if (allowAboveRoot) {
-    for (; up--; up) {
-      parts.unshift('..');
-    }
-  }
-
-  return parts;
-}
-
-// Split a filename into [root, dir, basename, ext], unix version
-// 'root' is just a slash, or nothing.
-var splitPathRe =
-    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
-var splitPath = function(filename) {
-  return splitPathRe.exec(filename).slice(1);
-};
-
-// path.resolve([from ...], to)
-// posix version
-exports.resolve = function() {
-  var resolvedPath = '',
-      resolvedAbsolute = false;
-
-  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-    var path = (i >= 0) ? arguments[i] : process.cwd();
-
-    // Skip empty and invalid entries
-    if (typeof path !== 'string') {
-      throw new TypeError('Arguments to path.resolve must be strings');
-    } else if (!path) {
-      continue;
-    }
-
-    resolvedPath = path + '/' + resolvedPath;
-    resolvedAbsolute = path.charAt(0) === '/';
-  }
-
-  // At this point the path should be resolved to a full absolute path, but
-  // handle relative paths to be safe (might happen when process.cwd() fails)
-
-  // Normalize the path
-  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
-    return !!p;
-  }), !resolvedAbsolute).join('/');
-
-  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
-};
-
-// path.normalize(path)
-// posix version
-exports.normalize = function(path) {
-  var isAbsolute = exports.isAbsolute(path),
-      trailingSlash = substr(path, -1) === '/';
-
-  // Normalize the path
-  path = normalizeArray(filter(path.split('/'), function(p) {
-    return !!p;
-  }), !isAbsolute).join('/');
-
-  if (!path && !isAbsolute) {
-    path = '.';
-  }
-  if (path && trailingSlash) {
-    path += '/';
-  }
-
-  return (isAbsolute ? '/' : '') + path;
-};
-
-// posix version
-exports.isAbsolute = function(path) {
-  return path.charAt(0) === '/';
-};
-
-// posix version
-exports.join = function() {
-  var paths = Array.prototype.slice.call(arguments, 0);
-  return exports.normalize(filter(paths, function(p, index) {
-    if (typeof p !== 'string') {
-      throw new TypeError('Arguments to path.join must be strings');
-    }
-    return p;
-  }).join('/'));
-};
-
-
-// path.relative(from, to)
-// posix version
-exports.relative = function(from, to) {
-  from = exports.resolve(from).substr(1);
-  to = exports.resolve(to).substr(1);
-
-  function trim(arr) {
-    var start = 0;
-    for (; start < arr.length; start++) {
-      if (arr[start] !== '') break;
-    }
-
-    var end = arr.length - 1;
-    for (; end >= 0; end--) {
-      if (arr[end] !== '') break;
-    }
-
-    if (start > end) return [];
-    return arr.slice(start, end - start + 1);
-  }
-
-  var fromParts = trim(from.split('/'));
-  var toParts = trim(to.split('/'));
-
-  var length = Math.min(fromParts.length, toParts.length);
-  var samePartsLength = length;
-  for (var i = 0; i < length; i++) {
-    if (fromParts[i] !== toParts[i]) {
-      samePartsLength = i;
-      break;
-    }
-  }
-
-  var outputParts = [];
-  for (var i = samePartsLength; i < fromParts.length; i++) {
-    outputParts.push('..');
-  }
-
-  outputParts = outputParts.concat(toParts.slice(samePartsLength));
-
-  return outputParts.join('/');
-};
-
-exports.sep = '/';
-exports.delimiter = ':';
-
-exports.dirname = function(path) {
-  var result = splitPath(path),
-      root = result[0],
-      dir = result[1];
-
-  if (!root && !dir) {
-    // No dirname whatsoever
-    return '.';
-  }
-
-  if (dir) {
-    // It has a dirname, strip trailing slash
-    dir = dir.substr(0, dir.length - 1);
-  }
-
-  return root + dir;
-};
-
-
-exports.basename = function(path, ext) {
-  var f = splitPath(path)[2];
-  // TODO: make this comparison case-insensitive on windows?
-  if (ext && f.substr(-1 * ext.length) === ext) {
-    f = f.substr(0, f.length - ext.length);
-  }
-  return f;
-};
-
-
-exports.extname = function(path) {
-  return splitPath(path)[3];
-};
-
-function filter (xs, f) {
-    if (xs.filter) return xs.filter(f);
-    var res = [];
-    for (var i = 0; i < xs.length; i++) {
-        if (f(xs[i], i, xs)) res.push(xs[i]);
-    }
-    return res;
-}
-
-// String.prototype.substr - negative index don't work in IE8
-var substr = 'ab'.substr(-1) === 'b'
-    ? function (str, start, len) { return str.substr(start, len) }
-    : function (str, start, len) {
-        if (start < 0) start = str.length + start;
-        return str.substr(start, len);
-    }
-;
-
-}).call(this,require("FWaASH"))
-},{"FWaASH":2}],2:[function(require,module,exports){
-// shim for using process in browser
-
-var process = module.exports = {};
-
-process.nextTick = (function () {
-    var canSetImmediate = typeof window !== 'undefined'
-    && window.setImmediate;
-    var canPost = typeof window !== 'undefined'
-    && window.postMessage && window.addEventListener
-    ;
-
-    if (canSetImmediate) {
-        return function (f) { return window.setImmediate(f) };
-    }
-
-    if (canPost) {
-        var queue = [];
-        window.addEventListener('message', function (ev) {
-            var source = ev.source;
-            if ((source === window || source === null) && ev.data === 'process-tick') {
-                ev.stopPropagation();
-                if (queue.length > 0) {
-                    var fn = queue.shift();
-                    fn();
-                }
-            }
-        }, true);
-
-        return function nextTick(fn) {
-            queue.push(fn);
-            window.postMessage('process-tick', '*');
-        };
-    }
-
-    return function nextTick(fn) {
-        setTimeout(fn, 0);
-    };
-})();
-
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-}
-
-// TODO(shtylman)
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-
-},{}],"firetpl":[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"firetpl":[function(require,module,exports){
 module.exports=require('1VDRCs');
 },{}],"1VDRCs":[function(require,module,exports){
 /*!
- * FireTPL template engine v0.1.0-0
+ * FireTPL template engine v0.1.0-3
  * 
  * FireTPL is a pretty Javascript template engine
  *
@@ -324,7 +31,7 @@ var FireTPL;
 	'use strict';
 
 	FireTPL = {
-		version: '0.1.0-0'
+		version: '0.1.0-3'
 	};
 
 	return FireTPL;
@@ -1322,7 +1029,7 @@ FireTPL.Compiler.prototype.syntax["hbs"] = {
 	FireTPL.registerCoreHelper();
 
 })(FireTPL);
-},{}],5:[function(require,module,exports){
+},{}],"HlZQrA":[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.1
  * http://jquery.com/
@@ -10514,9 +10221,13 @@ return jQuery;
 
 }));
 
+},{}],"jquery":[function(require,module,exports){
+module.exports=require('HlZQrA');
+},{}],"xqcore":[function(require,module,exports){
+module.exports=require('XuSIbL');
 },{}],"XuSIbL":[function(require,module,exports){
 /*!
- * XQCore - +0.7.3-16
+ * XQCore - +0.8.0-23
  * 
  * Model View Presenter Javascript Framework
  *
@@ -10526,7 +10237,7 @@ return jQuery;
  * Copyright (c) 2012 - 2014 Noname Media, http://noname-media.com
  * Author Andi Heinkelein
  *
- * Creation Date: 2014-05-01
+ * Creation Date: 2014-05-21
  */
 
 /*global XQCore:true */
@@ -10553,7 +10264,7 @@ var XQCore;
 	 * @type {Object}
 	 */
 	XQCore = {
-		version: '0.7.3-16',
+		version: '0.8.0-23',
 		defaultRoute: 'index',
 		html5Routes: false,
 		hashBang: '#!',
@@ -11842,7 +11553,7 @@ var XQCore;
 			data = this.onSend.call(this, data);
 		}
 
-		this.log('Sending an ajax call to ', this.server, 'with data: ', data);
+		this.log('Sending an ajax call to ', url, 'with data: ', data);
 		this.state('syncing');
 
 		$.ajax({
@@ -12381,7 +12092,7 @@ var XQCore;
 	};
 
 	/**
-	 * Search a item in models properties
+	 * Search an item in models properties
 	 *
 	 * @param {String} path Path to the parent property. We use dot notation to navigate to subproperties. (data.bla.blub) (Optional)
 	 * @param {Object} searchfor Searching for object
@@ -13308,7 +13019,8 @@ XQCore.GetSet = XQCore.Model;
 	 * @return {String} compiled html
 	 */
 	View.prototype.parse = function(template, data) {
-		var html;
+		var html,
+			$newEl;
 
 		template.scopeStore = {};
 		template.scopes = {};
@@ -13324,7 +13036,7 @@ XQCore.GetSet = XQCore.Model;
 
 		if (html) {
 			html = $.parseHTML(html);
-			var $newEl = $(html);
+			$newEl = $(html);
 			var els = $newEl.find('scope');
 			console.log('EL', els.length);
 			els.each(function() {
@@ -13336,7 +13048,7 @@ XQCore.GetSet = XQCore.Model;
 				content = {};
 				if (scopeId) {
 					content.value = $.parseHTML(template.scopes[scopeId](data[path], data));
-					content.id = scopeId
+					content.id = scopeId;
 				}
 				else {
 					content.value = $.parseHTML(data[path]);
@@ -13366,7 +13078,7 @@ XQCore.GetSet = XQCore.Model;
 	 */
 	View.prototype.render = function(data) {
 		if (this.__domReady === false) {
-			this.__initialData = data;
+			this.__initialData = data || {};
 			return;
 		}
 
@@ -13595,74 +13307,6 @@ XQCore.GetSet = XQCore.Model;
 
 		return newObj;
 	};
-
-	
-
-	/**
-	 * Check length of a string or number
-	 *
-	 * @param {String or Number} input this will be checked
-	 * @param {Number} min String can't be shorter than n, Number can't be lower than n
-	 * @param {Number} max String can't be longer than n, Number can't be greater than n
-	 *
-	 * @returns {String} errorMessage on invalid or void on valid
-	 */
-/*	util.checkLength = function(input, min, max) {
-		if (typeof input === 'Number') {
-			if (input < min) {
-				return 'num-to-small';
-			}
-			else if (input > max) {
-				return 'num-to-large';
-			}
-		}
-		else {
-			console.log(input, input.length);
-			if (input.length < min) {
-				return 'str-to-short';
-			}
-			else if (input.length > max) {
-				return 'str-to-long';
-			}
-		}
-	};*/
-
-	/**
-	 * Checks the equality of two strings
-	 *
-	 * @param {String} str1 First string
-	 * @param {String} str2 Second string
-	 *
-	 * @returns {String} errorMessage on invalid or void on valid
-	 */
-	/*util.checkEqual = function(str1, str2) {
-		if (str1 !== str2) {
-			return 'str-not-equal';
-		}
-	};*/
-
-	/**
-	 * Checks the validity of an email address
-	 *
-	 * @param {String} email e-Mail address
-	 */
-	/*util.checkEmail = function(email) {
-		if (!/^\S+\@\S+\.[a-z]{2,10}$/.test(email)) {
-			return 'invalid-email';
-		}
-	};*/
-
-	/**
-	 * Checks the validity of an url
-	 *
-	 * @param {String} url URL
-	 */
-	// util.checkUrl = function(url) {
-
-	/*	if (!/^http(s)?:\/\/\S\.[a-zA-Z]{2,10}\/?$/.test(url)) {
-			return 'invalid-url';
-		}
-	};*/
 
 })(XQCore);
 /*jshint -W014 */
@@ -13909,15 +13553,16 @@ XQCore.GetSet = XQCore.Model;
 
 
 		this.sockJS = new SockJS(url, null, options);
+		console.log('Connect to socket server ', url, 'using options:', options);
 
 		this.sockJS.onopen = function() {
-			this.log('Connection was successful!');
+			console.log('Connection was successful!');
 			if (typeof callback === 'function') {
 				callback();
 			}
 
 			self.setReady();
-		};
+		}.bind(this);
 
 		this.sockJS.onmessage = function(e) {
 			var msg;
@@ -13926,16 +13571,16 @@ XQCore.GetSet = XQCore.Model;
 				msg = JSON.parse(e.data);
 			}
 			catch(err) {
-				this.error('Could\'t parse socket message!', e.data);
+				console.error('Could\'t parse socket message!', e.data);
 			}
 
-			this.log('Got message', msg.eventName, msg.data);
+			console.log('Got message', msg.eventName, msg.data);
 			self.__eventEmitter.emit(msg.eventName, msg.data);
-		};
+		}.bind(this);
 
 		this.sockJS.onclose = function() {
-			this.log('Connection closed!');
-		};
+			console.log('Connection closed!');
+		}.bind(this);
 	};
 
 	/**
@@ -13945,12 +13590,12 @@ XQCore.GetSet = XQCore.Model;
 	 */
 	Socket.prototype.emit = function(eventName, data) {
 		this.ready(function() {
-			this.log('Send message ', eventName, data);
+			console.log('Send message ', eventName, data);
 			this.sockJS.send(JSON.stringify({
 				eventName: eventName,
 				data: data
 			}));
-		});
+		}.bind(this));
 	};
 
 	/**
@@ -14006,8 +13651,6 @@ XQCore.GetSet = XQCore.Model;
 	XQCore.Socket = Socket;
 
 })(XQCore);
-/*global SockJS:false */
-
 /**
  *	@requires XQCore.Model
  *	@requires XQCore.Socket
@@ -14020,9 +13663,9 @@ XQCore.GetSet = XQCore.Model;
 		//Call XQCore.Model constructor
 		XQCore.Model.call(this, name, conf);
 
-		this.server = location.protocol + '//' + location.hostname;
-		this.port = 9999;
-		this.path = 'xqmodel';
+		this.server = conf.server || location.protocol + '//' + location.hostname;
+		this.port = conf.port || 9999;
+		this.path = conf.path || 'xqsocket/' + name;
 		this.syncEnabled = false;
 	};
 
@@ -14055,13 +13698,14 @@ XQCore.GetSet = XQCore.Model;
 
 		this.syncEnabled = !!enableSync;
 
+		console.log('register model at server');
 		this.socket.emit('syncmodel.register', {
 			name: modelName
 		});
 
 		this.socket.on('syncmodel.change', function(data) {
 			var opts = {
-				sync: 'false'
+				sync: false
 			};
 
 			var args = data.slice(1);
@@ -14120,16 +13764,14 @@ XQCore.GetSet = XQCore.Model;
 
 	XQCore.SyncModel = SyncModel;
 })(XQCore);
-},{"jquery":5}],"xqcore":[function(require,module,exports){
-module.exports=require('XuSIbL');
-},{}],8:[function(require,module,exports){
+},{"jquery":"HlZQrA"}],7:[function(require,module,exports){
 module.exports = function() {
 	'use strict';
 	
 	var mainPresenter = require('./presenter/main.presenter');
 	mainPresenter.init();
 };
-},{"./presenter/main.presenter":11}],9:[function(require,module,exports){
+},{"./presenter/main.presenter":10}],8:[function(require,module,exports){
 module.exports = function() {
 	'use strict';
 
@@ -14165,11 +13807,9 @@ module.exports = function() {
 
 	return itemModel;
 }();
-},{"xqcore":"XuSIbL"}],10:[function(require,module,exports){
+},{"xqcore":"XuSIbL"}],9:[function(require,module,exports){
 module.exports = function() {
 	'use strict';
-
-	var path = require('path');
 
 	var XQCore = require('xqcore');
 
@@ -14248,7 +13888,7 @@ module.exports = function() {
 	return listingModel;
 
 }();
-},{"path":1,"xqcore":"XuSIbL"}],11:[function(require,module,exports){
+},{"xqcore":"XuSIbL"}],10:[function(require,module,exports){
 module.exports = function() {
 	'use strict';
 
@@ -14282,4 +13922,4 @@ module.exports = function() {
 
 	return presenter;
 }();
-},{"../models/item.model":9,"../models/listing.model":10,"xqcore":"XuSIbL"}]},{},[8])
+},{"../models/item.model":8,"../models/listing.model":9,"xqcore":"XuSIbL"}]},{},[7])

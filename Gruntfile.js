@@ -78,7 +78,7 @@ module.exports = function(grunt) {
 		browserify: {
 			dist: {
 				options: {
-					require: ['firetpl', 'xqcore']
+					require: ['jquery', 'firetpl', 'xqcore']
 				},
 				files: {
 					'webdocs/bundle.js': ['webdocs/index.js']
@@ -115,6 +115,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	// grunt.loadNpmTasks('grunt-contrib-uglify');
 	// grunt.loadNpmTasks('grunt-bumpup');
+	grunt.loadNpmTasks('grunt-browserify');
 	grunt.loadNpmTasks('grunt-component-build');
 
 	grunt.registerTask('default', 'jshint');

@@ -2,7 +2,9 @@ describe('Listing Model', function() {
 	'use strict';
 
 	var listingModel = require('doxit/models/listing.model.js'),
-		XQCore = require('xqcore');
+		XQCore = require('nonamemedia~xqcore@0.8.0'),
+		XQCore2 = require('nonamemedia~xqcore@0.8.0');
+
 
 	var testData = {
 		'modules': {
@@ -493,6 +495,7 @@ describe('Listing Model', function() {
 
 	describe('Instance', function() {
 		it('Should be an instance of XQCore.Model', function() {
+			expect(XQCore).to.be.eql(XQCore2);
 			expect(listingModel).to.be.an('object');
 			expect(listingModel).to.be.a(XQCore.Model);
 		});
@@ -507,7 +510,7 @@ describe('Listing Model', function() {
 
 		});
 
-		it('Should get a module', function() {
+		it.skip('Should get a module', function() {
 			var module = listingModel.getModule();
 			expect(module).to.eql({
 				'name': 'XQCore.Logger',
