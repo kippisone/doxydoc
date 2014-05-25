@@ -1,8 +1,8 @@
 section class=page
 	nav class=modules
-		ul class=module-listing
+		ul class=modules-listing
 		:each $modules
-			li class=module-item
-				a class=module-link href="#!module/$link"
+			li class=modules-listing-item
+				a class=module-link href="#!module/$key"
 					$name
-	section class=content
+	section class=page-content

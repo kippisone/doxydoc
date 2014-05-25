@@ -97,11 +97,14 @@ module.exports = function(grunt) {
 		},
 		watch: {
 			less: {
+				options: {
+					livereload: true,
+				},
 				files: 'webdocs/less/**/*.less',
 				tasks: ['less']
 			},
 			browserify: {
-				files: 'webdocs/**/*.js',
+				files: 'webdocs/!(build)**/*.js',
 				tasks: ['browserify']
 			}
 		}

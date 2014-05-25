@@ -37,7 +37,7 @@ module.exports = function() {
 			for (var module in data.modules) {
 				if (data.modules.hasOwnProperty(module)) {
 					var m = data.modules[module];
-					m.link = m.name.replace(/[^a-zA-Z0-9_-]/g, '');
+					m.key = m.name.replace(/[^a-zA-Z0-9_-]/g, '');
 					modules.push(m);
 				}
 			}
@@ -50,26 +50,43 @@ module.exports = function() {
 			return listing;
 		};
 
-		self.getModule = function(data) {
-			console.log('Get module', data.module);
-			var module = this.search('modules', {
-				link: data.module
-			});
+		self.getModule = function(moduleName) {
+			var modules = this.get('data.modules'),
+				curModule = null;
 
-			console.log('... matched:', module);
-
-			//Add classes
-			var classes = [];
-			for (var el in module.classes) {
-				if (module.classes.hasOwnProperty(el)) {
-					var allClasses = this.get('data.classes');
-					classes.push(allClasses[el]);
+			for (var m in modules) {
+				if (modules.hasOwnProperty(m)) {
+					var item = modules[m];
+					if (item.key === moduleName) {
+						console.log(item);
+						curModule = item;
+					}
 				}
 			}
 
-			module.classes = classes;
+			//Add classes
+			var classes = [];
+			var allClasses = this.get('data.classes');
+			var allClasseItems = this.get('data.classitems');
+			var itemFilter= function(curItem) {
+				return (curItem.class === el);
+			};
+			
+			for (var el in curModule.classes) {
+				if (curModule.classes.hasOwnProperty(el)) {
+					var curClass = allClasses[el];
+					curClass.items = [];
 
-			return module;
+					//Get class items
+					curClass.items = allClasseItems.filter(itemFilter);
+
+					classes.push(curClass);
+				}
+			}
+
+			curModule.classes = classes;
+
+			return curModule;
 		};
 	});
 	

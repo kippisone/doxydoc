@@ -5,3 +5,20 @@ div class=module-item
 	div class=content
 		:each $classes
 			h3 $name
+			:each $items
+				div class=item-box
+					h5 $name
+					span class="label label-$itemtype"
+						$itemtype
+					span class=line
+						"Line: $line"
+					div class=description
+						$description
+					:if $params
+						h6 "Parameter:"
+						table class=item-params
+							:each $params
+								tr class=item-param
+									td class="param-type param-type-$type" $type
+									td class="param-name" $name
+									td class="param-description" $description 

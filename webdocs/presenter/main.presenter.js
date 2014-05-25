@@ -10,7 +10,7 @@ module.exports = function() {
 	var presenter = new XQCore.Presenter('main', function(self) {
 		listingModel.fetch();
 		var mainView = self.initView('main', 'body');
-		var itemView = self.initView('item', '.content');
+		var itemView = self.initView('item', '.page-content');
 
 		self.couple({
 			view: mainView,
@@ -22,9 +22,9 @@ module.exports = function() {
 			model: itemModel
 		});
 
-		self.route('module/:module', function(moduleName) {
-			console.log('Load module', moduleName);
-			var mod = listingModel.getModule(moduleName);
+		self.route('module/:module', function(data) {
+			console.log('Load module', data);
+			var mod = listingModel.getModule(data.module);
 			itemModel.set(mod);
 		});
 	});

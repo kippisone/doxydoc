@@ -1,4 +1,4 @@
-describe('Listing Model', function() {
+describe.only('Listing Model', function() {
 	'use strict';
 
 	var listingModel = require('doxit/models/listing.model.js'),
@@ -24,7 +24,7 @@ describe('Listing Model', function() {
 					'XQCore.Logger',
 					'XQCore.Event'
 				],
-				'link': 'XQCoreGetSet'
+				'key': 'XQCoreGetSet'
 			},
 			'XQCore.Logger': {
 				'name': 'XQCore.Logger',
@@ -38,7 +38,7 @@ describe('Listing Model', function() {
 				'file': 'src/logger/xqcore-logger.js',
 				'line': 25,
 				'description': 'XQCore Logger is a logging tool to log messages, warnings, errors to the browser or onscreen console',
-				'link': 'XQCoreLogger'
+				'key': 'XQCoreLogger'
 			}
 		},
 		"classes": {
@@ -503,15 +503,17 @@ describe('Listing Model', function() {
 
 	describe('getModule', function() {
 		beforeEach(function() {
-			listingModel.set(testData);
+			listingModel.set('data', testData);
 		});
 
 		afterEach(function() {
 
 		});
 
-		it.skip('Should get a module', function() {
-			var module = listingModel.getModule();
+		it('Should get a module', function() {
+			var module = listingModel.getModule('XQCoreLogger');
+			expect(module).to.be.an('object');
+			expect(module.name).to.eql('XQCore.Logger');
 			expect(module).to.eql({
 				'name': 'XQCore.Logger',
 				'submodules': {},
@@ -521,9 +523,8 @@ describe('Listing Model', function() {
 				'file': 'src/logger/xqcore-logger.js',
 				'line': 25,
 				'description': 'XQCore Logger is a logging tool to log messages, warnings, errors to the browser or onscreen console',
-				'link': 'XQCoreLogger',
-				'classes': [
-					{
+				'key': 'XQCoreLogger',
+				'classes': [{
 					"name": "XQCore.Logger",
 					"shortname": "XQCore.Logger",
 					"classitems": [],
@@ -538,86 +539,85 @@ describe('Listing Model', function() {
 					"namespace": "",
 					"file": "src/logger/xqcore-logger.js",
 					"line": 25,
-					"description": "XQCore Logger is a logging tool to log messages, warnings, errors to the browser or onscreen console"
-				}
-				],
-				'classitems': [
-					{
-				"file": "src/logger/xqcore-logger.js",
-				"line": 1,
-				"description": "XQCore Logger\n\nBased on EventEmitter.js",
-				"class": "XQCore.Logger",
-				"module": "XQCore.GetSet"
-			},
-			{
-				"file": "src/logger/xqcore-logger.js",
-				"line": 36,
-				"description": "Loggs a message to the console",
-				"itemtype": "method",
-				"name": "log",
-				"params": [
-					{
-						"name": "msg",
-						"description": "logs all arguments to the console",
-						"type": "Any"
-					}
-				],
-				"class": "XQCore.Logger",
-				"module": "XQCore.Logger"
-			},
-			{
-				"file": "src/logger/xqcore-logger.js",
-				"line": 53,
-				"description": "Loggs a warning to the console",
-				"itemtype": "method",
-				"name": "warn",
-				"params": [
-					{
-						"name": "msg",
-						"description": "logs all arguments to the console",
-						"type": "Any"
-					}
-				],
-				"class": "XQCore.Logger",
-				"module": "XQCore.Logger"
-			},
-			{
-				"file": "src/logger/xqcore-logger.js",
-				"line": 69,
-				"description": "Loggs a error message to the console",
-				"itemtype": "method",
-				"name": "error",
-				"params": [
-					{
-						"name": "msg",
-						"description": "logs all arguments to the console",
-						"type": "Any"
-					}
-				],
-				"class": "XQCore.Logger",
-				"module": "XQCore.Logger"
-			},
-			{
-				"file": "src/logger/xqcore-logger.js",
-				"line": 85,
-				"description": "Start a timeTracer",
-				"itemtype": "method",
-				"name": "timer",
-				"params": [
-					{
-						"name": "timerName",
-						"description": "Set the name for your (Optional)",
-						"type": "String"
-					}
-				],
-				"return": {
-					"description": "Returns a TimerObject",
-					"type": "Object"
-				},
-				"class": "XQCore.Logger",
-				"module": "XQCore.Logger"
-			}
-				]
+					"description": "XQCore Logger is a logging tool to log messages, warnings, errors to the browser or onscreen console",
+					"items": [
+						{
+							"file": "src/logger/xqcore-logger.js",
+							"line": 1,
+							"description": "XQCore Logger\n\nBased on EventEmitter.js",
+							"class": "XQCore.Logger",
+							"module": "XQCore.GetSet"
+						},
+						{
+							"file": "src/logger/xqcore-logger.js",
+							"line": 36,
+							"description": "Loggs a message to the console",
+							"itemtype": "method",
+							"name": "log",
+							"params": [
+								{
+									"name": "msg",
+									"description": "logs all arguments to the console",
+									"type": "Any"
+								}
+							],
+							"class": "XQCore.Logger",
+							"module": "XQCore.Logger"
+						},
+						{
+							"file": "src/logger/xqcore-logger.js",
+							"line": 53,
+							"description": "Loggs a warning to the console",
+							"itemtype": "method",
+							"name": "warn",
+							"params": [
+								{
+									"name": "msg",
+									"description": "logs all arguments to the console",
+									"type": "Any"
+								}
+							],
+							"class": "XQCore.Logger",
+							"module": "XQCore.Logger"
+						},
+						{
+							"file": "src/logger/xqcore-logger.js",
+							"line": 69,
+							"description": "Loggs a error message to the console",
+							"itemtype": "method",
+							"name": "error",
+							"params": [
+								{
+									"name": "msg",
+									"description": "logs all arguments to the console",
+									"type": "Any"
+								}
+							],
+							"class": "XQCore.Logger",
+							"module": "XQCore.Logger"
+						},
+						{
+							"file": "src/logger/xqcore-logger.js",
+							"line": 85,
+							"description": "Start a timeTracer",
+							"itemtype": "method",
+							"name": "timer",
+							"params": [
+								{
+									"name": "timerName",
+									"description": "Set the name for your (Optional)",
+									"type": "String"
+								}
+							],
+							"return": {
+								"description": "Returns a TimerObject",
+								"type": "Object"
+							},
+							"class": "XQCore.Logger",
+							"module": "XQCore.Logger"
+						}
+					]
+				}]
 			});
 		});
 	});

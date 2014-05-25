@@ -11812,6 +11812,7 @@ var XQCore;
 
 		options = options || {};
 
+
 		if (arguments[0] === null) {
 			newData = arguments[1];
 			setAll = true;
@@ -11819,11 +11820,11 @@ var XQCore;
 		}
 		else if (typeof arguments[0] === 'object') {
 			//Add a dataset
-			key = null;
 			options = value || {};
 			newData = options.extend ? XQCore.extend(newData, oldData, arguments[0]) : arguments[0];
 			setAll = true;
 			this.log('Set data', newData, oldData);
+			key = null;
 		}
 		else if (typeof arguments[0] === 'string') {
 			newData = XQCore.extend({}, this.get());
@@ -13772,7 +13773,7 @@ module.exports = function() {
 	var presenter = new XQCore.Presenter('main', function(self) {
 		listingModel.fetch();
 		var mainView = self.initView('main', 'body');
-		var itemView = self.initView('item', '.content');
+		var itemView = self.initView('item', '.page-content');
 
 		self.couple({
 			view: mainView,
@@ -13784,9 +13785,9 @@ module.exports = function() {
 			model: itemModel
 		});
 
-		self.route('module/:module', function(moduleName) {
-			console.log('Load module', moduleName);
-			var mod = listingModel.getModule(moduleName);
+		self.route('module/:module', function(data) {
+			console.log('Load module', data);
+			var mod = listingModel.getModule(data.module);
 			itemModel.set(mod);
 		});
 	});
@@ -13873,7 +13874,7 @@ module.exports = function() {
 			for (var module in data.modules) {
 				if (data.modules.hasOwnProperty(module)) {
 					var m = data.modules[module];
-					m.link = m.name.replace(/[^a-zA-Z0-9_-]/g, '');
+					m.key = m.name.replace(/[^a-zA-Z0-9_-]/g, '');
 					modules.push(m);
 				}
 			}
@@ -13886,26 +13887,43 @@ module.exports = function() {
 			return listing;
 		};
 
-		self.getModule = function(data) {
-			console.log('Get module', data.module);
-			var module = this.search('modules', {
-				link: data.module
-			});
+		self.getModule = function(moduleName) {
+			var modules = this.get('data.modules'),
+				curModule = null;
 
-			console.log('... matched:', module);
-
-			//Add classes
-			var classes = [];
-			for (var el in module.classes) {
-				if (module.classes.hasOwnProperty(el)) {
-					var allClasses = this.get('data.classes');
-					classes.push(allClasses[el]);
+			for (var m in modules) {
+				if (modules.hasOwnProperty(m)) {
+					var item = modules[m];
+					if (item.key === moduleName) {
+						console.log(item);
+						curModule = item;
+					}
 				}
 			}
 
-			module.classes = classes;
+			//Add classes
+			var classes = [];
+			var allClasses = this.get('data.classes');
+			var allClasseItems = this.get('data.classitems');
+			var itemFilter= function(curItem) {
+				return (curItem.class === el);
+			};
+			
+			for (var el in curModule.classes) {
+				if (curModule.classes.hasOwnProperty(el)) {
+					var curClass = allClasses[el];
+					curClass.items = [];
 
-			return module;
+					//Get class items
+					curClass.items = allClasseItems.filter(itemFilter);
+
+					classes.push(curClass);
+				}
+			}
+
+			curModule.classes = classes;
+
+			return curModule;
 		};
 	});
 	

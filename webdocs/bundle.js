@@ -10223,11 +10223,9 @@ return jQuery;
 
 },{}],"jquery":[function(require,module,exports){
 module.exports=require('HlZQrA');
-},{}],"xqcore":[function(require,module,exports){
-module.exports=require('XuSIbL');
 },{}],"XuSIbL":[function(require,module,exports){
 /*!
- * XQCore - +0.8.0-23
+ * XQCore - +0.8.0-25
  * 
  * Model View Presenter Javascript Framework
  *
@@ -10237,7 +10235,7 @@ module.exports=require('XuSIbL');
  * Copyright (c) 2012 - 2014 Noname Media, http://noname-media.com
  * Author Andi Heinkelein
  *
- * Creation Date: 2014-05-21
+ * Creation Date: 2014-05-23
  */
 
 /*global XQCore:true */
@@ -10264,7 +10262,7 @@ var XQCore;
 	 * @type {Object}
 	 */
 	XQCore = {
-		version: '0.8.0-23',
+		version: '0.8.0-25',
 		defaultRoute: 'index',
 		html5Routes: false,
 		hashBang: '#!',
@@ -10302,7 +10300,7 @@ var XQCore;
 		return false;
 	};
 
-	XQCore.require = function(moduleName) {
+	XQCore.include = function(moduleName) {
 		if (moduleName === 'jquery') {
 			return jQuery;
 		}
@@ -10903,7 +10901,7 @@ var XQCore;
 (function(XQCore, undefined) {
 	'use strict';
 
-	var $ = XQCore.require('jquery');
+	var $ = XQCore.include('jquery');
 
 	/**
 	 * XQCore.Presenter base class
@@ -11497,7 +11495,7 @@ var XQCore;
 (function(XQCore, undefined) {
 	'use strict';
 
-	var $ = XQCore.require('jquery');
+	var $ = XQCore.include('jquery');
 
 	var Sync = function() {
 
@@ -12540,7 +12538,7 @@ XQCore.GetSet = XQCore.Model;
 (function(XQCore, undefined) {
 	'use strict';
 
-	var $ = XQCore.require('jquery');
+	var $ = XQCore.include('jquery');
 
 	/**
 	 * XQCore.View
@@ -13764,13 +13762,26 @@ XQCore.GetSet = XQCore.Model;
 
 	XQCore.SyncModel = SyncModel;
 })(XQCore);
-},{"jquery":"HlZQrA"}],7:[function(require,module,exports){
+},{"jquery":"HlZQrA"}],"xqcore":[function(require,module,exports){
+module.exports=require('XuSIbL');
+},{}],7:[function(require,module,exports){
+Object.keys(require.modules).forEach(function(m) {
+	'use strict';
+	var match = m.match(/~([a-zA-Z0-9_.-]+)@/);
+	if (match) {
+		// require.register(match[1], require.modules[m].definition);
+		require.modules[match[1]] = require.modules[m];
+	}
+});
+
 module.exports = function() {
 	'use strict';
 	
+	console.log('init()');
 	var mainPresenter = require('./presenter/main.presenter');
 	mainPresenter.init();
 };
+
 },{"./presenter/main.presenter":10}],8:[function(require,module,exports){
 module.exports = function() {
 	'use strict';
@@ -13847,7 +13858,7 @@ module.exports = function() {
 			for (var module in data.modules) {
 				if (data.modules.hasOwnProperty(module)) {
 					var m = data.modules[module];
-					m.link = m.name.replace(/[^a-zA-Z0-9_-]/g, '');
+					m.key = m.name.replace(/[^a-zA-Z0-9_-]/g, '');
 					modules.push(m);
 				}
 			}
@@ -13860,26 +13871,43 @@ module.exports = function() {
 			return listing;
 		};
 
-		self.getModule = function(data) {
-			console.log('Get module', data.module);
-			var module = this.search('modules', {
-				link: data.module
-			});
+		self.getModule = function(moduleName) {
+			var modules = this.get('data.modules'),
+				curModule = null;
 
-			console.log('... matched:', module);
-
-			//Add classes
-			var classes = [];
-			for (var el in module.classes) {
-				if (module.classes.hasOwnProperty(el)) {
-					var allClasses = this.get('data.classes');
-					classes.push(allClasses[el]);
+			for (var m in modules) {
+				if (modules.hasOwnProperty(m)) {
+					var item = modules[m];
+					if (item.key === moduleName) {
+						console.log(item);
+						curModule = item;
+					}
 				}
 			}
 
-			module.classes = classes;
+			//Add classes
+			var classes = [];
+			var allClasses = this.get('data.classes');
+			var allClasseItems = this.get('data.classitems');
+			var itemFilter= function(curItem) {
+				return (curItem.class === el);
+			};
+			
+			for (var el in curModule.classes) {
+				if (curModule.classes.hasOwnProperty(el)) {
+					var curClass = allClasses[el];
+					curClass.items = [];
 
-			return module;
+					//Get class items
+					curClass.items = allClasseItems.filter(itemFilter);
+
+					classes.push(curClass);
+				}
+			}
+
+			curModule.classes = classes;
+
+			return curModule;
 		};
 	});
 	
@@ -13901,7 +13929,7 @@ module.exports = function() {
 	var presenter = new XQCore.Presenter('main', function(self) {
 		listingModel.fetch();
 		var mainView = self.initView('main', 'body');
-		var itemView = self.initView('item', '.content');
+		var itemView = self.initView('item', '.page-content');
 
 		self.couple({
 			view: mainView,
@@ -13913,9 +13941,9 @@ module.exports = function() {
 			model: itemModel
 		});
 
-		self.route('module/:module', function(moduleName) {
-			console.log('Load module', moduleName);
-			var mod = listingModel.getModule(moduleName);
+		self.route('module/:module', function(data) {
+			console.log('Load module', data);
+			var mod = listingModel.getModule(data.module);
 			itemModel.set(mod);
 		});
 	});
