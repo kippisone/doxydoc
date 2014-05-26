@@ -92,7 +92,7 @@ a:hover {
 }
 .module-item h5 {
   font-size: 13px;
-  margin: 0;
+  margin: 0 10px 0 0;
   display: inline-block;
 }
 .module-item .item-box {
@@ -115,6 +115,7 @@ a:hover {
   vertical-align: top;
   font-size: 11px;
   text-align: right;
+  padding-top: 3px;
 }
 .module-item .param-name {
   padding-right: 10px;

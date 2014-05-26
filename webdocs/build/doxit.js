@@ -9169,7 +9169,7 @@ return jQuery;
 
 require.register("nonamemedia~firetpl@0.1.0", function (exports, module) {
 /*!
- * FireTPL template engine v0.1.0-3
+ * FireTPL template engine v0.1.0
  * 
  * FireTPL is a pretty Javascript template engine
  *
@@ -9198,7 +9198,7 @@ var FireTPL;
 	'use strict';
 
 	FireTPL = {
-		version: '0.1.0-3'
+		version: '0.1.0'
 	};
 
 	return FireTPL;
@@ -9216,11 +9216,7 @@ var FireTPL;
 	/*global define:false */
 	'use strict';
 
-	var Compiler = function(options) {
-		options = options || {};
-
-		this.scopeTags = !!options.scopeTags;
-
+	var Compiler = function() {
 		this.indentionPattern = /\t/g;
 		this.pattern = /^([ \t]*)?(\/\/.*)?(?:\:([a-zA-Z0-9]+))?([a-zA-Z0-9]+=(?:(?:\"[^\"]+\")|(?:\'[^\']+\')|(?:\S+)))?([a-z0-9]+)?([\"].*[\"]?)?([\'].*[\']?)?(.*)?$/gm;
 		this.voidElements = ['area', 'base', 'br', 'col', 'embed', 'img', 'input', 'link', 'meta', 'param', 'source', 'wbr'];
@@ -9442,7 +9438,8 @@ var FireTPL;
 		}
 
 		if (tag) {
-			this.parseTag(tag, tagAttrs);
+			this.parseTag(tag, tagAttrs + ' xq-scope=scope' + scopeId + ' xq-path=' + content.trim().replace(/^\$/, ''));
+			this.injectClass('xq-scope xq-scope' + scopeId);
 		}
 		else {
 			this.closer.push('');
@@ -9453,13 +9450,7 @@ var FireTPL;
 			content = this.parseVariables(content, true);
 		}
 
-		if (this.scopeTags) {
-			this.append('str', '<scope id="scope' + scopeId + '" path="' + content + '"></scope>');
-		}
-		else {
-			this.append('code', 's+=scopes.scope' + scopeId + '(' + content + ',data);');
-		}
-		
+		this.append('code', 's+=scopes.scope' + scopeId + '(' + content + ',data);');
 		this.newScope('scope' + scopeId);
 
 		if (helper === 'if') {
@@ -9590,73 +9581,12 @@ var FireTPL;
 
 	Compiler.prototype.parseVariables = function(str, isCode) {
 		var opener = '',
-			closer = '',
-			altOpener = '',
-			altCloser = '',
-			prefix = 'data.',
-			self = this;
+			closer = '';
 
-		if (this.scopeTags && !isCode) {
-			opener = '<scope path="';
-			closer = '"></scope>';
-			altOpener = '\'+';
-			altCloser = '+\'';
-			prefix = '';
-		}
-		else if (!this.scopeTags && !isCode) {
+		if (!isCode) {
 			opener = '\'+';
 			closer = '+\'';
 		}
-
-		var parseVar = function(m) {
-			if (m === '') {
-				if (self.scopeTags) {
-					return '\'+data+\'';
-				}
-				return opener + 'data' + closer;
-			}
-
-			if (/^(parent\b)/.test(m) && (self.curScope[1] === 'root' || !self.scopeTags)) {
-				if (self.scopeTags) {
-					m = m.replace(/^parent\.?/, '');
-				}
-
-				if (m) {
-					return opener + m + closer;
-				}
-				else if (self.scopeTags) {
-					return altOpener + 'parent' + altCloser;
-				}
-				else {
-					return opener + 'parent' + closer;
-				}
-			}
-			else if (/^(root\b)/.test(m)) {
-				if (self.scopeTags) {
-					m = m.replace(/^root\.?/, '');
-				}
-				
-				if (m) {
-					return opener + m + closer;
-				}
-				else if (self.scopeTags) {
-					return altOpener + 'root' + altCloser;
-				}
-				else {
-					return opener + 'root' + closer;
-				}
-			}
-			else if (self.curScope[0] === 'root' && !isCode) {
-				return opener + prefix + m + closer;
-			}
-			else if (self.scopeTags) {
-				prefix = isCode ? '' : 'data.';
-				return altOpener + prefix + m + altCloser;
-			}
-			else {
-				return opener + 'data.' + m + closer;
-			}
-		};
 
 		str = str
 			.replace(/\'/g, '\\\'')
@@ -9664,10 +9594,13 @@ var FireTPL;
 			.replace(/\$((\{([a-zA-Z0-9._-]+)\})|([a-zA-Z0-9._-]+))/g, function(match, p1, p2, p3, p4) {
 				var m = p3 || p4;
 				if (/^this\b/.test(m)) {
-					return parseVar(m.replace(/^this\.?/, ''));
+					return opener + m.replace(/^this/, 'data') + closer;
+				}
+				else if (/^(parent\b|root\b)/.test(m)) {
+					return opener + m + closer;
 				}
 				
-				return parseVar(m);
+				return opener + 'data.' + m + closer;
 				
 			})
 			.replace(/@([a-zA-Z0-9._-]+)/g, '\'+lang.$1+\'');
@@ -9952,9 +9885,9 @@ var FireTPL;
 		return content;
 	};
 
-	FireTPL.precompile = function(tmpl, type, options) {
-		var compiler = new FireTPL.Compiler(options);
-		compiler.precompile(tmpl, type);
+	FireTPL.precompile = function(tmpl) {
+		var compiler = new FireTPL.Compiler();
+		compiler.precompile(tmpl);
 		return compiler.getOutStream();
 	};
 
@@ -10200,7 +10133,7 @@ FireTPL.Compiler.prototype.syntax["hbs"] = {
 
 require.register("nonamemedia~xqcore@0.8.0", function (exports, module) {
 /*!
- * XQCore - +0.8.0-24
+ * XQCore - +0.8.0-32
  * 
  * Model View Presenter Javascript Framework
  *
@@ -10210,7 +10143,7 @@ require.register("nonamemedia~xqcore@0.8.0", function (exports, module) {
  * Copyright (c) 2012 - 2014 Noname Media, http://noname-media.com
  * Author Andi Heinkelein
  *
- * Creation Date: 2014-05-21
+ * Creation Date: 2014-05-25
  */
 
 /*global XQCore:true */
@@ -10237,7 +10170,7 @@ var XQCore;
 	 * @type {Object}
 	 */
 	XQCore = {
-		version: '0.8.0-24',
+		version: '0.8.0-32',
 		defaultRoute: 'index',
 		html5Routes: false,
 		hashBang: '#!',
@@ -11812,7 +11745,6 @@ var XQCore;
 
 		options = options || {};
 
-
 		if (arguments[0] === null) {
 			newData = arguments[1];
 			setAll = true;
@@ -11823,8 +11755,8 @@ var XQCore;
 			options = value || {};
 			newData = options.extend ? XQCore.extend(newData, oldData, arguments[0]) : arguments[0];
 			setAll = true;
-			this.log('Set data', newData, oldData);
 			key = null;
+			this.log('Set data', newData, oldData);
 		}
 		else if (typeof arguments[0] === 'string') {
 			newData = XQCore.extend({}, this.get());
@@ -11898,15 +11830,54 @@ var XQCore;
 	/**
 	 * Get one or all properties from a dataset
 	 *
-	 * @param  {String} key Data key
+	 * <b>Options:</b>
+	 *   copy: <Boolean>  //Set it to true to get a copy of the dataset
+	 *
+	 * @param {String} key Data key
+	 * @param {Object} options Set options
 	 *
 	 * @return {Object}     model dataset
 	 */
-	Model.prototype.get = function(key) {
-		if (key === undefined) {
+	Model.prototype.get = function(key, options) {
+		options = options || {};
+
+		var data;
+
+		if (typeof key === options && key !== null) {
+			options = key;
+			key = null;
+		}
+
+		if (key === undefined || key === null) {
+			if (options.copy === true) {
+				data = this.properties;
+				switch (typeof data) {
+					case 'object':
+						return Array.isArray(data) ? data.slice() : XQCore.extend(true, {}, data);
+					case 'function':
+						//jshint evil:true
+						return eval('(' + data.toString() + ')');
+					default:
+						return data;
+				}
+			}
+
 			return this.properties;
 		}
 		else {
+			if (options.copy === true) {
+				data = XQCore.undotify(key, this.properties);
+				switch (typeof data) {
+					case 'object':
+						return Array.isArray(data) ? data.slice() : XQCore.extend(true, {}, data);
+					case 'function':
+						//jshint evil:true
+						return eval('(' + data.toString() + ')');
+					default:
+						return data;
+				}
+			}
+			
 			return XQCore.undotify(key, this.properties);
 		}
 	};
@@ -13098,6 +13069,10 @@ XQCore.GetSet = XQCore.Model;
 			this.__setReadyState();
 		}
 
+		if (this.$el.parent().length === 0) {
+			this.inject();
+		}
+
 		this.registerListener(this.$el);
 		this.emit('content.change', data);
 	};
@@ -13774,6 +13749,7 @@ module.exports = function() {
 		listingModel.fetch();
 		var mainView = self.initView('main', 'body');
 		var itemView = self.initView('item', '.page-content');
+		var indexView = self.initView('index', '.page-content');
 
 		self.couple({
 			view: mainView,
@@ -13785,8 +13761,11 @@ module.exports = function() {
 			model: itemModel
 		});
 
+		self.route('index', function() {
+			indexView.render();
+		});
+
 		self.route('module/:module', function(data) {
-			console.log('Load module', data);
 			var mod = listingModel.getModule(data.module);
 			itemModel.set(mod);
 		});
@@ -13888,14 +13867,13 @@ module.exports = function() {
 		};
 
 		self.getModule = function(moduleName) {
-			var modules = this.get('data.modules'),
+			var modules = this.get('data.modules', { copy: true }),
 				curModule = null;
 
 			for (var m in modules) {
 				if (modules.hasOwnProperty(m)) {
 					var item = modules[m];
 					if (item.key === moduleName) {
-						console.log(item);
 						curModule = item;
 					}
 				}
@@ -13903,21 +13881,24 @@ module.exports = function() {
 
 			//Add classes
 			var classes = [];
-			var allClasses = this.get('data.classes');
-			var allClasseItems = this.get('data.classitems');
+			var allClasses = this.get('data.classes', { copy: true });
+			var allClasseItems = this.get('data.classitems', { copy: true });
 			var itemFilter= function(curItem) {
-				return (curItem.class === el);
+				console.log(curItem, el, (curItem.class === el));
+				return (curItem.class && curItem.class === el);
 			};
 			
 			for (var el in curModule.classes) {
 				if (curModule.classes.hasOwnProperty(el)) {
 					var curClass = allClasses[el];
-					curClass.items = [];
+					if (curClass) {
+						curClass.items = [];
 
-					//Get class items
-					curClass.items = allClasseItems.filter(itemFilter);
+						//Get class items
+						curClass.items = allClasseItems.filter(itemFilter);
+					}
 
-					classes.push(curClass);
+					classes.push(curClass || []);
 				}
 			}
 

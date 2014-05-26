@@ -37,7 +37,8 @@ describe.only('Listing Model', function() {
 				'tag': 'module',
 				'file': 'src/logger/xqcore-logger.js',
 				'line': 25,
-				'description': 'XQCore Logger is a logging tool to log messages, warnings, errors to the browser or onscreen console',
+				'description': 'XQCore Logger is a logging tool to log messages, warnings, errors to the ' + 
+					'browser or onscreen console',
 				'key': 'XQCoreLogger'
 			}
 		},
@@ -57,7 +58,8 @@ describe.only('Listing Model', function() {
 				"namespace": "",
 				"file": "src/logger/xqcore-logger.js",
 				"line": 25,
-				"description": "XQCore Logger is a logging tool to log messages, warnings, errors to the browser or onscreen console"
+				"description": 'XQCore Logger is a logging tool to log messages, warnings, errors to the ' +
+					'browser or onscreen console'
 			},
 			"XQCore.Presenter": {
 				"name": "XQCore.Presenter",
@@ -379,7 +381,8 @@ describe.only('Listing Model', function() {
 				"params": [
 					{
 						"name": "conf",
-						"description": "Configuration object\n\nconf: {\n  model: String modelname\n  view: String viewname\n  route String routename\n}",
+						"description": "Configuration object\n\nconf: {\n  model: String modelname\n  view: " +
+							"String viewname\n  route String routename\n}",
 						"type": "Object"
 					}
 				],
@@ -438,7 +441,9 @@ describe.only('Listing Model', function() {
 			{
 				"file": "src/presenter/xqcore-presenter.js",
 				"line": 525,
-				"description": "Initialize a new view into the presenter scope\n\noptions: {\n  mode: String       Insert mode, (append, prepend or replace) replace is default\n  inject: Boolean    Set to false to disable injecting view into the DOM\n}",
+				"description": "Initialize a new view into the presenter scope\n\noptions: {\n  " +
+					"mode: String       Insert mode, (append, prepend or replace) replace is default\n  " +
+					"inject: Boolean    Set to false to disable injecting view into the DOM\n}",
 				"itemtype": "method",
 				"name": "initView",
 				"access": "public",
@@ -522,7 +527,8 @@ describe.only('Listing Model', function() {
 				'tag': 'module',
 				'file': 'src/logger/xqcore-logger.js',
 				'line': 25,
-				'description': 'XQCore Logger is a logging tool to log messages, warnings, errors to the browser or onscreen console',
+				'description': 'XQCore Logger is a logging tool to log messages, warnings, errors to the ' +
+					'browser or onscreen console',
 				'key': 'XQCoreLogger',
 				'classes': [{
 					"name": "XQCore.Logger",
@@ -539,7 +545,8 @@ describe.only('Listing Model', function() {
 					"namespace": "",
 					"file": "src/logger/xqcore-logger.js",
 					"line": 25,
-					"description": "XQCore Logger is a logging tool to log messages, warnings, errors to the browser or onscreen console",
+					"description": "XQCore Logger is a logging tool to log messages, warnings, errors to the " +
+						"browser or onscreen console",
 					"items": [
 						{
 							"file": "src/logger/xqcore-logger.js",
@@ -619,6 +626,14 @@ describe.only('Listing Model', function() {
 					]
 				}]
 			});
+		});
+
+		it('Should get module multiple times', function() {
+			var module1 = listingModel.getModule('XQCoreLogger');
+			var module2 = listingModel.getModule('XQCoreLogger');
+
+			expect(module1).not.to.equal(module2);
+			expect(module1).to.eql(module2);
 		});
 	});
 });	

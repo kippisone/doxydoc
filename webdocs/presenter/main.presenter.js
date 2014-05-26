@@ -11,6 +11,7 @@ module.exports = function() {
 		listingModel.fetch();
 		var mainView = self.initView('main', 'body');
 		var itemView = self.initView('item', '.page-content');
+		var indexView = self.initView('index', '.page-content');
 
 		self.couple({
 			view: mainView,
@@ -22,8 +23,11 @@ module.exports = function() {
 			model: itemModel
 		});
 
+		self.route('index', function() {
+			indexView.render();
+		});
+
 		self.route('module/:module', function(data) {
-			console.log('Load module', data);
 			var mod = listingModel.getModule(data.module);
 			itemModel.set(mod);
 		});

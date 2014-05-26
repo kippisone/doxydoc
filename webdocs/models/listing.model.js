@@ -51,14 +51,13 @@ module.exports = function() {
 		};
 
 		self.getModule = function(moduleName) {
-			var modules = this.get('data.modules'),
+			var modules = this.get('data.modules', { copy: true }),
 				curModule = null;
 
 			for (var m in modules) {
 				if (modules.hasOwnProperty(m)) {
 					var item = modules[m];
 					if (item.key === moduleName) {
-						console.log(item);
 						curModule = item;
 					}
 				}
@@ -66,21 +65,24 @@ module.exports = function() {
 
 			//Add classes
 			var classes = [];
-			var allClasses = this.get('data.classes');
-			var allClasseItems = this.get('data.classitems');
+			var allClasses = this.get('data.classes', { copy: true });
+			var allClasseItems = this.get('data.classitems', { copy: true });
 			var itemFilter= function(curItem) {
-				return (curItem.class === el);
+				console.log(curItem, el, (curItem.class === el));
+				return (curItem.class && curItem.class === el);
 			};
 			
 			for (var el in curModule.classes) {
 				if (curModule.classes.hasOwnProperty(el)) {
 					var curClass = allClasses[el];
-					curClass.items = [];
+					if (curClass) {
+						curClass.items = [];
 
-					//Get class items
-					curClass.items = allClasseItems.filter(itemFilter);
+						//Get class items
+						curClass.items = allClasseItems.filter(itemFilter);
+					}
 
-					classes.push(curClass);
+					classes.push(curClass || []);
 				}
 			}
 

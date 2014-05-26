@@ -1,126 +1,136 @@
 module.exports = function(grunt) {
-	'use strict';
+    'use strict';
 
-	// Project configuration.
-	grunt.initConfig({
-		pkg: grunt.file.readJSON('package.json'),
+    // Project configuration.
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
 
-		// bumpup: {
-		// 	file: 'package.json'
-		// },
+        // bumpup: {
+        //  file: 'package.json'
+        // },
 
-		// // Lists of files to be linted with JSHint.
-		// jshint: {
-		// 	files: [
-		// 		'src/**/*.js'
-		// 	],
-		// 	options: {
-		// 		jshintrc: '.jshintrc'
-		// 	}
-		// },
-		// uglify: {
-		// 	options: {
-		// 		preserveComments: 'some'
-		// 	},
-		// 	build: {
-		// 		files: {
-		// 			'build/xqcore.min.js': ['build/xqcore.js']
-		// 		}
-		// 	},
-		// 	minimal: {
-		// 		files: {
-		// 			'build/xqcore-minimal.min.js': ['build/xqcore-minimal.js']
-		// 		}
-		// 	}
-		// },
-		// copy: {
-		// 	component: {
-		// 		files: [
-		// 			{
-		// 				src: ['build/xqcore.js'],
-		// 				dest: '../component-builds/nonamemedia-xqcore/xqcore.js'
-		// 			}
-		// 		]
-		// 	},
-		// 	firetpl: {
-		// 		files: [
-		// 			{
-		// 				src: ['firetpl.js', 'firetpl-runtime.js'],
-		// 				dest: 'lib/',
-		// 				cwd: '../firetpl/',
-		// 				expand: true
-		// 			}
-		// 		]
-		// 	}
-		// },
-		// clean: {
-		// 	build: [
-		// 		'webdocs/build/xqcore.js',
-		// 		'webdocs/build/xqcore.min.js',
-		// 		'webdocs/build/xqcore-minimal.js',
-		// 		'webdocs/build/xqcore-minimal.min.js'
-		// 	]
-		// },
-		clean: {
-			build: [
-				'webdocs/build/'
-			]
-		},
-		componentbuild: {
-			dist: {
-				options: {
-					name: 'doxit'
-				},
-				src: './webdocs/',
-				dest: './webdocs/build/'
-			}
-		},
-		browserify: {
-			dist: {
-				options: {
-					require: ['jquery', 'firetpl', 'xqcore']
-				},
-				files: {
-					'webdocs/bundle.js': ['webdocs/index.js']
-				}
-			}
-		},
-		less: {
-			dist: {
-				options: {
+        // // Lists of files to be linted with JSHint.
+        jshint: {
+            files: [
+                'webdocs/models/**/*.js',
+                'webdocs/presenter/**/*.js',
+                'webdocs/tests/**/*.js',
+                'webdocs/views/**/*.js',
+                'webdocs/*.js'
+            ],
+            options: {
+                jshintrc: '.jshintrc',
+                reporter: require('jshint-stylish')
+            }
+        },
+        // uglify: {
+        //  options: {
+        //      preserveComments: 'some'
+        //  },
+        //  build: {
+        //      files: {
+        //          'build/xqcore.min.js': ['build/xqcore.js']
+        //      }
+        //  },
+        //  minimal: {
+        //      files: {
+        //          'build/xqcore-minimal.min.js': ['build/xqcore-minimal.js']
+        //      }
+        //  }
+        // },
+        // copy: {
+        //  component: {
+        //      files: [
+        //          {
+        //              src: ['build/xqcore.js'],
+        //              dest: '../component-builds/nonamemedia-xqcore/xqcore.js'
+        //          }
+        //      ]
+        //  },
+        //  firetpl: {
+        //      files: [
+        //          {
+        //              src: ['firetpl.js', 'firetpl-runtime.js'],
+        //              dest: 'lib/',
+        //              cwd: '../firetpl/',
+        //              expand: true
+        //          }
+        //      ]
+        //  }
+        // },
+        // clean: {
+        //  build: [
+        //      'webdocs/build/xqcore.js',
+        //      'webdocs/build/xqcore.min.js',
+        //      'webdocs/build/xqcore-minimal.js',
+        //      'webdocs/build/xqcore-minimal.min.js'
+        //  ]
+        // },
+        clean: {
+            build: [
+                'webdocs/build/'
+            ]
+        },
+        componentbuild: {
+            dist: {
+                options: {
+                    name: 'doxit',
+                    development: false
+                },
+                src: './webdocs/',
+                dest: './webdocs/build/'
+            }
+        },
+        // browserify: {
+        //     dist: {
+        //         options: {
+        //             require: ['jquery', 'firetpl', 'xqcore']
+        //         },
+        //         files: {
+        //             'webdocs/bundle.js': ['webdocs/index.js']
+        //         }
+        //     }
+        // },
+        less: {
+            dist: {
+                options: {
 
-				},
-				files: {
-					'webdocs/main.css': 'webdocs/less/main.less'
-				}
-			}
-		},
-		watch: {
-			less: {
-				options: {
-					livereload: true,
-				},
-				files: 'webdocs/less/**/*.less',
-				tasks: ['less']
-			},
-			browserify: {
-				files: 'webdocs/!(build)**/*.js',
-				tasks: ['browserify']
-			}
-		}
-	});
+                },
+                files: {
+                    'webdocs/main.css': 'webdocs/less/main.less'
+                }
+            }
+        },
+        watch: {
+            less: {
+                options: {
+                    livereload: true,
+                    dumpLineNumbers: true,
+                    sourceMap: true,
+                    // sourceMapFilename: 'main.css.map'
 
-	// grunt.loadTasks('./modules/grunt-xqcoretest');
-	// grunt.loadNpmTasks('grunt-contrib-clean');
-	// grunt.loadNpmTasks('grunt-contrib-copy');
-	// grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-less');
-	grunt.loadNpmTasks('grunt-contrib-watch');
-	// grunt.loadNpmTasks('grunt-contrib-uglify');
-	// grunt.loadNpmTasks('grunt-bumpup');
-	grunt.loadNpmTasks('grunt-browserify');
-	grunt.loadNpmTasks('grunt-component-build');
+                },
+                files: 'webdocs/less/**/*.less',
+                tasks: ['less']
+            },
+            browserify: {
+                files: 'webdocs/!(build)**/*.js',
+                tasks: ['browserify']
+            }
+        }
+    });
 
-	grunt.registerTask('default', 'jshint');
-	grunt.registerTask('build', ['less', 'componentbuild']);
+    // grunt.loadTasks('./modules/grunt-xqcoretest');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    // grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    // grunt.loadNpmTasks('grunt-contrib-uglify');
+    // grunt.loadNpmTasks('grunt-bumpup');
+    // grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('grunt-component-build');
+
+    grunt.registerTask('default', 'jshint');
+    grunt.registerTask('build', ['jshint', 'clean:build', 'less', 'componentbuild']);
 };
