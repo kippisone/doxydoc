@@ -32,25 +32,38 @@ module.exports = function() {
 		self.prepare = function(data) {
 			console.log('Prepare modules', data);
 
-			var modules = [];
+			var modules = [],
+				warnings = [];
 
 			for (var module in data.modules) {
 				if (data.modules.hasOwnProperty(module)) {
 					var m = data.modules[module];
-					m.key = m.name.replace(/[^a-zA-Z0-9_-]/g, '');
-					modules.push(m);
+					if (m.moduleName) {
+						m.key = m.moduleName.replace(/[^a-zA-Z0-9_-]/g, '');
+						modules.push(m);
+					}
+					else {
+						warnings.push(m);
+					}
 				}
 			}
 
 			var listing = {
 				data: data,
-				modules: modules
+				modules: modules,
+				warnings: warnings
 			};
 
 			return listing;
 		};
 
 		self.getModule = function(moduleName) {
+			return this.search('modules', {
+				key: moduleName
+			});
+		};
+
+		self.getModuleYui = function(moduleName) {
 			var modules = this.get('data.modules', { copy: true }),
 				curModule = null;
 

@@ -5,11 +5,45 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-        // bumpup: {
-        //  file: 'package.json'
-        // },
-
-        // // Lists of files to be linted with JSHint.
+        clean: {
+            build: [
+                'webdocs/build/'
+            ]
+        },
+        copy: {
+            build: {
+                files: [{
+                    src: ['webdocs/index.html'],
+                    dest: 'build/'
+                }]
+            }
+        },
+        componentbuild: {
+            dist: {
+                options: {
+                    name: 'doxit',
+                    development: false,
+                    umd: 'doxit'
+                },
+                src: './webdocs/',
+                dest: './webdocs/build/'
+            },
+            styles: {
+                options: {
+                    name: 'doxit',
+                    development: false,
+                    scripts: false
+                },
+                src: './webdocs/',
+                dest: './webdocs/build/'
+            }
+        },
+        imageEmbed: {
+            dist: {
+                src: ['webdocs/main.css'],
+                dest: 'webdocs/main.css'
+            }
+        },
         jshint: {
             files: [
                 'webdocs/models/**/*.js',
@@ -23,78 +57,12 @@ module.exports = function(grunt) {
                 reporter: require('jshint-stylish')
             }
         },
-        // uglify: {
-        //  options: {
-        //      preserveComments: 'some'
-        //  },
-        //  build: {
-        //      files: {
-        //          'build/xqcore.min.js': ['build/xqcore.js']
-        //      }
-        //  },
-        //  minimal: {
-        //      files: {
-        //          'build/xqcore-minimal.min.js': ['build/xqcore-minimal.js']
-        //      }
-        //  }
-        // },
-        // copy: {
-        //  component: {
-        //      files: [
-        //          {
-        //              src: ['build/xqcore.js'],
-        //              dest: '../component-builds/nonamemedia-xqcore/xqcore.js'
-        //          }
-        //      ]
-        //  },
-        //  firetpl: {
-        //      files: [
-        //          {
-        //              src: ['firetpl.js', 'firetpl-runtime.js'],
-        //              dest: 'lib/',
-        //              cwd: '../firetpl/',
-        //              expand: true
-        //          }
-        //      ]
-        //  }
-        // },
-        // clean: {
-        //  build: [
-        //      'webdocs/build/xqcore.js',
-        //      'webdocs/build/xqcore.min.js',
-        //      'webdocs/build/xqcore-minimal.js',
-        //      'webdocs/build/xqcore-minimal.min.js'
-        //  ]
-        // },
-        clean: {
-            build: [
-                'webdocs/build/'
-            ]
-        },
-        componentbuild: {
-            dist: {
-                options: {
-                    name: 'doxit',
-                    development: false
-                },
-                src: './webdocs/',
-                dest: './webdocs/build/'
-            }
-        },
-        // browserify: {
-        //     dist: {
-        //         options: {
-        //             require: ['jquery', 'firetpl', 'xqcore']
-        //         },
-        //         files: {
-        //             'webdocs/bundle.js': ['webdocs/index.js']
-        //         }
-        //     }
-        // },
         less: {
             dist: {
                 options: {
-
+                    modifyVars: {
+                        'sprite-url': '"img/sprite-48.png"'
+                    }
                 },
                 files: {
                     'webdocs/main.css': 'webdocs/less/main.less'
@@ -111,11 +79,21 @@ module.exports = function(grunt) {
 
                 },
                 files: 'webdocs/less/**/*.less',
-                tasks: ['less']
+                tasks: ['less:dist', 'componentbuild:styles']
             },
-            browserify: {
+            component: {
+                options: {
+                    livereload: true
+                },
                 files: 'webdocs/!(build)**/*.js',
-                tasks: ['browserify']
+                tasks: ['componentbuild:dist']
+            },
+            firetpl: {
+                options: {
+                    livereload: true
+                },
+                files: 'webdocs/!(build)**/*.fire',
+                tasks: ['componentbuild:dist']
             }
         }
     });
@@ -132,5 +110,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-component-build');
 
     grunt.registerTask('default', 'jshint');
-    grunt.registerTask('build', ['jshint', 'clean:build', 'less', 'componentbuild']);
+    grunt.registerTask('build', ['jshint', 'clean:build', 'less:dist', 'componentbuild:dist']);
 };

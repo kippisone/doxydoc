@@ -1,24 +1,32 @@
-div class=module-item
-	h1 $name
-	h4 $file
-	div class=description $description
-	div class=content
-		:each $classes
-			h3 $name
-			:each $items
-				div class=item-box
-					h5 $name
-					span class="label label-$itemtype"
-						$itemtype
-					span class=line
-						"Line: $line"
-					div class=description
-						$description
-					:if $params
-						h6 "Parameter:"
-						table class=item-params
-							:each $params
-								tr class=item-param
-									td class="param-type param-type-$type" $type
-									td class="param-name" $name
-									td class="param-description" $description 
+div class="module-item nano"
+	div class="nano-content"
+		h1 $moduleName
+		h4 $file
+		div class=description $description.body
+		div class=content
+			:each $classes
+				h3 $name
+				:each $items
+					div class=item-box
+						h5 $name
+						span class="label label-$type"
+							$type
+						div class=summary
+							$description.summary
+						:if $tags.params
+							h6 "Parameter:"
+							table class=item-params
+								:each $tags.params
+									tr class=item-param
+										td class="param-type param-type-$type" $type
+										td class="param-name" $name
+										td class="param-description" $description
+						div class=description
+							$description.body
+						button class=button show-source onClick=toggle-source
+							span class="icon icon-code"
+							span class="text"
+								"View code"
+						div class="code code-js"
+							pre 
+								code class=js $code

@@ -4,5 +4,5 @@ section class=page
 		:each $modules
 			li class=modules-listing-item
 				a class=module-link href="#!module/$key"
-					$name
+					$moduleName
 	section class=page-content

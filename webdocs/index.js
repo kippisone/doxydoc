@@ -13,4 +13,10 @@ module.exports = function() {
 	console.log('init()');
 	var mainPresenter = require('./presenter/main.presenter');
 	mainPresenter.init();
+
+	/*global hljs:false */
+	hljs.configure({tabReplace: '    '});
+
+	//Add nanoscroll
+	require('nanoscroller');
 };

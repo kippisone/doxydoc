@@ -32,6 +32,7 @@ a:hover {
   margin-left: 300px;
   padding: 10px;
   box-sizing: border-box;
+  height: 100%;
 }
 .modules-listing,
 .modules-listing-item {
@@ -92,7 +93,10 @@ a:hover {
   display: inline-block;
 }
 .module-item .item-box {
+  margin-top: 20px;
   margin-bottom: 20px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 20px;
 }
 .module-item .description {
   font-size: 13px;
@@ -119,4 +123,65 @@ a:hover {
 }
 .module-item .param-description {
   vertical-align: top;
+}
+.module-item .code {
+  display: none;
+  margin-top: 20px;
+  margin-right: 20px;
+  border-radius: 5px;
+  background-color: #eee;
+}
+/**
+ * Button
+ *
+ * html:
+ * 
+ * <button type="button" class="button">
+ *   <span class="icon icon-code"></span>
+ *   <span class="text">MyButton</span>
+ * </button>
+ */
+.button {
+  display: inline-block;
+  background-color: #ececec;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 0;
+  box-sizing: border-box;
+  transition: border-color 300ms;
+  outline: none;
+}
+.button .text {
+  padding: 0 5px;
+  color: #1854b1;
+  vertical-align: middle;
+  line-height: 24px;
+  font-size: 14px;
+}
+.button .icon {
+  vertical-align: middle;
+}
+.button:hover {
+  border: 1px solid #1854b1;
+}
+.button::-moz-focus-inner {
+  border: none;
+}
+.button:focus {
+  outline: none;
+}
+/**
+ * Icon
+ *
+ * html:
+ *
+ * <any class="icon icon-code" />
+ */
+.icon {
+  background-image: url("img/sprite-48.png");
+  background-size: 24px 48px;
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
 }
