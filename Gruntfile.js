@@ -40,6 +40,9 @@ module.exports = function(grunt) {
         },
         imageEmbed: {
             dist: {
+                options: {
+                    xbaseDir: 'webdocs/'
+                },
                 src: ['webdocs/main.css'],
                 dest: 'webdocs/main.css'
             }
@@ -60,9 +63,8 @@ module.exports = function(grunt) {
         less: {
             dist: {
                 options: {
-                    modifyVars: {
-                        'sprite-url': '"img/sprite-48.png"'
-                    }
+                    relativeUrls: true,
+                    rootpath: 'less/'
                 },
                 files: {
                     'webdocs/main.css': 'webdocs/less/main.less'
@@ -100,7 +102,7 @@ module.exports = function(grunt) {
 
     // grunt.loadTasks('./modules/grunt-xqcoretest');
     grunt.loadNpmTasks('grunt-contrib-clean');
-    // grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
@@ -110,5 +112,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-component-build');
 
     grunt.registerTask('default', 'jshint');
-    grunt.registerTask('build', ['jshint', 'clean:build', 'less:dist', 'componentbuild:dist']);
+    grunt.registerTask('build', [
+        'jshint',
+        'clean:build',
+        'less:dist',
+        'imageEmbed:dist',
+        'componentbuild:dist',
+        'copy:build'
+    ]);
 };
