@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+var program = require('commander'),
+    pkg = require('../package.json');
+
+var Doxit = require('../doxit');
+
+program.version(pkg.version)
+    .option('-i, --infile <pattern>', 'Input files')
+    .option('-o, --outfile <file>', 'Write output to file')
+    .parse(process.argv);
+
+if (program.infile) {
+    var doxit = new Doxit();
+    doxit.readFiles(program.infile);
+}

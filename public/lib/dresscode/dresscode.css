@@ -1,0 +1,210 @@
+/*!
+ * Dresscode v0.0.1-29, (c) Copyright by Andi Heinkelein <andi.oxidant@noname-media.com>
+ */
+/**
+ * @var {Boolean} textareaResize Allow resizing of textarea fields
+ * @group config
+ */
+/**
+ * Color ocean blue
+ * @type {color}
+ * @group colors
+ */
+/**
+ * Color lagoon blue
+ * @type {color}
+ * @group colors
+ */
+/**
+ * Color dark lagoon blue
+ * @type {color}
+ * @group colors
+ */
+/**
+ * Color fire red
+ * @type {color}
+ * @group colors
+ */
+/**
+ * Color shark grey
+ * @type {color}
+ * @group colors
+ */
+/**
+ * Color shark grey
+ * @type {color}
+ * @group colors
+ */
+/**
+ * Color shark grey
+ * @type {color}
+ * @group colors
+ */
+html {
+  width: 100%;
+  height: 100%;
+}
+body {
+  width: 100%;
+  height: 100%;
+  font-size: 13px;
+  font-weight: sans-serif;
+  margin: 0;
+}
+/**
+ * Button
+ *
+ * html:
+ * 
+ * <button type="button" class="button">
+ *   <span class="icon icon-code"></span>
+ *   <span class="text">MyButton</span>
+ * </button>
+ */
+.button {
+  display: inline-block;
+  background-color: #ececec;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 0;
+  box-sizing: border-box;
+  transition: border-color 300ms;
+  outline: none;
+}
+.button .text {
+  padding: 0 5px;
+  color: #1854b1;
+  vertical-align: middle;
+  line-height: 24px;
+  font-size: 14px;
+}
+.button .icon {
+  vertical-align: middle;
+}
+.button:hover {
+  border: 1px solid #1854b1;
+}
+.button::-moz-focus-inner {
+  border: none;
+}
+.button:focus {
+  outline: none;
+}
+/**
+ * Icon
+ *
+ * html:
+ *
+ * <any class="icon icon-code" />
+ */
+.icon {
+  background-image: url('sprite-48.png');
+  background-size: 24px 48px;
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+}
+dl {
+  margin: 5px 0 5px 0;
+}
+dt {
+  font-size: 11px;
+  color: #555555;
+}
+dd {
+  margin-left: 0;
+}
+/**
+     * Form elements
+     */
+textarea,
+input[type=text],
+input[type=password] {
+  border: 1px solid #555555;
+  padding: 1px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 3px;
+  height: 28px;
+  font-size: 17px;
+}
+input[type=text].error,
+input[type=password].error,
+textarea.error {
+  border-color: #b10000;
+  border-width: 2px;
+}
+textarea {
+  height: 100px;
+  resize: none;
+}
+div[data-xqform=input-suggest] input[type=text] {
+  border: none;
+}
+/**
+     * Styles a button
+     *
+     * @group buttons
+     *
+     * @example
+     * <button>Button</button>
+     * <button type="submit">Submit</button>
+     * <button type="reset">Reset</button>
+     * <button class="cancel">Cancel</button>
+     */
+button,
+.button {
+  border: none;
+  border-radius: 6px;
+  min-width: 16px;
+  height: 28px;
+  padding: 0 5px;
+  background-repeat: no-repeat;
+  background-position: 1px 1px;
+  font-size: 15px;
+  -o-transition: background-color 0.25s;
+  -moz-transition: background-color 0.25s;
+  -webkit-transition: background-color 0.25s;
+  -ms-transition: background-color 0.25s;
+  transition: background-color 0.25s;
+}
+button > span,
+.button > span {
+  text-indent: 24px;
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: 24px 24px;
+  min-width: 24px;
+  height: 24px;
+  display: inline-block;
+  font-size: 12px;
+  line-height: 22px;
+  fill: #ccc;
+}
+button:hover,
+.button:hover {
+  border-color: #0077d8;
+  background-color: #eee;
+}
+button:focus,
+.button:focus {
+  outline: none;
+}
+button[type=submit] {
+  background-color: #0051cd;
+  color: #fff;
+}
+button[type=submit]:hover {
+  background-color: #1162de;
+}
+button[type=reset],
+button.cancel {
+  background-color: #d5d5d5;
+  color: #333;
+}
+button[type=reset]:hover,
+button.cancel:hover {
+  background-color: #e6e6e6;
+}
