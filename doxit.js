@@ -85,6 +85,13 @@ module.exports = (function() {
             switch (path.extname(item.file)) {
                 case '.js':
                     mapper = require('./mapper/javascript.js');
+                    break;
+                case '.less':
+                    mapper = require('./mapper/css.js');
+                    break;
+                case '.css':
+                    mapper = require('./mapper/css.js');
+                    break;
             }
 
             if (mapper) {
@@ -157,6 +164,14 @@ module.exports = (function() {
 
                         tag.type = tag.types.join(', ');
                         newTag.params.push(tag);
+                    }
+                    else if (tag.type === 'type') {
+                        if (!newTag.types) {
+                            newTag.types = [];
+                        }
+
+                        newTag.type = tag.types.join(', ');
+                        newTag.types.push(tag);
                     }
                     else {
                         newTag[tag.type] = tag.string === '' ? true : tag.string;
