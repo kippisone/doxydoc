@@ -46,7 +46,8 @@
     font-size: 11px;
     padding-left: 250px;
     text-align: center;
-    color: #000;
+    color: #666;
+    margin-top: 30px;
 }
 
 .codeBox {

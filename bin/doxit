@@ -1,15 +1,28 @@
 #!/usr/bin/env node
 var program = require('commander'),
-    pkg = require('../package.json');
+    pkg = require('../package.json'),
+    fs = require('fs'),
+    path = require('path');
+
+
+var FireTPL = require('firetpl');
 
 var Doxit = require('../doxit');
 
 program.version(pkg.version)
-    .option('-i, --infile <pattern>', 'Input files')
+    .usage('[options] file1, files2, ...')
     .option('-o, --outfile <file>', 'Write output to file')
     .parse(process.argv);
 
-if (program.infile) {
+if (program.args.length) {
     var doxit = new Doxit();
-    doxit.readFiles(program.infile);
+    var result = doxit.readFiles(program.args);
+        
+    if (program.outfile) {
+        var tmpl = fs.readFileSync(path.join(__dirname, '../templates/default.fire'));
+        fs.writeFile(program.outfile, FireTPL.fire2html(tmpl, result));
+    }
+    else {
+        console.log(JSON.stringify(result, null, '    '));
+    }
 }

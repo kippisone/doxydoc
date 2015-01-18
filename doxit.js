@@ -3,7 +3,6 @@ var fs = require('fs'),
 
 var glob = require('glob'),
     dox = require('dox'),
-    FireTPL = require('firetpl'),
     extend = require('node.extend');
 
 var DoxitGroup = require('./modules/doxitGroup');
@@ -23,20 +22,28 @@ module.exports = (function() {
 
     };
 
-    Doxit.prototype.readFiles = function(files, callback) {
+    Doxit.prototype.readFiles = function(files) {
         var options = {
             nodir: true
         };
 
-        glob(files, options, function(err, files) {
-            files = files.filter(function(file) {
-                return !/node_modules/.test(file);
-            });
-            
-            console.log(files);
-            var res = files.map(this.parseFile.bind(this));
-            this.mapDoxResult(res, callback);
-        }.bind(this));
+        var doxFiles = [];
+
+        if (typeof files === 'string') {
+            files = [files];
+        }
+
+        files.forEach(function(file) {
+            doxFiles = doxFiles.concat(glob.sync(file, options));
+        });
+
+        doxFiles = doxFiles.filter(function(file) {
+            return !/\/node_modules\//.test(file);
+        });
+
+        // console.log(doxFiles);
+        var res = files.map(this.parseFile.bind(this));
+        return this.mapDoxResult(res);
     };
 
     /**
@@ -54,8 +61,8 @@ module.exports = (function() {
         return doxed;
     };
 
-    Doxit.prototype.mapDoxResult = function(doxed, callback) {
-        fs.writeFile('dev.json', JSON.stringify(doxed, true, '    '));
+    Doxit.prototype.mapDoxResult = function(doxed) {
+        // fs.writeFile('dev.json', JSON.stringify(doxed, true, '    '));
 
         var result = this.getMetaInfos();
         this.listing = [];
@@ -74,7 +81,7 @@ module.exports = (function() {
 
             var mapper;
 
-            fs.writeFile('dev2.json', JSON.stringify(item, true, '    '));
+            // fs.writeFile('dev2.json', JSON.stringify(item, true, '    '));
             switch (path.extname(item.file)) {
                 case '.js':
                     mapper = require('./mapper/javascript.js');
@@ -88,11 +95,7 @@ module.exports = (function() {
         }.bind(this));
 
         result.listing = this.listing;
-
-        console.log(result.listing);
-        console.log(JSON.stringify(result, null, '  '));
-        var tmpl = fs.readFileSync(path.join(__dirname, 'templates/default.fire'));
-        fs.writeFile('doxit.html', FireTPL.fire2html(tmpl, result));
+        return result;
     };
 
     Doxit.prototype.getMetaInfos = function() {
