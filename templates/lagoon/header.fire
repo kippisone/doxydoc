@@ -1,0 +1,4 @@
+header class="pageHeader"
+    div class="name" $name
+    div class="version" "v"
+        $version

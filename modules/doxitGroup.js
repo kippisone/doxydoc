@@ -31,6 +31,14 @@ module.exports = (function() {
         group.items.push(data);
     };
 
+    DoxitGroup.prototype.addUnknown = function(data) {
+        if (!this.unknown) {
+            this.unknown = [];
+        }
+
+        this.unknown.push(data);
+    };
+
     DoxitGroup.prototype.defineGroup = function(type, content) {
         content.id = type;
         content.items = [];
@@ -41,6 +49,7 @@ module.exports = (function() {
         console.log('GEEEET', this.items);
         return this.items[0];
     };
+
 
     DoxitGroup.prototype.toJSON = function() {
         return {

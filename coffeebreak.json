@@ -1,0 +1,5 @@
+{
+    "project": "Doxit",
+    "files":  "none",
+    "tests": "test/*.spec.js"
+}

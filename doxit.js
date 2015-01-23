@@ -19,7 +19,30 @@ module.exports = (function() {
      * @constructor
      */
     var Doxit = function() {
+        this.templateFile = path.join(__dirname, 'templates/purple/index.fire');
+        this.registerMapperFuncs();
+    };
 
+    /**
+     * Registers pagger functions
+     */
+    Doxit.prototype.registerMapperFuncs = function() {
+        this.__mapperFuncs = {
+            'js': require('./mapper/javascript.js'),
+            'css': require('./mapper/css.js'),
+            'less': require('./mapper/css.js')
+        };
+    };
+
+    /**
+     * Calls a mapper function
+     * @param  {string} mapperKey File extension
+     * @param  {object} data      Data to be passed to the mapper function
+     */
+    Doxit.prototype.callMapperFunc = function(mapperKey, thisValue, data) {
+        mapperKey = mapperKey.replace(/^\./, '');
+        var fn = this.__mapperFuncs[mapperKey];
+        fn.call(thisValue, data);
     };
 
     Doxit.prototype.readFiles = function(files) {
@@ -62,43 +85,66 @@ module.exports = (function() {
     };
 
     Doxit.prototype.mapDoxResult = function(doxed) {
-        // fs.writeFile('dev.json', JSON.stringify(doxed, true, '    '));
+        // fs.writeFile('dev-doxblock.json', JSON.stringify(doxed, true, '    '));
 
         var result = this.getMetaInfos();
         this.listing = [];
-        doxed.forEach(function(item) {
+        doxed.forEach(function(doxFile) {
+            var moduleName = doxFile.file;
+            doxFile.ext = path.extname(doxFile.file);
 
-            item.data = item.data.map(function(curItem) {
-                curItem.tagsArray = curItem.tags || [];
-                curItem.tags = this.parseTags(curItem.tags);
-                return curItem;
+            var data = doxFile.data.map(function(doxBlock) {
+                var block = {};
+                
+                if (doxBlock.ignore) {
+                    return;
+                }
+
+                fs.appendFileSync('dev-doxblock.json', 'Doxed block: ' + JSON.stringify(doxBlock, true, '    ') + '\n\n');
+
+                block.tags = this.parseTags(doxBlock.tags);
+                block.description = doxBlock.description;
+                block.line = doxBlock.line;
+                block.codeStart = doxBlock.codeStart;
+                block.code = doxBlock.code;
+
+                var res = extend(doxBlock, {
+                    tagsArray: doxBlock.tags || [],
+                });
+
+                //Is module?
+                if (res.tags.module) {
+                    moduleName = res.tags.module;
+                    return;
+                }
+
+                var groupName = moduleName;
+
+                //Has @group tag
+                if (doxBlock.group) {
+                    groupName = doxBlock.group;
+                }
+
+                //Is method (js only)?
+                if (doxFile.ext === '.js') {
+                    if (doxBlock.ctx.type === 'method') {
+                        block.tags.method = block.tags.method || doxBlock.ctx.name;
+                    }
+                }
+
+                fs.appendFileSync('dev-doxblock.json', 'Mapped to: ' + JSON.stringify(block, true, '    ') + '\n\n');
+                
+                return block;
             }.bind(this));
-
+            
             var res = {
-                file: item.file,
-                addListing: this.addListing.bind(this)
+                file: doxFile.file,
+                setGroup: this.setGroup.bind(this),
+                grepPattern: this.grepPattern.bind(this),
+                grepDataTypes: this.grepDataTypes.bind(this)
             };
-
-            var mapper;
-
-            // fs.writeFile('dev2.json', JSON.stringify(item, true, '    '));
-            switch (path.extname(item.file)) {
-                case '.js':
-                    mapper = require('./mapper/javascript.js');
-                    break;
-                case '.less':
-                    mapper = require('./mapper/css.js');
-                    break;
-                case '.css':
-                    mapper = require('./mapper/css.js');
-                    break;
-            }
-
-            if (mapper) {
-                mapper.call(res, item);
-            }
-
-            return res;
+            
+            this.callMapperFunc(path.extname(doxFile.file), res, data);
         }.bind(this));
 
         result.listing = this.listing;
@@ -134,7 +180,7 @@ module.exports = (function() {
         return meta;
     };
 
-    Doxit.prototype.addListing = function(groupName) {
+    Doxit.prototype.setGroup = function(groupName, onCreateGroup) {
         var group;
 
         for (var i = 0, len = this.listing.length; i < len; i++) {
@@ -145,10 +191,12 @@ module.exports = (function() {
 
         group = new DoxitGroup(groupName);
         this.listing.push(group);
+        if (typeof(onCreateGroup) === 'function') {
+            onCreateGroup.call(group);
+        }
+
         return group;
     };
-
-
 
     Doxit.prototype.parseTags = function(tags) {
         var newTag = {};
@@ -173,6 +221,16 @@ module.exports = (function() {
                         newTag.type = tag.types.join(', ');
                         newTag.types.push(tag);
                     }
+                    else if (tag.type === 'example') {
+                        if (!newTag.example) {
+                            newTag.example = [];
+                        }
+
+                        newTag.example.push({
+                            // title: '',
+                            code: tag.string
+                        });
+                    }
                     else {
                         newTag[tag.type] = tag.string === '' ? true : tag.string;
                     }
@@ -181,6 +239,37 @@ module.exports = (function() {
         }
 
         return newTag;
+    };
+
+    Doxit.prototype.grepPattern = function(pattern, str, index) {
+        index = index || 1;
+        
+        var match = str.match(pattern);
+        if (match && match[index]) {
+            return match[index];
+        }
+
+        return null;
+    };
+
+    /**
+     * Greps data types from a type string.
+     *
+     * Removes trailing and leading curly braces and returns data types as an array
+     * 
+     * @param  {string} str Data type string
+     * @return {array}     Returns data types array or an emptyy array
+     */
+    Doxit.prototype.grepDataTypes = function(str) {
+        if (typeof str !== 'string' || str === '') {
+            return [];
+        }
+
+        return str.replace(/^\{|\}$/g, '').split('|');
+    };
+
+    Doxit.prototype.grepDescription = function(description) {
+        return description.full;
     };
 
     return Doxit;

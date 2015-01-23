@@ -1,63 +1,51 @@
 module.exports = function(doxed) {
     'use strict';
 
-    var groupName, moduleName;
+    var moduleName = this.file,
+        groupName;
 
-    doxed.data.forEach(function(block) {
-        block.tagsArray.forEach(function(tag) {
-            switch (tag.type) {
-                case 'module':
-                    moduleName = tag.string;
-                    break;
-                case 'group':
-                    groupName = tag.string;
-                    break;
-            }
+    doxed.forEach(function(block) {
+        groupName = moduleName;
+
+         if (block.tags.module) {
+            moduleName = block.tags.module;
+            groupName = block.tags.module;
+         }
+         else if (block.tags.group) {
+            groupName = block.tags.group;
+         }
+
+        var group = this.setGroup(groupName, function() {
+            this.defineGroup('property', {
+                name: 'Properties'
+            });
+
+            this.defineGroup('method', {
+                name: 'Methods'
+            });
+
+            this.defineGroup('events', {
+                name: 'Events'
+            });
         });
-    });
-    
-    if (!groupName && !moduleName) {
-        return;
-    }
-    
-    var group = this.addListing(groupName || moduleName || doxed.file);
 
-    group.defineGroup('property', {
-        name: 'Properties'
-    });
-
-    group.defineGroup('method', {
-        name: 'Methods'
-    });
-
-    group.defineGroup('events', {
-        name: 'Events'
-    });
-
-    doxed.data.forEach(function(block) {
-        if (block.ctx && block.ignore === false) {
-            switch (block.ctx.type) {
-                case 'property':
-                    if (!block.isConstructor) {
-                        group.addItem('property', {
-                            name: block.ctx.name,
-                            cons: block.ctx.cons,
-                            code: block.code,
-                            description: block.description
-                        });
-                    }
-
-                    break;
-                case 'method':
-                    group.addItem('method', {
-                        name: block.ctx.name,
-                        cons: block.ctx.cons,
-                        code: block.code,
-                        description: block.description
-                    });
-                    break;
-            }
+        if (block.tags.module) {
+            return;
         }
-    }.bind(this));
 
+        if (block.tags.property) {
+            group.addItem('property', block);
+        }
+        else if (block.tags.method) {
+            group.addItem('method', block);
+        }
+        else if (block.tags.event) {
+            group.addItem('event', block);
+        }
+        else {
+            group.addUnknown(block);
+        }
+
+
+    }.bind(this));
 };

@@ -12,14 +12,20 @@ var Doxit = require('../doxit');
 program.version(pkg.version)
     .usage('[options] file1, files2, ...')
     .option('-o, --outfile <file>', 'Write output to file')
+    .option('-t, --template <file>', 'Use your own template')
     .parse(process.argv);
 
 if (program.args.length) {
     var doxit = new Doxit();
+
+    if (program.template) {
+        doxit.templateFile = program.template;
+    }
+
     var result = doxit.readFiles(program.args);
         
     if (program.outfile) {
-        var tmpl = fs.readFileSync(path.join(__dirname, '../templates/default.fire'));
+        var tmpl = fs.readFileSync(path.join(__dirname, '../templates/lagoon/index.fire'));
         fs.writeFile(program.outfile, FireTPL.fire2html(tmpl, result));
     }
     else {

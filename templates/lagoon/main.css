@@ -1,0 +1,186 @@
+/**
+ * @var {Boolean} textareaResize Allow resizing of textarea fields
+ * @group config
+ */
+/**
+ * Color ocean blue
+ * @var {color}
+ * @group colors
+ */
+/**
+ * Color lagoon blue
+ * @var {color}
+ * @group colors
+ */
+/**
+ * Color dark lagoon blue
+ * @var {color}
+ * @group colors
+ */
+/**
+ * Color fire red
+ * @var {color}
+ * @group colors
+ */
+/**
+ * Color shark grey
+ * @var {color}
+ * @group colors
+ */
+/**
+ * Color shark grey
+ * @var {color}
+ * @group colors
+ */
+/**
+ * Color shark grey
+ * @var {color}
+ * @group colors
+ */
+html {
+  width: 100%;
+  height: 100%;
+}
+body {
+  width: 100%;
+  height: 100%;
+  font-size: 13px;
+  font-family: sans-serif;
+  margin: 0;
+}
+/**
+ * Button
+ *
+ * html:
+ * 
+ * <button type="button" class="button">
+ *   <span class="icon icon-code"></span>
+ *   <span class="text">MyButton</span>
+ * </button>
+ */
+.button {
+  display: inline-block;
+  background-color: #ececec;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 0;
+  box-sizing: border-box;
+  transition: border-color 300ms;
+  outline: none;
+}
+.button .text {
+  padding: 0 5px;
+  color: #1854b1;
+  vertical-align: middle;
+  line-height: 24px;
+  font-size: 14px;
+}
+.button .icon {
+  vertical-align: middle;
+}
+.button:hover {
+  border: 1px solid #1854b1;
+}
+.button::-moz-focus-inner {
+  border: none;
+}
+.button:focus {
+  outline: none;
+}
+/**
+ * Icon
+ *
+ * html:
+ *
+ * <any class="icon icon-code" />
+ */
+.icon {
+  background-image: url('less/dresscode/sprite-48.png');
+  background-size: 24px 48px;
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+}
+.pageBody {
+  margin-left: 250px;
+}
+.pageLeft {
+  width: 250px;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 50px;
+  background-color: #ddd;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.pageContent {
+  padding-left: 250px;
+  padding: 10px;
+}
+.pageFooter {
+  width: 100%;
+  height: 30px;
+  box-sizing: border-box;
+  padding: 10px;
+  font-size: 11px;
+  padding-left: 250px;
+  text-align: center;
+  color: #666;
+  margin-top: 30px;
+}
+.pageHeader {
+  width: 100%;
+  height: 50px;
+  background-color: #0051cd;
+  color: #fff;
+  box-sizing: border-box;
+  padding: 10px;
+  position: fixed;
+}
+.pageHeader .name {
+  font-size: 23px;
+  display: inline-block;
+}
+.pageHeader .version {
+  display: inline-block;
+  font-size: 15px;
+  margin-left: 10px;
+}
+.groupBlockItem {
+  list-style-type: none;
+  padding: 0;
+}
+.groupBlockItem li {
+  list-style-type: none;
+}
+.groupBlockItem a:link,
+.groupBlockItem a:active,
+.groupBlockItem a:visited {
+  color: #111;
+  text-decoration: none;
+}
+.pageContent .codeBox {
+  max-height: 200px;
+  overflow: auto;
+  background-color: #111;
+  border-radius: 10px;
+  color: #ddd;
+  padding: 7px;
+}
+.pageContent .code {
+  white-space: pre;
+  font-family: monospace;
+}
+.pageContent .description {
+  font-size: 14px;
+}
+.pageContent .noDescrition {
+  color: #333;
+}
+.pageContent .preview .cssColorPreview {
+  width: 100px;
+  height: 100px;
+  text-align: center;
+}

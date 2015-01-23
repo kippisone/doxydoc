@@ -1,0 +1,159 @@
+[
+    {
+        "file": "test/src/banana.js",
+        "data": [
+            {
+                "tags": [
+                    {
+                        "type": "module",
+                        "string": "banana"
+                    }
+                ],
+                "description": {
+                    "full": "<p>Banana test module </p>",
+                    "summary": "<p>Banana test module </p>",
+                    "body": ""
+                },
+                "isPrivate": false,
+                "isConstructor": false,
+                "isEvent": false,
+                "ignore": false,
+                "line": 1,
+                "codeStart": 5,
+                "code": "module.exports = function() {\n    'use strict';",
+                "ctx": {
+                    "type": "method",
+                    "receiver": "module",
+                    "name": "exports",
+                    "string": "module.exports()"
+                }
+            },
+            {
+                "tags": [
+                    {
+                        "type": "const",
+                        "string": "{string}"
+                    }
+                ],
+                "description": {
+                    "full": "<p>Test constant</p>",
+                    "summary": "<p>Test constant</p>",
+                    "body": ""
+                },
+                "isPrivate": false,
+                "isConstructor": false,
+                "isEvent": false,
+                "ignore": false,
+                "line": 8,
+                "codeStart": 12,
+                "code": "var NAME = 'banana';",
+                "ctx": {
+                    "type": "declaration",
+                    "name": "NAME",
+                    "value": "'banana'",
+                    "string": "NAME"
+                }
+            },
+            {
+                "tags": [
+                    {
+                        "type": "constructor",
+                        "string": ""
+                    }
+                ],
+                "description": {
+                    "full": "<p>Banana constructor</p>",
+                    "summary": "<p>Banana constructor</p>",
+                    "body": ""
+                },
+                "isPrivate": false,
+                "isConstructor": true,
+                "isEvent": false,
+                "ignore": false,
+                "line": 14,
+                "codeStart": 18,
+                "code": "var Banana = function() {\n\n};",
+                "ctx": {
+                    "type": "constructor",
+                    "name": "Banana",
+                    "string": "Banana()"
+                }
+            },
+            {
+                "tags": [
+                    {
+                        "type": "return",
+                        "types": [
+                            "string"
+                        ],
+                        "typesDescription": "<code>string</code>",
+                        "optional": false,
+                        "nullable": false,
+                        "nonNullable": false,
+                        "variable": false,
+                        "description": "<p>Returns how bananas tastes</p>"
+                    }
+                ],
+                "description": {
+                    "full": "<p>Tastes method of Banana</p>",
+                    "summary": "<p>Tastes method of Banana</p>",
+                    "body": ""
+                },
+                "isPrivate": false,
+                "isConstructor": false,
+                "isEvent": false,
+                "ignore": false,
+                "line": 22,
+                "codeStart": 27,
+                "code": "Banana.prototype.tastes = function() {\n    return 'awesome';\n};",
+                "ctx": {
+                    "type": "method",
+                    "constructor": "Banana",
+                    "cons": "Banana",
+                    "name": "tastes",
+                    "string": "Banana.prototype.tastes()"
+                }
+            },
+            {
+                "tags": [
+                    {
+                        "type": "private",
+                        "visibility": "private"
+                    },
+                    {
+                        "type": "param",
+                        "name": "isGreen",
+                        "description": "<p>Returns true if banana is green</p>",
+                        "types": [
+                            "boolen"
+                        ],
+                        "typesDescription": "<a href=\"boolen.html\">boolen</a>",
+                        "optional": false,
+                        "nullable": false,
+                        "nonNullable": false,
+                        "variable": false
+                    }
+                ],
+                "description": {
+                    "full": "<p>Private method</p>",
+                    "summary": "<p>Private method</p>",
+                    "body": ""
+                },
+                "isPrivate": true,
+                "isConstructor": false,
+                "isEvent": false,
+                "ignore": false,
+                "line": 31,
+                "codeStart": 37,
+                "code": "Banana.prototype.isGreen = function(green) {\n    \n};\n};",
+                "ctx": {
+                    "type": "method",
+                    "constructor": "Banana",
+                    "cons": "Banana",
+                    "name": "isGreen",
+                    "string": "Banana.prototype.isGreen()"
+                }
+            }
+        ]
+    }
+]
