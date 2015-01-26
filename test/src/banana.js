@@ -43,4 +43,11 @@ module.exports = function() {
     Banana.prototype.isGreen = function(green) {
         
     };
+
+    /**
+     * Is sweet property
+     *
+     * @property {boolean} isSweet
+     */
+    Banana.prototype.isSweet = false;
 };

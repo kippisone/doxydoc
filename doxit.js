@@ -5,7 +5,8 @@ var glob = require('glob'),
     dox = require('dox'),
     extend = require('node.extend');
 
-var DoxitGroup = require('./modules/doxitGroup');
+var DoxitGroup = require('./modules/doxitGroup'),
+    FireTPL = require('firetpl');
 
 /**
  * Doxit document parser
@@ -19,7 +20,7 @@ module.exports = (function() {
      * @constructor
      */
     var Doxit = function() {
-        this.templateFile = path.join(__dirname, 'templates/purple/index.fire');
+        this.templateFile = path.join(__dirname, 'templates/lagoon/index.fire');
         this.registerMapperFuncs();
     };
 
@@ -69,6 +70,34 @@ module.exports = (function() {
         return this.mapDoxResult(res);
     };
 
+    Doxit.prototype.parse = function(type, files) {
+        var result = this.readFiles(files);
+
+        if (type === 'json') {
+            return JSON.stringify(result, null, '    ');
+        }
+
+        var tmpl = fs.readFileSync(this.templateFile);
+        return FireTPL.fire2html(tmpl, result);
+    };
+
+    Doxit.prototype.parseString = function(type, filename, string) {
+        var result = this.mapDoxResult([{
+            file: filename,
+            data: dox.parseComments(string)
+        }]);
+
+        if (type === 'json') {
+            return JSON.stringify(result, null, '    ');
+        }
+        else if (type === 'raw') {
+            return result;
+        }
+
+        var tmpl = fs.readFileSync(this.templateFile);
+        return FireTPL.fire2html(tmpl, result);
+    };
+
     /**
      * Parse a single file and returns the result
      * @param  {String} file filepath
@@ -102,7 +131,7 @@ module.exports = (function() {
 
                 fs.appendFileSync('dev-doxblock.json', 'Doxed block: ' + JSON.stringify(doxBlock, true, '    ') + '\n\n');
 
-                block.tags = this.parseTags(doxBlock.tags);
+                block = this.parseTags(doxBlock);
                 block.description = doxBlock.description;
                 block.line = doxBlock.line;
                 block.codeStart = doxBlock.codeStart;
@@ -126,11 +155,11 @@ module.exports = (function() {
                 }
 
                 //Is method (js only)?
-                if (doxFile.ext === '.js') {
-                    if (doxBlock.ctx.type === 'method') {
-                        block.tags.method = block.tags.method || doxBlock.ctx.name;
-                    }
-                }
+                // if (doxFile.ext === '.js') {
+                //     if (doxBlock.ctx.type === 'method') {
+                //         block.method = block.method || doxBlock.ctx.name;
+                //     }
+                // }
 
                 fs.appendFileSync('dev-doxblock.json', 'Mapped to: ' + JSON.stringify(block, true, '    ') + '\n\n');
                 
@@ -147,7 +176,21 @@ module.exports = (function() {
             this.callMapperFunc(path.extname(doxFile.file), res, data);
         }.bind(this));
 
-        result.listing = this.listing;
+        result.listing = this.listing.map(function(listing) {
+            listing.link = listing.name.replace(/\W+/g, '');
+            listing.groups.forEach(function(group) {
+                group.link = listing.link + '/' + group.id;
+                group.items.forEach(function(item) {
+                    if (item.name) {
+                        item.link = group.link + '/' + item.name.replace(/\W+/g, '');
+                        item.title = item.title || item.name;
+                    }
+                });
+            });
+
+            return listing;
+        });
+
         return result;
     };
 
@@ -198,44 +241,68 @@ module.exports = (function() {
         return group;
     };
 
-    Doxit.prototype.parseTags = function(tags) {
+    Doxit.prototype.parseTags = function(doxed) {
         var newTag = {};
+
+        var tags = doxed.tags;
+
+        console.log('Doxed: ', doxed);
 
         if (tags && Array.isArray(tags)) {
             tags.forEach(function(tag) {
-                tag = extend(true, {}, tag);
-                if (tag.type) {
-                    if (tag.type === 'param') {
-                        if (!newTag.params) {
-                            newTag.params = [];
-                        }
 
-                        tag.type = tag.types.join(', ');
-                        newTag.params.push(tag);
-                    }
-                    else if (tag.type === 'type') {
-                        if (!newTag.types) {
-                            newTag.types = [];
-                        }
+                switch(tag.type) {
+                    case 'module':
+                        newTag.type = tag.type;
+                        newTag.name = tag.string;
+                        break;
+                    case 'method':
+                    case 'function':
+                        newTag.type = tag.type;
+                        newTag.name = tag.string || doxed.ctx.name;
+                        break;
+                    case 'var':
+                        var match = tag.string.trim().match(/^(\{.+\})?\s*(\S+)?\s*(.+)$/);
 
-                        newTag.type = tag.types.join(', ');
-                        newTag.types.push(tag);
-                    }
-                    else if (tag.type === 'example') {
-                        if (!newTag.example) {
-                            newTag.example = [];
+                        newTag[tag.type] = extend({
+                            type: match[1],
+                            name: match[2],
+                            description: match[3]
+                        });
+                        break;
+                    case 'group':
+                        newTag.group = tag.string;
+                        break;
+                    case 'constructor':
+                        newTag.isConstructor = true;
+                        newTag.type = 'function';
+                        newTag.name = doxed.ctx.name;
+                        break;
+                    case 'property':
+                        newTag.name = tag.name;
+                        newTag.type = tag.type;
+                        newTag.dataTypes = tag.types.map(function(type) {
+                            return type.substr(0, 1).toUpperCase() + type.substr(1).toLowerCase();
+                        });
+                        break;
+                    case 'example':
+                        if (!newTag.examples) {
+                            newTag.examples = [];
                         }
-
-                        newTag.example.push({
-                            // title: '',
+                        newTag.examples.push({
                             code: tag.string
                         });
-                    }
-                    else {
-                        newTag[tag.type] = tag.string === '' ? true : tag.string;
-                    }
+
+                        break;
+                        
+
                 }
             });
+
+            if (doxed.ctx && (doxed.ctx.type === 'function' || doxed.ctx.type === 'method') && !newTag.type) {
+                newTag.type = doxed.ctx.type;
+                newTag.name = doxed.ctx.name;
+            }
         }
 
         return newTag;

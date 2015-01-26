@@ -1,4 +1,50 @@
 .pageContent {
+    h1 {
+        font-size: 24px;
+        font-weight: bold;
+        color: @wolfGrey;
+        margin-bottom: 10px;
+
+        .version {
+            color: #333;
+            font-size: 11px;
+            display: inline-block;
+            border-radius: 5px;
+            background-color: @wolfGrey;
+            color: #fff;
+            padding: 2px 5px;
+            position: relative;
+            left: 10px;
+            top: -10px;
+        }
+    }
+
+    h2 {
+        font-size: 20px;
+        font-weight: bold;
+        color: @wolfGrey;
+        margin-bottom: 10px;
+    }
+
+    h3 {
+        font-size: 18px;
+        font-weight: bold;
+        color: @lagoonBlue;
+        margin-bottom: 10px;
+    }
+
+    h4 {
+        font-size: 15px;
+        font-weight: bold;
+        color: @nightGrey;
+        margin-bottom: 10px;
+    }
+
+    .groupBlockItem,
+    .itemBlockContent {
+        margin-bottom: 30px;
+    }
+
     .codeBox {
         max-height: 200px;
         overflow: auto;
@@ -15,6 +61,7 @@
 
     .description {
         font-size: 14px;
+        margin-bottom: 20px;
     }
 
     .noDescrition {
@@ -29,5 +76,20 @@
         }
     }
 
-    
+    .labels {
+        margin-left: 10px;
+    }
+
+    .labelConstructor {
+        .labelRed;
+    }
+
+    .dataTypes {
+        margin-left: 5px
+    }
+
+    .dataType {
+        .label;
+        .labelGrey;
+    }
 }

@@ -7,7 +7,7 @@ module.exports = function() {
   
     /**
      * Taste variable
-     * @type {String}
+     * @var {String}
      * @group Pineapple2
      */
     var taste = 'sweet';

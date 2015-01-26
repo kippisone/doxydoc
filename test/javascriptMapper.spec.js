@@ -2,7 +2,8 @@
 var path = require('path'),
     pkg = require('../package.json');
 
-var Doxit = require('../doxit');
+var Doxit = require('../doxit'),
+    dox = require('dox');
 
 describe('Javascript mapper', function() {
     var doxit;
@@ -29,80 +30,48 @@ describe('Javascript mapper', function() {
         });
 
         it('Should map a .js file', function() {
-            expect(mapDoxResultSpy.returnValues[0]).to.eql({
-                name: pkg.name,
-                version: pkg.version,
-                description: pkg.description,
-                listing: [{
-                    name: 'Pineapple',
-                    groups: [{
-                        id: 'property',
-                        name: 'Properties',
-                        items: []
-                    }, {
-                        id: 'method',
-                        name: 'Methods',
-                        items: []
-                    }, {
-                        id: 'events',
-                        name: 'Events',
-                        items: []
-                    }],
-                    unknown: [{
-                        code: 'var eat = function() {\n\n};',
-                        codeStart: 18,
-                        description: {
-                            summary: '<p>Eat method</p>',
-                            body: '',
-                            full: '<p>Eat method</p>'
-                        },
-                        line: 15,
-                        tags: {
-                        }
-                    }]
-                }, {
-                    name: 'Pineapple2',
-                    groups: [{
-                        id: 'property',
-                        name: 'Properties',
-                        items: []
-                    }, {
-                        id: 'method',
-                        name: 'Methods',
-                        items: [{
-                            code: 'var peal = function() {\n\n};\n\n};',
-                            codeStart: 28,
-                            description: {
-                                summary: '<p>Peal method</p>',
-                                body: '',
-                                full: '<p>Peal method</p>'
-                            },
-                            line: 22,
-                            tags: {
-                                method: 'peal',
-                                group: 'Pineapple2'
-                            }
-                        }]
-                    }, {
-                        id: 'events',
-                        name: 'Events',
-                        items: []
-                    }],
-                    unknown: [{
-                        code: 'var taste = \'sweet\';',
-                        codeStart: 13,
-                        description: {
-                          body: '',
-                          full: '<p>Taste variable</p>',
-                          summary: '<p>Taste variable</p>'
-                        },
-                        line: 8,
-                        tags: {
-                            group: 'Pineapple2',
-                            
-                        }
-                    }]
-                }]
+            expect(mapDoxResultSpy.returnValues[0]).to.be.an('object');
+            expect(mapDoxResultSpy.returnValues[0].name).to.eql(pkg.name);
+            expect(mapDoxResultSpy.returnValues[0].description).to.eql(pkg.description);
+            expect(mapDoxResultSpy.returnValues[0].version).to.eql(pkg.version);
+            expect(mapDoxResultSpy.returnValues[0].listing).to.be.a('array');
+            expect(mapDoxResultSpy.returnValues[0].listing).to.have.length(2);
+        });
+    });
+
+    describe('Block mapping', function() {
+        before(function() {
+
+            doxit = new Doxit();
+        });
+
+        it('Should parse a @constructor tag', function() {
+            var res = doxit.parseString('raw', 'test.js',
+                '/**\n' +
+                ' * Test module\n' +
+                ' *\n' +
+                ' * @constructor testModule\n' +
+                ' */\n' +
+                'var MyFunc = function() {};'
+            );
+
+            var block = res.listing[0].groups[0].items[0];
+
+            expect(block).to.eql({
+                code: 'var MyFunc = function() {};',
+                codeStart: 6,
+                line: 1,
+                link: 'testjs/items/MyFunc',
+                description: {
+                    full: '<p>Test module</p>',
+                    summary: '<p>Test module</p>',
+                    body: ''
+                },
+                isConstructor: true,
+                name: 'MyFunc',
+                labels: ['Constructor'],
+                title: 'MyFunc',
+                type: 'function'
             });
         });
     });

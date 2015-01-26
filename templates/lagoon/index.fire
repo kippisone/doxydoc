@@ -1,7 +1,9 @@
 html
     head
         script type="text/javascript"
-        link rel="Stylesheet" href="templates/lagoon/main.css"
+        script src="http://localhost:35345/livereload.js"
+
+        link rel="Stylesheet" href="main.css"
     body
         section class="pageMain"
             header class="pageHeader"
@@ -10,30 +12,43 @@ html
                     $version
             section class="pageBody"
                 aside class="pageLeft"
-                    :each $listing : div
-                        h1 $name
-                        :each $groups : div class="groupBlock $id"
-                            h2 $name
-                            :each $items : ul class="groupBlockItem"
-                                li 
-                                    a href="#$name" $name
+                    :each $listing : div class="moduleListing"
+                        div class="moduleBlock"
+                            h1 
+                                a href="#$link" $name
+                            :each $groups : div class="groupBlock $id"
+                                :if $items.length : div class="groupBlockItem"
+                                    h2
+                                        a href="#$link" $name
+                                    :each $items : ul class="groupBlockItem"
+                                        li 
+                                            a href="#$link" $name
                 section class="pageContent"
-                    h1 $name
-                        span class="version" $version
+                    h1 id="top" $name
+                        span class="version" "v"
+                            $version
                     div class="description" $description
                     :each $listing : div
-                        h2  $name
+                        h2 id="$link" $name
+                        :if $description : div class="description"
+                            $description.full
                         :each $groups : div class="groupBlock $id"
-                            h3 id="$name" $name
-                            :each $items : div
-                                h3 $name
-                                :if $description : div class="description"
-                                    $description.full
-                                :if $example : div class="example"
-                                    div $example
-                                :if $preview : div class="preview"
-                                    $preview
-                                :if $code : div class="codeBox"
-                                    code class="code" $code
+                            :if $items.length : div class="groupBlockItem"
+                                h3 id="$link" $name
+                                :each $items : div class="itemBlock"
+                                    div class="itemBlockContent"
+                                        h4 id="$link" $title
+                                            :each $dataTypes : span class="dataTypes"
+                                                span class="dataType dataType$this" $this
+                                            :each $labels : span class="labels"
+                                                span class="label label$this" $this
+                                        :if $description : div class="description"
+                                            $description.full
+                                        :if $example : div class="example"
+                                            div $example
+                                        :if $preview : div class="preview"
+                                            $preview
+                                        :if $code : div class="codeBox"
+                                            code class="code" $code
 
             footer class="pageFooter" "Documentation created by Doxit Doc Parser"

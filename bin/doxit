@@ -1,11 +1,7 @@
 #!/usr/bin/env node
 var program = require('commander'),
     pkg = require('../package.json'),
-    fs = require('fs'),
-    path = require('path');
-
-
-var FireTPL = require('firetpl');
+    fs = require('fs');
 
 var Doxit = require('../doxit');
 
@@ -22,13 +18,10 @@ if (program.args.length) {
         doxit.templateFile = program.template;
     }
 
-    var result = doxit.readFiles(program.args);
-        
     if (program.outfile) {
-        var tmpl = fs.readFileSync(path.join(__dirname, '../templates/lagoon/index.fire'));
-        fs.writeFile(program.outfile, FireTPL.fire2html(tmpl, result));
+        fs.writeFile(program.outfile, doxit.parse('html', program.args));
     }
     else {
-        console.log(JSON.stringify(result, null, '    '));
+        console.log(doxit.parse('json', program.args));
     }
 }

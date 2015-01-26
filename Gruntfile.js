@@ -5,6 +5,9 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+        bumpup: {
+            file: 'package.json'
+        },
         jshint: {
             files: [
                 'webdocs/models/**/*.js',
@@ -18,8 +21,18 @@ module.exports = function(grunt) {
                 reporter: require('jshint-stylish')
             }
         },
+        doxit: {
+            doc: {
+                src: ['test/src/*.js'],
+                dest: 'build/index.html'
+            },
+            json: {
+                src: ['test/src/*.js'],
+                dest: 'build/doc.json'
+            }
+        },
         less: {
-            dist: {
+            build: {
                 options: {
                     relativeUrls: true,
                     rootpath: 'less/'
@@ -27,19 +40,31 @@ module.exports = function(grunt) {
                 files: {
                     'templates/lagoon/main.css': 'templates/lagoon/less/main.less'
                 }
+            },
+            dev: {
+                options: {
+                    relativeUrls: true,
+                    rootpath: 'less/'
+                },
+                files: {
+                    'build/main.css': 'templates/lagoon/less/main.less'
+                }
             }
         },
         watch: {
             less: {
+                files: ['templates/**/*.less'],
+                tasks: ['less:dev'],
                 options: {
-                    livereload: true,
-                    dumpLineNumbers: true,
-                    sourceMap: true,
-                    // sourceMapFilename: 'main.css.map'
-
-                },
-                files: 'templates/**/*.less',
-                tasks: ['less']
+                    livereload: 35345
+                }
+            },
+            tmpl: {
+                files: ['templates/**/*.fire'],
+                tasks: ['less:build', 'doxit'],
+                options: {
+                    livereload: 35345
+                }
             }
         }
     });
@@ -48,11 +73,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-bumpup');
+    grunt.loadNpmTasks('grunt-doxit');
 
     grunt.registerTask('default', 'help');
     grunt.registerTask('build', [
         'jshint',
-        'less',
-        'bumbup:prerelease'
+        'less:build',
+        'doxit',
+        'bumpup:prerelease'
     ]);
 };

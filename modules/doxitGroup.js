@@ -27,7 +27,6 @@ module.exports = (function() {
             this.groups.push(group);
         }
 
-
         group.items.push(data);
     };
 
@@ -54,7 +53,9 @@ module.exports = (function() {
     DoxitGroup.prototype.toJSON = function() {
         return {
             name: this.name,
-            groups: this.groups
+            groups: this.groups,
+            unknown: this.unknown,
+            link: this.link
         };
     };
 

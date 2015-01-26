@@ -37,6 +37,20 @@
  * @var {color}
  * @group colors
  */
+/**
+ * Color night grey
+ * @var: {color}
+ */
+.overflowEllipsis {
+  white-space: pre;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+/**
+ * Resets predefined css properties of common html tags
+ * 
+ * @module reset
+ */
 html {
   width: 100%;
   height: 100%;
@@ -116,8 +130,7 @@ body {
   box-sizing: border-box;
 }
 .pageContent {
-  padding-left: 250px;
-  padding: 10px;
+  padding: 60px 10px 10px 10px;
 }
 .pageFooter {
   width: 100%;
@@ -138,6 +151,7 @@ body {
   box-sizing: border-box;
   padding: 10px;
   position: fixed;
+  z-index: 2;
 }
 .pageHeader .name {
   font-size: 23px;
@@ -148,18 +162,88 @@ body {
   font-size: 15px;
   margin-left: 10px;
 }
-.groupBlockItem {
+.pageLeft .moduleBlock {
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+.pageLeft .moduleBlock h1 {
+  color: #555;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  white-space: pre;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.pageLeft .moduleBlock h2 {
+  color: #666;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 0;
+  white-space: pre;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.pageLeft .moduleBlock a:link,
+.pageLeft .moduleBlock a:active,
+.pageLeft .moduleBlock a:visited {
+  color: inherit;
+  text-decoration: none;
+}
+.pageLeft .groupBlockItem {
   list-style-type: none;
   padding: 0;
 }
-.groupBlockItem li {
+.pageLeft .groupBlockItem li {
   list-style-type: none;
 }
-.groupBlockItem a:link,
-.groupBlockItem a:active,
-.groupBlockItem a:visited {
+.pageLeft .groupBlockItem a:link,
+.pageLeft .groupBlockItem a:active,
+.pageLeft .groupBlockItem a:visited {
   color: #111;
   text-decoration: none;
+}
+.pageContent h1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #555555;
+  margin-bottom: 10px;
+}
+.pageContent h1 .version {
+  color: #333;
+  font-size: 11px;
+  display: inline-block;
+  border-radius: 5px;
+  background-color: #555555;
+  color: #fff;
+  padding: 2px 5px;
+  position: relative;
+  left: 10px;
+  top: -10px;
+}
+.pageContent h2 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #555555;
+  margin-bottom: 10px;
+}
+.pageContent h3 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #0051cd;
+  margin-bottom: 10px;
+}
+.pageContent h4 {
+  font-size: 15px;
+  font-weight: bold;
+  color: #232323;
+  margin-bottom: 10px;
+}
+.pageContent .groupBlockItem,
+.pageContent .itemBlock {
+  margin-bottom: 30px;
 }
 .pageContent .codeBox {
   max-height: 200px;
@@ -175,6 +259,7 @@ body {
 }
 .pageContent .description {
   font-size: 14px;
+  margin-bottom: 20px;
 }
 .pageContent .noDescrition {
   color: #333;
@@ -183,4 +268,66 @@ body {
   width: 100px;
   height: 100px;
   text-align: center;
+}
+.pageContent .labels {
+  margin-left: 10px;
+}
+.pageContent .labelConstructor {
+  background-color: #b10000;
+}
+.pageContent .dataTypes {
+  margin-left: 5px;
+}
+.pageContent .dataType {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #555555;
+}
+/**
+     * Reset h1 - h6 tags
+     * 
+     * @action headlines
+     */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 12px;
+  font-weight: normal;
+  margin: 0;
+}
+/**
+     * Reset ul and li tags
+     * 
+     * @action lists
+     */
+ul,
+li {
+  margin: 0;
+  list-style-type: none;
+}
+.label {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+}
+.labelRed {
+  background-color: #b10000;
+}
+.labelBlue {
+  background-color: #0051cd;
+}
+.labelGrey {
+  background-color: #555555;
 }

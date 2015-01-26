@@ -25,12 +25,9 @@ describe('Mapper', function() {
 
             var mapperData = jsMapperStub.firstCall.args[0][0];
             expect(mapperData).to.be.eql({
-                tags: {
-                    module: 'banana',
-                    example: [{
-                        code: '    var banana = require(\'banana\');\n    banana.peelIt();'
-                    }],
-                },
+                examples: [{
+                    code: '    var banana = require(\'banana\');\n    banana.peelIt();'
+                }],
                 description: {
                     full: '<p>Banana test module</p><p>Very awesome banana module.</p>',
                     summary: '<p>Banana test module</p>',
@@ -38,7 +35,9 @@ describe('Mapper', function() {
                 },
                 code: 'module.exports = function() {\n    \'use strict\';',
                 codeStart: 11,
-                line: 1
+                line: 1,
+                name: 'banana',
+                type: 'module'
             });
 
             jsMapperStub.restore();
@@ -47,9 +46,6 @@ describe('Mapper', function() {
         it('Should call a mapper function with a @const block', function() {
             var mapperData = jsMapperStub.firstCall.args[0][1];
             expect(mapperData).to.be.eql({
-                tags: {
-                    'const': '{string}'
-                },
                 description: {
                     full: '<p>Test constant</p>',
                     summary: '<p>Test constant</p>',
@@ -67,9 +63,6 @@ describe('Mapper', function() {
             var mapperData = jsMapperStub.firstCall.args[0][2];
 
             expect(mapperData).to.be.eql({
-                tags: {
-                    constructor: true
-                },
                 description: {
                     full: '<p>Banana constructor</p>',
                     summary: '<p>Banana constructor</p>',
@@ -77,7 +70,10 @@ describe('Mapper', function() {
                 },
                 code: 'var Banana = function() {\n\n};',
                 codeStart: 24,
-                line: 20
+                line: 20,
+                isConstructor: true,
+                name: 'Banana',
+                type: 'function'
             });
 
             jsMapperStub.restore();
@@ -87,9 +83,6 @@ describe('Mapper', function() {
             var mapperData = jsMapperStub.firstCall.args[0][3];
 
             expect(mapperData).to.be.eql({
-                tags: {
-                    'return': undefined
-                },
                 description: {
                     full: '<p>Tastes method of Banana</p>',
                     summary: '<p>Tastes method of Banana</p>',
@@ -97,7 +90,9 @@ describe('Mapper', function() {
                 },
                 code: 'Banana.prototype.tastes = function() {\n    return \'awesome\';\n};',
                 codeStart: 33,
-                line: 28
+                line: 28,
+                name: 'tastes',
+                type: 'method'
             });
 
             jsMapperStub.restore();
