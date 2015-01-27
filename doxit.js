@@ -253,6 +253,7 @@ module.exports = (function() {
 
                 switch(tag.type) {
                     case 'module':
+                    case 'mixin':
                         newTag.type = tag.type;
                         newTag.name = tag.string;
                         break;
@@ -262,13 +263,24 @@ module.exports = (function() {
                         newTag.name = tag.string || doxed.ctx.name;
                         break;
                     case 'var':
-                        var match = tag.string.trim().match(/^(\{.+\})?\s*(\S+)?\s*(.+)$/);
+                        var match = tag.string.trim().match(/^(?:\{(.*)\})?\s*(\S+)?\s*(.+)?$/);
+                        console.log(match);
 
-                        newTag[tag.type] = extend({
-                            type: match[1],
-                            name: match[2],
-                            description: match[3]
-                        });
+                        if (match[1]) {
+                            newTag.dataTypes = match[1].split('|').map(function(type) {
+                                return type.toLowerCase();
+                            });
+                        }
+
+                        if (match[2]) {
+                            newTag.name = match[2];
+                        }
+
+                        if (match[3]) {
+                            newTag.description = match[3];
+                        }
+
+                        newTag.type = tag.type;
                         break;
                     case 'group':
                         newTag.group = tag.string;
@@ -292,10 +304,15 @@ module.exports = (function() {
                         newTag.examples.push({
                             code: tag.string
                         });
-
                         break;
-                        
-
+                    case 'deprecated':
+                        newTag.deprecated = tag.string || true;
+                        break;
+                    case 'private':
+                    case 'protected':
+                    case 'unimplemented':
+                        newTag[tag.type.substr(0, 1).toUpperCase() + tag.type.substr(1)] = true;
+                        break;
                 }
             });
 

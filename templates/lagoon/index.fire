@@ -10,6 +10,8 @@ html
                 div class="name" $name
                 div class="version" "v"
                     $version
+                :each $headerLinks : navi class="mainNavi"
+                    a href="$link" target="$target" $name
             section class="pageBody"
                 aside class="pageLeft"
                     :each $listing : div class="moduleListing"

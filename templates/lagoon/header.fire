@@ -2,3 +2,6 @@ header class="pageHeader"
     div class="name" $name
     div class="version" "v"
         $version
+    navi class="mainNavi"
+        :each $headerLinks : div class="links"
+            a href="$link" $name

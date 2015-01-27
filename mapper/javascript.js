@@ -39,7 +39,14 @@ module.exports = function(doxed) {
 
         //Add labels
         var labels = [
-            [block.isConstructor, 'Constructor']
+            [block.isConstructor, 'Constructor'],
+            [block.isProtected, 'Protected'],
+            [block.isPrivate, 'Private'],
+            [block.isUnimplemented, 'Unimplemented'],
+            [
+                block.deprecated, 
+                typeof block.deprecated === 'string' ? 'Deprecated since ' + block.deprecated : 'Deprecated'
+            ]
         ];
 
         block.labels = [];

@@ -23,8 +23,8 @@ module.exports = function(grunt) {
         },
         doxit: {
             doc: {
-                src: ['test/src/*.js'],
-                dest: 'build/index.html'
+                src: ['test/src/*.js', 'test/src/*.less'],
+                dest: 'build/'
             },
             json: {
                 src: ['test/src/*.js'],

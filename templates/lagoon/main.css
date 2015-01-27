@@ -3,43 +3,76 @@
  * @group config
  */
 /**
+ * A collection of beautiful predefined colors
+ * @module colors
+ */
+/**
  * Color ocean blue
  * @var {color}
- * @group colors
  */
 /**
  * Color lagoon blue
  * @var {color}
- * @group colors
  */
 /**
  * Color dark lagoon blue
  * @var {color}
- * @group colors
+ */
+/**
+ * Color deep blue
+ * @var {color}
+ */
+/**
+ * Color purplePlum
+ * @var {color}
  */
 /**
  * Color fire red
  * @var {color}
- * @group colors
+ */
+/**
+ * Color bloody red
+ * @font-variant:  {color}
+ */
+/**
+ * Color pretty sunrise
+ * @font-variant:  {color}
+ */
+/**
+ * Color green bird
+ * @var {color}
+ */
+/**
+ * Color green grass
+ * @var {color}
+ */
+/**
+ * Color yellow glow
+ * @var {color}
  */
 /**
  * Color shark grey
  * @var {color}
- * @group colors
  */
 /**
  * Color shark grey
  * @var {color}
- * @group colors
  */
 /**
  * Color shark grey
  * @var {color}
- * @group colors
  */
 /**
  * Color night grey
  * @var: {color}
+ */
+/**
+ * Color dessert sand
+ * @var {color}
+ */
+/**
+ * Color brown bear
+ * @var {color}
  */
 .overflowEllipsis {
   white-space: pre;
@@ -162,6 +195,22 @@ body {
   font-size: 15px;
   margin-left: 10px;
 }
+.pageHeader .mainNavi {
+  margin-left: 30px;
+}
+.pageHeader .mainNavi a:link,
+.pageHeader .mainNavi a:active,
+.pageHeader .mainNavi a:visited {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  padding: 5px;
+  text-decoration: none;
+  color: #fff;
+}
+.pageHeader .mainNavi a:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
 .pageLeft .moduleBlock {
   background-color: #eee;
   border-radius: 5px;
@@ -242,7 +291,7 @@ body {
   margin-bottom: 10px;
 }
 .pageContent .groupBlockItem,
-.pageContent .itemBlock {
+.pageContent .itemBlockContent {
   margin-bottom: 30px;
 }
 .pageContent .codeBox {
@@ -271,9 +320,23 @@ body {
 }
 .pageContent .labels {
   margin-left: 10px;
+  font-size: 13px;
 }
 .pageContent .labelConstructor {
+  background-color: #967657;
+}
+.pageContent .labelPrivate {
   background-color: #b10000;
+}
+.pageContent .labelProtected {
+  background-color: #ff7e00;
+}
+.pageContent .labelDeprecated {
+  background-color: #b10024;
+}
+.pageContent .labelUnimplemented {
+  background-color: #e1ff00;
+  color: #000;
 }
 .pageContent .dataTypes {
   margin-left: 5px;
@@ -325,9 +388,31 @@ li {
 .labelRed {
   background-color: #b10000;
 }
+.labelDarkRed {
+  background-color: #b10024;
+}
 .labelBlue {
   background-color: #0051cd;
 }
+.labelPurple {
+  background-color: #7a00ad;
+}
 .labelGrey {
   background-color: #555555;
+}
+.labelOrangeRed {
+  background-color: #ff7e00;
+}
+.labelBrown {
+  background-color: #967657;
+}
+.labelDarkGreen {
+  background-color: #00826a;
+}
+.labelGreen {
+  background-color: #008b12;
+}
+.labelYellow {
+  background-color: #e1ff00;
+  color: #000;
 }

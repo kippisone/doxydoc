@@ -1,0 +1,10 @@
+{
+    "name": "Doxit Docparser",
+    "headerLinks": [
+        {
+            "link": "http://doxit.lc/syntax/syntax.html",
+            "name": "Syntax",
+            "target": "_blank"
+        }
+    ]
+}

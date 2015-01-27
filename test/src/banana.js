@@ -50,4 +50,48 @@ module.exports = function() {
      * @property {boolean} isSweet
      */
     Banana.prototype.isSweet = false;
+
+    /**
+     * Protected method
+     *
+     * @protected
+     */
+    Banana.prototype.isProtected = function() {
+
+    };
+
+    /**
+     * Private method
+     *
+     * @private
+     */
+    Banana.prototype.isPrivate = function() {
+
+    };
+
+    /**
+     * Deprecated method
+     *
+     * @deprecated
+     */
+    Banana.prototype.isDeprecated = function() {
+
+    };
+
+    /**
+     * Deprecated since method
+     *
+     * @deprecated v0.3.0
+     */
+    Banana.prototype.isDeprecated = function() {
+
+    };
+
+    /**
+     * Unimplemented method
+     * @unimplemented
+     */
+    Banana.prototype.isUnimplemented = function() {
+
+    };
 };
