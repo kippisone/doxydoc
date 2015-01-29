@@ -1,6 +1,6 @@
 {
   "name": "DoxIt",
-  "version": "0.1.0-58",
+  "version": "0.1.0",
   "description": "Source code documentation",
   "main": "doxit.js",
   "scripts": {
