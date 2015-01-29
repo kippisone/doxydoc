@@ -1,5 +1,3 @@
-var extend = require('node.extend');
-
 module.exports = function(doxed) {
     'use strict';
 
@@ -21,6 +19,10 @@ module.exports = function(doxed) {
         var group = this.setGroup(groupName, function() {
             this.defineGroup('items', {
                 name: ''
+            });
+
+            this.defineGroup('selectors', {
+                name: 'Selectors'
             });
 
             this.defineGroup('vars', {
@@ -54,19 +56,25 @@ module.exports = function(doxed) {
 
         var colorPreview = function(code) {
             var color = self.grepPattern(/((#[a-fA-F0-9]{3,6})|(rgb(a)?\([^\)]+))/, code);
-            return '<div class="cssColorPreview" style="background-color: ' + color + '">' +
+            return '<div class="cssColorPreview" style="background-color: ' + color + '"><span class="cssColorName">' +
                     color +
-                '</div>';
+                '</span></div>';
         };
 
         if (block.type === 'mixin') {
-            block.name = block.name || this.grepPattern(/\.(\w+)\([^\)]*\)/, block.code);
+            block.name = block.name || this.grepPattern(/\.(\w+)\([^\)]*\)/, block.source.code);
             group.addItem('mixins', block);
         }
+        else if (block.type === 'selector') {
+            block.name = block.name || this.grepPattern(/^([^\{]*)(\{|$)/, block.source.code)
+                .trim().replace(/\s+/g, '');
+            group.addItem('selectors', block);
+        }
         else if (block.type === 'var') {
-            block.name = block.name || this.grepPattern(/\.(\w+)\([^\)]*\)/, block.code);
-            // block.dataTypes = this.grepDataTypes(block.var);
-            block.preview = block.preview || colorPreview(block.code);
+            block.name = block.name || this.grepPattern(/(@\w+):/, block.source.code);
+            if (block.dataTypes && block.dataTypes.indexOf('color') !== -1 && !block.preview) {
+                block.preview = colorPreview(block.source.code);
+            }
             group.addItem('vars', block);
         }
         else if ((block.type === 'function' || block.type === 'var') && block.name) {

@@ -8,6 +8,13 @@ module.exports = function(grunt) {
         bumpup: {
             file: 'package.json'
         },
+        copy: {
+            build: {
+                files: [{
+                    cwd: 'templates/lagoon/', expand: true, src: ['lib/**/*', 'js/**/*'], dest: 'build/'
+                }]
+            }
+        },
         jshint: {
             files: [
                 'webdocs/models/**/*.js',
@@ -69,6 +76,7 @@ module.exports = function(grunt) {
         }
     });
 
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
@@ -79,6 +87,7 @@ module.exports = function(grunt) {
     grunt.registerTask('build', [
         'jshint',
         'less:build',
+        'copy:build',
         'doxit',
         'bumpup:prerelease'
     ]);

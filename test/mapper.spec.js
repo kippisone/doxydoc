@@ -26,14 +26,18 @@ describe('Mapper', function() {
             var mapperData = jsMapperStub.firstCall.args[0][0];
             expect(mapperData).to.be.eql({
                 examples: [{
-                    code: '    var banana = require(\'banana\');\n    banana.peelIt();'
+                    code: '    var banana = require(\'banana\');\n    banana.peelIt();',
+                    type: 'js'
                 }],
                 description: {
                     full: '<p>Banana test module</p><p>Very awesome banana module.</p>',
                     summary: '<p>Banana test module</p>',
                     body: '<p>Very awesome banana module.</p>'
                 },
-                code: 'module.exports = function() {\n    \'use strict\';',
+                source: {
+                    code: 'module.exports = function() {\n    \'use strict\';',
+                    type: 'js'
+                },
                 codeStart: 11,
                 line: 1,
                 name: 'banana',
@@ -51,7 +55,10 @@ describe('Mapper', function() {
                     summary: '<p>Test constant</p>',
                     body: ''
                 },
-                code: 'var NAME = \'banana\';',
+                source: {
+                    code: 'var NAME = \'banana\';',
+                    type: 'js'
+                },
                 codeStart: 18,
                 line: 14
             });
@@ -68,7 +75,10 @@ describe('Mapper', function() {
                     summary: '<p>Banana constructor</p>',
                     body: ''
                 },
-                code: 'var Banana = function() {\n\n};',
+                source: {
+                    code: 'var Banana = function() {\n\n};',
+                    type: 'js'
+                },
                 codeStart: 24,
                 line: 20,
                 isConstructor: true,
@@ -88,11 +98,18 @@ describe('Mapper', function() {
                     summary: '<p>Tastes method of Banana</p>',
                     body: ''
                 },
-                code: 'Banana.prototype.tastes = function() {\n    return \'awesome\';\n};',
+                source: {
+                    code: 'Banana.prototype.tastes = function() {\n    return \'awesome\';\n};',
+                    type: 'js'
+                },
                 codeStart: 33,
                 line: 28,
                 name: 'tastes',
-                type: 'method'
+                type: 'method',
+                returns: {
+                    dataTypes: ['string'],
+                    description: '<p>Returns how bananas tastes</p>'
+                }
             });
 
             jsMapperStub.restore();

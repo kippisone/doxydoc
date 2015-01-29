@@ -27,6 +27,10 @@
  * @var {color}
  */
 /**
+ * Color purplePlum
+ * @var {color}
+ */
+/**
  * Color fire red
  * @var {color}
  */
@@ -290,6 +294,21 @@ body {
   color: #232323;
   margin-bottom: 10px;
 }
+.pageContent h5 {
+  font-size: 12px;
+  font-weight: bold;
+  color: #555555;
+  margin-bottom: 5px;
+}
+.pageContent a:link,
+.pageContent a:visited,
+.pageContent a:active {
+  color: #0051cd;
+  text-decoration: none;
+}
+.pageContent a:hover {
+  text-decoration: underline;
+}
 .pageContent .groupBlockItem,
 .pageContent .itemBlockContent {
   margin-bottom: 30px;
@@ -313,10 +332,34 @@ body {
 .pageContent .noDescrition {
   color: #333;
 }
+.pageContent .preview {
+  margin-bottom: 20px;
+}
 .pageContent .preview .cssColorPreview {
   width: 100px;
   height: 100px;
+  border-radius: 5px;
+  position: relative;
+}
+.pageContent .preview .cssColorName {
+  position: absolute;
+  left: 0;
+  bottom: 36px;
+  right: 0;
   text-align: center;
+  display: block;
+  background-color: rgba(255, 255, 255, 0.7);
+  line-height: 26px;
+  font-size: 18px;
+  opacity: 0;
+  -o-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -webkit-transition: opacity 0.5s;
+  -ms-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+}
+.pageContent .preview .cssColorName:hover {
+  opacity: 1;
 }
 .pageContent .labels {
   margin-left: 10px;
@@ -338,6 +381,37 @@ body {
   background-color: #e1ff00;
   color: #000;
 }
+.pageContent .labelObject {
+  background-color: #000;
+  color: #fff;
+}
+.pageContent .labelFunction {
+  background-color: #430069;
+}
+.pageContent .labelArray {
+  background-color: #000;
+  color: #fff;
+}
+.pageContent .labelNumber {
+  background-color: #000;
+  color: #fff;
+}
+.pageContent .labelAny {
+  background-color: #000;
+  color: #fff;
+}
+.pageContent .labelString {
+  background-color: #000;
+  color: #fff;
+}
+.pageContent .labelBoolean {
+  background-color: #000;
+  color: #fff;
+}
+.pageContent .labelColor {
+  background-color: #000;
+  color: #fff;
+}
 .pageContent .dataTypes {
   margin-left: 5px;
 }
@@ -350,6 +424,29 @@ body {
   font-weight: normal;
   vertical-align: middle;
   background-color: #555555;
+}
+.pageContent .paramBlock {
+  margin-bottom: 20px;
+}
+.pageContent .paramTable td {
+  font-size: 13px;
+}
+.pageContent .returnValue h5 {
+  display: inline-block;
+}
+.pageContent .returnValue p {
+  display: inline-block;
+  padding-left: 10px;
+}
+.pageContent .returnDatatype {
+  font-weight: normal;
+  color: #000;
+}
+.pageContent .registrar {
+  color: #555555;
+}
+.pageContent .webLinks {
+  margin-bottom: 10px;
 }
 /**
      * Reset h1 - h6 tags
@@ -374,7 +471,11 @@ h6 {
 ul,
 li {
   margin: 0;
+  padding: 0;
   list-style-type: none;
+}
+p {
+  margin: 0;
 }
 .label {
   display: inline-block;
@@ -397,6 +498,9 @@ li {
 .labelPurple {
   background-color: #7a00ad;
 }
+.lableDarkPurple {
+  background-color: #430069;
+}
 .labelGrey {
   background-color: #555555;
 }
@@ -415,4 +519,33 @@ li {
 .labelYellow {
   background-color: #e1ff00;
   color: #000;
+}
+.labelBlack {
+  background-color: #000;
+  color: #fff;
+}
+table.dcTable {
+  border: 1px solid #c0c0c0;
+  border-collapse: collapse;
+  border-radius: 5px;
+  width: 100%;
+}
+table.dcTable caption {
+  border-bottom: none;
+  background-color: #0051cd;
+  color: #fff;
+  padding: 5px;
+}
+table.dcTable thead {
+  background-color: #ddd;
+  font-weight: bold;
+}
+table.dcTable thead td {
+  padding: 5px;
+}
+table.dcTable td {
+  border-left: 1px solid 1px solid #c0c0c0;
+  padding: 5px;
+  vertical-align: top;
+  font-size: 14px;
 }

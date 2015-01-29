@@ -121,6 +121,7 @@ module.exports = (function() {
         doxed.forEach(function(doxFile) {
             var moduleName = doxFile.file;
             doxFile.ext = path.extname(doxFile.file);
+            this.moduleDataType = doxFile.ext.substr(1);
 
             var data = doxFile.data.map(function(doxBlock) {
                 var block = {};
@@ -135,7 +136,12 @@ module.exports = (function() {
                 block.description = doxBlock.description;
                 block.line = doxBlock.line;
                 block.codeStart = doxBlock.codeStart;
-                block.code = doxBlock.code;
+                if (doxBlock.code) {
+                    block.source = {
+                        code: doxBlock.code ? doxBlock.code.split(/\/\/--/, 1)[0].trim() : null,
+                        type: this.moduleDataType
+                    };   
+                }
 
                 var res = extend(doxBlock, {
                     tagsArray: doxBlock.tags || [],
@@ -242,11 +248,12 @@ module.exports = (function() {
     };
 
     Doxit.prototype.parseTags = function(doxed) {
-        var newTag = {};
+        var newTag = {},
+            match;
 
         var tags = doxed.tags;
 
-        console.log('Doxed: ', doxed);
+        // console.log('Doxed: ', doxed);
 
         if (tags && Array.isArray(tags)) {
             tags.forEach(function(tag) {
@@ -254,6 +261,7 @@ module.exports = (function() {
                 switch(tag.type) {
                     case 'module':
                     case 'mixin':
+                    case 'selector':
                         newTag.type = tag.type;
                         newTag.name = tag.string;
                         break;
@@ -262,9 +270,21 @@ module.exports = (function() {
                         newTag.type = tag.type;
                         newTag.name = tag.string || doxed.ctx.name;
                         break;
+                    case 'param':
+                        if (!newTag.params) {
+                            newTag.params = [];
+                        }
+
+                        newTag.params.push({
+                            name: tag.name,
+                            description: tag.description,
+                            dataTypes: tag.types,
+                            optional: tag.optional
+                        });
+
+                        break;
                     case 'var':
-                        var match = tag.string.trim().match(/^(?:\{(.*)\})?\s*(\S+)?\s*(.+)?$/);
-                        console.log(match);
+                        match = tag.string.trim().match(/^(?:\{(.*)\})?\s*(\S+)?\s*(.+)?$/);
 
                         if (match[1]) {
                             newTag.dataTypes = match[1].split('|').map(function(type) {
@@ -281,6 +301,13 @@ module.exports = (function() {
                         }
 
                         newTag.type = tag.type;
+                        break;
+                    case 'return':
+                    case 'returns':
+                        newTag.returns = {
+                            dataTypes: tag.types,
+                            description: tag.description
+                        };
                         break;
                     case 'group':
                         newTag.group = tag.string;
@@ -302,8 +329,24 @@ module.exports = (function() {
                             newTag.examples = [];
                         }
                         newTag.examples.push({
-                            code: tag.string
+                            code: this.toHtml(tag.string.replace(/^\s*\{(\w+)\}\s*/, '')),
+                            type: this.grepPattern(/\{(\w+)\}/, tag.string) || this.moduleDataType
                         });
+                        break;
+                    case 'fires':
+                    case 'event':
+                        var key = tag.type === 'event' ? 'events' : tag.type;
+                        if (!newTag[key]) {
+                            newTag[key] = [];
+                        }
+
+                        match = tag.string.match(/^\s*(\S+)\s+(.+)$/);
+                        if (match) {
+                            newTag[key].push({
+                                name: match[1],
+                                description: match[2]
+                            });
+                        }
                         break;
                     case 'deprecated':
                         newTag.deprecated = tag.string || true;
@@ -313,8 +356,22 @@ module.exports = (function() {
                     case 'unimplemented':
                         newTag[tag.type.substr(0, 1).toUpperCase() + tag.type.substr(1)] = true;
                         break;
+                    case 'link':
+                        if (!newTag.webLinks) {
+                            newTag.webLinks = [];
+                        }
+
+                        match = tag.string.match(/^(.*?)?(?:\s|^)(\S+)$/);
+                        if (match) {
+                            newTag.webLinks.push({
+                                name: String(match[1] || match[2]).trim(),
+                                url: match[2],
+                                target: /^http(s)?\:/.test(match[2]) ? '_blank' : ''
+                            });
+                        }
+                        break;
                 }
-            });
+            }.bind(this));
 
             if (doxed.ctx && (doxed.ctx.type === 'function' || doxed.ctx.type === 'method') && !newTag.type) {
                 newTag.type = doxed.ctx.type;
@@ -354,6 +411,13 @@ module.exports = (function() {
 
     Doxit.prototype.grepDescription = function(description) {
         return description.full;
+    };
+
+    Doxit.prototype.toHtml = function(str) {
+        return str.replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
     };
 
     return Doxit;

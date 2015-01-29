@@ -205,13 +205,15 @@ describe('Doxit parser', function() {
                 'var Const = function() {};'
             );
 
+            doxit.moduleDataType = 'js';
             var tags = doxit.parseTags(doxed[0]);
             expect(tags).to.eql({
                 type: 'function',
                 name: 'Const',
                 isConstructor: true,
                 examples: [{
-                    code: 'var const = new Const();'
+                    code: 'var const = new Const();',
+                    type: 'js'
                 }]
             });
         });

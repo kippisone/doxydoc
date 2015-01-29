@@ -38,7 +38,9 @@ module.exports = function() {
      * Private method
      *
      * @private
-     * @param {boolen} isGreen Returns true if banana is green
+     * @param {boolean} isGreen Returns true if banana is green
+     * @param {function} callback Callback function
+     * @returns {object} Returns this property
      */
     Banana.prototype.isGreen = function(green) {
         
@@ -94,4 +96,34 @@ module.exports = function() {
     Banana.prototype.isUnimplemented = function() {
 
     };
+
+    /**
+     * Add new banana
+     * @fires banana.add Fires a banana.add event
+     * @fires banana.change Fires a banana.change event
+     */
+    Banana.prototype.addBanana = function() {
+
+    };
+
+    /**
+     * Register listener
+     * @event banana.add Registers an add listener
+     * @event banana.change Registers a change listener
+     */
+    Banana.prototype.registerListener = function() {
+        
+    };
+
+    /**
+     * Has links
+     * 
+     * @link Syntax http://doxit.lc/syntax/syntax.html
+     * @link Jump to top #top
+     */
+    Banana.prototype.hasLinks = function() {
+        
+    };
+
+    //--
 };

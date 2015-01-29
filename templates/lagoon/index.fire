@@ -3,6 +3,10 @@ html
         script type="text/javascript"
         script src="http://localhost:35345/livereload.js"
 
+        script src="lib/highlightjs/highlight.js"
+        script src="js/doxit.js"
+
+        link rel="stylesheet" href="lib/highlightjs/highlightjs.css"
         link rel="Stylesheet" href="main.css"
     body
         section class="pageMain"
@@ -44,13 +48,55 @@ html
                                                 span class="dataType dataType$this" $this
                                             :each $labels : span class="labels"
                                                 span class="label label$this" $this
+                                        :if $webLinks : div class="webLinks"
+                                            :each $webLinks : ul
+                                                li class="link"
+                                                    a href="$url" target="$target"
+                                                        $name
                                         :if $description : div class="description"
                                             $description.full
-                                        :if $example : div class="example"
-                                            div $example
+                                        :if $registrar : div class="registrar"
+                                            span "Defined in " $registrar.type
+                                            a href="#$registrar.link" " "
+                                                $registrar.name
+                                        :if $params : div class="paramBlock"
+                                            h5 "Params:"
+                                            table class="paramTable dcTable"
+                                                thead
+                                                    tr
+                                                        td "Name"
+                                                        td "Type"
+                                                        td "Description"
+                                                :each $params : tbody
+                                                    tr
+                                                        td $name
+                                                        td $dataTypes
+                                                        td $description
+                                        :if $fires : div class="firesBlock"
+                                            h5 "Calling events:"
+                                            table class="firesTable dcTable"
+                                                thead
+                                                    tr
+                                                        td "Event"
+                                                        td "Description"
+                                                :each $fires : tbody
+                                                    tr
+                                                        td $name
+                                                        td $description
+                                        :if $returns : div class="returnValue"
+                                            h5 "Returns: "
+                                                span class="returnDatatype" $returns.dataTypes
+                                            span $returns.description
+                                        :if $examples : div class="exampleBlock"
+                                            h5 "Example:"
+                                            :each $examples : div class="examples"
+                                                div class="codeBox"
+                                                    code class="code $type" $code
                                         :if $preview : div class="preview"
                                             $preview
-                                        :if $code : div class="codeBox"
-                                            code class="code" $code
+                                        :if $source : div
+                                            h5 "Code:"
+                                            div class="codeBox"
+                                                code class="code $source.type" $source.code
 
             footer class="pageFooter" "Documentation created by Doxit Doc Parser"
