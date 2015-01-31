@@ -1,3 +1,0 @@
-div class=index
-    h1 $title
-    div class=description $description

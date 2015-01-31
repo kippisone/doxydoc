@@ -3,5 +3,4 @@
     "files":  "none",
     "tests": "test/*.spec.js",
     "watch": "doxydoc.js"
-
 }

@@ -26,6 +26,8 @@
   "dependencies": {
     "commander": "^2.6.0",
     "dox": "^0.6.1",
+    "dresscode-less": "^0.1.0",
+    "firetpl": "^0.3.1",
     "glob": "^4.3.5",
     "highlight.js": "~8.0.0",
     "node.extend": "^1.1.3"
