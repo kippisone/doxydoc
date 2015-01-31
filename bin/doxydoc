@@ -1,9 +1,13 @@
 #!/usr/bin/env node
+'use strict';
+
 var program = require('commander'),
     pkg = require('../package.json'),
-    fs = require('fs');
+    path = require('path'),
+    grunt = require('grunt');
 
 var DoxyDoc = require('../doxydoc');
+var outDir;
 
 program.version(pkg.version)
     .usage('[options] file1, files2, ...')
@@ -13,13 +17,43 @@ program.version(pkg.version)
 
 if (program.args.length) {
     var doxydoc = new DoxyDoc();
+    var templateDir = path.join(__dirname, '../templates/lagoon/');
 
     if (program.template) {
         doxydoc.templateFile = program.template;
+        doxydoc.templateDir = path.dirname(program.template);
+    }
+    else {
     }
 
     if (program.outfile) {
-        fs.writeFile(program.outfile, doxydoc.parse('html', program.args));
+        outDir = path.dirname(path.resolve(process.cwd(), program.outfile));
+
+        var copy = function(abspath, rootdir, subdir, file) {
+            var src, dest;
+
+            if (arguments.length === 2) {
+                src = abspath;
+                dest = rootdir;
+            }
+            else {
+                if (!subdir || !/^js|lib\//.test(subdir)) {
+                    return;
+                }
+
+                src = abspath;
+                dest = path.join(outDir, subdir, file);
+            }
+
+            grunt.log.ok(' ... copy', src.replace(path.join(__dirname, '..') + '/', ''));
+            grunt.file.copy(src, dest);
+        };
+
+        grunt.log.ok('Copy docu to:', outDir);
+        grunt.file.write(program.outfile, doxydoc.parse('html', program.args));
+        copy(path.join(templateDir, 'main.css'), path.join(outDir, 'main.css'));
+        grunt.file.recurse(templateDir, copy);
+        grunt.log.ok('DoxyDoc copied to:', program.outfile);
     }
     else {
         console.log(doxydoc.parse('json', program.args));

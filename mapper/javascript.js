@@ -14,6 +14,10 @@ module.exports = function(doxed) {
     };
 
     doxed.forEach(function(block) {
+        if (!block) {
+            return;
+        }
+        
         groupName = moduleName;
 
          if (block.type === 'module') {
