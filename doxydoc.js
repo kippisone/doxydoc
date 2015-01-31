@@ -130,7 +130,7 @@ module.exports = (function() {
                     return;
                 }
 
-                fs.appendFileSync('dev-doxblock.json', 'Doxed block: ' + JSON.stringify(doxBlock, true, '    ') + '\n\n');
+                // fs.appendFileSync('dev-doxblock.json', 'Doxed block: ' + JSON.stringify(doxBlock, true, '    ') + '\n\n');
 
                 block = this.parseTags(doxBlock);
                 block.description = doxBlock.description;
@@ -167,7 +167,7 @@ module.exports = (function() {
                 //     }
                 // }
 
-                fs.appendFileSync('dev-doxblock.json', 'Mapped to: ' + JSON.stringify(block, true, '    ') + '\n\n');
+                // fs.appendFileSync('dev-doxblock.json', 'Mapped to: ' + JSON.stringify(block, true, '    ') + '\n\n');
                 
                 return block;
             }.bind(this));
