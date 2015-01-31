@@ -1,18 +1,18 @@
 'use strict';
 var path = require('path');
 
-var Doxit = require('../doxit');
+var DoxyDoc = require('../doxydoc');
 
 describe('Mapper', function() {
-    var doxit;
+    var doxydoc;
 
     describe('callMapper', function() {
         var jsMapperStub;
 
         before(function() {
-            doxit = new Doxit();
-            jsMapperStub = sinon.stub(doxit.__mapperFuncs, 'js');
-            doxit.readFiles(path.join('./test/src/banana.js'));
+            doxydoc = new DoxyDoc();
+            jsMapperStub = sinon.stub(doxydoc.__mapperFuncs, 'js');
+            doxydoc.readFiles(path.join('./test/src/banana.js'));
         });
 
         after(function() {

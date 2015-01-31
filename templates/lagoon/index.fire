@@ -4,7 +4,7 @@ html
         script src="http://localhost:35345/livereload.js"
 
         script src="lib/highlightjs/highlight.js"
-        script src="js/doxit.js"
+        script src="js/doxydoc.js"
 
         link rel="stylesheet" href="lib/highlightjs/highlightjs.css"
         link rel="Stylesheet" href="main.css"
@@ -99,4 +99,4 @@ html
                                             div class="codeBox"
                                                 code class="code $source.type" $source.code
 
-            footer class="pageFooter" "Documentation created by Doxit Doc Parser"
+            footer class="pageFooter" "Documentation created by DoxyDoc"

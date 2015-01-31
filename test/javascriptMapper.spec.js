@@ -2,20 +2,20 @@
 var path = require('path'),
     pkg = require('../package.json');
 
-var Doxit = require('../doxit');
+var DoxyDoc = require('../doxydoc');
 
 describe('Javascript', function() {
-    var doxit;
+    var doxydoc;
     
     describe('Mapper', function() {
         var mapDoxResultSpy,
             jsMapperSpy;
 
         before(function() {
-            doxit = new Doxit();
-            mapDoxResultSpy = sinon.spy(doxit, 'mapDoxResult');
-            jsMapperSpy = sinon.spy(doxit.__mapperFuncs, 'js');
-            doxit.readFiles(path.join('./test/src/pineapple.js'));
+            doxydoc = new DoxyDoc();
+            mapDoxResultSpy = sinon.spy(doxydoc, 'mapDoxResult');
+            jsMapperSpy = sinon.spy(doxydoc.__mapperFuncs, 'js');
+            doxydoc.readFiles(path.join('./test/src/pineapple.js'));
         });
 
         after(function() {
@@ -30,7 +30,7 @@ describe('Javascript', function() {
 
         it('Should map a .js file', function() {
             expect(mapDoxResultSpy.returnValues[0]).to.be.an('object');
-            expect(mapDoxResultSpy.returnValues[0].name).to.eql('Doxit Docparser');
+            expect(mapDoxResultSpy.returnValues[0].name).to.eql('DoxyDoc Docparser');
             expect(mapDoxResultSpy.returnValues[0].description).to.eql(pkg.description);
             expect(mapDoxResultSpy.returnValues[0].version).to.eql(pkg.version);
             expect(mapDoxResultSpy.returnValues[0].listing).to.be.a('array');
@@ -40,11 +40,11 @@ describe('Javascript', function() {
 
     describe('Doc Block', function() {
         before(function() {
-            doxit = new Doxit();
+            doxydoc = new DoxyDoc();
         });
 
         it('Should parse a @constructor tag', function() {
-            var res = doxit.parseString('raw', 'test.js',
+            var res = doxydoc.parseString('raw', 'test.js',
                 '/**\n' +
                 ' * Test module\n' +
                 ' *\n' +
@@ -77,7 +77,7 @@ describe('Javascript', function() {
         });
 
         it('Should parse a @method tag', function() {
-            var res = doxit.parseString('raw', 'test.js',
+            var res = doxydoc.parseString('raw', 'test.js',
                 '/**\n' +
                 ' * Test method\n' +
                 ' *\n' +
@@ -109,7 +109,7 @@ describe('Javascript', function() {
         });
 
         it('Should parse a @method tag with two params', function() {
-            var res = doxit.parseString('raw', 'test.js',
+            var res = doxydoc.parseString('raw', 'test.js',
                 '/**\n' +
                 ' * Test method\n' +
                 ' *\n' +
@@ -154,7 +154,7 @@ describe('Javascript', function() {
         });
 
         it('Should parse a @fires', function() {
-            var res = doxit.parseString('raw', 'test.js',
+            var res = doxydoc.parseString('raw', 'test.js',
                 '/**\n' +
                 ' * Test method\n' +
                 ' *\n' +
@@ -195,7 +195,7 @@ describe('Javascript', function() {
         });
 
         it('Should parse a @event tag', function() {
-            var res = doxit.parseString('raw', 'test.js',
+            var res = doxydoc.parseString('raw', 'test.js',
                 '/**\n' +
                 ' * Test method\n' +
                 ' *\n' +
@@ -250,7 +250,7 @@ describe('Javascript', function() {
         });
 
         it('Should parse a @link tag', function() {
-            var res = doxit.parseString('raw', 'test.js',
+            var res = doxydoc.parseString('raw', 'test.js',
                 '/**\n' +
                 ' * Test method\n' +
                 ' *\n' +
@@ -287,7 +287,7 @@ describe('Javascript', function() {
         });
 
         it('Should parse a @link tag without a link name', function() {
-            var res = doxit.parseString('raw', 'test.js',
+            var res = doxydoc.parseString('raw', 'test.js',
                 '/**\n' +
                 ' * Test method\n' +
                 ' *\n' +
@@ -324,7 +324,7 @@ describe('Javascript', function() {
         });
 
         it('Should parse a @link tag without a internal link', function() {
-            var res = doxit.parseString('raw', 'test.js',
+            var res = doxydoc.parseString('raw', 'test.js',
                 '/**\n' +
                 ' * Test method\n' +
                 ' *\n' +
@@ -361,7 +361,7 @@ describe('Javascript', function() {
         });
 
         it('Should cut of a code after //--', function() {
-            var res = doxit.parseString('raw', 'test.js',
+            var res = doxydoc.parseString('raw', 'test.js',
                 '/**\n' +
                 ' */\n' +
                 'Test.prototype.testMethod = function() {\n};\n //--\n var nex = true;'

@@ -118,7 +118,7 @@ module.exports = function() {
     /**
      * Has links
      * 
-     * @link Syntax http://doxit.lc/syntax/syntax.html
+     * @link Syntax http://doxydoc.com/syntax/syntax.html
      * @link Jump to top #top
      */
     Banana.prototype.hasLinks = function() {

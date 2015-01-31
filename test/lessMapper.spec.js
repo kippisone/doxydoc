@@ -1,16 +1,16 @@
 'use strict';
-var Doxit = require('../doxit');
+var DoxyDoc = require('../doxydoc');
 
 describe('LESS', function() {
-    var doxit;
+    var doxydoc;
     
     describe('Doc Block:', function() {
         beforeEach(function() {
-            doxit = new Doxit();
+            doxydoc = new DoxyDoc();
         });
 
         it('Should parse an empty file', function() {
-            var res = doxit.parseString('raw', 'test.less',
+            var res = doxydoc.parseString('raw', 'test.less',
                 ''
             );
 
@@ -22,7 +22,7 @@ describe('LESS', function() {
         });
 
         it('Should parse a @mixin tag', function() {
-            var res = doxit.parseString('raw', 'test.less',
+            var res = doxydoc.parseString('raw', 'test.less',
                 '/**\n' +
                 ' * Test mixin\n' +
                 ' *\n' +
@@ -55,7 +55,7 @@ describe('LESS', function() {
         });
 
         it('Should parse a @mixin tag first arg used', function() {
-            var res = doxit.parseString('raw', 'test.less',
+            var res = doxydoc.parseString('raw', 'test.less',
                 '/**\n' +
                 ' * Test mixin\n' +
                 ' *\n' +
@@ -88,7 +88,7 @@ describe('LESS', function() {
         });
 
         it('Should parse a @var tag', function() {
-            var res = doxit.parseString('raw', 'test.less',
+            var res = doxydoc.parseString('raw', 'test.less',
                 '/**\n' +
                 ' * Test var\n' +
                 ' *\n' +
@@ -120,7 +120,7 @@ describe('LESS', function() {
         });
 
         it('Should parse a @var tag, type used', function() {
-            var res = doxit.parseString('raw', 'test.less',
+            var res = doxydoc.parseString('raw', 'test.less',
                 '/**\n' +
                 ' * Test var\n' +
                 ' *\n' +
@@ -155,7 +155,7 @@ describe('LESS', function() {
         });
 
         it('Should parse a @var tag, name used', function() {
-            var res = doxit.parseString('raw', 'test.less',
+            var res = doxydoc.parseString('raw', 'test.less',
                 '/**\n' +
                 ' * Test var\n' +
                 ' *\n' +
@@ -188,7 +188,7 @@ describe('LESS', function() {
         });
 
         it('Should parse a @var tag, type and name used', function() {
-            var res = doxit.parseString('raw', 'test.less',
+            var res = doxydoc.parseString('raw', 'test.less',
                 '/**\n' +
                 ' * Test var\n' +
                 ' *\n' +
@@ -223,7 +223,7 @@ describe('LESS', function() {
         });
 
         it('Should parse a @selector tag', function() {
-            var res = doxit.parseString('raw', 'test.less',
+            var res = doxydoc.parseString('raw', 'test.less',
                 '/**\n' +
                 ' * Test selector\n' +
                 ' *\n' +
@@ -254,7 +254,7 @@ describe('LESS', function() {
         });
 
         it('Should parse a @selector tag, name used', function() {
-            var res = doxit.parseString('raw', 'test.less',
+            var res = doxydoc.parseString('raw', 'test.less',
                 '/**\n' +
                 ' * Test selector\n' +
                 ' *\n' +
@@ -285,7 +285,7 @@ describe('LESS', function() {
         });
 
         it('Should parse a @selector tag with an example', function() {
-            var res = doxit.parseString('raw', 'test.less',
+            var res = doxydoc.parseString('raw', 'test.less',
                 '/**\n' +
                 ' * Test selector\n' +
                 ' *\n' +
@@ -324,7 +324,7 @@ describe('LESS', function() {
         });
 
         it('Should parse a @selector tag with a htmlexample', function() {
-            var res = doxit.parseString('raw', 'test.less',
+            var res = doxydoc.parseString('raw', 'test.less',
                 '/**\n' +
                 ' * Test selector\n' +
                 ' *\n' +

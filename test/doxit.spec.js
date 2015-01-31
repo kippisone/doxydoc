@@ -3,45 +3,45 @@
 var path = require('path'),
     dox = require('dox');
 
-var Doxit = require('../doxit');
+var DoxyDoc = require('../doxydoc');
 
-describe('Doxit parser', function() {
-    var doxit;
+describe('DoxyDoc parser', function() {
+    var doxydoc;
 
     describe('grepDataTypes', function() {
         beforeEach(function() {
-            doxit = new Doxit();
+            doxydoc = new DoxyDoc();
         
         });
 
         it('Should grep data types from a string', function() {
             var str = '{number}';
-            expect(doxit.grepDataTypes(str)).to.eql(['number']);
+            expect(doxydoc.grepDataTypes(str)).to.eql(['number']);
         });
 
         it('Should grep multiple data types from a string', function() {
             var str = '{number|string|anyother}';
-            expect(doxit.grepDataTypes(str)).to.eql(['number', 'string', 'anyother']);
+            expect(doxydoc.grepDataTypes(str)).to.eql(['number', 'string', 'anyother']);
         });
 
         it('Should return an empty array when input str is undefined or empty', function() {
             var str = '';
-            expect(doxit.grepDataTypes(str)).to.eql([]);
+            expect(doxydoc.grepDataTypes(str)).to.eql([]);
             str = undefined;
-            expect(doxit.grepDataTypes(str)).to.eql([]);
+            expect(doxydoc.grepDataTypes(str)).to.eql([]);
         });
 
         it('Should return an empty array when input str is a boolean', function() {
-            expect(doxit.grepDataTypes(true)).to.eql([]);
-            expect(doxit.grepDataTypes(false)).to.eql([]);
-            expect(doxit.grepDataTypes(null)).to.eql([]);
+            expect(doxydoc.grepDataTypes(true)).to.eql([]);
+            expect(doxydoc.grepDataTypes(false)).to.eql([]);
+            expect(doxydoc.grepDataTypes(null)).to.eql([]);
         });
     });
 
     describe('tagParser', function() {
         before(function() {
 
-            doxit = new Doxit();
+            doxydoc = new DoxyDoc();
         });
 
         it('Should parse a @module tag', function() {
@@ -54,7 +54,7 @@ describe('Doxit parser', function() {
                 'var str = {};'
             );
 
-            var tags = doxit.parseTags(doxed[0]);
+            var tags = doxydoc.parseTags(doxed[0]);
             expect(tags).to.eql({
                 type: 'module',
                 name: 'testModule'
@@ -71,7 +71,7 @@ describe('Doxit parser', function() {
                 'var str = {};'
             );
 
-            var tags = doxit.parseTags(doxed[0]);
+            var tags = doxydoc.parseTags(doxed[0]);
             expect(tags).to.eql({
                 group: 'myGroup'
             });
@@ -87,7 +87,7 @@ describe('Doxit parser', function() {
                 'var Const = function() {};'
             );
 
-            var tags = doxit.parseTags(doxed[0]);
+            var tags = doxydoc.parseTags(doxed[0]);
             expect(tags).to.eql({
                 isConstructor: true,
                 type: 'function',
@@ -105,7 +105,7 @@ describe('Doxit parser', function() {
                 'var Const = function() {};'
             );
 
-            var tags = doxit.parseTags(doxed[0]);
+            var tags = doxydoc.parseTags(doxed[0]);
             expect(tags).to.eql({
                 type: 'method',
                 name: 'myMethod'
@@ -122,7 +122,7 @@ describe('Doxit parser', function() {
                 'var myMethod = function() {};'
             );
 
-            var tags = doxit.parseTags(doxed[0]);
+            var tags = doxydoc.parseTags(doxed[0]);
             expect(tags).to.eql({
                 type: 'method',
                 name: 'myMethod'
@@ -137,7 +137,7 @@ describe('Doxit parser', function() {
                 'var myMethod = function() {};'
             );
 
-            var tags = doxit.parseTags(doxed[0]);
+            var tags = doxydoc.parseTags(doxed[0]);
             expect(tags).to.eql({
                 type: 'function',
                 name: 'myMethod'
@@ -154,7 +154,7 @@ describe('Doxit parser', function() {
                 'var Const.prototype.myProp = true;'
             );
 
-            var tags = doxit.parseTags(doxed[0]);
+            var tags = doxydoc.parseTags(doxed[0]);
             expect(tags).to.eql({
                 type: 'property',
                 name: 'myProp',
@@ -170,7 +170,7 @@ describe('Doxit parser', function() {
                 'var Const = function() {};'
             );
 
-            var tags = doxit.parseTags(doxed[0]);
+            var tags = doxydoc.parseTags(doxed[0]);
             expect(tags).to.eql({
                 type: 'function',
                 name: 'Const'
@@ -186,7 +186,7 @@ describe('Doxit parser', function() {
                 'var Const = function() {};'
             );
 
-            var tags = doxit.parseTags(doxed[0]);
+            var tags = doxydoc.parseTags(doxed[0]);
             expect(tags).to.eql({
                 type: 'function',
                 name: 'Const',
@@ -205,8 +205,8 @@ describe('Doxit parser', function() {
                 'var Const = function() {};'
             );
 
-            doxit.moduleDataType = 'js';
-            var tags = doxit.parseTags(doxed[0]);
+            doxydoc.moduleDataType = 'js';
+            var tags = doxydoc.parseTags(doxed[0]);
             expect(tags).to.eql({
                 type: 'function',
                 name: 'Const',

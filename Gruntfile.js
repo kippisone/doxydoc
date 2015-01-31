@@ -28,7 +28,7 @@ module.exports = function(grunt) {
                 reporter: require('jshint-stylish')
             }
         },
-        doxit: {
+        doxydoc: {
             doc: {
                 src: ['test/src/*.js', 'test/src/*.less'],
                 dest: 'build/'
@@ -68,7 +68,7 @@ module.exports = function(grunt) {
             },
             tmpl: {
                 files: ['templates/**/*.fire'],
-                tasks: ['less:build', 'doxit'],
+                tasks: ['less:build', 'doxydoc'],
                 options: {
                     livereload: 35345
                 }
@@ -81,14 +81,14 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-bumpup');
-    grunt.loadNpmTasks('grunt-doxit');
+    grunt.loadNpmTasks('grunt-doxydoc');
 
     grunt.registerTask('default', 'help');
     grunt.registerTask('build', [
         'jshint',
         'less:build',
         'copy:build',
-        'doxit',
+        'doxydoc',
         'bumpup:prerelease'
     ]);
 };

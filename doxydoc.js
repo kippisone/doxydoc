@@ -9,17 +9,17 @@ var DoxyDocGroup = require('./modules/doxydocGroup'),
     FireTPL = require('firetpl');
 
 /**
- * Doxit document parser
- * @module Doxit parser
+ * DoxyDoc document parser
+ * @module DoxyDoc parser
  */
 module.exports = (function() {
     'use strict';
 
     /**
-     * Doxit parser module
+     * DoxyDoc parser module
      * @constructor
      */
-    var Doxit = function() {
+    var DoxyDoc = function() {
         this.templateFile = path.join(__dirname, 'templates/lagoon/index.fire');
         this.registerMapperFuncs();
     };
@@ -27,7 +27,7 @@ module.exports = (function() {
     /**
      * Registers pagger functions
      */
-    Doxit.prototype.registerMapperFuncs = function() {
+    DoxyDoc.prototype.registerMapperFuncs = function() {
         this.__mapperFuncs = {
             'js': require('./mapper/javascript.js'),
             'css': require('./mapper/css.js'),
@@ -40,13 +40,13 @@ module.exports = (function() {
      * @param  {string} mapperKey File extension
      * @param  {object} data      Data to be passed to the mapper function
      */
-    Doxit.prototype.callMapperFunc = function(mapperKey, thisValue, data) {
+    DoxyDoc.prototype.callMapperFunc = function(mapperKey, thisValue, data) {
         mapperKey = mapperKey.replace(/^\./, '');
         var fn = this.__mapperFuncs[mapperKey];
         fn.call(thisValue, data);
     };
 
-    Doxit.prototype.readFiles = function(files) {
+    DoxyDoc.prototype.readFiles = function(files) {
         var options = {
             nodir: true
         };
@@ -70,7 +70,7 @@ module.exports = (function() {
         return this.mapDoxResult(res);
     };
 
-    Doxit.prototype.parse = function(type, files) {
+    DoxyDoc.prototype.parse = function(type, files) {
         var result = this.readFiles(files);
 
         if (type === 'json') {
@@ -81,7 +81,7 @@ module.exports = (function() {
         return FireTPL.fire2html(tmpl, result);
     };
 
-    Doxit.prototype.parseString = function(type, filename, string) {
+    DoxyDoc.prototype.parseString = function(type, filename, string) {
         var result = this.mapDoxResult([{
             file: filename,
             data: dox.parseComments(string)
@@ -103,7 +103,7 @@ module.exports = (function() {
      * @param  {String} file filepath
      * @return {Object}      Returns a dox result
      */
-    Doxit.prototype.parseFile = function(file) {
+    DoxyDoc.prototype.parseFile = function(file) {
         var filepath = path.join(process.cwd(), file);
         var doxed = {
             file: file,
@@ -113,7 +113,7 @@ module.exports = (function() {
         return doxed;
     };
 
-    Doxit.prototype.mapDoxResult = function(doxed) {
+    DoxyDoc.prototype.mapDoxResult = function(doxed) {
         // fs.writeFile('dev-doxblock.json', JSON.stringify(doxed, true, '    '));
 
         var result = this.getMetaInfos();
@@ -200,7 +200,7 @@ module.exports = (function() {
         return result;
     };
 
-    Doxit.prototype.getMetaInfos = function() {
+    DoxyDoc.prototype.getMetaInfos = function() {
         var files = ['doxydoc.json', 'package.json'],
             dir,
             meta = {},
@@ -211,7 +211,7 @@ module.exports = (function() {
             while(dir !== '/') {
                 file = path.join(dir, files[i]);
                 if (fs.existsSync(file)) {
-                    if (files[i] === 'doxit.json') {
+                    if (files[i] === 'doxydoc.json') {
                         meta = require(file);
                     }
                     else {
@@ -229,7 +229,7 @@ module.exports = (function() {
         return meta;
     };
 
-    Doxit.prototype.setGroup = function(groupName, onCreateGroup) {
+    DoxyDoc.prototype.setGroup = function(groupName, onCreateGroup) {
         var group;
 
         for (var i = 0, len = this.listing.length; i < len; i++) {
@@ -247,7 +247,7 @@ module.exports = (function() {
         return group;
     };
 
-    Doxit.prototype.parseTags = function(doxed) {
+    DoxyDoc.prototype.parseTags = function(doxed) {
         var newTag = {},
             match;
 
@@ -382,7 +382,7 @@ module.exports = (function() {
         return newTag;
     };
 
-    Doxit.prototype.grepPattern = function(pattern, str, index) {
+    DoxyDoc.prototype.grepPattern = function(pattern, str, index) {
         index = index || 1;
         
         var match = str.match(pattern);
@@ -401,7 +401,7 @@ module.exports = (function() {
      * @param  {string} str Data type string
      * @return {array}     Returns data types array or an emptyy array
      */
-    Doxit.prototype.grepDataTypes = function(str) {
+    DoxyDoc.prototype.grepDataTypes = function(str) {
         if (typeof str !== 'string' || str === '') {
             return [];
         }
@@ -409,16 +409,16 @@ module.exports = (function() {
         return str.replace(/^\{|\}$/g, '').split('|');
     };
 
-    Doxit.prototype.grepDescription = function(description) {
+    DoxyDoc.prototype.grepDescription = function(description) {
         return description.full;
     };
 
-    Doxit.prototype.toHtml = function(str) {
+    DoxyDoc.prototype.toHtml = function(str) {
         return str.replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;');
     };
 
-    return Doxit;
+    return DoxyDoc;
 })();

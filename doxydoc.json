@@ -1,8 +1,8 @@
 {
-    "name": "Doxit Docparser",
+    "name": "DoxyDoc",
     "headerLinks": [
         {
-            "link": "http://doxit.lc/syntax/syntax.html",
+            "link": "http://doxydoc.com/syntax/syntax.html",
             "name": "Syntax",
             "target": "_blank"
         }
