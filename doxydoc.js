@@ -5,7 +5,7 @@ var glob = require('glob'),
     dox = require('dox'),
     extend = require('node.extend');
 
-var DoxitGroup = require('./modules/doxitGroup'),
+var DoxyDocGroup = require('./modules/doxydocGroup'),
     FireTPL = require('firetpl');
 
 /**
@@ -201,7 +201,7 @@ module.exports = (function() {
     };
 
     Doxit.prototype.getMetaInfos = function() {
-        var files = ['doxit.json', 'package.json'],
+        var files = ['doxydoc.json', 'package.json'],
             dir,
             meta = {},
             file;
@@ -238,7 +238,7 @@ module.exports = (function() {
             }
         }
 
-        group = new DoxitGroup(groupName);
+        group = new DoxyDocGroup(groupName);
         this.listing.push(group);
         if (typeof(onCreateGroup) === 'function') {
             onCreateGroup.call(group);

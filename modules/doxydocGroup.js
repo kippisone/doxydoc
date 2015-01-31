@@ -1,15 +1,20 @@
+/**
+ * @module DoxyDocGroup
+ */
 module.exports = (function() {
     'use strict';
 
     /**
-     * Doxit group
+     * DoxyDocGroup
+     *
+     * @constructor
      */
-    var DoxitGroup = function(name) {
+    var DoxyDocGroup = function(name) {
         this.name = name;
         this.groups = [];
     };
 
-    DoxitGroup.prototype.addItem = function(type, data) {
+    DoxyDocGroup.prototype.addItem = function(type, data) {
         var group;
 
         for (var i = 0, len = this.groups.length; i < len; i++) {
@@ -30,7 +35,7 @@ module.exports = (function() {
         group.items.push(data);
     };
 
-    DoxitGroup.prototype.addUnknown = function(data) {
+    DoxyDocGroup.prototype.addUnknown = function(data) {
         if (!this.unknown) {
             this.unknown = [];
         }
@@ -38,19 +43,19 @@ module.exports = (function() {
         this.unknown.push(data);
     };
 
-    DoxitGroup.prototype.defineGroup = function(type, content) {
+    DoxyDocGroup.prototype.defineGroup = function(type, content) {
         content.id = type;
         content.items = [];
         this.groups.push(content);
     };
 
-    DoxitGroup.prototype.getItems = function() {
+    DoxyDocGroup.prototype.getItems = function() {
         console.log('GEEEET', this.items);
         return this.items[0];
     };
 
 
-    DoxitGroup.prototype.toJSON = function() {
+    DoxyDocGroup.prototype.toJSON = function() {
         return {
             name: this.name,
             groups: this.groups,
@@ -59,5 +64,5 @@ module.exports = (function() {
         };
     };
 
-    return DoxitGroup;
+    return DoxyDocGroup;
 })();

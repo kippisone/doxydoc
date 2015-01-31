@@ -1,7 +1,7 @@
 {
-    "project": "Doxit",
+    "project": "DoxyDoc",
     "files":  "none",
     "tests": "test/*.spec.js",
-    "watch": "doxit.js"
+    "watch": "doxydoc.js"
 
 }

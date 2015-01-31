@@ -1,24 +1,27 @@
 {
-  "name": "doxit",
+  "name": "doxydoc",
   "version": "0.1.0",
-  "description": "Source code documentation",
-  "main": "doxit.js",
+  "description": "Source code documentation generator for Javascript, LESS and CSS",
+  "main": "doxydoc.js",
   "scripts": {
     "test": "grunt test"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:AndiOxidant/doxit.git"
+    "url": "git@github.com:AndiOxidant/doxydoc.git"
   },
   "keywords": [
     "dox",
     "docu",
-    "documentation"
+    "documentation",
+    "doxidoc",
+    "sourcedoc",
+    "codedoc"
   ],
-  "author": "Andi Heinkelein <andi@noname-media.com> (http://noname-media.com/)",
+  "author": "Andi Heinkelein <andi.oxidant@noname-media.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AndiOxidant/doxit/issues"
+    "url": "https://github.com/AndiOxidant/doxydoc/issues"
   },
   "dependencies": {
     "commander": "^2.6.0",
@@ -34,7 +37,7 @@
     "grunt-contrib-less": "~0.11.0",
     "grunt-contrib-watch": "~0.6.1"
   },
-  "homepage": "https://github.com/AndiOxidant/doxit",
+  "homepage": "https://github.com/AndiOxidant/doxydoc",
   "directories": {
     "doc": "docs",
     "test": "test"

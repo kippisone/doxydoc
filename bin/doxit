@@ -3,7 +3,7 @@ var program = require('commander'),
     pkg = require('../package.json'),
     fs = require('fs');
 
-var Doxit = require('../doxit');
+var DoxyDoc = require('../doxydoc');
 
 program.version(pkg.version)
     .usage('[options] file1, files2, ...')
@@ -12,16 +12,16 @@ program.version(pkg.version)
     .parse(process.argv);
 
 if (program.args.length) {
-    var doxit = new Doxit();
+    var doxydoc = new DoxyDoc();
 
     if (program.template) {
-        doxit.templateFile = program.template;
+        doxydoc.templateFile = program.template;
     }
 
     if (program.outfile) {
-        fs.writeFile(program.outfile, doxit.parse('html', program.args));
+        fs.writeFile(program.outfile, doxydoc.parse('html', program.args));
     }
     else {
-        console.log(doxit.parse('json', program.args));
+        console.log(doxydoc.parse('json', program.args));
     }
 }

@@ -1,21 +1,21 @@
-Doxit documentation generator
+Doxydoc documentation generator
 -----------------------------
 
 Installation
 ============
 
 ```shell
-    npm install -g doxit
+    npm install -g doxydoc
 ```
 
 Usage
 =====
 
 ```shell
-    doxit -o docu.html index.js src/**/*.js lib/*.js
+    doxydoc -o docu.html index.js src/**/*.js lib/*.js
 ```
 
-Files must have a @module or @group tag. Otherwise its filename will be used as module name.
+Files should have a @module or @group tag. Otherwise its filename will be used as module name.
 
 Syntax
 ======
