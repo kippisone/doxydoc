@@ -50,7 +50,6 @@ module.exports = (function() {
     };
 
     DoxyDocGroup.prototype.getItems = function() {
-        console.log('GEEEET', this.items);
         return this.items[0];
     };
 
@@ -58,6 +57,7 @@ module.exports = (function() {
     DoxyDocGroup.prototype.toJSON = function() {
         return {
             name: this.name,
+            description: this.description,
             groups: this.groups,
             unknown: this.unknown,
             link: this.link

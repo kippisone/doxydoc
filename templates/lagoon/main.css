@@ -36,11 +36,11 @@
  */
 /**
  * Color bloody red
- * @font-variant:  {color}
+ * @var  {color}
  */
 /**
  * Color pretty sunrise
- * @font-variant:  {color}
+ * @var  {color}
  */
 /**
  * Color green bird
@@ -68,7 +68,7 @@
  */
 /**
  * Color night grey
- * @var: {color}
+ * @var {color}
  */
 /**
  * Color dessert sand
@@ -99,6 +99,12 @@ body {
   font-family: sans-serif;
   margin: 0;
 }
+/**
+ * The dcButton module styles different buttons.
+ * This module must be activated in *less mode* by adding `.dcButtons();` to your main.less file.
+ * 
+ * @module dcButtons
+ */
 /**
  * Button
  *
@@ -146,7 +152,7 @@ body {
  * <any class="icon icon-code" />
  */
 .icon {
-  background-image: url('less/dresscode/sprite-48.png');
+  background-image: url('templates/lagoon/less/dresscode/sprite-48.png');
   background-size: 24px 48px;
   background-repeat: no-repeat;
   width: 24px;
@@ -328,6 +334,12 @@ body {
 .pageContent .description {
   font-size: 14px;
   margin-bottom: 20px;
+}
+.pageContent .description code {
+  display: inline-block;
+  border: 1px solid #c0c0c0;
+  padding: 2px;
+  color: #444;
 }
 .pageContent .noDescrition {
   color: #333;

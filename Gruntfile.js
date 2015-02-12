@@ -24,8 +24,7 @@ module.exports = function(grunt) {
                 'webdocs/*.js'
             ],
             options: {
-                jshintrc: '.jshintrc',
-                reporter: require('jshint-stylish')
+                jshintrc: '.jshintrc'
             }
         },
         doxydoc: {
@@ -42,7 +41,7 @@ module.exports = function(grunt) {
             build: {
                 options: {
                     relativeUrls: true,
-                    rootpath: 'less/'
+                    rootpath: 'templates/lagoon/less/'
                 },
                 files: {
                     'templates/lagoon/main.css': 'templates/lagoon/less/main.less'

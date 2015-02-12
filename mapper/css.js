@@ -34,6 +34,10 @@ module.exports = function(doxed) {
             });
         });
 
+        if (block.type === 'module' && block.description) {
+            group.description = block.description;
+        }
+
         if (block.type === 'module') {
             return;
         }
