@@ -27,7 +27,11 @@
  * @var {color}
  */
 /**
- * Color purplePlum
+ * Color purpleStone
+ * @var {color}
+ */
+/**
+ * Color blackBerry
  * @var {color}
  */
 /**
@@ -52,6 +56,10 @@
  */
 /**
  * Color yellow glow
+ * @var {color}
+ */
+/**
+ * Color yellow snow
  * @var {color}
  */
 /**
@@ -82,6 +90,9 @@
   white-space: pre;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+.hidden {
+  display: none;
 }
 /**
  * Resets predefined css properties of common html tags
@@ -205,8 +216,17 @@ body {
   font-size: 15px;
   margin-left: 10px;
 }
+.pageHeader a.logoLink:link,
+.pageHeader a.logoLink:active,
+.pageHeader a.logoLink:visited {
+  color: #fff;
+  text-decoration: none;
+}
 .pageHeader .mainNavi {
   margin-left: 30px;
+}
+.pageHeader .mainNavi .links {
+  display: inline-block;
 }
 .pageHeader .mainNavi a:link,
 .pageHeader .mainNavi a:active,
@@ -217,6 +237,7 @@ body {
   padding: 5px;
   text-decoration: none;
   color: #fff;
+  margin-right: 5px;
 }
 .pageHeader .mainNavi a:hover {
   background-color: rgba(255, 255, 255, 0.4);
@@ -263,6 +284,28 @@ body {
 .pageLeft .groupBlockItem a:visited {
   color: #111;
   text-decoration: none;
+}
+.pageLeft .pageLinks .link {
+  display: block;
+}
+.pageLeft .pageLinks a:link,
+.pageLeft .pageLinks a:active,
+.pageLeft .pageLinks a:visited {
+  color: #111;
+  text-decoration: none;
+  display: inline-block;
+  padding: 2px 5px;
+}
+.pageLeft .pageLinks a:link:before,
+.pageLeft .pageLinks a:active:before,
+.pageLeft .pageLinks a:visited:before {
+  content: '›';
+  margin-right: 5px;
+}
+.pageLeft .pageLinks a:hover {
+  background-color: #0051cd;
+  color: #fff;
+  border-radius: 5px;
 }
 .pageContent h1 {
   font-size: 24px;

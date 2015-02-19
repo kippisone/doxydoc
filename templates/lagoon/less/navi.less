@@ -44,4 +44,30 @@
             text-decoration: none;
         }
     }
+
+    .pageLinks {
+        .link {
+            display: block;
+        }
+        
+        a:link,
+        a:active,
+        a:visited {
+            color: #111;
+            text-decoration: none;
+            display: inline-block;
+            padding: 2px 5px;
+
+            &:before {
+                content: '›';
+                margin-right: 5px;
+            }
+        }
+
+        a:hover {
+            background-color: @lagoonBlue;
+            color: #fff;
+            border-radius: 5px;
+        }
+    }
 }

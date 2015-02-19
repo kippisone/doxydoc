@@ -2,9 +2,28 @@
     "name": "DoxyDoc",
     "headerLinks": [
         {
+            "link": "docu.html",
+            "name": "Docu"
+        }, {
             "link": "http://doxydoc.com/syntax/syntax.html",
             "name": "Syntax",
             "target": "_blank"
         }
-    ]
+    ],
+    "navigationLinks": [
+        {
+            "link": "example-md.html",
+            "file": "test/pages/example.md",
+            "name": "Markdown file"
+        }, {
+            "link": "example-fire.html",
+            "file": "test/pages/example.fire",
+            "name": "FireTPL file"
+        }, {
+            "link": "example-html.html",
+            "file": "test/pages/example.html",
+            "name": "HTML file"
+        }
+    ],
+    "indexPage": "README.md"
 }
