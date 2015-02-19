@@ -46,6 +46,22 @@ module.exports = function(grunt) {
                 }
             }
         },
+        release: {
+            options: {
+                npm: true, //default: true
+                npmtag: true, //default: no tag
+                indentation: '    ', //default: '  ' (two spaces)
+                tagName: 'v<%= version %>', //default: '<%= version %>'
+                commitMessage: 'Release v<%= version %>', //default: 'release <%= version %>'
+                tagMessage: 'Tagging release v<%= version %>', //default: 'Version <%= version %>',
+                beforeRelease: ['build'],
+                // github: {
+                //     repo: 'AndiOxidant/doxydoc.git', //put your user/repo here
+                //     usernameVar: 'GITHUB_USERNAME', //ENVIRONMENT VARIABLE that contains Github username
+                //     passwordVar: 'GITHUB_PASSWORD' //ENVIRONMENT VARIABLE that contains Github password
+                // }
+            }
+        },
         watch: {
             less: {
                 files: ['templates/**/*.less'],
@@ -69,6 +85,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-bumpup');
     grunt.loadNpmTasks('grunt-doxydoc');
+    grunt.loadNpmTasks('grunt-release');
 
     grunt.registerTask('default', 'help');
     grunt.registerTask('build', [
