@@ -27,7 +27,7 @@
     "commander": "^2.6.0",
     "dox": "^0.6.1",
     "dresscode-less": "^0.1.0",
-    "firetpl": "^0.4.1",
+    "firetpl": "^0.4.2",
     "glob": "^4.4.0",
     "highlight.js": "~8.4.0",
     "markdown": "^0.5.0",
