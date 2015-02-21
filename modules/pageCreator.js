@@ -34,8 +34,12 @@ PageCreator.prototype.createPages = function() {
         extend(this.conf, require(path.join(process.cwd(), 'doxydoc.json')));
     }
 
-    if (this.conf.indexPage) {
-        this.createPage(this.conf.indexPage, 'index.html', 'index.fire');
+    if (this.locals.customJS && typeof this.locals.customJS === 'string') {
+        this.locals.customJS = [this.locals.customJS];
+    }
+
+    if (this.locals.customCSS && typeof this.locals.customCSS === 'string') {
+        this.locals.customCSS = [this.locals.customCSS];
     }
 
     //Parse navigation links
