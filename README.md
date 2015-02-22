@@ -7,7 +7,7 @@ Installation
 Requirements: node.js >= 10.0
 
 ```shell
-    npm install -g doxydoc
+npm install -g doxydoc
 ```
 
 Usage
@@ -19,7 +19,7 @@ The `doxydoc --help` command shows your all options
 The flowing command creates a documentation under `<cwd>/docs/` and creates a documentation from all files located under `src/ and lib/` and ends with `.js`
 
 ```shell
-    doxydoc -o docu.html index.js src/**/*.js lib/*.js
+doxydoc -o docu.html index.js src/**/*.js lib/*.js
 ```
 
 Each source file should have a @module or @group tag. Otherwise its filename will be used as a module name.

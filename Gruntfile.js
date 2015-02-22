@@ -69,13 +69,6 @@ module.exports = function(grunt) {
                 options: {
                     livereload: 35345
                 }
-            },
-            tmpl: {
-                files: ['templates/**/*.fire'],
-                tasks: ['less:build', 'doxydoc'],
-                options: {
-                    livereload: 35345
-                }
             }
         }
     });

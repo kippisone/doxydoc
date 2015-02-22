@@ -3,7 +3,7 @@
 var fs = require('fs'),
     path = require('path');
 
-var markdown = require('markdown').markdown,
+var Markdown = require('markdown-it'),
     extend = require('node.extend'),
     grunt = require('grunt');
 
@@ -40,6 +40,11 @@ PageCreator.prototype.createPages = function() {
 
     if (this.locals.customCSS && typeof this.locals.customCSS === 'string') {
         this.locals.customCSS = [this.locals.customCSS];
+    }
+
+    //Create index page
+    if (this.conf.indexPage) {
+        this.createPage(this.conf.indexPage, 'index.html', 'index.fire');
     }
 
     //Parse navigation links
@@ -112,7 +117,14 @@ PageCreator.prototype.createPage = function(src, name, template) {
 };
 
 PageCreator.prototype.parseMarkdown = function(source) {
-    return markdown.toHTML(source);
+    var md = new Markdown({
+        html:         true,        // Enable HTML tags in source 
+        breaks:       true,        // Convert '\n' in paragraphs into <br> 
+        langPrefix:   'codeBlock ',  // CSS language prefix for fenced blocks. Can be 
+                                  // useful for external highlighters. 
+        linkify:      true        // Autoconvert URL-like text to links 
+    });
+    return md.render(source);
 };
 
 PageCreator.prototype.parseFireTPL = function(source) {
