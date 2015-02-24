@@ -4,9 +4,9 @@ Doxydoc documentation generator
 Installation
 ------------
 
-Requirements: node.js >= 10.0
+Requirements: node.js >= 0.10.0
 
-```shell
+```bash
 npm install -g doxydoc
 ```
 
@@ -18,7 +18,7 @@ Change into your project root and run DoxyDoc command: `doxydoc [options] file1 
 The `doxydoc --help` command shows your all options
 The flowing command creates a documentation under `<cwd>/docs/` and creates a documentation from all files located under `src/ and lib/` and ends with `.js`
 
-```shell
+```bash
 doxydoc -o docu.html index.js src/**/*.js lib/*.js
 ```
 
