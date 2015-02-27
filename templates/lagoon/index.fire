@@ -1,9 +1,6 @@
 html
     head
         meta charset="UTF-8"
-        script type="text/javascript"
-        script src="http://localhost:35345/livereload.js"
-
         script src="lib/highlightjs/highlight.js"
         script src="js/doxydoc.js"
         :each $customJS
