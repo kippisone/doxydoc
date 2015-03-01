@@ -3,7 +3,8 @@
 var fs = require('fs'),
     path = require('path');
 
-var markdown = require('markdown').markdown,
+var Superjoin = require('superjoin'),
+    Markdown = require('markdown-it'),
     extend = require('node.extend'),
     grunt = require('grunt');
 
@@ -42,6 +43,11 @@ PageCreator.prototype.createPages = function() {
         this.locals.customCSS = [this.locals.customCSS];
     }
 
+    //Create index page
+    if (this.conf.indexPage) {
+        this.createPage(this.conf.indexPage, 'index.html', 'index.fire');
+    }
+
     //Parse navigation links
     this.conf.navigationLinks.forEach(function(link) {
         if (link.file) {
@@ -55,6 +61,16 @@ PageCreator.prototype.createPages = function() {
         docuPath = path.join(this.outDir, 'docu.html');
     
     var outDir = this.outDir;
+
+    //Create js bundle
+    var superjoin = new Superjoin();
+
+    superjoin.verbose = this.verbose;
+    superjoin.root = this.conf.templateDir;
+    var sjConf = superjoin.getConf();
+    var out = superjoin.join(sjConf.files, sjConf.main);
+    grunt.file.write(path.join(outDir, 'doxydoc.js'), out);
+
     var copyAssets = function(abspath, rootdir, subdir, file) {
         var src, dest;
 
@@ -78,7 +94,7 @@ PageCreator.prototype.createPages = function() {
     this.log('Copy docu to:', this.outDir);
     grunt.file.write(docuPath, docu);
     copyAssets(path.join(this.conf.templateDir, 'main.css'), path.join(outDir, 'main.css'));
-    grunt.file.recurse(this.conf.templateDir, copyAssets);
+    copyAssets(path.join('node_modules/highlight.js/styles/', 'dark.css'), path.join(outDir, 'highlight.css'));
     this.log('Finish!');
 };
 
@@ -107,12 +123,18 @@ PageCreator.prototype.createPage = function(src, name, template) {
         }, this.locals), {
         partialsPath: path.join(this.conf.templateDir, 'partials')
     });
-
     grunt.file.write(path.join(this.outDir, name), html);
 };
 
 PageCreator.prototype.parseMarkdown = function(source) {
-    return markdown.toHTML(source);
+    var md = new Markdown({
+        html:         true,        // Enable HTML tags in source 
+        breaks:       true,        // Convert '\n' in paragraphs into <br> 
+        langPrefix:   'codeBlock ',  // CSS language prefix for fenced blocks. Can be 
+                                  // useful for external highlighters. 
+        linkify:      true        // Autoconvert URL-like text to links 
+    });
+    return md.render(source);
 };
 
 PageCreator.prototype.parseFireTPL = function(source) {

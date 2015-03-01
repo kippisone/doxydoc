@@ -1,18 +1,14 @@
 html
     head
         meta charset="UTF-8"
-        script type="text/javascript"
-        script src="http://localhost:35345/livereload.js"
+        script src="doxydoc.js"
+        :each $customJS
+            script src="$this"
 
-        script src="lib/highlightjs/highlight.js"
-        script src="js/doxydoc.js"
-        :if $customJS
-            script src="$customJS"
-
-        link rel="stylesheet" href="lib/highlightjs/highlightjs.css"
         link rel="Stylesheet" href="main.css"
-        :if $customCSS
-            link rel="Stylesheet" href="$customCSS"
+        link rel="stylesheet" href="highlight.css"
+        :each $customCSS
+            link rel="Stylesheet" href="$this"
     body
         section class="pageMain"
             (> header)
@@ -91,12 +87,12 @@ html
                                             h5 "Example:"
                                             :each $examples : div class="examples"
                                                 div class="codeBox"
-                                                    code class="code $type" $code
+                                                    code class="codeBlock $type" $code
                                         :if $preview : div class="preview"
                                             $preview
                                         :if $source : div
                                             h5 "Code:"
                                             div class="codeBox"
-                                                code class="code $source.type" $source.code
+                                                code class="codeBlock $source.type" $source.code
 
             footer class="pageFooter" "Documentation created by DoxyDoc"

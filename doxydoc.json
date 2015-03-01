@@ -5,7 +5,7 @@
             "link": "docu.html",
             "name": "Docu"
         }, {
-            "link": "http://doxydoc.com/syntax/syntax.html",
+            "link": "http://doxydoc.com/syntax.html",
             "name": "Syntax",
             "target": "_blank"
         }

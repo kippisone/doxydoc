@@ -1,18 +1,14 @@
 html
     head
         meta charset="UTF-8"
-        script type="text/javascript"
-        script src="http://localhost:35345/livereload.js"
+        script src="doxydoc.js"
+        :each $customJS
+            script type="text/javascript" src="$this"
 
-        script src="lib/highlightjs/highlight.js"
-        script src="js/doxydoc.js"
-        :if $customJS
-            script src="$customJS"
-
-        link rel="stylesheet" href="lib/highlightjs/highlightjs.css"
         link rel="Stylesheet" href="main.css"
-        :if $customCSS
-            link rel="Stylesheet" href="$customCSS"
+        link rel="stylesheet" href="highlight.css"
+        :each $customCSS
+            link rel="Stylesheet" href="$this"
     body
         section class="pageMain"
             (> header)
