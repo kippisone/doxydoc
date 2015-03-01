@@ -3,7 +3,8 @@
 var fs = require('fs'),
     path = require('path');
 
-var Markdown = require('markdown-it'),
+var Superjoin = require('superjoin'),
+    Markdown = require('markdown-it'),
     extend = require('node.extend'),
     grunt = require('grunt');
 
@@ -60,6 +61,16 @@ PageCreator.prototype.createPages = function() {
         docuPath = path.join(this.outDir, 'docu.html');
     
     var outDir = this.outDir;
+
+    //Create js bundle
+    var superjoin = new Superjoin();
+
+    superjoin.verbose = this.verbose;
+    superjoin.root = this.conf.templateDir;
+    var sjConf = superjoin.getConf();
+    var out = superjoin.join(sjConf.files, sjConf.main);
+    grunt.file.write(path.join(outDir, 'doxydoc.js'), out);
+
     var copyAssets = function(abspath, rootdir, subdir, file) {
         var src, dest;
 
@@ -83,7 +94,7 @@ PageCreator.prototype.createPages = function() {
     this.log('Copy docu to:', this.outDir);
     grunt.file.write(docuPath, docu);
     copyAssets(path.join(this.conf.templateDir, 'main.css'), path.join(outDir, 'main.css'));
-    grunt.file.recurse(this.conf.templateDir, copyAssets);
+    copyAssets(path.join('node_modules/highlight.js/styles/', 'dark.css'), path.join(outDir, 'highlight.css'));
     this.log('Finish!');
 };
 
@@ -112,7 +123,6 @@ PageCreator.prototype.createPage = function(src, name, template) {
         }, this.locals), {
         partialsPath: path.join(this.conf.templateDir, 'partials')
     });
-
     grunt.file.write(path.join(this.outDir, name), html);
 };
 
