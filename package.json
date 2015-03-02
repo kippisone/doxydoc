@@ -1,6 +1,6 @@
 {
   "name": "doxydoc",
-  "version": "0.3.2",
+  "version": "0.3.4",
   "description": "Source code documentation generator for Javascript, LESS and CSS",
   "main": "doxydoc.js",
   "scripts": {
@@ -16,8 +16,7 @@
     "documentation",
     "doxidoc",
     "sourcedoc",
-    "codedoc",
-    "gruntplugin"
+    "codedoc"
   ],
   "author": "Andi Heinkelein <andi.oxidant@noname-media.com>",
   "license": "MIT",
