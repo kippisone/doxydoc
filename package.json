@@ -16,7 +16,8 @@
     "documentation",
     "doxidoc",
     "sourcedoc",
-    "codedoc"
+    "codedoc",
+    "gruntplugin"
   ],
   "author": "Andi Heinkelein <andi.oxidant@noname-media.com>",
   "license": "MIT",
