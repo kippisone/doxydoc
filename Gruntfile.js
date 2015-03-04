@@ -170,7 +170,6 @@ module.exports = function(grunt) {
         release: {
             options: {
                 npm: true, //default: true
-                npmtag: true, //default: no tag
                 indentation: '    ', //default: '  ' (two spaces)
                 tagName: 'v<%= version %>', //default: '<%= version %>'
                 commitMessage: 'Release v<%= version %>', //default: 'release <%= version %>'

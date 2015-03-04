@@ -31,7 +31,7 @@
     "markdown-it": "^3.0.7",
     "node.extend": "^1.1.3",
     "grunt": "~0.4.5",
-    "superjoin": "0.0.1"
+    "superjoin": "^0.1.0"
   },
   "devDependencies": {
     "grunt-bumpup": "^0.6.2",
