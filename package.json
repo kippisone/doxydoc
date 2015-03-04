@@ -3,9 +3,6 @@
   "version": "0.3.5",
   "description": "Source code documentation generator for Javascript, LESS and CSS",
   "main": "doxydoc.js",
-  "scripts": {
-    "test": "grunt test"
-  },
   "repository": {
     "type": "git",
     "url": "git@github.com:AndiOxidant/doxydoc.git"
@@ -16,7 +13,8 @@
     "documentation",
     "doxidoc",
     "sourcedoc",
-    "codedoc"
+    "codedoc",
+    "jsdoc"
   ],
   "author": "Andi Heinkelein <andi.oxidant@noname-media.com>",
   "license": "MIT",
@@ -43,9 +41,8 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-release": "^0.11.0"
   },
-  "homepage": "https://github.com/AndiOxidant/doxydoc",
+  "homepage": "http://doxydoc.com",
   "directories": {
-    "doc": "docs",
     "test": "test"
   }
 }
