@@ -94,7 +94,7 @@ PageCreator.prototype.createPages = function() {
     this.log('Copy docu to:', this.outDir);
     grunt.file.write(docuPath, docu);
     copyAssets(path.join(this.conf.templateDir, 'main.css'), path.join(outDir, 'main.css'));
-    copyAssets(path.join('node_modules/highlight.js/styles/', 'dark.css'), path.join(outDir, 'highlight.css'));
+    copyAssets(path.join(__dirname, '../node_modules/highlight.js/styles/', 'dark.css'), path.join(outDir, 'highlight.css'));
     this.log('Finish!');
 };
 
