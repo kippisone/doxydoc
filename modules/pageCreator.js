@@ -18,6 +18,11 @@ var PageCreator = function(conf) {
         output: conf.output || 'docs'
     };
 
+    var templateDirs = require('../doxydoc').templateDirs;
+    if (templateDirs[this.conf.templateDir]) {
+        this.conf.templateDir = templateDirs[this.conf.templateDir];
+    }
+
     this.rootDir = process.cwd();
     this.outDir = path.resolve(process.cwd(), this.conf.output);
     this.locals = this.getMetaInfos();
