@@ -18,9 +18,15 @@ var PageCreator = function(conf) {
         output: conf.output || 'docs'
     };
 
+    var templateDirs = require('../doxydoc').templateDirs;
+    if (templateDirs[this.conf.templateDir]) {
+        this.conf.templateDir = templateDirs[this.conf.templateDir];
+    }
+
     this.rootDir = process.cwd();
     this.outDir = path.resolve(process.cwd(), this.conf.output);
     this.locals = this.getMetaInfos();
+    this.locals.basePath = (this.locals.basePath || '').replace(/^\//, '');
 };
 
 PageCreator.prototype.log = function() {
@@ -31,6 +37,8 @@ PageCreator.prototype.log = function() {
 };
 
 PageCreator.prototype.createPages = function() {
+    this.prepareData();
+
     if (fs.existsSync(path.join(process.cwd(), 'doxydoc.json'))) {
         extend(this.conf, require(path.join(process.cwd(), 'doxydoc.json')));
     }
@@ -51,7 +59,7 @@ PageCreator.prototype.createPages = function() {
     //Parse navigation links
     this.conf.navigationLinks.forEach(function(link) {
         if (link.file) {
-            this.createPage(link.file, link.link);
+            this.createPage(link.file, link.link, 'page.fire', link);
         }
     }, this);
 
@@ -98,7 +106,7 @@ PageCreator.prototype.createPages = function() {
     this.log('Finish!');
 };
 
-PageCreator.prototype.createPage = function(src, name, template) {
+PageCreator.prototype.createPage = function(src, name, template, data) {
     var ext = path.extname(src);
     if (this.verbose) {
         this.log('Create page "%s" from source: %s', name, src);
@@ -119,8 +127,8 @@ PageCreator.prototype.createPage = function(src, name, template) {
     
     var ftl = grunt.file.read(path.join(this.conf.templateDir, template));
     var html = firetpl.fire2html(ftl, extend({
-            content: source
-        }, this.locals), {
+            content: source,
+        }, this.locals, data), {
         partialsPath: path.join(this.conf.templateDir, 'partials')
     });
     grunt.file.write(path.join(this.outDir, name), html);
@@ -178,6 +186,24 @@ PageCreator.prototype.getMetaInfos = function() {
     }
 
     return meta;
+};
+
+PageCreator.prototype.prepareData = function() {
+    this.locals.navigationLinks.forEach(function(link) {
+        if (link.link && !/^(http(s)?:|\/)/.test(link.link)) {
+            console.log('Change path', link.link, this.locals.basePath);
+            link.link = path.join(this.locals.basePath, '/', link.link);
+            console.log(' ... to', link.link);
+        }
+    }, this);
+
+    this.locals.headerLinks.forEach(function(link) {
+        if (link.link && !/^(http(s)?:|\/)/.test(link.link)) {
+            console.log('Change path', link.link, this.locals.basePath);
+            link.link = path.join(this.locals.basePath, '/', link.link);
+            console.log(' ... to', link.link);
+        }
+    }, this);
 };
 
 module.exports = PageCreator;

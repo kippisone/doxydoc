@@ -27,7 +27,7 @@ module.exports = function(grunt) {
             }
         },
         less: {
-            build: {
+            lagoon: {
                 options: {
                     relativeUrls: true,
                     rootpath: 'templates/lagoon/less/'
@@ -36,13 +36,13 @@ module.exports = function(grunt) {
                     'templates/lagoon/main.css': 'templates/lagoon/less/main.less'
                 }
             },
-            dev: {
+            'deep-space': {
                 options: {
                     relativeUrls: true,
-                    rootpath: 'less/'
+                    rootpath: 'templates/deep-space/less/'
                 },
                 files: {
-                    'build/main.css': 'templates/lagoon/less/main.less'
+                    'templates/deep-space/main.css': 'templates/deep-space/less/main.less'
                 }
             }
         },
@@ -185,7 +185,7 @@ module.exports = function(grunt) {
         watch: {
             less: {
                 files: ['templates/**/*.less'],
-                tasks: ['less:dev'],
+                tasks: ['less'],
                 options: {
                     livereload: 35345
                 }

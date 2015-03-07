@@ -1,0 +1,7 @@
+{
+    "name": "lagoon-template",
+    "main": "./js/doxydoc.js",
+    "files": [
+        "highlight.js"
+    ]
+}

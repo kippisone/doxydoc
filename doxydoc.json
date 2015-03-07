@@ -1,5 +1,6 @@
 {
     "name": "DoxyDoc",
+    "basePath": "/",
     "headerLinks": [
         {
             "link": "docu.html",
