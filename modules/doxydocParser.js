@@ -319,7 +319,7 @@ module.exports = (function() {
                     case 'constructor':
                         newTag.isConstructor = true;
                         newTag.type = 'function';
-                        newTag.name = doxed.ctx.name;
+                        newTag.name = doxed.ctx ? doxed.ctx.name : '';
                         break;
                     case 'property':
                         newTag.name = tag.name;
