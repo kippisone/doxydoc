@@ -15,7 +15,8 @@ var PageCreator = function(conf) {
     this.conf = {
         indexPage: 'README.md',
         templateDir: conf.templateDir || path.join(__dirname, '../templates/lagoon/'),
-        output: conf.output || 'docs'
+        output: conf.output || 'docs',
+        docuFilename: conf.docuFilename || 'docu.html'
     };
 
     var templateDirs = require('../doxydoc').templateDirs;
@@ -66,7 +67,7 @@ PageCreator.prototype.createPages = function() {
 
     //Create documentation
     var docu = this.createDocu('html', this.files),
-        docuPath = path.join(this.outDir, 'docu.html');
+        docuPath = path.join(this.outDir, this.conf.docuFilename);
     
     var outDir = this.outDir;
 
@@ -99,6 +100,7 @@ PageCreator.prototype.createPages = function() {
         grunt.file.copy(src, dest);
     };
 
+    this.log('Create docu page:', this.conf.docuFilename);
     this.log('Copy docu to:', this.outDir);
     grunt.file.write(docuPath, docu);
     copyAssets(path.join(this.conf.templateDir, 'main.css'), path.join(outDir, 'main.css'));
@@ -191,17 +193,17 @@ PageCreator.prototype.getMetaInfos = function() {
 PageCreator.prototype.prepareData = function() {
     this.locals.navigationLinks.forEach(function(link) {
         if (link.link && !/^(http(s)?:|\/)/.test(link.link)) {
-            console.log('Change path', link.link, this.locals.basePath);
+            // console.log('Change path', link.link, this.locals.basePath);
             link.link = path.join(this.locals.basePath, '/', link.link);
-            console.log(' ... to', link.link);
+            // console.log(' ... to', link.link);
         }
     }, this);
 
     this.locals.headerLinks.forEach(function(link) {
         if (link.link && !/^(http(s)?:|\/)/.test(link.link)) {
-            console.log('Change path', link.link, this.locals.basePath);
+            // console.log('Change path', link.link, this.locals.basePath);
             link.link = path.join(this.locals.basePath, '/', link.link);
-            console.log(' ... to', link.link);
+            // console.log(' ... to', link.link);
         }
     }, this);
 };

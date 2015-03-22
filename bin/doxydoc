@@ -10,12 +10,14 @@ program.version(pkg.version)
     .usage('[options] file1, files2, ...')
     .option('-o, --output <dir>', 'Write output to <dir>')
     .option('-t, --template <dir>', 'Use your own templates')
+    .option('-f, --docu-filename <filename>', 'Sets a custom filename for the generated docu file')
     .parse(process.argv);
 
 if (program.args.length) {
     var doxydocPage = new DoxyDocPage({
         templateDir: program.template,
-        output: program.output
+        output: program.output,
+        docuFilename: program.docuFilename
     });
 
     if (program.output) {
