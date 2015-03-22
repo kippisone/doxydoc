@@ -100,6 +100,7 @@ PageCreator.prototype.createPages = function() {
         grunt.file.copy(src, dest);
     };
 
+    this.log('Create docu page:', this.conf.docuFilename);
     this.log('Copy docu to:', this.outDir);
     grunt.file.write(docuPath, docu);
     copyAssets(path.join(this.conf.templateDir, 'main.css'), path.join(outDir, 'main.css'));
@@ -192,17 +193,17 @@ PageCreator.prototype.getMetaInfos = function() {
 PageCreator.prototype.prepareData = function() {
     this.locals.navigationLinks.forEach(function(link) {
         if (link.link && !/^(http(s)?:|\/)/.test(link.link)) {
-            console.log('Change path', link.link, this.locals.basePath);
+            // console.log('Change path', link.link, this.locals.basePath);
             link.link = path.join(this.locals.basePath, '/', link.link);
-            console.log(' ... to', link.link);
+            // console.log(' ... to', link.link);
         }
     }, this);
 
     this.locals.headerLinks.forEach(function(link) {
         if (link.link && !/^(http(s)?:|\/)/.test(link.link)) {
-            console.log('Change path', link.link, this.locals.basePath);
+            // console.log('Change path', link.link, this.locals.basePath);
             link.link = path.join(this.locals.basePath, '/', link.link);
-            console.log(' ... to', link.link);
+            // console.log(' ... to', link.link);
         }
     }, this);
 };
