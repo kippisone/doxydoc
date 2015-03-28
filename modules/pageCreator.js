@@ -109,6 +109,8 @@ PageCreator.prototype.createPages = function() {
 };
 
 PageCreator.prototype.createPage = function(src, name, template, data) {
+    data = data || {};
+    
     var ext = path.extname(src);
     if (this.verbose) {
         this.log('Create page "%s" from source: %s', name, src);
@@ -130,6 +132,8 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
     var ftl = grunt.file.read(path.join(this.conf.templateDir, template));
     var html = firetpl.fire2html(ftl, extend({
             content: source,
+            target: '_self',
+            title: data.name
         }, this.locals, data), {
         partialsPath: path.join(this.conf.templateDir, 'partials')
     });
