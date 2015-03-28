@@ -137,6 +137,11 @@ module.exports = (function() {
                 // fs.appendFileSync('dev-doxblock.json', 'Doxed block: ' + JSON.stringify(doxBlock, true, '    ') + '\n\n');
 
                 block = this.parseTags(doxBlock);
+
+                if (block.ignore) {
+                    return;
+                }
+
                 block.description = doxBlock.description;
                 block.line = doxBlock.line;
                 block.codeStart = doxBlock.codeStart;
@@ -360,6 +365,9 @@ module.exports = (function() {
                     case 'unimplemented':
                         newTag[tag.type.substr(0, 1).toUpperCase() + tag.type.substr(1)] = true;
                         break;
+                    case 'ignore':
+                        newTag[tag.type] = true;
+                        break;
                     case 'link':
                         if (!newTag.webLinks) {
                             newTag.webLinks = [];
@@ -373,6 +381,18 @@ module.exports = (function() {
                                 target: /^http(s)?\:/.test(match[2]) ? '_blank' : ''
                             });
                         }
+                        break;
+                    case 'preview':
+                        if (!newTag.preview) {
+                            newTag.previews = [];
+                        }
+
+                        var previewTag = tag.string.match(/^\s*\{(\w+)\}\s*([^]+$)/);
+
+                        newTag.previews.push({
+                            code: previewTag[2],
+                            type: previewTag[1] || 'html'
+                        });
                         break;
                 }
             }.bind(this));

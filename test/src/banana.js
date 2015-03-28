@@ -125,5 +125,16 @@ module.exports = function() {
         
     };
 
+    /**
+     * Show a preview
+     * @preview {html}
+     * <button>
+     *   Click me!
+     * </button>
+     */
+    Banana.prototype.showPreview = function() {
+        
+    };
+
     //--
 };
