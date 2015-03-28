@@ -132,9 +132,8 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
     var ftl = grunt.file.read(path.join(this.conf.templateDir, template));
     var html = firetpl.fire2html(ftl, extend({
             content: source,
-            target: '_self',
-            title: data.name
-        }, this.locals, data), {
+            title: data.name || this.locals.name
+        }, data, this.locals), {
         partialsPath: path.join(this.conf.templateDir, 'partials')
     });
     grunt.file.write(path.join(this.outDir, name), html);
@@ -201,6 +200,10 @@ PageCreator.prototype.prepareData = function() {
             link.link = path.join(this.locals.basePath, '/', link.link);
             // console.log(' ... to', link.link);
         }
+
+        if (!link.target) {
+            link.target = '_self';
+        }
     }, this);
 
     this.locals.headerLinks.forEach(function(link) {
@@ -208,6 +211,10 @@ PageCreator.prototype.prepareData = function() {
             // console.log('Change path', link.link, this.locals.basePath);
             link.link = path.join(this.locals.basePath, '/', link.link);
             // console.log(' ... to', link.link);
+        }
+
+        if (!link.target) {
+            link.target = '_self';
         }
     }, this);
 };
