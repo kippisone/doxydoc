@@ -88,6 +88,12 @@ html
                                             :each $examples : div class="examples"
                                                 div class="codeBox"
                                                     code class="codeBlock $type" $code
+                                        :if $previews : div class="exampleBlock"
+                                            :each $previews : div class="previews"
+                                                :if $title : h5
+                                                    $title
+                                                div class="previewBox"
+                                                    div class="previewBlock $type" $code
                                         :if $preview : div class="preview"
                                             $preview
                                         :if $source : div
