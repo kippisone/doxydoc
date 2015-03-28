@@ -137,6 +137,11 @@ module.exports = (function() {
                 // fs.appendFileSync('dev-doxblock.json', 'Doxed block: ' + JSON.stringify(doxBlock, true, '    ') + '\n\n');
 
                 block = this.parseTags(doxBlock);
+
+                if (block.ignore) {
+                    return;
+                }
+
                 block.description = doxBlock.description;
                 block.line = doxBlock.line;
                 block.codeStart = doxBlock.codeStart;
@@ -359,6 +364,9 @@ module.exports = (function() {
                     case 'protected':
                     case 'unimplemented':
                         newTag[tag.type.substr(0, 1).toUpperCase() + tag.type.substr(1)] = true;
+                        break;
+                    case 'ignore':
+                        newTag[tag.type] = true;
                         break;
                     case 'link':
                         if (!newTag.webLinks) {
