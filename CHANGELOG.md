@@ -16,4 +16,13 @@ v0.4.1
 
 <br>
 
-* Fixed undefined target and title properties in custom pages
+* Fixed undefined title properties in custom pages
+
+<br>
+
+v0.4.2
+------
+
+<br>
+
+* Fixed undefined target property in custom pages
