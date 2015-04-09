@@ -52,6 +52,14 @@ PageCreator.prototype.createPages = function() {
         this.locals.customCSS = [this.locals.customCSS];
     }
 
+    if (this.conf.customJS) {
+        if (!this.locals.customJS) {
+            this.locals.customJS = [];
+        }
+
+        this.locals.customJS.push();
+    }
+
     //Create index page
     if (this.conf.indexPage) {
         this.createPage(this.conf.indexPage, 'index.html', 'index.fire');
@@ -128,12 +136,25 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
     else {
         source = fs.readFileSync(src, { encoding: 'utf8' });
     }
+
+    var locals = this.locals;
+    ['customJS', 'customCSS'].forEach(function(method) {
+        if (locals[method] && data[method]) {
+            locals[method] = locals[method].concat(data[method]).reduce(function(a, b){
+                if (a.indexOf(b) < 0 ) {
+                    a.push(b);
+                }
+
+                return a;
+            }, []);
+        }
+    });
     
     var ftl = grunt.file.read(path.join(this.conf.templateDir, template));
     var html = firetpl.fire2html(ftl, extend({
             content: source,
-            title: data.name || this.locals.name
-        }, data, this.locals), {
+            title: data.name || locals.name
+        }, data, locals), {
         partialsPath: path.join(this.conf.templateDir, 'partials')
     });
     grunt.file.write(path.join(this.outDir, name), html);
@@ -204,6 +225,11 @@ PageCreator.prototype.prepareData = function() {
         if (!link.target) {
             link.target = '_self';
         }
+
+        if (link.customJS && typeof link.customJS === 'string') {
+            link.customJS = [link.customJS];
+        }
+
     }, this);
 
     this.locals.headerLinks.forEach(function(link) {
