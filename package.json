@@ -3,6 +3,9 @@
   "version": "0.4.2",
   "description": "Source code documentation generator for Javascript, LESS and CSS",
   "main": "doxydoc.js",
+  "bin": {
+    "doxydoc": "bin/doxydoc"
+  },
   "repository": {
     "type": "git",
     "url": "git@github.com:AndiOxidant/doxydoc.git"
