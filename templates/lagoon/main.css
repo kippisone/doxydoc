@@ -117,11 +117,6 @@ body {
  * @module dcButtons
  */
 /**
- * dcLabels module
- * This module must be activated in *less mode* by adding `.dcLabels();` to your main.less file.
- * @module dcLabels
- */
-/**
  * Button
  *
  * html:
@@ -478,13 +473,12 @@ body {
 .pageContent .dataType {
   display: inline-block;
   border-radius: 5px;
+  color: #fff;
   padding: 2px 5px;
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
   background-color: #555555;
-  background-color: #232323;
-  color: #fff;
 }
 .pageContent .paramBlock {
   margin-bottom: 20px;
@@ -538,17 +532,6 @@ li {
 p {
   margin: 0;
 }
-/**
-     * Styles a label
-     * 
-     * @mixin label
-     *
-     * @example {html}
-     * <span class="label labelRed">Button</span>
-     * 
-     * @preview
-     * <span class="label labelRed">Button</span>
-     */
 .label {
   display: inline-block;
   border-radius: 5px;
@@ -594,10 +577,6 @@ p {
 }
 .labelBlack {
   background-color: #000;
-  color: #fff;
-}
-.labelGrey {
-  background-color: #232323;
   color: #fff;
 }
 table.dcTable {
