@@ -39,4 +39,5 @@ v0.4.4
 
 * Bug fixes
 * Added `doxydocFile` option to set a different filename for the doxydoc.json file
-* Changed default syntax highlighter theme
+* Added `customCSS, customJS` option to navigationLinks and headerLinks
+* Fixed broken code indention in deep-space theme
