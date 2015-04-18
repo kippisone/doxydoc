@@ -2,7 +2,7 @@ html
     head
         title $title
         meta charset="UTF-8"
-        script src="$basePath/doxydoc.js"
+        script type="text/javascript" src="$basePath/doxydoc.js"
         :each $customJS
             script type="text/javascript" src="$this"
 
