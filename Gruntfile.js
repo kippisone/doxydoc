@@ -20,12 +20,6 @@ module.exports = function(grunt) {
                 jshintrc: '.jshintrc'
             }
         },
-        doxydoc: {
-            docs: {
-                src: ['test/src/*.js', 'test/src/*.less'],
-                dest: 'build/'
-            }
-        },
         less: {
             lagoon: {
                 options: {
@@ -198,14 +192,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-bumpup');
-    grunt.loadNpmTasks('grunt-doxydoc');
     grunt.loadNpmTasks('grunt-release');
 
     grunt.registerTask('default', 'help');
     grunt.registerTask('build', [
         'jshint',
-        'less:build',
-        'doxydoc',
+        'less',
         'bumpup:prerelease'
     ]);
 };

@@ -22,6 +22,7 @@ module.exports = (function() {
     var DoxyDocParser = function() {
         this.templateFile = path.join(__dirname, '../templates/lagoon/docu.fire');
         this.registerMapperFuncs();
+        this.doxydocFile = this.doxydocFile || 'doxydoc.json';
     };
 
     /**
@@ -70,7 +71,7 @@ module.exports = (function() {
         return this.mapDoxResult(res);
     };
 
-    DoxyDocParser.prototype.parse = function(type, files) {
+    DoxyDocParser.prototype.parse = function(type, files, locals) {
         var result = this.readFiles(files);
 
         if (type === 'json') {
@@ -78,12 +79,20 @@ module.exports = (function() {
         }
 
         var tmpl = fs.readFileSync(this.templateFile);
-        return FireTPL.fire2html(tmpl, result, {
+
+        if (result.customJS && typeof result.customJS === 'string') {
+            result.customJS = [result.customJS];
+        }
+
+        if (result.customCSS && typeof result.customCSS === 'string') {
+            result.customCSS = [result.customCSS];
+        }
+        return FireTPL.fire2html(tmpl, extend(result, locals), {
             partialsPath: path.join(this.templateDir, 'partials')
         });
     };
 
-    DoxyDocParser.prototype.parseString = function(type, filename, string) {
+    DoxyDocParser.prototype.parseString = function(type, filename, string, locals) {
         var result = this.mapDoxResult([{
             file: filename,
             data: dox.parseComments(string)
@@ -97,7 +106,7 @@ module.exports = (function() {
         }
 
         var tmpl = fs.readFileSync(this.templateFile);
-        return FireTPL.fire2html(tmpl, result, {
+        return FireTPL.fire2html(tmpl, extend(result, locals), {
             partialsPath: path.join(this.templateDir, 'partials')
         });
     };
@@ -210,7 +219,7 @@ module.exports = (function() {
     };
 
     DoxyDocParser.prototype.getMetaInfos = function() {
-        var files = ['doxydoc.json', 'package.json'],
+        var files = [this.doxydocFile, 'package.json'],
             dir,
             meta = {},
             file;
@@ -220,7 +229,7 @@ module.exports = (function() {
             while(dir !== '/') {
                 file = path.join(dir, files[i]);
                 if (fs.existsSync(file)) {
-                    if (files[i] === 'doxydoc.json') {
+                    if (files[i] === this.doxydocFile) {
                         meta = require(file);
                     }
                     else {
@@ -442,6 +451,24 @@ module.exports = (function() {
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;');
+    };
+
+    /**
+     * Resolve a path relative to the baseDir
+     *
+     * @param {String} path Path to be resolved
+     * @return {String} Resolved path
+     */
+    DoxyDocParser.prototype.resolveToBase = function(path) {
+        var resolved = path.split('/').map(function(part, index, arr) {
+            if (index + 1 === arr.length) {
+                return '';
+            }
+
+            return '..';
+        }).join('/');
+
+        return resolved;
     };
 
     return DoxyDocParser;

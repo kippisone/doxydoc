@@ -24,10 +24,10 @@ var PageCreator = function(conf) {
         this.conf.templateDir = templateDirs[this.conf.templateDir];
     }
 
+    this.doxydocFile = conf.doxydocFile || 'doxydoc.json';
     this.rootDir = process.cwd();
     this.outDir = path.resolve(process.cwd(), this.conf.output);
-    this.locals = this.getMetaInfos();
-    this.locals.basePath = (this.locals.basePath || '').replace(/^\//, '');
+    this.locals = extend(conf.locals, this.getMetaInfos());
 };
 
 PageCreator.prototype.log = function() {
@@ -40,8 +40,8 @@ PageCreator.prototype.log = function() {
 PageCreator.prototype.createPages = function() {
     this.prepareData();
 
-    if (fs.existsSync(path.join(process.cwd(), 'doxydoc.json'))) {
-        extend(this.conf, require(path.join(process.cwd(), 'doxydoc.json')));
+    if (fs.existsSync(path.join(this.rootDir, this.doxydocFile))) {
+        extend(this.conf, require(path.join(this.rootDir, this.doxydocFile)));
     }
 
     if (this.locals.customJS && typeof this.locals.customJS === 'string') {
@@ -66,10 +66,12 @@ PageCreator.prototype.createPages = function() {
     }
 
     //Parse navigation links
-    this.conf.navigationLinks.forEach(function(link) {
-        if (link.file) {
-            this.createPage(link.file, link.link, 'page.fire', link);
-        }
+    ['headerLinks', 'navigationLinks'].forEach(function(key) {
+        this.conf[key].forEach(function(link) {
+            if (link.file) {
+                this.createPage(link.file, link.link, 'page.fire', link);
+            }
+        }, this);
     }, this);
 
 
@@ -149,12 +151,15 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
             }, []);
         }
     });
+
+    var extended = extend({
+        content: source,
+        title: data.name || locals.name,
+        basePath: this.resolveToBase(name) || '.'
+    }, data, locals);
     
     var ftl = grunt.file.read(path.join(this.conf.templateDir, template));
-    var html = firetpl.fire2html(ftl, extend({
-            content: source,
-            title: data.name || locals.name
-        }, data, locals), {
+    var html = firetpl.fire2html(ftl, extended, {
         partialsPath: path.join(this.conf.templateDir, 'partials')
     });
     grunt.file.write(path.join(this.outDir, name), html);
@@ -182,21 +187,24 @@ PageCreator.prototype.createDocu = function(type, files) {
     var doxydoc = new DoxyDocParser();
     doxydoc.templateFile = path.join(this.conf.templateDir, 'docu.fire');
     doxydoc.templateDir = this.conf.templateDir;
-    return doxydoc.parse(type, files);
+    doxydoc.doxydocFile = this.doxydocFile;
+    return doxydoc.parse(type, files, {
+        basePath: this.resolveToBase(this.conf.docuFilename) || '.'
+    });
 };
 
 PageCreator.prototype.getMetaInfos = function() {
-    var files = ['doxydoc.json', 'package.json'],
+    var files = [this.doxydocFile, 'package.json'],
         dir,
         meta = {},
         file;
 
     for (var i = 0, len = files.length; i < len; i++) {
-        dir = process.cwd();
+        dir = this.rootDir;
         while(dir !== '/') {
             file = path.join(dir, files[i]);
             if (fs.existsSync(file)) {
-                if (files[i] === 'doxydoc.json') {
+                if (files[i] === this.doxydocFile) {
                     meta = require(file);
                 }
                 else {
@@ -215,34 +223,40 @@ PageCreator.prototype.getMetaInfos = function() {
 };
 
 PageCreator.prototype.prepareData = function() {
-    this.locals.navigationLinks.forEach(function(link) {
-        if (link.link && !/^(http(s)?:|\/)/.test(link.link)) {
-            // console.log('Change path', link.link, this.locals.basePath);
-            link.link = path.join(this.locals.basePath, '/', link.link);
-            // console.log(' ... to', link.link);
-        }
+    ['navigationLinks', 'headerLinks'].forEach(function(key) {
+        this.locals[key].forEach(function(link) {
+            if (!link.target) {
+                link.target = '_self';
+            }
 
-        if (!link.target) {
-            link.target = '_self';
-        }
+            if (link.customJS && typeof link.customJS === 'string') {
+                link.customJS = [link.customJS];
+            }
 
-        if (link.customJS && typeof link.customJS === 'string') {
-            link.customJS = [link.customJS];
-        }
+            if (link.customCSS && typeof link.customCSS === 'string') {
+                link.customCSS = [link.customCSS];
+            }
 
+        }, this);
     }, this);
+};
 
-    this.locals.headerLinks.forEach(function(link) {
-        if (link.link && !/^(http(s)?:|\/)/.test(link.link)) {
-            // console.log('Change path', link.link, this.locals.basePath);
-            link.link = path.join(this.locals.basePath, '/', link.link);
-            // console.log(' ... to', link.link);
+/**
+ * Resolve a path relative to the baseDir
+ *
+ * @param {String} path Path to be resolved
+ * @return {String} Resolved path
+ */
+PageCreator.prototype.resolveToBase = function(path) {
+    var resolved = path.split('/').map(function(part, index, arr) {
+        if (index + 1 === arr.length) {
+            return '';
         }
 
-        if (!link.target) {
-            link.target = '_self';
-        }
-    }, this);
+        return '..';
+    }).join('/');
+
+    return resolved;
 };
 
 module.exports = PageCreator;

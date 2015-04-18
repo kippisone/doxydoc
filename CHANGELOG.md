@@ -26,3 +26,18 @@ v0.4.2
 <br>
 
 * Fixed undefined target property in custom pages
+
+v0.4.3
+------
+
+<br>
+
+* Set bin option in package.json. Required by `npm -g install`
+
+v0.4.4
+------
+
+* Bug fixes
+* Added `doxydocFile` option to set a different filename for the doxydoc.json file
+* Added `customCSS, customJS` option to navigationLinks and headerLinks
+* Fixed broken code indention in deep-space theme

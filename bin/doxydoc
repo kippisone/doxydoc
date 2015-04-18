@@ -11,13 +11,15 @@ program.version(pkg.version)
     .option('-o, --output <dir>', 'Write output to <dir>')
     .option('-t, --template <dir>', 'Use your own templates')
     .option('-f, --docu-filename <filename>', 'Sets a custom filename for the generated docu file')
+    .option('-d, --doxydoc-file <filename>', 'Read configuration from <file> instead of doxydoc.json')
     .parse(process.argv);
 
 if (program.args.length) {
     var doxydocPage = new DoxyDocPage({
         templateDir: program.template,
         output: program.output,
-        docuFilename: program.docuFilename
+        docuFilename: program.docuFilename,
+        doxydocFile: program.doxydocFile
     });
 
     if (program.output) {

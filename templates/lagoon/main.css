@@ -370,9 +370,10 @@ body {
   color: #ddd;
   padding: 7px;
 }
-.pageContent .code {
+.pageContent .codeBlock {
   white-space: pre;
   font-family: monospace;
+  background-color: #14171A;
 }
 .pageContent .description {
   font-size: 14px;
