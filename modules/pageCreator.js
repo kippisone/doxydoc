@@ -140,6 +140,7 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
     }
 
     var locals = this.locals;
+    var basePath = this.resolveToBase(name) || '';
     ['customJS', 'customCSS'].forEach(function(method) {
         if (locals[method] && data[method]) {
             locals[method] = locals[method].concat(data[method]).reduce(function(a, b){
@@ -149,13 +150,14 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
 
                 return a;
             }, []);
+
         }
     });
 
     var extended = extend({
         content: source,
         title: data.name || locals.name,
-        basePath: this.resolveToBase(name) || '.'
+        basePath: basePath
     }, data, locals);
     
     var ftl = grunt.file.read(path.join(this.conf.templateDir, template));
@@ -236,6 +238,20 @@ PageCreator.prototype.prepareData = function() {
             if (link.customCSS && typeof link.customCSS === 'string') {
                 link.customCSS = [link.customCSS];
             }
+
+            var basePath = this.resolveToBase(link.link) || '.';
+
+            ['customCSS', 'customJS'].forEach(function(fileType) {
+                if (basePath && link[fileType]) {
+                    link[fileType] = link[fileType].map(function(filePath) {
+                        if (!/^(https?:)?\/\//.test(filePath)) {
+                            filePath = path.join(basePath, filePath);
+                        }
+
+                        return filePath;
+                    });
+                }
+            });
 
         }, this);
     }, this);

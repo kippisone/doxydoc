@@ -2,12 +2,12 @@ html
     head
         title $title
         meta charset="UTF-8"
-        script type="text/javascript" src="$basePath/doxydoc.js"
+        script type="text/javascript" src="${basePath}doxydoc.js"
         :each $customJS
             script type="text/javascript" src="$this"
 
-        link rel="Stylesheet" href="$basePath/main.css"
-        link rel="stylesheet" href="$basePath/highlight.css"
+        link rel="Stylesheet" href="${basePath}main.css"
+        link rel="stylesheet" href="${basePath}highlight.css"
         :each $customCSS
             link rel="Stylesheet" href="$this"
     body
