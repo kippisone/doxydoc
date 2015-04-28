@@ -139,8 +139,18 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
         source = fs.readFileSync(src, { encoding: 'utf8' });
     }
 
-    var locals = this.locals;
+    var locals = extend(true, {}, this.locals);
     var basePath = this.resolveToBase(name) || '';
+    if (basePath) {
+        ['headerLinks', 'navigationLinks'].forEach(function(key) {
+            if (locals[key]) {
+                locals[key].forEach(function(link) {
+                    link.link = path.join(basePath, link.link);
+                });
+            }
+        });
+    }
+
     ['customJS', 'customCSS'].forEach(function(method) {
         if (locals[method] && data[method]) {
             locals[method] = locals[method].concat(data[method]).reduce(function(a, b){
@@ -191,7 +201,7 @@ PageCreator.prototype.createDocu = function(type, files) {
     doxydoc.templateDir = this.conf.templateDir;
     doxydoc.doxydocFile = this.doxydocFile;
     return doxydoc.parse(type, files, {
-        basePath: this.resolveToBase(this.conf.docuFilename) || '.'
+        basePath: this.resolveToBase(this.conf.docuFilename) || ''
     });
 };
 
@@ -239,7 +249,7 @@ PageCreator.prototype.prepareData = function() {
                 link.customCSS = [link.customCSS];
             }
 
-            var basePath = this.resolveToBase(link.link) || '.';
+            var basePath = this.resolveToBase(link.link) || '';
 
             ['customCSS', 'customJS'].forEach(function(fileType) {
                 if (basePath && link[fileType]) {
