@@ -1,13 +1,19 @@
 Changelog
 =========
 
+v0.4.5
+------
+
+* Fixed link path creation
+* Bug fixes
+
 v0.4.4
 ------
 
-* Bug fixes
 * Added `doxydocFile` option to set a different filename for the doxydoc.json file
 * Added `customCSS, customJS` option to navigationLinks and headerLinks
 * Fixed broken code indention in deep-space theme
+* Bug fixes
 
 v0.4.3
 ------
