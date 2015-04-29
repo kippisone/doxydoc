@@ -374,6 +374,7 @@ body {
   white-space: pre;
   font-family: monospace;
   background-color: #14171A;
+  padding: 0;
 }
 .pageContent .description {
   font-size: 14px;
