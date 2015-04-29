@@ -52,7 +52,7 @@ function bar() {
 ```
 
 This adds function foo and bar to `myModule`.
-The next function is placed in the same file, but shoudn't be under `myModule`.
+The next function is placed in the same file, but shouldn't be under `myModule`.
 
 ```js
 /**
