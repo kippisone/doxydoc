@@ -19,4 +19,4 @@ html
                         span class="link"
                             a href="$link" target="$target" $name
                 section class="pageContent"
-                    $content
+                    $$content

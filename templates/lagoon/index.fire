@@ -18,4 +18,4 @@ html
                         span class="link"
                             a href="$link" target="$target.ifFalse('_self')" $name
                 section class="pageContent"
-                    $content
+                    $$content

@@ -29,11 +29,11 @@ html
                     h1 id="top" $name
                         span class="version" "v"
                             $version
-                    div class="description" $description
+                    div class="description" $$description
                     :each $listing : div
                         h2 id="$link" $name
                         :if $description : div class="description"
-                            $description.full
+                            $$description.full
                         :each $groups : div class="groupBlock $id"
                             :if $items.length : div class="groupBlockItem"
                                 h3 id="$link" $name
@@ -50,7 +50,7 @@ html
                                                     a href="$url" target="$target"
                                                         $name
                                         :if $description : div class="description"
-                                            $description.full
+                                            $$description.full
                                         :if $registrar : div class="registrar"
                                             span "Defined in " $registrar.type
                                             a href="#$registrar.link" " "
@@ -67,7 +67,7 @@ html
                                                     tr
                                                         td $name
                                                         td $dataTypes
-                                                        td $description
+                                                        td $$description
                                         :if $fires : div class="firesBlock"
                                             h5 "Calling events:"
                                             table class="firesTable dcTable"
@@ -78,11 +78,11 @@ html
                                                 :each $fires : tbody
                                                     tr
                                                         td $name
-                                                        td $description
+                                                        td $$description
                                         :if $returns : div class="returnValue"
                                             h5 "Returns: "
                                                 span class="returnDatatype" $returns.dataTypes
-                                            span $returns.description
+                                            span $$returns.description
                                         :if $examples : div class="exampleBlock"
                                             h5 "Example:"
                                             :each $examples : div class="examples"
@@ -93,12 +93,12 @@ html
                                                 :if $title : h5
                                                     $title
                                                 div class="previewBox"
-                                                    div class="previewBlock $type" $code
+                                                    div class="previewBlock $type" $$code
                                         :if $preview : div class="preview"
                                             $preview
                                         :if $source : div
                                             h5 "Code:"
                                             div class="codeBox"
-                                                code class="codeBlock $source.type" $source.code
+                                                code class="codeBlock $source.type" $$source.code
 
             footer class="pageFooter" "Documentation created by DoxyDoc"

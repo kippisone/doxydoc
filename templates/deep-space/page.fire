@@ -15,4 +15,4 @@ html
             (> header)
             section class="pageBody"
                 section class="pageContent"
-                    $content
+                    $$content
