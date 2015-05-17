@@ -13,4 +13,5 @@ Features:
 * Split window with source view
 * Mark current displaying item in navigation
 * Add a scrolling lib
-* Sticky navigation
+* Use mor html5 elements (http://www.mediaevent.de/xhtml/html5-tags.html)
+* Mobile support

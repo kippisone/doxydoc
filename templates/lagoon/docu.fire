@@ -25,7 +25,7 @@ html
                                     :each $items : ul class="groupBlockItem"
                                         li 
                                             a href="#$link" $name
-                section class="pageContent"
+                article class="pageContent"
                     h1 id="top" $name
                         span class="version" "v"
                             $version

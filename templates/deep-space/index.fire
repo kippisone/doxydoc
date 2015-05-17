@@ -13,5 +13,5 @@ html
         section class="pageMain"
             (> header)
             section class="pageBody"
-                section class="pageContent"
+                article class="pageContent"
                     $$content

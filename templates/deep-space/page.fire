@@ -20,7 +20,7 @@ html
                             :each $navigation : ul
                                 li class="link"
                                     a href="#$link" "$text"
-                section class="pageContent"
+                article class="pageContent"
                     $$content
 
             footer class="pageFooter" "Documentation created by".
