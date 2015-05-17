@@ -19,3 +19,6 @@ html
                             a href="$link" target="$target.ifFalse('_self')" $name
                 section class="pageContent"
                     $$content
+
+            footer class="pageFooter" "Documentation created by".
+                a href="http://doxydoc.com" target="_blank" "DoxyDoc"

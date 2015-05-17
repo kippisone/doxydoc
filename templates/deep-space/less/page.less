@@ -14,10 +14,19 @@
     top: 50px;
     padding: 10px;
     box-sizing: border-box;
+
+    &.sticky {
+        position: fixed;
+        top: 47px;
+        z-index: 9999;
+    }
 }
+
+
 
 .pageContent {
     padding: 10px;
+    margin-bottom: 100px;
 }
 
 .pageLeft ~ .pageContent {
@@ -34,4 +43,14 @@
     text-align: center;
     color: #666;
     margin-top: 30px;
+
+    a:link,
+    a:active,
+    a:visited {
+        color: inherit;
+    }
+
+    a:hover {
+        color: @lagoonBlue;
+    }
 }

@@ -1,6 +1,6 @@
 {
   "name": "doxydoc",
-  "version": "0.4.6-0",
+  "version": "0.4.6-7",
   "description": "Source code documentation generator for Javascript, LESS and CSS",
   "main": "doxydoc.js",
   "bin": {
@@ -30,10 +30,11 @@
     "dresscode-less": "^0.1.3",
     "firetpl": "^0.5.4",
     "glob": "^5.0.5",
+    "grunt": "~0.4.5",
     "highlight.js": "~8.5.0",
+    "jquery": "^2.1.4",
     "markdown-it": "^4.2.0",
     "node.extend": "^1.1.3",
-    "grunt": "~0.4.5",
     "superjoin": "^0.1.1"
   },
   "devDependencies": {

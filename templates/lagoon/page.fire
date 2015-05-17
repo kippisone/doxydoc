@@ -18,5 +18,13 @@ html
                     :each $navigationLinks : div class="pageLinks"
                         span class="link"
                             a href="$link" target="$target" $name
+
+                    :if $navigation : section class="subNavi pageLinks"
+                        :each $navigation : ul
+                            li class="link"
+                                a href="#$link" "$text"
                 section class="pageContent"
                     $$content
+
+            footer class="pageFooter" "Documentation created by".
+                a href="http://doxydoc.com" target="_blank" "DoxyDoc"

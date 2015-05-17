@@ -1,6 +1,6 @@
 header class="pageHeader"
     div class="name"
-        a class="logoLink" href="./" $name
+        a class="logoLink" href="${basePath}" $name
     div class="version" "v"
         $version
     navi class="mainNavi"

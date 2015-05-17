@@ -101,4 +101,6 @@ html
                                             div class="codeBox"
                                                 code class="codeBlock $source.type" $$source.code
 
-            footer class="pageFooter" "Documentation created by DoxyDoc"
+
+            footer class="pageFooter" "Documentation created by".
+                a href="http://doxydoc.com" target="_blank" "DoxyDoc"

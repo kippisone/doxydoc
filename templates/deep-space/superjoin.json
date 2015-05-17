@@ -2,6 +2,7 @@
     "name": "lagoon-template",
     "main": "./js/doxydoc.js",
     "files": [
+        "jquery",
         "highlight.js"
     ]
 }

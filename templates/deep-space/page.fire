@@ -14,10 +14,13 @@ html
         section class="pageMain"
             (> header)
             section class="pageBody"
-                :if $navigation : aside class="pageLeft"
+                :if $navigation : aside class="pageLeft stickyItem"
                     section class="subNavi"
                         :each $navigation : ul
                             li class="link"
                                 a href="#$link" "$text"
                 section class="pageContent"
                     $$content
+
+            footer class="pageFooter" "Documentation created by".
+                a href="http://doxydoc.com" target="_blank" "DoxyDoc"
