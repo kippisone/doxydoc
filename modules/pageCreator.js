@@ -31,7 +31,7 @@ var PageCreator = function(conf) {
 };
 
 PageCreator.prototype.log = function() {
-    if (this.verbose) {
+    if (!this.silent) {
         var args = Array.prototype.slice.call(arguments);
         grunt.log.ok.apply(grunt.log, args);
     }
@@ -90,6 +90,8 @@ PageCreator.prototype.createPages = function() {
     var out = superjoin.join(sjConf.files, sjConf.main);
     grunt.file.write(path.join(outDir, 'doxydoc.js'), out);
 
+    var self = this;
+
     var copyAssets = function(abspath, rootdir, subdir, file) {
         var src, dest;
 
@@ -106,7 +108,7 @@ PageCreator.prototype.createPages = function() {
             dest = path.join(outDir, subdir, file);
         }
 
-        grunt.log.ok(' ... copy', src.replace(path.join(__dirname, '..') + '/', ''));
+        self.log(' ... copy', src.replace(path.join(__dirname, '..') + '/', ''));
         grunt.file.copy(src, dest);
     };
 
@@ -122,9 +124,7 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
     data = data || {};
     
     var ext = path.extname(src);
-    if (this.verbose) {
-        this.log('Create page "%s" from source: %s', name, src);
-    }
+    this.log('Create page "%s" from source: %s', name, src);
     
     template = template || 'page.fire';
 
@@ -164,6 +164,10 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
         }
     });
 
+    if (data.navigation) {
+        data.navigation = this.scanHeadlines(source);
+    }
+
     var extended = extend({
         content: source,
         title: data.name || locals.name,
@@ -174,6 +178,7 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
     var html = firetpl.fire2html(ftl, extended, {
         partialsPath: path.join(this.conf.templateDir, 'partials')
     });
+
     grunt.file.write(path.join(this.outDir, name), html);
 };
 
@@ -283,6 +288,39 @@ PageCreator.prototype.resolveToBase = function(path) {
     }).join('/');
 
     return resolved;
+};
+
+/**
+ * Scans a html string and return an array of all nested anchor links
+ * @param  {String} html Input string
+ * @return {Array}      Array of found anchor links
+ */
+PageCreator.prototype.scanHeadlines = function(html) {
+    var reg = /<(a|h[1-6])[^>]+\bid\=["'](.*?)["'].*?>(.+?)<\/(a|h[1-6])>/g,
+        links = [];
+
+    while(true) {
+        var match = reg.exec(html);
+        if (!match) {
+            break;
+        }
+
+        links.push({
+            link: match[2],
+            text: this.stripHtml(match[3])
+        });
+    }
+
+    return links;
+};
+
+/**
+ * Strip any html tags from a string
+ * @param  {String} str Input string
+ * @return {String}     Stripped string
+ */
+PageCreator.prototype.stripHtml = function(str) {
+    return str.replace(/<\/?[a-zA-Z0-9]+.*?>/g, '');
 };
 
 module.exports = PageCreator;

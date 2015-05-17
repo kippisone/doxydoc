@@ -70,4 +70,29 @@
             border-radius: 5px;
         }
     }
+
+    .subNavi {
+        background-color: #eee;
+        border-radius: 5px;
+        padding: 5px;
+        margin-bottom: 10px;
+
+        .link:before {
+            content: '› '
+        }
+
+        a:link,
+        a:active,
+        a:visited {
+            color: #444;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bolder;
+            line-height: 20px;
+        }
+
+        a:hover {
+            color: @lagoonBlue;
+        }
+    }
 }

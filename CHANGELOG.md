@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v0.4.6
+------
+
+* Added navigation option
+
 v0.4.5
 ------
 

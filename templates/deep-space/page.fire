@@ -14,5 +14,10 @@ html
         section class="pageMain"
             (> header)
             section class="pageBody"
+                :if $navigation : aside class="pageLeft"
+                    section class="subNavi"
+                        :each $navigation : ul
+                            li class="link"
+                                a href="#$link" "$text"
                 section class="pageContent"
                     $$content

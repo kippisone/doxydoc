@@ -188,6 +188,9 @@ body {
 .pageContent {
   padding: 10px;
 }
+.pageLeft ~ .pageContent {
+  margin-left: 250px;
+}
 .pageFooter {
   width: 100%;
   height: 30px;
@@ -340,6 +343,27 @@ body {
   background-color: #0051cd;
   color: #fff;
   border-radius: 5px;
+}
+.pageLeft .subNavi {
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+.pageLeft .subNavi .link:before {
+  content: '› ';
+}
+.pageLeft .subNavi a:link,
+.pageLeft .subNavi a:active,
+.pageLeft .subNavi a:visited {
+  color: #444;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bolder;
+  line-height: 20px;
+}
+.pageLeft .subNavi a:hover {
+  color: #0051cd;
 }
 .pageContent h1 {
   font-size: 24px;
