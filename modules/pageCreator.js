@@ -320,17 +320,45 @@ PageCreator.prototype.scanHeadlines = function(html) {
 
         tags.push({
             link: match[2],
+            tag: match[1],
             text: this.stripHtml(match[3])
         });
     }
 
-    links = tags;
+    var traverse = function(data, inTraversal) {
 
-    var traverse = function(data) {
-        var item = data.shift();
+        var lastNum,
+            curNum,
+            result = [];
+
+        while(true) {
+            var item = data.shift();
+            if (!item) {
+                break;
+            }
+
+            curNum = parseInt(item.tag[1], 10);
+
+            if (lastNum && lastNum < curNum) {
+                result[result.length - 1].items = traverse(data, true);
+            }
+            else if (inTraversal && lastNum && lastNum !== curNum) {
+                break;
+            }
+            else {
+                result.push({
+                    link: item.link,
+                    text: item.text
+                });
+            }
+
+            lastNum = curNum;
+        }
+
+        return result;
     };
 
-    traverse(links);
+    links = traverse(tags);
 
     return links;
 };

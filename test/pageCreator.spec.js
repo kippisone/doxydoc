@@ -1,3 +1,5 @@
+'use strict';
+
 var PageCreator = require ('../modules/pageCreator');
 
 describe.only('PageCreator', function() {
