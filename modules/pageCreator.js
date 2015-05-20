@@ -12,6 +12,8 @@ var DoxyDocParser = require('./doxydocParser'),
     firetpl = require('firetpl');
 
 var PageCreator = function(conf) {
+    conf = conf || {};
+
     this.conf = {
         indexPage: 'README.md',
         templateDir: conf.templateDir || path.join(__dirname, '../templates/lagoon/'),
@@ -301,13 +303,14 @@ PageCreator.prototype.resolveToBase = function(path) {
 };
 
 /**
- * Scans a html string and return an array of all nested anchor links
+ * Scans a html string and return an array of all <h*> tags with an id attribute
  * @param  {String} html Input string
  * @return {Array}      Array of found anchor links
  */
 PageCreator.prototype.scanHeadlines = function(html) {
-    var reg = /<(a|h[1-6])[^>]+\bid\=["'](.*?)["'].*?>(.+?)<\/(a|h[1-6])>/g,
-        links = [];
+    var reg = /<(h[1-6])[^>]+\bid\=["'](.*?)["'].*?>(.+?)<\/(a|h[1-6])>/g,
+        links = [],
+        tags = [];
 
     while(true) {
         var match = reg.exec(html);
@@ -315,11 +318,19 @@ PageCreator.prototype.scanHeadlines = function(html) {
             break;
         }
 
-        links.push({
+        tags.push({
             link: match[2],
             text: this.stripHtml(match[3])
         });
     }
+
+    links = tags;
+
+    var traverse = function(data) {
+        var item = data.shift();
+    };
+
+    traverse(links);
 
     return links;
 };

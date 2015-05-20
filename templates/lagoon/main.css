@@ -117,6 +117,21 @@ body {
  * @module dcButtons
  */
 /**
+ * dcLabels module
+ * This module must be activated in *less mode* by adding `.dcLabels();` to your main.less file.
+ * @module dcLabels
+ */
+/**
+ * dcTable module
+ * This module must be activated in *less mode* by adding `.dcTables();` to your main.less file.
+ * @module dcTables
+ */
+/**
+ * dcListing module
+ * This module must be activated in *less mode* by adding `.dcListing();` to your main.less file.
+ * @module dcListing
+ */
+/**
  * Button
  *
  * html:
@@ -487,12 +502,13 @@ body {
 .pageContent .dataType {
   display: inline-block;
   border-radius: 5px;
-  color: #fff;
   padding: 2px 5px;
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
   background-color: #555555;
+  background-color: #232323;
+  color: #fff;
 }
 .pageContent .paramBlock {
   margin-bottom: 20px;
@@ -546,6 +562,17 @@ li {
 p {
   margin: 0;
 }
+/**
+     * Styles a label
+     * 
+     * @mixin label
+     *
+     * @example {html}
+     * <span class="label labelRed">Button</span>
+     * 
+     * @preview
+     * <span class="label labelRed">Button</span>
+     */
 .label {
   display: inline-block;
   border-radius: 5px;
@@ -593,6 +620,40 @@ p {
   background-color: #000;
   color: #fff;
 }
+.labelGrey {
+  background-color: #232323;
+  color: #fff;
+}
+/**
+     * Styles a table
+     *
+     * @mixin dcTable
+     *
+     * @example {html}
+     * <table class="dcTable">
+     *     <!-- table body -->
+     * </table>
+     * 
+     * @preview
+     * <table class="dcTable">
+     *     <thead>
+     *         <tr>
+     *             <td>Color</td>
+     *             <td>Code</td>
+     *         </tr>
+     *     </thead>
+     *     <tbody>
+     *         <tr>
+     *             <td>Red</td>
+     *             <td>#ff0000</td>
+     *         </tr>
+     *         <tr>
+     *             <td>Green</td>
+     *             <td>#00ff00</td>
+     *         </tr>
+     *     </tbody>
+     * </table>
+     */
 table.dcTable {
   border: 1px solid #c0c0c0;
   border-collapse: collapse;
@@ -611,6 +672,9 @@ table.dcTable thead {
 }
 table.dcTable thead td {
   padding: 5px;
+}
+table.dcTable tbody:nth-child(even) td {
+  background-color: #eee;
 }
 table.dcTable td {
   border-left: 1px solid 1px solid #c0c0c0;
