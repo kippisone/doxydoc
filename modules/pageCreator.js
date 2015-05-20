@@ -67,6 +67,10 @@ PageCreator.prototype.createPages = function() {
 
     //Parse navigation links
     ['headerLinks', 'navigationLinks'].forEach(function(key) {
+        if (!(key in this.conf)) {
+            return;
+        }
+        
         this.conf[key].forEach(function(link) {
             if (link.file) {
                 this.createPage(link.file, link.link, 'page.fire', link);
@@ -128,15 +132,17 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
     
     template = template || 'page.fire';
 
-    var source;
-    if (ext === '.md') {
-        source = this.parseMarkdown(fs.readFileSync(src, { encoding: 'utf8' }));
-    }
-    else if (ext === '.fire') {
-        source = this.parseFireTPL(fs.readFileSync(src, { encoding: 'utf8' }));
-    }
-    else {
-        source = fs.readFileSync(src, { encoding: 'utf8' });
+    var source = '';
+    if (fs.existsSync(src)) {
+        if (ext === '.md') {
+            source = this.parseMarkdown(fs.readFileSync(src, { encoding: 'utf8' }));
+        }
+        else if (ext === '.fire') {
+            source = this.parseFireTPL(fs.readFileSync(src, { encoding: 'utf8' }));
+        }
+        else {
+            source = fs.readFileSync(src, { encoding: 'utf8' });
+        }
     }
 
     var locals = extend(true, {}, this.locals);
@@ -241,6 +247,10 @@ PageCreator.prototype.getMetaInfos = function() {
 
 PageCreator.prototype.prepareData = function() {
     ['navigationLinks', 'headerLinks'].forEach(function(key) {
+        if (!(key in this.locals)) {
+            return;
+        }
+
         this.locals[key].forEach(function(link) {
             if (!link.target) {
                 link.target = '_self';

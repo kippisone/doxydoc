@@ -87,7 +87,7 @@ html
                                             h5 "Example:"
                                             :each $examples : div class="examples"
                                                 div class="codeBox"
-                                                    code class="codeBlock $type" $code
+                                                    code class="codeBlock $type" $$code
                                         :if $previews : div class="exampleBlock"
                                             :each $previews : div class="previews"
                                                 :if $title : h5
@@ -95,7 +95,7 @@ html
                                                 div class="previewBox"
                                                     div class="previewBlock $type" $$code
                                         :if $preview : div class="preview"
-                                            $preview
+                                            $$preview
                                         :if $source : div
                                             h5 "Code:"
                                             div class="codeBox"

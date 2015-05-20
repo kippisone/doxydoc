@@ -398,10 +398,12 @@ module.exports = (function() {
 
                         var previewTag = tag.string.match(/^\s*\{(\w+)\}\s*([^]+$)/);
 
-                        newTag.previews.push({
-                            code: previewTag[2],
-                            type: previewTag[1] || 'html'
-                        });
+                        if (previewTag) {
+                            newTag.previews.push({
+                                code: previewTag[2],
+                                type: previewTag[1] || 'html'
+                            });
+                        }
                         break;
                 }
             }.bind(this));
