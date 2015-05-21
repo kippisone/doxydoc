@@ -312,24 +312,46 @@ PageCreator.prototype.scanHeadlines = function(html) {
         links = [],
         tags = [];
 
+    var tagPath = [],
+        tagArr = {'h1': 1, 'h2': 2, 'h3': 3, 'h4': 4, 'h5': 5, 'h6': 6};
+
     while(true) {
         var match = reg.exec(html);
         if (!match) {
             break;
         }
 
+        tagPath = tagPath.concat();
+
+        var tagPos = tagPath.indexOf(match[1]);
+        // console.log('Pos:', tagPos, tagPath[0], match[1], tagArr[tagPath[0]] < tagArr[match[1]]);
+        if (tagPos === -1) {
+            if (tagPath[0] && tagArr[tagPath[0]] > tagArr[match[1]]) {
+                tagPath = [match[1]];
+            }
+            else {
+                tagPath.push(match[1]);                
+            }
+        }
+        else {
+            tagPath = tagPath.slice(0, tagPos + 1);
+        }
+
+        console.log('TAG:', match[1], tagPath);
+
         tags.push({
             link: match[2],
             tag: match[1],
+            path: tagPath,
             text: this.stripHtml(match[3])
         });
     }
 
+    // console.log('TAGS', tags);
+
     var traverse = function(data, inTraversal) {
 
-        var lastNum,
-            curNum,
-            result = [];
+        var result = [];
 
         while(true) {
             var item = data.shift();
@@ -337,22 +359,23 @@ PageCreator.prototype.scanHeadlines = function(html) {
                 break;
             }
 
-            curNum = parseInt(item.tag[1], 10);
+            console.log('NUM', item.tag, item.path, result);
+            
+            result.push({
+                link: item.link,
+                text: item.text
+            });
 
-            if (lastNum && lastNum < curNum) {
-                result[result.length - 1].items = traverse(data, true);
+            if (data[0] && data[0].path.length > item.path.length) {
+                var itemProp = result[result.length - 1];
+                // console.log('ITEM', itemProp, data.length);
+                if (data.length) {
+                    itemProp.items = traverse(data, true);
+                }
             }
-            else if (inTraversal && lastNum && lastNum !== curNum) {
+            else if (inTraversal && data[0] && data[0].path.length < item.path.length) {
                 break;
             }
-            else {
-                result.push({
-                    link: item.link,
-                    text: item.text
-                });
-            }
-
-            lastNum = curNum;
         }
 
         return result;

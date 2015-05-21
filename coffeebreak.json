@@ -2,5 +2,5 @@
     "project": "DoxyDoc",
     "files":  "none",
     "tests": "test/*.spec.js",
-    "watch": "doxydoc.js"
+    "watch": "modules/*.js"
 }
