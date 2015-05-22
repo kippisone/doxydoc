@@ -324,7 +324,6 @@ PageCreator.prototype.scanHeadlines = function(html) {
         tagPath = tagPath.concat();
 
         var tagPos = tagPath.indexOf(match[1]);
-        // console.log('Pos:', tagPos, tagPath[0], match[1], tagArr[tagPath[0]] < tagArr[match[1]]);
         if (tagPos === -1) {
             if (tagPath[0] && tagArr[tagPath[0]] > tagArr[match[1]]) {
                 tagPath = [match[1]];
@@ -336,8 +335,6 @@ PageCreator.prototype.scanHeadlines = function(html) {
         else {
             tagPath = tagPath.slice(0, tagPos + 1);
         }
-
-        console.log('TAG:', match[1], tagPath);
 
         tags.push({
             link: match[2],
@@ -352,6 +349,7 @@ PageCreator.prototype.scanHeadlines = function(html) {
     var traverse = function(data, inTraversal) {
 
         var result = [];
+        // console.log(' + --- TRAVERSE --- + ', data, inTraversal);
 
         while(true) {
             var item = data.shift();
@@ -359,7 +357,7 @@ PageCreator.prototype.scanHeadlines = function(html) {
                 break;
             }
 
-            console.log('NUM', item.tag, item.path, result);
+            // console.log('PUSH', item.tag + ':' + item.link, item, ' TO RES ', result);
             
             result.push({
                 link: item.link,
@@ -373,11 +371,14 @@ PageCreator.prototype.scanHeadlines = function(html) {
                     itemProp.items = traverse(data, true);
                 }
             }
-            else if (inTraversal && data[0] && data[0].path.length < item.path.length) {
+
+            if (inTraversal && data[0] && data[0].path.length < item.path.length) {
+                // console.log('BREAK', itemProp, data.length);
                 break;
             }
         }
 
+        // console.log(' + --- RETURN --- + ', result);
         return result;
     };
 

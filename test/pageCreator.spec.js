@@ -55,7 +55,7 @@ describe.only('PageCreator', function() {
             ]);
         });
 
-        it('Should get a nested array of all head lines', function() {
+        it('Should get a nested array of all head lines (more test items)', function() {
             var html = '<div><h1>Nothing</h1><br><h3 id="tag1">Tag 1</h3></div>' +
                 '<h3 id="tag2">Tag 2</h3><h4 id="tag2-1">Tag 2.1</h4><br><h4 id="tag2-2">Tag 2.2</h4>' +
                 '<h3 id="tag3">Tag 3</h3><h4 id="tag3-1">Tag 3.1</h4><br><h4 id="tag3-2">Tag 3.2</h4>' +
