@@ -77,8 +77,31 @@
         padding: 5px;
         margin-bottom: 10px;
 
-        .link:before {
-            content: '› '
+        .tree {
+            > .link:before {
+                content: '› ';
+            }
+        }
+
+        .twig {
+            padding-left: 15px;
+            
+            > .link:before {
+                content: '› ';
+            }
+
+            > .link {
+                a:link,
+                a:active,
+                a:visited {
+                    color: #444;
+                    font-weight: normal;
+                }
+
+                a:hover {
+                    color: @lagoonBlue;
+                }
+            }
         }
 
         a:link,
@@ -93,6 +116,10 @@
 
         a:hover {
             color: @lagoonBlue;
+        }
+
+        .subLinks {
+
         }
     }
 }

@@ -387,8 +387,23 @@ body {
   padding: 5px;
   margin-bottom: 10px;
 }
-.pageLeft .subNavi .link:before {
+.pageLeft .subNavi .tree > .link:before {
   content: '› ';
+}
+.pageLeft .subNavi .twig {
+  padding-left: 15px;
+}
+.pageLeft .subNavi .twig > .link:before {
+  content: '› ';
+}
+.pageLeft .subNavi .twig > .link a:link,
+.pageLeft .subNavi .twig > .link a:active,
+.pageLeft .subNavi .twig > .link a:visited {
+  color: #444;
+  font-weight: normal;
+}
+.pageLeft .subNavi .twig > .link a:hover {
+  color: #0051cd;
 }
 .pageLeft .subNavi a:link,
 .pageLeft .subNavi a:active,

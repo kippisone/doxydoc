@@ -312,6 +312,20 @@ body {
 .pageLeft .pageLinks .link {
   display: block;
 }
+.pageLeft .pageLinks .twig {
+  padding-left: 15px;
+}
+.pageLeft .pageLinks .twig > .link a:link,
+.pageLeft .pageLinks .twig > .link a:active,
+.pageLeft .pageLinks .twig > .link a:visited {
+  color: #444;
+  font-weight: normal;
+}
+.pageLeft .pageLinks .twig > .link a:hover {
+  background-color: #0051cd;
+  color: #fff;
+  border-radius: 5px;
+}
 .pageLeft .pageLinks a:link,
 .pageLeft .pageLinks a:active,
 .pageLeft .pageLinks a:visited {
