@@ -1,8 +1,13 @@
 header class="pageHeader"
+    :if $logoImage : div class="logoImage"
+        a class="logoLink" href="${basePath}"
+            img class="logoImage" src="$logoImage"
     div class="name"
         a class="logoLink" href="${basePath}" $name
     div class="version" "v"
         $version
+    :if $subtitle : div class="subtitle"
+            $subtitle
     navi class="mainNavi"
         :each $headerLinks : div class="links"
             a href="$link" $name

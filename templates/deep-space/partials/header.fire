@@ -1,9 +1,15 @@
 header class="pageHeader"
     section class="headerContent"
-        div class="name"
-            a class="logoLink" href="${basePath}" $name
-        div class="version" "v"
-            $version
+        :if $logoImage : section class="headerLogo"
+            a class="logoLink" href="${basePath}"
+                img class="logoImage" src="$logoImage"
+        div class="headerInner"
+            div class="name"
+                a class="logoLink" href="${basePath}" $name
+            div class="version" "v"
+                $version
+            :if $subtitle : div class="subtitle"
+                $subtitle
         navi class="mainNavi"
             :each $headerLinks : div class="links"
                 a href="$link" $name

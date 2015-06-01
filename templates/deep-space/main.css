@@ -284,6 +284,16 @@ body {
 .pageHeader .mainNavi a:hover {
   background-color: rgba(255, 255, 255, 0.4);
 }
+.pageHeader .headerLogo {
+  float: left;
+}
+.pageHeader .headerLogo img {
+  vertical-align: middle;
+  margin-right: 10px;
+}
+.pageHeader .subtitle {
+  font-size: 17px;
+}
 .pageNavi {
   background-color: #343434;
 }
