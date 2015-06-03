@@ -161,6 +161,14 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
 
     ['customJS', 'customCSS'].forEach(function(method) {
         if (locals[method] && data[method]) {
+            locals[method] = locals[method].map(function(filePath) {
+                if (!/^(https?:)?\/\//.test(filePath)) {
+                    filePath = path.join(basePath, filePath);
+                }
+
+                return filePath;
+            });
+            
             locals[method] = locals[method].concat(data[method]).reduce(function(a, b){
                 if (a.indexOf(b) < 0 ) {
                     a.push(b);
