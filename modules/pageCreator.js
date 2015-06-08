@@ -135,12 +135,13 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
     template = template || 'page.fire';
 
     var source = '';
+    var basePath = this.resolveToBase(name) || '';
     if (fs.existsSync(src)) {
         if (ext === '.md') {
             source = this.parseMarkdown(fs.readFileSync(src, { encoding: 'utf8' }));
         }
         else if (ext === '.fire') {
-            source = this.parseFireTPL(fs.readFileSync(src, { encoding: 'utf8' }));
+            source = this.parseFireTPL(fs.readFileSync(src, { encoding: 'utf8' }), path.resolve(path.dirname(src)));
         }
         else {
             source = fs.readFileSync(src, { encoding: 'utf8' });
@@ -148,7 +149,6 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
     }
 
     var locals = extend(true, {}, this.locals);
-    var basePath = this.resolveToBase(name) || '';
     if (basePath) {
         ['headerLinks', 'navigationLinks'].forEach(function(key) {
             if (locals[key]) {
@@ -209,9 +209,9 @@ PageCreator.prototype.parseMarkdown = function(source) {
     return md.render(source);
 };
 
-PageCreator.prototype.parseFireTPL = function(source) {
+PageCreator.prototype.parseFireTPL = function(source, partialsPath) {
     return firetpl.fire2html(source, this.locals, {
-        partialsPath: path.join(this.conf.templateDir, 'partials')
+        partialsPath: partialsPath
     });
 };
 
