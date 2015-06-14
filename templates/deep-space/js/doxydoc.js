@@ -15,12 +15,12 @@ $(function() {
         isSticky = false;
 
     $(document).scroll(function(e) {
-        if (!isSticky && e.originalEvent.pageY > headerHeight) {
+        if (!isSticky && document.body.scrollTop > headerHeight) {
             $('.stickyItem').addClass('sticky');
             $('.pageLeft').css('left', subNaviLeft);
             isSticky = true;
         }
-        else if (isSticky && e.originalEvent.pageY < headerHeight) {
+        else if (isSticky && document.body.scrollTop < headerHeight) {
             $('.stickyItem').removeClass('sticky');
             $('.pageLeft').css('left', '');
             isSticky = false;
