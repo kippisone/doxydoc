@@ -89,13 +89,11 @@ html
                                                 div class="codeBox"
                                                     code class="codeBlock $type" $$code
                                         :if $previews : div class="exampleBlock"
-                                            :each $previews : div class="previews"
-                                                :if $title : h5
-                                                    $title
-                                                div class="previewBox"
-                                                    div class="previewBlock $type" $$code
-                                        :if $preview : div class="preview"
-                                            $$preview
+                                            :each $previews : div class="preview"
+                                                div class="previewBox  $type"
+                                                    :if $title : h5
+                                                        $title
+                                                    div class="content $type" $$code
                                         :if $source : div
                                             h5 "Code:"
                                             div class="codeBox"

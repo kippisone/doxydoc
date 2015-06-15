@@ -392,11 +392,11 @@ module.exports = (function() {
                         }
                         break;
                     case 'preview':
-                        if (!newTag.preview) {
+                        if (!newTag.previews) {
                             newTag.previews = [];
                         }
 
-                        var previewTag = tag.string.match(/^\s*\{(\w+)\}\s*([^]+$)/);
+                        var previewTag = tag.string.match(/^\s*(?:\{(\w+)\})?\s*([^]+$)/);
 
                         if (previewTag) {
                             newTag.previews.push({

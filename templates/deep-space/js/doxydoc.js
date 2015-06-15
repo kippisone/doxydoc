@@ -3,6 +3,8 @@
 var hljs = require('highlight.js'),
     $ = require('jquery');
 
+require('dresscode-less');
+
 $(function() {
     var els = document.getElementsByClassName('codeBlock');
     for (var i = 0, len = els.length; i < len; i++) {

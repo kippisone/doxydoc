@@ -111,6 +111,11 @@ body {
   margin: 0;
 }
 /**
+ * dcForms module
+ * This module must be activated in *less mode* by adding `.dcForms();` to your main.less file.
+ * @module dcForms
+ */
+/**
  * The dcButton module styles different buttons.
  * This module must be activated in *less mode* by adding `.dcButtons();` to your main.less file.
  * 
@@ -130,6 +135,11 @@ body {
  * dcListing module
  * This module must be activated in *less mode* by adding `.dcListing();` to your main.less file.
  * @module dcListing
+ */
+/**
+ * dcFlipBox module
+ * This module must be activated in *less mode* by adding `.dcFlipBox();` to your main.less file.
+ * @module dcFlipBox
  */
 /**
  * Button
@@ -184,6 +194,386 @@ body {
   width: 24px;
   height: 24px;
   display: inline-block;
+}
+/**
+     * Reset h1 - h6 tags
+     * 
+     * @action headlines
+     */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 12px;
+  font-weight: normal;
+  margin: 0;
+}
+/**
+     * Reset ul and li tags
+     * 
+     * @action lists
+     */
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+p {
+  margin: 0;
+}
+/**
+     * Styles a label
+     * 
+     * @mixin label
+     *
+     * @example {html}
+     * <span class="label labelRed">Button</span>
+     * 
+     * @preview
+     * <span class="label labelRed">Button</span>
+     */
+.label {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+}
+.labelRed {
+  background-color: #b10000;
+}
+.labelDarkRed {
+  background-color: #b10024;
+}
+.labelBlue {
+  background-color: #0051cd;
+}
+.labelPurple {
+  background-color: #7a00ad;
+}
+.lableDarkPurple {
+  background-color: #430069;
+}
+.labelGrey {
+  background-color: #555555;
+}
+.labelOrangeRed {
+  background-color: #ff7e00;
+}
+.labelBrown {
+  background-color: #967657;
+}
+.labelDarkGreen {
+  background-color: #00826a;
+}
+.labelGreen {
+  background-color: #008b12;
+}
+.labelYellow {
+  background-color: #e1ff00;
+  color: #000;
+}
+.labelBlack {
+  background-color: #000;
+  color: #fff;
+}
+.labelGrey {
+  background-color: #232323;
+  color: #fff;
+}
+dl {
+  margin: 5px 0 5px 0;
+}
+dt {
+  font-size: 11px;
+  color: #555555;
+  margin-bottom: 2px;
+}
+dd {
+  margin-left: 0;
+}
+/**
+     * Styles generic form elements
+     *
+     * @mixin form elements
+     */
+textarea,
+input[type=text],
+input[type=password] {
+  border: 1px solid #555555;
+  padding: 1px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 3px;
+  height: 28px;
+  font-size: 17px;
+}
+input[type=text].error,
+input[type=password].error,
+textarea.error {
+  border-color: #b10000;
+  border-width: 2px;
+}
+textarea {
+  height: 100px;
+  resize: none;
+}
+div[data-xqform=input-suggest] input[type=text] {
+  border: none;
+}
+/**
+     * Styles a switch
+     *
+     * @mixin dcSwitch
+     *
+     * @example {html}
+     * <div class="dcSwitch">
+     *     <input type="radio" name="myswitch" value="on" id="switch1" checked="checked"><label
+     *      for="switch1">On</label><input
+     *      type="radio" name="myswitch" value="off" id="switch2"><label
+     *      for="switch2">Off</label>
+     * </div>
+     *
+     * @preview {html}
+     * <div class="dcSwitch">
+     *     <input type="radio" name="myswitch" value="on" id="switch1" checked="checked"><label
+     *      for="switch1">On</label><input
+     *      type="radio" name="myswitch" value="off" id="switch2"><label
+     *      for="switch2">Off</label>
+     * </div>
+     */
+.dcSwitch {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  border: 1px solid #000;
+  border-radius: 3px;
+  line-height: 20px;
+  vertical-align: middle;
+  background-color: #d5d5d5;
+}
+.dcSwitch input[type=radio] {
+  position: absolute;
+  left: -100px;
+  top: -100px;
+}
+.dcSwitch input[type=radio] + label {
+  display: inline-block;
+  background-color: #d5d5d5;
+  color: #333;
+  padding: 2px 5px;
+  border-right: 1px solid #000;
+}
+.dcSwitch input[type=radio] + label:last-child {
+  border-right: 0;
+}
+.dcSwitch input[type=radio]:checked + label {
+  background-color: #0051cd;
+  color: #fff;
+}
+/**
+     * Styles a checkbox
+     *
+     * @mixin dcCheck
+     *
+     * @example {html}
+     * <div class="dcCheck">
+     *     <input type="checkbox" name="mycheckbox" value="on" id="check1" checked="checked">
+     *     <label for="check1">Mi checkbox</label>
+     * </div>
+     *
+     * @preview {html}
+     * <div class="dcCheck">
+     *     <input type="checkbox" name="mycheckbox" value="on" id="check1" checked="checked">
+     *     <label for="check1">Mi checkbox</label>
+     * </div>
+     */
+.dcCheck {
+  position: relative;
+  overflow: hidden;
+}
+.dcCheck input[type=checkbox] {
+  position: absolute;
+  left: -100px;
+  top: -100px;
+}
+.dcCheck input[type=checkbox] + label:before {
+  content: '✔';
+  text-align: center;
+  color: #c0c0c0;
+  border: 2px solid #c0c0c0;
+  border-radius: 100%;
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  margin-right: 5px;
+  vertical-align: bottom;
+  background-color: #ddd;
+}
+.dcCheck input[type=checkbox]:checked + label:before {
+  color: #fff;
+  background-color: #0051cd;
+  border-color: #fff;
+}
+.dcCheck label {
+  display: inline-block;
+}
+/**
+     * Styles a generic button
+     * 
+     * @mixin button
+     *
+     * @example {html}
+     * <button>Button</button>
+     * 
+     * @preview
+     * <button>Button</button>
+     */
+button,
+.button {
+  border: none;
+  border-radius: 6px;
+  min-width: 16px;
+  height: 28px;
+  padding: 0 5px;
+  background-repeat: no-repeat;
+  background-position: 1px 1px;
+  font-size: 15px;
+  -o-transition: background-color 0.25s;
+  -moz-transition: background-color 0.25s;
+  -webkit-transition: background-color 0.25s;
+  -ms-transition: background-color 0.25s;
+  transition: background-color 0.25s;
+}
+button > span,
+.button > span {
+  text-indent: 24px;
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: 24px 24px;
+  min-width: 24px;
+  height: 24px;
+  display: inline-block;
+  font-size: 12px;
+  line-height: 22px;
+  fill: #ccc;
+}
+button:hover,
+.button:hover {
+  border-color: #0077d8;
+  background-color: #eee;
+}
+button:focus,
+.button:focus {
+  outline: none;
+}
+/**
+     * Styles a submit button
+     * 
+     * @mixin submit
+     *
+     * @example {html}
+     * <button type="submit">Submit</button>
+     * <button class="submit">Submit</button>
+     */
+button[type=submit],
+button.submit {
+  background-color: #0051cd;
+  color: #fff;
+}
+button[type=submit]:hover,
+button.submit:hover {
+  background-color: #1162de;
+}
+/**
+     * Styles a cancel button
+     * 
+     * @mixin cancel
+     *
+     * @example {html}
+     * <button type="reset">Reset</button>
+     * <button class="cancel">Cancel</button>
+     */
+button[type=reset],
+button.cancel {
+  background-color: #d5d5d5;
+  color: #333;
+}
+button[type=reset]:hover,
+button.cancel:hover {
+  background-color: #e6e6e6;
+}
+/**
+     * Styles a flip box
+     * Requires dresscode.js
+     *
+     * @mixin dcFlipBox
+     * 
+     * @example {html}
+     * <dl class="dcFlipBox">
+     *     <dt>My FlipBox</dt>
+     *     <dd>Content ... </dd>
+     * </dl>
+     * 
+     * @preview
+     * <dl class="dcFlipBox">
+     *     <dt>My FlipBox</dt>
+     *     <dd>
+     *         Lorem ipsum Culpa Excepteur eu non voluptate<br>
+     *         nostrud mollit magna laborum amet id est enim<br>
+     *         dolor adipisicing dolore.
+     *     </dd>
+     * </dl>
+     */
+.dcFlipBox dt:before {
+  content: '›';
+  color: #666;
+  font-size: 16px;
+  font-weight: bold;
+  display: inline-block;
+  trasform-offset: 50% 50%;
+  -o-transition: all 0.25s ease-in;
+  -moz-transition: all 0.25s ease-in;
+  -webkit-transition: all 0.25s ease-in;
+  -ms-transition: all 0.25s ease-in;
+  transition: all 0.25s ease-in;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+}
+.dcFlipBox dt {
+  color: #666;
+  font-size: 14px;
+  font-weight: bold;
+}
+.dcFlipBox dt:hover {
+  color: #0051cd;
+}
+.dcFlipBox dd {
+  opacity: 0;
+  overflow: hidden;
+  -o-transition: all 0.35s ease-in;
+  -moz-transition: all 0.35s ease-in;
+  -webkit-transition: all 0.35s ease-in;
+  -ms-transition: all 0.35s ease-in;
+  transition: all 0.35s ease-in;
+}
+.dcFlipBox.active dd {
+  opacity: 1;
+}
+.dcFlipBox.active dt:before {
+  -o-transform: rotate(-270deg);
+  -moz-transform: rotate(-270deg);
+  -webkit-transform: rotate(-270deg);
+  -ms-transform: rotate(-270deg);
+  transform: rotate(-270deg);
 }
 .pageBody {
   margin-left: 250px;
@@ -430,13 +820,19 @@ body {
 .pageContent .noDescrition {
   color: #333;
 }
+.pageContent .previewBox.html {
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 5px;
+  margin-top: 20px;
+}
 .pageContent .preview {
   margin-bottom: 20px;
 }
 .pageContent .preview .cssColorPreview {
   width: 100px;
   height: 100px;
-  border-radius: 5px;
+  border-radius: 10px;
   position: relative;
 }
 .pageContent .preview .cssColorName {
@@ -546,153 +942,4 @@ body {
 }
 .pageContent .webLinks {
   margin-bottom: 10px;
-}
-/**
-     * Reset h1 - h6 tags
-     * 
-     * @action headlines
-     */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-size: 12px;
-  font-weight: normal;
-  margin: 0;
-}
-/**
-     * Reset ul and li tags
-     * 
-     * @action lists
-     */
-ul,
-li {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-}
-p {
-  margin: 0;
-}
-/**
-     * Styles a label
-     * 
-     * @mixin label
-     *
-     * @example {html}
-     * <span class="label labelRed">Button</span>
-     * 
-     * @preview
-     * <span class="label labelRed">Button</span>
-     */
-.label {
-  display: inline-block;
-  border-radius: 5px;
-  color: #fff;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-}
-.labelRed {
-  background-color: #b10000;
-}
-.labelDarkRed {
-  background-color: #b10024;
-}
-.labelBlue {
-  background-color: #0051cd;
-}
-.labelPurple {
-  background-color: #7a00ad;
-}
-.lableDarkPurple {
-  background-color: #430069;
-}
-.labelGrey {
-  background-color: #555555;
-}
-.labelOrangeRed {
-  background-color: #ff7e00;
-}
-.labelBrown {
-  background-color: #967657;
-}
-.labelDarkGreen {
-  background-color: #00826a;
-}
-.labelGreen {
-  background-color: #008b12;
-}
-.labelYellow {
-  background-color: #e1ff00;
-  color: #000;
-}
-.labelBlack {
-  background-color: #000;
-  color: #fff;
-}
-.labelGrey {
-  background-color: #232323;
-  color: #fff;
-}
-/**
-     * Styles a table
-     *
-     * @mixin dcTable
-     *
-     * @example {html}
-     * <table class="dcTable">
-     *     <!-- table body -->
-     * </table>
-     * 
-     * @preview
-     * <table class="dcTable">
-     *     <thead>
-     *         <tr>
-     *             <td>Color</td>
-     *             <td>Code</td>
-     *         </tr>
-     *     </thead>
-     *     <tbody>
-     *         <tr>
-     *             <td>Red</td>
-     *             <td>#ff0000</td>
-     *         </tr>
-     *         <tr>
-     *             <td>Green</td>
-     *             <td>#00ff00</td>
-     *         </tr>
-     *     </tbody>
-     * </table>
-     */
-table.dcTable {
-  border: 1px solid #c0c0c0;
-  border-collapse: collapse;
-  border-radius: 5px;
-  width: 100%;
-}
-table.dcTable caption {
-  border-bottom: none;
-  background-color: #0051cd;
-  color: #fff;
-  padding: 5px;
-}
-table.dcTable thead {
-  background-color: #ddd;
-  font-weight: bold;
-}
-table.dcTable thead td {
-  padding: 5px;
-}
-table.dcTable tbody:nth-child(even) td {
-  background-color: #eee;
-}
-table.dcTable td {
-  border-left: 1px solid 1px solid #c0c0c0;
-  padding: 5px;
-  vertical-align: top;
-  font-size: 14px;
 }
