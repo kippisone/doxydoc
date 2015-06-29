@@ -575,6 +575,65 @@ button.cancel:hover {
   -ms-transform: rotate(-270deg);
   transform: rotate(-270deg);
 }
+/**
+     * Styles a table
+     *
+     * @mixin dcTable
+     *
+     * @example {html}
+     * <table class="dcTable">
+     *     <!-- table body -->
+     * </table>
+     * 
+     * @preview
+     * <table class="dcTable">
+     *     <thead>
+     *         <tr>
+     *             <td>Color</td>
+     *             <td>Code</td>
+     *         </tr>
+     *     </thead>
+     *     <tbody>
+     *         <tr>
+     *             <td>Red</td>
+     *             <td>#ff0000</td>
+     *         </tr>
+     *         <tr>
+     *             <td>Green</td>
+     *             <td>#00ff00</td>
+     *         </tr>
+     *     </tbody>
+     * </table>
+     */
+table.dcTable {
+  border: 1px solid #c0c0c0;
+  border-collapse: collapse;
+  border-radius: 5px;
+  width: 100%;
+  background-color: #ffffff;
+}
+table.dcTable caption {
+  border-bottom: none;
+  background-color: #0051cd;
+  color: #fff;
+  padding: 5px;
+}
+table.dcTable thead {
+  background-color: #ddd;
+  font-weight: bold;
+}
+table.dcTable thead td {
+  padding: 5px;
+}
+table.dcTable tbody:nth-child(even) td {
+  background-color: #eee;
+}
+table.dcTable td {
+  border-left: 1px solid 1px solid #c0c0c0;
+  padding: 5px;
+  vertical-align: top;
+  font-size: 14px;
+}
 .pageBody {
   margin-left: 250px;
 }
@@ -655,6 +714,13 @@ button.cancel:hover {
 }
 .pageHeader .mainNavi a:hover {
   background-color: rgba(255, 255, 255, 0.4);
+}
+.pageHeader .subtitle {
+  display: inline-block;
+  margin-left: 10px;
+}
+.pageHeader .subtitle:empty {
+  display: none;
 }
 .pageLeft .moduleBlock {
   background-color: #eee;
