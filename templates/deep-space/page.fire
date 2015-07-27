@@ -5,6 +5,8 @@ html
         script type="text/javascript" src="${basePath}doxydoc.js"
         :each $customJS
             script type="text/javascript" src="$this"
+        :if $livereload
+            script type="text/javascript" src="//localhost:$livereload/livereload.js"
 
         link rel="Stylesheet" href="${basePath}main.css"
         link rel="stylesheet" href="${basePath}highlight.css"

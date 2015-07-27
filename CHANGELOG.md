@@ -6,6 +6,7 @@ v0.4.6
 
 * Added navigation option
 * Made left menu scrollable in lagoon template
+* Added livereload property
 * Bug fixes
 
 v0.4.5

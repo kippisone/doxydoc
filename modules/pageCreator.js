@@ -30,6 +30,7 @@ var PageCreator = function(conf) {
     this.rootDir = process.cwd();
     this.outDir = path.resolve(process.cwd(), this.conf.output);
     this.locals = extend(conf.locals, this.getMetaInfos());
+    this.isDevelopment = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === undefined;
 };
 
 PageCreator.prototype.log = function() {
@@ -184,6 +185,10 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
         data.navigation = this.scanHeadlines(source);
     }
 
+    if (data.livereload && this.isDevelopment) {
+        data.livereload = typeof data.livereload === 'number' ? data.livereload : 35729;
+    }
+
     var extended = extend({
         content: source,
         title: data.name || locals.name,
@@ -289,7 +294,13 @@ PageCreator.prototype.prepareData = function() {
             });
 
         }, this);
+
+
     }, this);
+
+    if (this.locals.livereload && this.isDevelopment) {
+        this.locals.livereload = typeof this.locals.livereload === 'number' ? this.locals.livereload : 35729;
+    }
 };
 
 /**
