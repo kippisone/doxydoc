@@ -4,6 +4,6 @@
     "files": [
         "jquery",
         "dresscode-less",
-        "highlight.js"
+        "$npm/highlight.js"
     ]
 }

@@ -87,6 +87,14 @@ module.exports = (function() {
         if (result.customCSS && typeof result.customCSS === 'string') {
             result.customCSS = [result.customCSS];
         }
+
+        //Order pages by module name
+        result.listing = result.listing.sort(function(a, b) {
+            return a.name.localeCompare(b.name, 'en');
+        });
+
+        console.log('RES', result);
+        console.log('LOC', locals);
         return FireTPL.fire2html(tmpl, extend(result, locals), {
             partialsPath: path.join(this.templateDir, 'partials')
         });

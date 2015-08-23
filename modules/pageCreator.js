@@ -89,10 +89,12 @@ PageCreator.prototype.createPages = function() {
     var outDir = this.outDir;
 
     //Create js bundle
-    var superjoin = new Superjoin();
+    var superjoin = new Superjoin({
+        verbose: this.verbose,
+        root: this.conf.templateDir,
+        workingDir: this.conf.templateDir
+    });
 
-    superjoin.verbose = this.verbose;
-    superjoin.root = this.conf.templateDir;
     var sjConf = superjoin.getConf();
     var out = superjoin.join(sjConf.files, sjConf.main);
     grunt.file.write(path.join(outDir, 'doxydoc.js'), out);
@@ -124,7 +126,6 @@ PageCreator.prototype.createPages = function() {
     grunt.file.write(docuPath, docu);
     copyAssets(path.join(this.conf.templateDir, 'main.css'), path.join(outDir, 'main.css'));
     copyAssets(path.join(__dirname, '../node_modules/highlight.js/styles/', 'dark.css'), path.join(outDir, 'highlight.css'));
-    this.log('Finish!');
 };
 
 PageCreator.prototype.createPage = function(src, name, template, data) {
@@ -221,14 +222,14 @@ PageCreator.prototype.parseFireTPL = function(source, partialsPath) {
 };
 
 PageCreator.prototype.createDocu = function(type, files) {
-    
     var doxydoc = new DoxyDocParser();
     doxydoc.templateFile = path.join(this.conf.templateDir, 'docu.fire');
     doxydoc.templateDir = this.conf.templateDir;
     doxydoc.doxydocFile = this.doxydocFile;
-    return doxydoc.parse(type, files, {
+    var docu =  doxydoc.parse(type, files, {
         basePath: this.resolveToBase(this.conf.docuFilename) || ''
     });
+    return docu;
 };
 
 PageCreator.prototype.getMetaInfos = function() {
@@ -363,12 +364,9 @@ PageCreator.prototype.scanHeadlines = function(html) {
         });
     }
 
-    // console.log('TAGS', tags);
-
     var traverse = function(data, inTraversal) {
 
         var result = [];
-        // console.log(' + --- TRAVERSE --- + ', data, inTraversal);
 
         while(true) {
             var item = data.shift();
@@ -376,8 +374,6 @@ PageCreator.prototype.scanHeadlines = function(html) {
                 break;
             }
 
-            // console.log('PUSH', item.tag + ':' + item.link, item, ' TO RES ', result);
-            
             result.push({
                 link: item.link,
                 text: item.text
@@ -385,19 +381,16 @@ PageCreator.prototype.scanHeadlines = function(html) {
 
             if (data[0] && data[0].path.length > item.path.length) {
                 var itemProp = result[result.length - 1];
-                // console.log('ITEM', itemProp, data.length);
                 if (data.length) {
                     itemProp.items = traverse(data, true);
                 }
             }
 
             if (inTraversal && data[0] && data[0].path.length < item.path.length) {
-                // console.log('BREAK', itemProp, data.length);
                 break;
             }
         }
 
-        // console.log(' + --- RETURN --- + ', result);
         return result;
     };
 
