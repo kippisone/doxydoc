@@ -12,7 +12,7 @@ html
     body
         section class="pageMain"
             (> header)
-            sectiodn class="pageBody"
+            section class="pageBody"
                 aside class="pageLeft"
                     :each $navigationLinks : div class="pageLinks"
                         span class="link"
