@@ -12,7 +12,7 @@ html
             link rel="Stylesheet" href="$this"
     body
         section class="pageMain"
-            (> header)
+            (> includes/header)
             section class="pageBody"
                 aside class="pageLeft"
                     :each $navigationLinks : div class="pageLinks"

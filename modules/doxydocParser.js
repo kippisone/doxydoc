@@ -96,7 +96,7 @@ module.exports = (function() {
         console.log('RES', result);
         console.log('LOC', locals);
         return FireTPL.fire2html(tmpl, extend(result, locals), {
-            partialsPath: path.join(this.templateDir, 'partials')
+            includesPath: this.templateDir
         });
     };
 
@@ -115,7 +115,7 @@ module.exports = (function() {
 
         var tmpl = fs.readFileSync(this.templateFile);
         return FireTPL.fire2html(tmpl, extend(result, locals), {
-            partialsPath: path.join(this.templateDir, 'partials')
+            includesPath: this.templateDir
         });
     };
 

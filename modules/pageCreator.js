@@ -198,7 +198,7 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
     
     var ftl = grunt.file.read(path.join(this.conf.templateDir, template));
     var html = firetpl.fire2html(ftl, extended, {
-        partialsPath: path.join(this.conf.templateDir, 'partials')
+        includesPath: this.conf.templateDir
     });
 
     grunt.file.write(path.join(this.outDir, name), html);
@@ -215,9 +215,9 @@ PageCreator.prototype.parseMarkdown = function(source) {
     return md.render(source);
 };
 
-PageCreator.prototype.parseFireTPL = function(source, partialsPath) {
+PageCreator.prototype.parseFireTPL = function(source, includesPath) {
     return firetpl.fire2html(source, this.locals, {
-        partialsPath: partialsPath
+        includesPath: includesPath
     });
 };
 

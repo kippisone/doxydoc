@@ -11,7 +11,7 @@ html
             link rel="Stylesheet" href="$this"
     body class="docu"
         section class="pageMain"
-            (> header)
+            (> includes/header)
             section class="pageBody"
                 aside class="pageLeft"
                     :each $listing : div class="moduleListing"
