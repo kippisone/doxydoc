@@ -11,10 +11,11 @@
     background-color: #ddd;
     padding: 10px;
     box-sizing: border-box;
+    overflow: auto;
 }
 
 .pageContent {
-    padding: 60px 10px 10px 10px;
+    padding: 60px 10px 30px 10px;
 }
 
 .pageFooter {
@@ -27,4 +28,14 @@
     text-align: center;
     color: #666;
     margin-top: 30px;
+
+    a:link,
+    a:active,
+    a:visited {
+        color: inherit;
+    }
+
+    a:hover {
+        color: @lagoonBlue;
+    }
 }

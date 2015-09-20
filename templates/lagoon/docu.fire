@@ -11,7 +11,7 @@ html
             link rel="Stylesheet" href="$this"
     body
         section class="pageMain"
-            (> header)
+            (> includes/header)
             section class="pageBody"
                 aside class="pageLeft"
                     :each $listing : div class="moduleListing"
@@ -25,15 +25,15 @@ html
                                     :each $items : ul class="groupBlockItem"
                                         li 
                                             a href="#$link" $name
-                section class="pageContent"
+                article class="pageContent"
                     h1 id="top" $name
                         span class="version" "v"
                             $version
-                    div class="description" $description
+                    div class="description" $$description
                     :each $listing : div
                         h2 id="$link" $name
                         :if $description : div class="description"
-                            $description.full
+                            $$description.full
                         :each $groups : div class="groupBlock $id"
                             :if $items.length : div class="groupBlockItem"
                                 h3 id="$link" $name
@@ -50,7 +50,7 @@ html
                                                     a href="$url" target="$target"
                                                         $name
                                         :if $description : div class="description"
-                                            $description.full
+                                            $$description.full
                                         :if $registrar : div class="registrar"
                                             span "Defined in " $registrar.type
                                             a href="#$registrar.link" " "
@@ -67,7 +67,7 @@ html
                                                     tr
                                                         td $name
                                                         td $dataTypes
-                                                        td $description
+                                                        td $$description
                                         :if $fires : div class="firesBlock"
                                             h5 "Calling events:"
                                             table class="firesTable dcTable"
@@ -78,27 +78,27 @@ html
                                                 :each $fires : tbody
                                                     tr
                                                         td $name
-                                                        td $description
+                                                        td $$description
                                         :if $returns : div class="returnValue"
                                             h5 "Returns: "
                                                 span class="returnDatatype" $returns.dataTypes
-                                            span $returns.description
+                                            span $$returns.description
                                         :if $examples : div class="exampleBlock"
                                             h5 "Example:"
                                             :each $examples : div class="examples"
                                                 div class="codeBox"
-                                                    code class="codeBlock $type" $code
+                                                    code class="codeBlock $type" $$code
                                         :if $previews : div class="exampleBlock"
-                                            :each $previews : div class="previews"
-                                                :if $title : h5
-                                                    $title
-                                                div class="previewBox"
-                                                    div class="previewBlock $type" $code
-                                        :if $preview : div class="preview"
-                                            $preview
+                                            :each $previews : div class="preview"
+                                                div class="previewBox  $type"
+                                                    :if $title : h5
+                                                        $title
+                                                    div class="content $type" $$code
                                         :if $source : div
                                             h5 "Code:"
                                             div class="codeBox"
-                                                code class="codeBlock $source.type" $source.code
+                                                code class="codeBlock $source.type" $$source.code
 
-            footer class="pageFooter" "Documentation created by DoxyDoc"
+
+            footer class="pageFooter" "Documentation created by".
+                a href="http://doxydoc.com" target="_blank" "DoxyDoc"

@@ -12,12 +12,15 @@ var DoxyDocParser = require('./doxydocParser'),
     firetpl = require('firetpl');
 
 var PageCreator = function(conf) {
+    conf = conf || {};
+
     this.conf = {
         indexPage: 'README.md',
         templateDir: conf.templateDir || path.join(__dirname, '../templates/lagoon/'),
         output: conf.output || 'docs',
         docuFilename: conf.docuFilename || 'docu.html'
     };
+
 
     var templateDirs = require('../doxydoc').templateDirs;
     if (templateDirs[this.conf.templateDir]) {
@@ -28,10 +31,11 @@ var PageCreator = function(conf) {
     this.rootDir = process.cwd();
     this.outDir = path.resolve(process.cwd(), this.conf.output);
     this.locals = extend(conf.locals, this.getMetaInfos());
+    this.isDevelopment = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === undefined;
 };
 
 PageCreator.prototype.log = function() {
-    if (this.verbose) {
+    if (!this.silent) {
         var args = Array.prototype.slice.call(arguments);
         grunt.log.ok.apply(grunt.log, args);
     }
@@ -67,6 +71,10 @@ PageCreator.prototype.createPages = function() {
 
     //Parse navigation links
     ['headerLinks', 'navigationLinks'].forEach(function(key) {
+        if (!(key in this.conf)) {
+            return;
+        }
+        
         this.conf[key].forEach(function(link) {
             if (link.file) {
                 this.createPage(link.file, link.link, 'page.fire', link);
@@ -82,13 +90,18 @@ PageCreator.prototype.createPages = function() {
     var outDir = this.outDir;
 
     //Create js bundle
-    var superjoin = new Superjoin();
+    var superjoin = new Superjoin({
+        verbose: this.verbose,
+        root: this.conf.templateDir,
+        workingDir: this.conf.templateDir,
+        npmDir: path.join(__dirname, '../node_modules')
+    });
 
-    superjoin.verbose = this.verbose;
-    superjoin.root = this.conf.templateDir;
     var sjConf = superjoin.getConf();
     var out = superjoin.join(sjConf.files, sjConf.main);
     grunt.file.write(path.join(outDir, 'doxydoc.js'), out);
+
+    var self = this;
 
     var copyAssets = function(abspath, rootdir, subdir, file) {
         var src, dest;
@@ -106,7 +119,7 @@ PageCreator.prototype.createPages = function() {
             dest = path.join(outDir, subdir, file);
         }
 
-        grunt.log.ok(' ... copy', src.replace(path.join(__dirname, '..') + '/', ''));
+        self.log(' ... copy', src.replace(path.join(__dirname, '..') + '/', ''));
         grunt.file.copy(src, dest);
     };
 
@@ -115,32 +128,31 @@ PageCreator.prototype.createPages = function() {
     grunt.file.write(docuPath, docu);
     copyAssets(path.join(this.conf.templateDir, 'main.css'), path.join(outDir, 'main.css'));
     copyAssets(path.join(__dirname, '../node_modules/highlight.js/styles/', 'dark.css'), path.join(outDir, 'highlight.css'));
-    this.log('Finish!');
 };
 
 PageCreator.prototype.createPage = function(src, name, template, data) {
     data = data || {};
     
     var ext = path.extname(src);
-    if (this.verbose) {
-        this.log('Create page "%s" from source: %s', name, src);
-    }
+    this.log('Create page "%s" from source: %s', name, src);
     
     template = template || 'page.fire';
 
-    var source;
-    if (ext === '.md') {
-        source = this.parseMarkdown(fs.readFileSync(src, { encoding: 'utf8' }));
-    }
-    else if (ext === '.fire') {
-        source = this.parseFireTPL(fs.readFileSync(src, { encoding: 'utf8' }));
-    }
-    else {
-        source = fs.readFileSync(src, { encoding: 'utf8' });
+    var source = '';
+    var basePath = this.resolveToBase(name);
+    if (fs.existsSync(src)) {
+        if (ext === '.md') {
+            source = this.parseMarkdown(fs.readFileSync(src, { encoding: 'utf8' }));
+        }
+        else if (ext === '.fire') {
+            source = this.parseFireTPL(fs.readFileSync(src, { encoding: 'utf8' }), path.dirname(src));
+        }
+        else {
+            source = fs.readFileSync(src, { encoding: 'utf8' });
+        }
     }
 
     var locals = extend(true, {}, this.locals);
-    var basePath = this.resolveToBase(name) || '';
     if (basePath) {
         ['headerLinks', 'navigationLinks'].forEach(function(key) {
             if (locals[key]) {
@@ -153,6 +165,14 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
 
     ['customJS', 'customCSS'].forEach(function(method) {
         if (locals[method] && data[method]) {
+            locals[method] = locals[method].map(function(filePath) {
+                if (!/^(https?:)?\/\//.test(filePath)) {
+                    filePath = path.join(basePath, filePath);
+                }
+
+                return filePath;
+            });
+            
             locals[method] = locals[method].concat(data[method]).reduce(function(a, b){
                 if (a.indexOf(b) < 0 ) {
                     a.push(b);
@@ -164,16 +184,25 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
         }
     });
 
+    if (data.navigation) {
+        data.navigation = this.scanHeadlines(source);
+    }
+
+    if (data.livereload && this.isDevelopment) {
+        data.livereload = typeof data.livereload === 'number' ? data.livereload : 35729;
+    }
+
     var extended = extend({
         content: source,
         title: data.name || locals.name,
         basePath: basePath
     }, data, locals);
-    
+
     var ftl = grunt.file.read(path.join(this.conf.templateDir, template));
     var html = firetpl.fire2html(ftl, extended, {
-        partialsPath: path.join(this.conf.templateDir, 'partials')
+        includesPath: this.conf.templateDir
     });
+
     grunt.file.write(path.join(this.outDir, name), html);
 };
 
@@ -188,21 +217,22 @@ PageCreator.prototype.parseMarkdown = function(source) {
     return md.render(source);
 };
 
-PageCreator.prototype.parseFireTPL = function(source) {
+PageCreator.prototype.parseFireTPL = function(source, includesPath) {
     return firetpl.fire2html(source, this.locals, {
-        partialsPath: path.join(this.conf.templateDir, 'partials')
+        includesPath: includesPath
     });
 };
 
 PageCreator.prototype.createDocu = function(type, files) {
-    
     var doxydoc = new DoxyDocParser();
     doxydoc.templateFile = path.join(this.conf.templateDir, 'docu.fire');
     doxydoc.templateDir = this.conf.templateDir;
+    doxydoc.basePath = this.conf.basePath;
     doxydoc.doxydocFile = this.doxydocFile;
-    return doxydoc.parse(type, files, {
+    var docu =  doxydoc.parse(type, files, {
         basePath: this.resolveToBase(this.conf.docuFilename) || ''
     });
+    return docu;
 };
 
 PageCreator.prototype.getMetaInfos = function() {
@@ -236,6 +266,10 @@ PageCreator.prototype.getMetaInfos = function() {
 
 PageCreator.prototype.prepareData = function() {
     ['navigationLinks', 'headerLinks'].forEach(function(key) {
+        if (!(key in this.locals)) {
+            return;
+        }
+
         this.locals[key].forEach(function(link) {
             if (!link.target) {
                 link.target = '_self';
@@ -264,7 +298,13 @@ PageCreator.prototype.prepareData = function() {
             });
 
         }, this);
+
+
     }, this);
+
+    if (this.locals.livereload && this.isDevelopment) {
+        this.locals.livereload = typeof this.locals.livereload === 'number' ? this.locals.livereload : 35729;
+    }
 };
 
 /**
@@ -282,7 +322,93 @@ PageCreator.prototype.resolveToBase = function(path) {
         return '..';
     }).join('/');
 
-    return resolved;
+    return resolved || './';
+};
+
+/**
+ * Scans a html string and return an array of all <h*> tags with an id attribute
+ * @param  {String} html Input string
+ * @return {Array}      Array of found anchor links
+ */
+PageCreator.prototype.scanHeadlines = function(html) {
+    var reg = /<(h[1-6])[^>]+\bid\=["'](.*?)["'].*?>(.+?)<\/(a|h[1-6])>/g,
+        links = [],
+        tags = [];
+
+    var tagPath = [],
+        tagArr = {'h1': 1, 'h2': 2, 'h3': 3, 'h4': 4, 'h5': 5, 'h6': 6};
+
+    while(true) {
+        var match = reg.exec(html);
+        if (!match) {
+            break;
+        }
+
+        tagPath = tagPath.concat();
+
+        var tagPos = tagPath.indexOf(match[1]);
+        if (tagPos === -1) {
+            if (tagPath[0] && tagArr[tagPath[0]] > tagArr[match[1]]) {
+                tagPath = [match[1]];
+            }
+            else {
+                tagPath.push(match[1]);                
+            }
+        }
+        else {
+            tagPath = tagPath.slice(0, tagPos + 1);
+        }
+
+        tags.push({
+            link: match[2],
+            tag: match[1],
+            path: tagPath,
+            text: this.stripHtml(match[3])
+        });
+    }
+
+    var traverse = function(data, inTraversal) {
+
+        var result = [];
+
+        while(true) {
+            var item = data.shift();
+            if (!item) {
+                break;
+            }
+
+            result.push({
+                link: item.link,
+                text: item.text
+            });
+
+            if (data[0] && data[0].path.length > item.path.length) {
+                var itemProp = result[result.length - 1];
+                if (data.length) {
+                    itemProp.items = traverse(data, true);
+                }
+            }
+
+            if (inTraversal && data[0] && data[0].path.length < item.path.length) {
+                break;
+            }
+        }
+
+        return result;
+    };
+
+    links = traverse(tags);
+
+    return links;
+};
+
+/**
+ * Strip any html tags from a string
+ * @param  {String} str Input string
+ * @return {String}     Stripped string
+ */
+PageCreator.prototype.stripHtml = function(str) {
+    return str.replace(/<\/?[a-zA-Z0-9]+.*?>/g, '');
 };
 
 module.exports = PageCreator;

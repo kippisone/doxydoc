@@ -87,8 +87,14 @@ module.exports = (function() {
         if (result.customCSS && typeof result.customCSS === 'string') {
             result.customCSS = [result.customCSS];
         }
+
+        //Order pages by module name
+        result.listing = result.listing.sort(function(a, b) {
+            return a.name.localeCompare(b.name, 'en');
+        });
+
         return FireTPL.fire2html(tmpl, extend(result, locals), {
-            partialsPath: path.join(this.templateDir, 'partials')
+            includesPath: this.templateDir
         });
     };
 
@@ -107,7 +113,7 @@ module.exports = (function() {
 
         var tmpl = fs.readFileSync(this.templateFile);
         return FireTPL.fire2html(tmpl, extend(result, locals), {
-            partialsPath: path.join(this.templateDir, 'partials')
+            includesPath: this.templateDir
         });
     };
 
@@ -392,16 +398,18 @@ module.exports = (function() {
                         }
                         break;
                     case 'preview':
-                        if (!newTag.preview) {
+                        if (!newTag.previews) {
                             newTag.previews = [];
                         }
 
-                        var previewTag = tag.string.match(/^\s*\{(\w+)\}\s*([^]+$)/);
+                        var previewTag = tag.string.match(/^\s*(?:\{(\w+)\})?\s*([^]+$)/);
 
-                        newTag.previews.push({
-                            code: previewTag[2],
-                            type: previewTag[1] || 'html'
-                        });
+                        if (previewTag) {
+                            newTag.previews.push({
+                                code: previewTag[2],
+                                type: previewTag[1] || 'html'
+                            });
+                        }
                         break;
                 }
             }.bind(this));
@@ -468,7 +476,7 @@ module.exports = (function() {
             return '..';
         }).join('/');
 
-        return resolved;
+        return resolved || './';
     };
 
     return DoxyDocParser;

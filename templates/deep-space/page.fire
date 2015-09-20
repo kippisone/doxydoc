@@ -5,6 +5,8 @@ html
         script type="text/javascript" src="${basePath}doxydoc.js"
         :each $customJS
             script type="text/javascript" src="$this"
+        :if $livereload
+            script type="text/javascript" src="//localhost:$livereload/livereload.js"
 
         link rel="Stylesheet" href="${basePath}main.css"
         link rel="stylesheet" href="${basePath}highlight.css"
@@ -12,7 +14,17 @@ html
             link rel="Stylesheet" href="$this"
     body
         section class="pageMain"
-            (> header)
+            (> includes/header)
             section class="pageBody"
-                section class="pageContent"
-                    $content
+                :if $navigation
+                    aside class="pageLeft stickyItem"
+                        section class="subNavi"
+                            :tree $navigation : ul class="tree"
+                                li class="link"
+                                    a href="#$link" "$text"
+                                    &next $items : ul class="twig"
+                article class="pageContent"
+                    $$content
+
+            footer class="pageFooter" "Documentation created by".
+                a href="http://doxydoc.com" target="_blank" "DoxyDoc"

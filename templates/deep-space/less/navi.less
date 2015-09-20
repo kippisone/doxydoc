@@ -70,4 +70,56 @@
             border-radius: 5px;
         }
     }
+
+    .subNavi {
+        background-color: #eee;
+        border-radius: 5px;
+        padding: 5px;
+        margin-bottom: 10px;
+
+        .tree {
+            > .link:before {
+                content: '› ';
+            }
+        }
+
+        .twig {
+            padding-left: 15px;
+            
+            > .link:before {
+                content: '› ';
+            }
+
+            > .link {
+                a:link,
+                a:active,
+                a:visited {
+                    color: #444;
+                    font-weight: normal;
+                }
+
+                a:hover {
+                    color: @lagoonBlue;
+                }
+            }
+        }
+
+        a:link,
+        a:active,
+        a:visited {
+            color: #444;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bolder;
+            line-height: 20px;
+        }
+
+        a:hover {
+            color: @lagoonBlue;
+        }
+
+        .subLinks {
+
+        }
+    }
 }

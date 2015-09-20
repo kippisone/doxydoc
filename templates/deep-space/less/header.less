@@ -60,6 +60,19 @@
             
         }
     }
+
+    .headerLogo {
+        float: left;
+
+        img {
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+    }
+
+    .subtitle {
+        font-size: 17px;
+    }
 }
 
 .pageNavi {
@@ -88,5 +101,14 @@
     a:hover {
         background-color: rgba(255, 255, 255, .4);
         
-    }        
+    }
+
+    &.sticky {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 47px; 
+        z-index: 9999;
+    }    
 }

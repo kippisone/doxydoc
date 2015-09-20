@@ -2,6 +2,8 @@
     "name": "lagoon-template",
     "main": "./js/doxydoc.js",
     "files": [
-        "highlight.js"
+        "jquery",
+        "dresscode-less",
+        "$npm/highlight.js"
     ]
 }

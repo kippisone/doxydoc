@@ -1,0 +1,21 @@
+header class="pageHeader"
+    section class="headerContent"
+        :if $logoImage : section class="headerLogo"
+            a class="logoLink" href="${basePath}"
+                img class="logoImage" src="$logoImage"
+        div class="headerInner"
+            div class="name"
+                a class="logoLink" href="${basePath}" $name
+            div class="version" "v"
+                $version
+            :if $subtitle : div class="subtitle"
+                $subtitle
+        navi class="mainNavi"
+            :each $headerLinks : div class="links"
+                a href="$link" $name
+nav class="pageNavi stickyItem"
+    section class="naviContent"
+        :each $navigationLinks : div class="pageLinks"
+            span class="link"
+                a href="$link" target="$target.ifFalse('_self')" $name
+                

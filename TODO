@@ -13,3 +13,11 @@ Features:
 * Split window with source view
 * Mark current displaying item in navigation
 * Add a scrolling lib
+* Use mor html5 elements (http://www.mediaevent.de/xhtml/html5-tags.html)
+* Mobile support
+* Optional params
+
+    [name]      Optional
+    ...name     1 to n args of this type
+    [...name]   0 to n args
+    name=foo    default value = foo

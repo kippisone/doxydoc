@@ -77,7 +77,14 @@ module.exports = function(doxed) {
         else if (block.type === 'var') {
             block.name = block.name || this.grepPattern(/(@\w+):/, block.source.code);
             if (block.dataTypes && block.dataTypes.indexOf('color') !== -1 && !block.preview) {
-                block.preview = colorPreview(block.source.code);
+                if (!block.previews) {
+                    block.previews = [];
+                }
+
+                block.previews.push({
+                    type: 'color',
+                    code: colorPreview(block.source.code)
+                });
             }
             group.addItem('vars', block);
         }
