@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:AndiOxidant/doxydoc.git"
+    "url": "git@github.com:Andifeind/doxydoc.git"
   },
   "keywords": [
     "dox",
@@ -19,10 +19,10 @@
     "codedoc",
     "jsdoc"
   ],
-  "author": "Andi Heinkelein <andi.oxidant@noname-media.com>",
+  "author": "Andi Heinkelein <andifeind@noname-media.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AndiOxidant/doxydoc/issues"
+    "url": "https://github.com/Andifeind/doxydoc/issues"
   },
   "dependencies": {
     "commander": "^2.8.1",

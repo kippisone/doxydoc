@@ -3,7 +3,7 @@ Changelog
 
 v0.4.7
 ------
-
+* Added `cssClass` option
 * Bug fixes
 
 v0.4.6

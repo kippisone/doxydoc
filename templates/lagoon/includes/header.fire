@@ -10,4 +10,4 @@ header class="pageHeader"
         $subtitle
     navi class="mainNavi"
         :each $headerLinks : div class="links"
-            a href="$link" $name
+            a class="link $cssClass.or('')" href="$link" $name

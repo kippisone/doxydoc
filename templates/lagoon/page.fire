@@ -22,7 +22,7 @@ html
                     :if $navigation : section class="subNavi pageLinks"
                         :tree $navigation : ul class="tree"
                             li class="link"
-                                a href="#$link" "$text"
+                                a class="link $cssClass.or('')" href="#$link" "$text"
                                 &next $items : ul class="twig"
                 article class="pageContent"
                     $$content
