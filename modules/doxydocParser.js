@@ -93,8 +93,6 @@ module.exports = (function() {
             return a.name.localeCompare(b.name, 'en');
         });
 
-        console.log('RES', result);
-        console.log('LOC', locals);
         return FireTPL.fire2html(tmpl, extend(result, locals), {
             includesPath: this.templateDir
         });
@@ -478,7 +476,7 @@ module.exports = (function() {
             return '..';
         }).join('/');
 
-        return resolved;
+        return resolved || './';
     };
 
     return DoxyDocParser;

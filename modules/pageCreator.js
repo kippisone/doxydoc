@@ -21,6 +21,7 @@ var PageCreator = function(conf) {
         docuFilename: conf.docuFilename || 'docu.html'
     };
 
+
     var templateDirs = require('../doxydoc').templateDirs;
     if (templateDirs[this.conf.templateDir]) {
         this.conf.templateDir = templateDirs[this.conf.templateDir];
@@ -92,7 +93,8 @@ PageCreator.prototype.createPages = function() {
     var superjoin = new Superjoin({
         verbose: this.verbose,
         root: this.conf.templateDir,
-        workingDir: this.conf.templateDir
+        workingDir: this.conf.templateDir,
+        npmDir: path.join(__dirname, '../node_modules')
     });
 
     var sjConf = superjoin.getConf();
@@ -137,13 +139,13 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
     template = template || 'page.fire';
 
     var source = '';
-    var basePath = this.resolveToBase(name) || '';
+    var basePath = this.resolveToBase(name);
     if (fs.existsSync(src)) {
         if (ext === '.md') {
             source = this.parseMarkdown(fs.readFileSync(src, { encoding: 'utf8' }));
         }
         else if (ext === '.fire') {
-            source = this.parseFireTPL(fs.readFileSync(src, { encoding: 'utf8' }), path.resolve(path.dirname(src)));
+            source = this.parseFireTPL(fs.readFileSync(src, { encoding: 'utf8' }), path.dirname(src));
         }
         else {
             source = fs.readFileSync(src, { encoding: 'utf8' });
@@ -195,7 +197,7 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
         title: data.name || locals.name,
         basePath: basePath
     }, data, locals);
-    
+
     var ftl = grunt.file.read(path.join(this.conf.templateDir, template));
     var html = firetpl.fire2html(ftl, extended, {
         includesPath: this.conf.templateDir
@@ -225,6 +227,7 @@ PageCreator.prototype.createDocu = function(type, files) {
     var doxydoc = new DoxyDocParser();
     doxydoc.templateFile = path.join(this.conf.templateDir, 'docu.fire');
     doxydoc.templateDir = this.conf.templateDir;
+    doxydoc.basePath = this.conf.basePath;
     doxydoc.doxydocFile = this.doxydocFile;
     var docu =  doxydoc.parse(type, files, {
         basePath: this.resolveToBase(this.conf.docuFilename) || ''
@@ -319,7 +322,7 @@ PageCreator.prototype.resolveToBase = function(path) {
         return '..';
     }).join('/');
 
-    return resolved;
+    return resolved || './';
 };
 
 /**
