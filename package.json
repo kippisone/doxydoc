@@ -1,6 +1,6 @@
 {
   "name": "doxydoc",
-  "version": "0.4.6",
+  "version": "0.4.7-0",
   "description": "Source code documentation generator for Javascript, LESS and CSS",
   "main": "doxydoc.js",
   "bin": {

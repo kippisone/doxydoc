@@ -171,17 +171,27 @@ p {
   margin: 0;
 }
 /**
-     * Styles a label
+     * Label base style.
      * 
      * @mixin label
      *
      * @example {html}
-     * <span class="label labelRed">Button</span>
+     * <span class="dcLabelRed">Button</span>
      * 
      * @preview
-     * <span class="label labelRed">Button</span>
+     * <span class="dcLabelRed">Button</span>
      */
-.label {
+/**
+     * Styles a red label
+     *
+     * @mixin dcLabelRed
+     * @example {html}
+     * <span class="dcLabelRed">Red label</span>
+     * 
+     * @preview
+     * <span class="dcLabelRed">Red label</span>
+     */
+.dcLabelRed {
   display: inline-block;
   border-radius: 5px;
   color: #fff;
@@ -189,46 +199,246 @@ p {
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
-}
-.labelRed {
   background-color: #b10000;
 }
-.labelDarkRed {
+/**
+     * Styles a dark red label
+     *
+     * @mixin dcLabelDarkRed
+     * @example {html}
+     * <span class="dcLabelDarkRed">Dark red label</span>
+     * 
+     * @preview
+     * <span class="dcLabelDarkRed">Dark red label</span>
+     */
+.dcLabelDarkRed {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #b10024;
 }
-.labelBlue {
+/**
+     * Styles a blue label
+     *
+     * @mixin dcLabelBlue
+     * @example {html}
+     * <span class="dcLabelBlue">Blue label</span>
+     * 
+     * @preview
+     * <span class="dcLabelBlue">Blue label</span>
+     */
+.dcLabelBlue {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #0051cd;
 }
-.labelPurple {
+/**
+     * Styles a purple label
+     *
+     * @mixin dcLabelPurple
+     * @example {html}
+     * <span class="dcLabelPurple">Purple label</span>
+     * 
+     * @preview
+     * <span class="dcLabelPurple">Purple label</span>
+     */
+.dcLabelPurple {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #7a00ad;
 }
-.lableDarkPurple {
+/**
+     * Styles a dark purple label
+     *
+     * @mixin dcLableDarkPurple
+     * @example {html}
+     * <span class="dcLableDarkPurple">Dark purple label</span>
+     * 
+     * @preview
+     * <span class="dcLableDarkPurple">Dark purple label</span>
+     */
+.dcLableDarkPurple {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #430069;
 }
-.labelGrey {
-  background-color: #555555;
-}
-.labelOrangeRed {
+/**
+     * Styles an orange label
+     *
+     * @mixin dcLabelOrangeRed
+     * @example {html}
+     * <span class="dcLabelOrangeRed">Orange label</span>
+     * 
+     * @preview
+     * <span class="dcLabelOrangeRed">Orange label</span>
+     */
+.dcLabelOrangeRed {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #ff7e00;
 }
-.labelBrown {
+/**
+     * Styles a brown label
+     *
+     * @mixin dcLabelBrown
+     * @example {html}
+     * <span class="dcLabelBrown">Brown label</span>
+     * 
+     * @preview
+     * <span class="dcLabelBrown">Brown label</span>
+     */
+.dcLabelBrown {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #967657;
 }
-.labelDarkGreen {
+/**
+     * Styles a dark green label
+     *
+     * @mixin dcLabelDarkGreen
+     * @example {html}
+     * <span class="dcLabelDarkGreen">Dark green label</span>
+     * 
+     * @preview
+     * <span class="dcLabelDarkGreen">Dark green label</span>
+     */
+.dcLabelDarkGreen {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #00826a;
 }
-.labelGreen {
+/**
+     * Styles a green label
+     *
+     * @mixin dcLabelGreen
+     * @example {html}
+     * <span class="dcLabelGreen">Green label</span>
+     * 
+     * @preview
+     * <span class="dcLabelGreen">Green label</span>
+     */
+.dcLabelGreen {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #008b12;
 }
-.labelYellow {
+/**
+     * Styles a yellow label
+     *
+     * @mixin dcLabelYellow
+     * @example {html}
+     * <span class="dcLabelYellow">Yellow label</span>
+     * 
+     * @preview
+     * <span class="dcLabelYellow">Yellow label</span>
+     */
+.dcLabelYellow {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #e1ff00;
   color: #000;
 }
-.labelBlack {
+/**
+     * Styles a black label
+     *
+     * @mixin dcLabelBlack
+     * @example {html}
+     * <span class="dcLabelBlack">Black label</span>
+     * 
+     * @preview
+     * <span class="dcLabelBlack">Black label</span>
+     */
+.dcLabelBlack {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #000;
   color: #fff;
 }
-.labelGrey {
+/**
+     * Styles a grey label
+     *
+     * @mixin dcLabelGrey
+     * @example {html}
+     * <span class="dcLabelGrey">Grey label</span>
+     * 
+     * @preview
+     * <span class="dcLabelGrey">Grey label</span>
+     */
+.dcLabelGrey {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #555555;
+}
+/**
+     * Styles a dark grey label
+     *
+     * @mixin dcLabelDarkGrey
+     * @example {html}
+     * <span class="dcLabelDarkGrey">Dark grey label</span>
+     * 
+     * @preview
+     * <span class="dcLabelDarkGrey">Dark grey label</span>
+     */
+.dcLabelDarkGrey {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #232323;
   color: #fff;
 }
@@ -498,21 +708,19 @@ button.cancel:hover {
   color: #666;
   font-size: 14px;
   font-weight: bold;
+  cursor: pointer;
 }
 .dcFlipBox dt:hover {
   color: #0051cd;
 }
 .dcFlipBox dd {
-  opacity: 0;
   overflow: hidden;
+  display: none;
   -o-transition: all 0.35s ease-in;
   -moz-transition: all 0.35s ease-in;
   -webkit-transition: all 0.35s ease-in;
   -ms-transition: all 0.35s ease-in;
   transition: all 0.35s ease-in;
-}
-.dcFlipBox.active dd {
-  opacity: 1;
 }
 .dcFlipBox.active dt:before {
   -o-transform: rotate(-270deg);
@@ -2969,49 +3177,133 @@ table.dcTable td {
   font-size: 13px;
 }
 .pageContent .labelConstructor {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #967657;
 }
 .pageContent .labelPrivate {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #b10000;
 }
 .pageContent .labelProtected {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #ff7e00;
 }
 .pageContent .labelDeprecated {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #b10024;
 }
 .pageContent .labelUnimplemented {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #e1ff00;
   color: #000;
 }
 .pageContent .labelObject {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #000;
   color: #fff;
 }
 .pageContent .labelFunction {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #430069;
 }
 .pageContent .labelArray {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #000;
   color: #fff;
 }
 .pageContent .labelNumber {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #000;
   color: #fff;
 }
 .pageContent .labelAny {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #000;
   color: #fff;
 }
 .pageContent .labelString {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #000;
   color: #fff;
 }
 .pageContent .labelBoolean {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #000;
   color: #fff;
 }
 .pageContent .labelColor {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #000;
   color: #fff;
 }
@@ -3021,13 +3313,12 @@ table.dcTable td {
 .pageContent .dataType {
   display: inline-block;
   border-radius: 5px;
+  color: #fff;
   padding: 2px 5px;
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
   background-color: #555555;
-  background-color: #232323;
-  color: #fff;
 }
 .pageContent .paramBlock {
   margin-bottom: 20px;

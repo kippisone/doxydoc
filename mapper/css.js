@@ -6,15 +6,19 @@ module.exports = function(doxed) {
         self = this;
 
     doxed.forEach(function(block) {
+        if (!block) {
+            return;
+        }
+
         groupName = moduleName;
 
-         if (block.type === 'module') {
+        if (block.type === 'module') {
             moduleName = block.name;
             groupName = block.name;
-         }
-         else if (block.group) {
+        }
+        else if (block.group) {
             groupName = block.group;
-         }
+        }
 
         var group = this.setGroup(groupName, function() {
             this.defineGroup('items', {
