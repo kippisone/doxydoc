@@ -203,7 +203,9 @@ module.exports = (function() {
                 grepDataTypes: this.grepDataTypes.bind(this)
             };
             
-            this.callMapperFunc(path.extname(doxFile.file), res, data);
+            var type = path.extname(doxFile.file);
+            this.callMapperFunc(type, res, data);
+            this.createSearchIndex(type, data);
         }.bind(this));
 
         result.listing = this.listing.map(function(listing) {
@@ -477,6 +479,36 @@ module.exports = (function() {
         }).join('/');
 
         return resolved || './';
+    };
+
+    DoxyDocParser.prototype.createSearchIndex = function(type, data) {
+        // console.log('DATA', data);
+
+        var indexData = [];
+
+        var curMod = '';
+        data.forEach(function(item) {
+            if (!item) {
+                return;
+            }
+
+            if (item.type === 'module') {
+                curMod = item.name;
+            }
+
+            if (item.type === 'method') {
+                var args = [];
+                if (item.params) {
+                    item.params.forEach(function(param) {
+                        args.push(param.name);
+                    });
+                }
+
+                indexData.push(curMod + '.' + item.name + '(' + args.join(', ') + ')');
+            }
+        });
+
+        console.log(indexData.join('\n'));
     };
 
     return DoxyDocParser;
