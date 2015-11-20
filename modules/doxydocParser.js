@@ -44,7 +44,9 @@ module.exports = (function() {
     DoxyDocParser.prototype.callMapperFunc = function(mapperKey, thisValue, data) {
         mapperKey = mapperKey.replace(/^\./, '');
         var fn = this.__mapperFuncs[mapperKey];
-        fn.call(thisValue, data);
+        if (fn) {
+            fn.call(thisValue, data);
+        }
     };
 
     DoxyDocParser.prototype.readFiles = function(files) {
@@ -205,7 +207,7 @@ module.exports = (function() {
             
             var type = path.extname(doxFile.file);
             this.callMapperFunc(type, res, data);
-            this.createSearchIndex(type, data);
+            // this.createSearchIndex(type, data);
         }.bind(this));
 
         result.listing = this.listing.map(function(listing) {
@@ -509,6 +511,27 @@ module.exports = (function() {
         });
 
         console.log(indexData.join('\n'));
+    };
+
+    DoxyDocParser.prototype.showModuleTree = function() {
+        // console.log('DATA', data);
+
+        var indexData = [];
+
+        this.listing.forEach(function(listing) {
+            console.log(listing.name);
+
+            listing.groups.forEach(function(group) {
+                if (group.name) {
+                    console.log('  ', group.name);
+                    
+                    group.items.forEach(function(item) {
+                        // console.log('ITEM', item);
+                        console.log('    ', item.name);
+                    });
+                }
+            });
+        });
     };
 
     return DoxyDocParser;

@@ -228,6 +228,7 @@ PageCreator.prototype.createDocu = function(type, files) {
     doxydoc.templateFile = path.join(this.conf.templateDir, 'docu.fire');
     doxydoc.templateDir = this.conf.templateDir;
     doxydoc.basePath = this.conf.basePath;
+    console.log('CONF', this.conf);
     doxydoc.doxydocFile = this.doxydocFile;
     var docu =  doxydoc.parse(type, files, {
         basePath: this.resolveToBase(this.conf.docuFilename) || ''
