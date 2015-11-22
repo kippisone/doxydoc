@@ -484,33 +484,45 @@ module.exports = (function() {
     };
 
     DoxyDocParser.prototype.createSearchIndex = function(type, data) {
-        // console.log('DATA', data);
+        // console.log('LISTING', this.listing);
 
         var indexData = [];
 
+        /*
+            {
+                type: 'module|method|property|function|mixin',
+                title: 'The title to be displayed',
+                description: 'Content',
+                link: '#anchorLink'
+            }
+
+         */
+
         var curMod = '';
-        data.forEach(function(item) {
-            if (!item) {
-                return;
-            }
 
-            if (item.type === 'module') {
-                curMod = item.name;
-            }
+        this.listing.forEach(function(module) {
+            console.log('MODULE', module);
+            var curModule = module.name;
 
-            if (item.type === 'method') {
-                var args = [];
-                if (item.params) {
-                    item.params.forEach(function(param) {
-                        args.push(param.name);
-                    });
-                }
+            indexData.push({
+                type: 'module',
+                module: curModule,
+                title: module.name,
+                description: module.description ? module.description.full: ''
+            });
 
-                indexData.push(curMod + '.' + item.name + '(' + args.join(', ') + ')');
-            }
+            module.groups.forEach(function(group) {
+                console.log('GROUP', group);
+
+                group.items.forEach(function(item) {
+                    console.log('ITEM', item);
+                    
+                });
+
+            });
         });
 
-        console.log(indexData.join('\n'));
+        console.dir(indexData);
     };
 
     DoxyDocParser.prototype.showModuleTree = function() {
