@@ -9,7 +9,6 @@ html
             script type="text/javascript" src="//localhost:$livereload/livereload.js"
 
         link rel="Stylesheet" href="${basePath}main.css"
-        link rel="stylesheet" href="${basePath}highlight.css"
         :each $customCSS
             link rel="Stylesheet" href="$this"
     body

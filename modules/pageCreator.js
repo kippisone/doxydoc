@@ -4,7 +4,8 @@ var fs = require('fs'),
     path = require('path');
 
 var Superjoin = require('superjoin'),
-    Markdown = require('markdown-it'),
+    marked = require('marked'),
+    highlightjs = require('highlight.js'),
     extend = require('node.extend'),
     grunt = require('grunt');
 
@@ -127,7 +128,8 @@ PageCreator.prototype.createPages = function() {
     this.log('Copy docu to:', this.outDir);
     grunt.file.write(docuPath, docu);
     copyAssets(path.join(this.conf.templateDir, 'main.css'), path.join(outDir, 'main.css'));
-    copyAssets(path.join(__dirname, '../node_modules/highlight.js/styles/', 'dark.css'), path.join(outDir, 'highlight.css'));
+    copyAssets(path.join(__dirname, '../node_modules/highlight.js/styles/', 'dark.css'),
+        path.join(outDir, 'highlight.css'));
 };
 
 PageCreator.prototype.createPage = function(src, name, template, data) {
@@ -207,14 +209,32 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
 };
 
 PageCreator.prototype.parseMarkdown = function(source) {
-    var md = new Markdown({
-        html:         true,        // Enable HTML tags in source 
-        breaks:       true,        // Convert '\n' in paragraphs into <br> 
-        langPrefix:   'codeBlock ',  // CSS language prefix for fenced blocks. Can be 
-                                  // useful for external highlighters. 
-        linkify:      true        // Autoconvert URL-like text to links 
+    var mdRenderer = new marked.Renderer();
+    
+    mdRenderer.code = function(code, language) {
+        var indention = /^\t|\s{2,4}/.exec(code);
+        if (indention) {
+            code = code.split('\n').map(function(line) {
+                return line.replace(indention[0], '');
+            }).join('\n');
+        }
+
+        code = highlightjs.highlightAuto(code).value;
+        return '<code class="hljs lang-' + language + '">' + code + '</code>';
+    };
+
+    marked.setOptions({
+        renderer: mdRenderer,
+        gfm: true,
+        tables: true,
+        breaks: true,
+        pedantic: false,
+        sanitize: true,
+        smartLists: true,
+        smartypants: false
     });
-    return md.render(source);
+
+    return marked(source);
 };
 
 PageCreator.prototype.parseFireTPL = function(source, includesPath) {
@@ -228,11 +248,11 @@ PageCreator.prototype.createDocu = function(type, files) {
     doxydoc.templateFile = path.join(this.conf.templateDir, 'docu.fire');
     doxydoc.templateDir = this.conf.templateDir;
     doxydoc.basePath = this.conf.basePath;
-    console.log('CONF', this.conf);
     doxydoc.doxydocFile = this.doxydocFile;
     var docu =  doxydoc.parse(type, files, {
         basePath: this.resolveToBase(this.conf.docuFilename) || ''
     });
+
     return docu;
 };
 
