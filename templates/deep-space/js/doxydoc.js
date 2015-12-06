@@ -12,7 +12,7 @@ $(function() {
     }
 
     //Make navigation sticky
-    var headerHeight = $('.pageHeader').outerHeight(),
+    var headerHeight = $('.headerContent').outerHeight(),
         subNaviLeft = $('.pageBody').offset().left,
         isSticky = false;
 

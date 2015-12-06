@@ -1,6 +1,6 @@
 {
   "name": "doxydoc",
-  "version": "0.4.7-5",
+  "version": "0.4.7-7",
   "description": "Source code documentation generator for Javascript, LESS and CSS",
   "main": "doxydoc.js",
   "bin": {
@@ -28,22 +28,22 @@
     "commander": "^2.9.0",
     "dox": "^0.8.0",
     "dresscode-less": "^0.1.3",
-    "firetpl": "^0.6.0",
+    "firetpl": "^0.6.1",
     "fs-readdir-recursive": "^1.0.0",
-    "glob": "^5.0.15",
+    "glob": "^6.0.1",
     "grunt": "~0.4.5",
-    "highlight.js": "~8.9.1",
+    "highlight.js": "^8.9.1",
     "jquery": "^2.1.4",
-    "markdown-it": "^5.0.1",
+    "markdown-it": "^5.0.2",
     "marked": "^0.3.5",
     "node.extend": "^1.1.5",
-    "superjoin": "^0.1.1"
+    "superjoin": "^0.2.0"
   },
   "devDependencies": {
     "grunt-bumpup": "^0.6.2",
-    "grunt-contrib-jshint": "~0.11.3",
-    "grunt-contrib-less": "~1.0.1",
-    "grunt-contrib-uglify": "^0.10.0",
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-contrib-less": "^1.1.0",
+    "grunt-contrib-uglify": "^0.11.0",
     "grunt-contrib-watch": "~0.6.1",
     "grunt-release": "^0.13.0"
   },

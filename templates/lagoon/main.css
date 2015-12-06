@@ -224,7 +224,7 @@ p {
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
-  background-color: #b10000;
+  background-color: #B10000;
 }
 /**
      * Styles a dark red label
@@ -244,7 +244,7 @@ p {
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
-  background-color: #6b1426;
+  background-color: #6B1426;
 }
 /**
      * Styles a blue label
@@ -264,7 +264,7 @@ p {
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
-  background-color: #0051cd;
+  background-color: #0051CD;
 }
 /**
      * Styles a purple label
@@ -284,7 +284,7 @@ p {
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
-  background-color: #7a00ad;
+  background-color: #7A00AD;
 }
 /**
      * Styles a dark purple label
@@ -324,7 +324,7 @@ p {
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
-  background-color: #ff7e00;
+  background-color: #FF7E00;
 }
 /**
      * Styles a brown label
@@ -364,7 +364,7 @@ p {
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
-  background-color: #00826a;
+  background-color: #00826A;
 }
 /**
      * Styles a green label
@@ -384,7 +384,7 @@ p {
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
-  background-color: #008b12;
+  background-color: #008B12;
 }
 /**
      * Styles a yellow label
@@ -404,7 +404,7 @@ p {
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
-  background-color: #e1ff00;
+  background-color: #E1FF00;
   color: #000;
 }
 /**
@@ -445,7 +445,7 @@ p {
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
-  background-color: #555555;
+  background-color: #555;
 }
 /**
      * Styles a dark grey label
@@ -472,7 +472,7 @@ dl {
 }
 dt {
   font-size: 11px;
-  color: #555555;
+  color: #555;
   margin-bottom: 2px;
 }
 dd {
@@ -486,7 +486,7 @@ dd {
 textarea,
 input[type=text],
 input[type=password] {
-  border: 1px solid #555555;
+  border: 1px solid #555;
   padding: 1px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -498,7 +498,7 @@ input[type=password] {
 input[type=text].error,
 input[type=password].error,
 textarea.error {
-  border-color: #b10000;
+  border-color: #B10000;
   border-width: 2px;
 }
 textarea {
@@ -537,7 +537,7 @@ div[data-xqform=input-suggest] input[type=text] {
   border-radius: 3px;
   line-height: 20px;
   vertical-align: middle;
-  background-color: #d5d5d5;
+  background-color: #D5D5D5;
 }
 .dcSwitch input[type=radio] {
   position: absolute;
@@ -546,7 +546,7 @@ div[data-xqform=input-suggest] input[type=text] {
 }
 .dcSwitch input[type=radio] + label {
   display: inline-block;
-  background-color: #d5d5d5;
+  background-color: #D5D5D5;
   color: #333;
   padding: 2px 5px;
   border-right: 1px solid #000;
@@ -555,7 +555,7 @@ div[data-xqform=input-suggest] input[type=text] {
   border-right: 0;
 }
 .dcSwitch input[type=radio]:checked + label {
-  background-color: #0051cd;
+  background-color: #0051CD;
   color: #fff;
 }
 /**
@@ -599,7 +599,7 @@ div[data-xqform=input-suggest] input[type=text] {
 }
 .dcCheck input[type=checkbox]:checked + label:before {
   color: #fff;
-  background-color: #0051cd;
+  background-color: #0051CD;
   border-color: #fff;
 }
 .dcCheck label {
@@ -665,7 +665,7 @@ button:focus,
      */
 button[type=submit],
 button.submit {
-  background-color: #0051cd;
+  background-color: #0051CD;
   color: #fff;
 }
 button[type=submit]:hover,
@@ -683,7 +683,7 @@ button.submit:hover {
      */
 button[type=reset],
 button.cancel {
-  background-color: #d5d5d5;
+  background-color: #D5D5D5;
   color: #333;
 }
 button[type=reset]:hover,
@@ -736,7 +736,7 @@ button.cancel:hover {
   cursor: pointer;
 }
 .dcFlipBox dt:hover {
-  color: #0051cd;
+  color: #0051CD;
 }
 .dcFlipBox dd {
   overflow: hidden;
@@ -791,11 +791,11 @@ table.dcTable {
   border-collapse: collapse;
   border-radius: 5px;
   width: 100%;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 table.dcTable caption {
   border-bottom: none;
-  background-color: #0051cd;
+  background-color: #0051CD;
   color: #fff;
   padding: 5px;
 }
@@ -881,7 +881,7 @@ table.dcTable td {
 }
 .fa-border {
   padding: .2em .25em .15em;
-  border: solid 0.08em #eeeeee;
+  border: solid 0.08em #eee;
   border-radius: .1em;
 }
 .fa-pull-left {
@@ -996,7 +996,7 @@ table.dcTable td {
   font-size: 2em;
 }
 .fa-inverse {
-  color: #ffffff;
+  color: #fff;
 }
 /* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
    readers do not read off random characters that represent icons */
@@ -2878,12 +2878,12 @@ table.dcTable td {
   color: inherit;
 }
 .pageFooter a:hover {
-  color: #0051cd;
+  color: #0051CD;
 }
 .pageHeader {
   width: 100%;
   height: 50px;
-  background-color: #0051cd;
+  background-color: #0051CD;
   color: #fff;
   box-sizing: border-box;
   padding: 10px;
@@ -2988,7 +2988,7 @@ table.dcTable td {
   font-weight: normal;
 }
 .pageLeft .pageLinks .twig > .link a:hover {
-  background-color: #0051cd;
+  background-color: #0051CD;
   color: #fff;
   border-radius: 5px;
 }
@@ -3007,7 +3007,7 @@ table.dcTable td {
   margin-right: 5px;
 }
 .pageLeft .pageLinks a:hover {
-  background-color: #0051cd;
+  background-color: #0051CD;
   color: #fff;
   border-radius: 5px;
 }
@@ -3017,7 +3017,7 @@ table.dcTable td {
 .pageContent h1 {
   font-size: 24px;
   font-weight: bold;
-  color: #555555;
+  color: #555;
   margin-bottom: 10px;
 }
 .pageContent h1 .version {
@@ -3025,7 +3025,7 @@ table.dcTable td {
   font-size: 11px;
   display: inline-block;
   border-radius: 5px;
-  background-color: #555555;
+  background-color: #555;
   color: #fff;
   padding: 2px 5px;
   position: relative;
@@ -3035,13 +3035,13 @@ table.dcTable td {
 .pageContent h2 {
   font-size: 20px;
   font-weight: bold;
-  color: #555555;
+  color: #555;
   margin-bottom: 10px;
 }
 .pageContent h3 {
   font-size: 18px;
   font-weight: bold;
-  color: #0051cd;
+  color: #0051CD;
   margin-bottom: 10px;
 }
 .pageContent h4 {
@@ -3053,13 +3053,13 @@ table.dcTable td {
 .pageContent h5 {
   font-size: 12px;
   font-weight: bold;
-  color: #555555;
+  color: #555;
   margin-bottom: 5px;
 }
 .pageContent a:link,
 .pageContent a:visited,
 .pageContent a:active {
-  color: #0051cd;
+  color: #0051CD;
   text-decoration: none;
 }
 .pageContent a:hover {
@@ -3153,7 +3153,7 @@ table.dcTable td {
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
-  background-color: #b10000;
+  background-color: #B10000;
 }
 .pageContent .labelProtected {
   display: inline-block;
@@ -3163,7 +3163,7 @@ table.dcTable td {
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
-  background-color: #ff7e00;
+  background-color: #FF7E00;
 }
 .pageContent .labelDeprecated {
   display: inline-block;
@@ -3173,7 +3173,7 @@ table.dcTable td {
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
-  background-color: #6b1426;
+  background-color: #6B1426;
 }
 .pageContent .labelUnimplemented {
   display: inline-block;
@@ -3183,7 +3183,7 @@ table.dcTable td {
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
-  background-color: #e1ff00;
+  background-color: #E1FF00;
   color: #000;
 }
 .pageContent .labelObject {
@@ -3277,7 +3277,7 @@ table.dcTable td {
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
-  background-color: #555555;
+  background-color: #555;
 }
 .pageContent .paramBlock {
   margin-bottom: 20px;
@@ -3297,7 +3297,7 @@ table.dcTable td {
   color: #000;
 }
 .pageContent .registrar {
-  color: #555555;
+  color: #555;
 }
 .pageContent .webLinks {
   margin-bottom: 10px;
