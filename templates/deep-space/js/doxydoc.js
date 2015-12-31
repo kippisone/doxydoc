@@ -18,12 +18,12 @@ $(function() {
 
     $(document).scroll(function(e) {
         if (!isSticky && document.body.scrollTop > headerHeight) {
-            $('.stickyItem').addClass('sticky');
+            $(document.body).addClass('sticky');
             $('.pageLeft').css('left', subNaviLeft);
             isSticky = true;
         }
         else if (isSticky && document.body.scrollTop < headerHeight) {
-            $('.stickyItem').removeClass('sticky');
+            $(document.body).removeClass('sticky');
             $('.pageLeft').css('left', '');
             isSticky = false;
         }

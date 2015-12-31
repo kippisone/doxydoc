@@ -22,7 +22,6 @@ var PageCreator = function(conf) {
         docuFilename: conf.docuFilename || 'docu.html'
     };
 
-
     var templateDirs = require('../doxydoc').templateDirs;
     if (templateDirs[this.conf.templateDir]) {
         this.conf.templateDir = templateDirs[this.conf.templateDir];
@@ -32,6 +31,9 @@ var PageCreator = function(conf) {
     this.rootDir = process.cwd();
     this.outDir = path.resolve(process.cwd(), this.conf.output);
     this.locals = extend(conf.locals, this.getMetaInfos());
+    if (conf.livereload && !this.locals.livereload) {
+        this.locals.livereload = conf.livereload;
+    }
     this.isDevelopment = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === undefined;
 };
 
@@ -190,15 +192,16 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
         data.navigation = this.scanHeadlines(source);
     }
 
-    if (data.livereload && this.isDevelopment) {
-        data.livereload = typeof data.livereload === 'number' ? data.livereload : 35729;
-    }
-
     var extended = extend({
         content: source,
         title: data.name || locals.name,
         basePath: basePath
     }, data, locals);
+
+
+    if (extended.livereload && this.isDevelopment) {
+        extended.livereload = typeof extended.livereload === 'number' ? extended.livereload : 35729;
+    }
 
     var ftl = grunt.file.read(path.join(this.conf.templateDir, template));
     var html = firetpl.fire2html(ftl, extended, {

@@ -2977,7 +2977,7 @@ table.dcTable td {
 .pageNavi a:hover {
   background-color: rgba(255, 255, 255, 0.4);
 }
-.pageNavi.sticky {
+.sticky .pageNavi {
   position: fixed;
   top: 0;
   left: 0;
@@ -3091,6 +3091,10 @@ table.dcTable td {
   font-weight: bold;
   color: #555;
   margin-bottom: 10px;
+  margin-top: 10px;
+}
+.pageContent h1:first-child {
+  margin-top: 0;
 }
 .pageContent h1 .version {
   color: #333;
@@ -3109,24 +3113,40 @@ table.dcTable td {
   font-weight: bold;
   color: #555;
   margin-bottom: 10px;
+  padding-top: 10px;
+}
+.pageContent h2:first-child {
+  padding-top: 0;
 }
 .pageContent h3 {
   font-size: 18px;
   font-weight: bold;
   color: #0051CD;
   margin-bottom: 10px;
+  padding-top: 10px;
+}
+.pageContent h3:first-child {
+  padding-top: 0;
 }
 .pageContent h4 {
   font-size: 15px;
   font-weight: bold;
   color: #232323;
   margin-bottom: 10px;
+  padding-top: 10px;
+}
+.pageContent h4:first-child {
+  padding-top: 0;
 }
 .pageContent h5 {
   font-size: 12px;
   font-weight: bold;
   color: #555;
   margin-bottom: 5px;
+  padding-top: 10px;
+}
+.pageContent h5:first-child {
+  padding-top: 0;
 }
 .pageContent a:link,
 .pageContent a:visited,
@@ -3136,6 +3156,9 @@ table.dcTable td {
 }
 .pageContent a:hover {
   text-decoration: underline;
+}
+.pageContent p {
+  padding: 5px 0;
 }
 .pageContent .groupBlockItem,
 .pageContent .itemBlockContent {
