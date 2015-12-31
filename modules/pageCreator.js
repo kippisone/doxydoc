@@ -59,14 +59,6 @@ PageCreator.prototype.createPages = function() {
         this.locals.customCSS = [this.locals.customCSS];
     }
 
-    if (this.conf.customJS) {
-        if (!this.locals.customJS) {
-            this.locals.customJS = [];
-        }
-
-        this.locals.customJS.push();
-    }
-
     //Create index page
     if (this.conf.indexPage) {
         this.createPage(this.conf.indexPage, 'index.html', 'index.fire');
@@ -201,6 +193,12 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
 
     if (extended.livereload && this.isDevelopment) {
         extended.livereload = typeof extended.livereload === 'number' ? extended.livereload : 35729;
+
+        if (!extended.customJS) {
+            extended.customJS = [];
+        }
+
+        extended.customJS.push('//localhost:' + extended.livereload + '/livereload.js');
     }
 
     var ftl = grunt.file.read(path.join(this.conf.templateDir, template));
