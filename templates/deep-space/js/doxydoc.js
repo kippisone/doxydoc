@@ -33,4 +33,3 @@ $(function() {
         subNaviLeft = $('.pageBody').offset().left;
     });
 });
-
