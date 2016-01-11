@@ -1,5 +1,6 @@
+'use strict';
+
 module.exports = function(doxed) {
-    'use strict';
 
     var moduleName = this.file,
         groupName,
@@ -35,6 +36,10 @@ module.exports = function(doxed) {
 
             this.defineGroup('mixins', {
                 name: 'Mixins'
+            });
+
+            this.defineGroup('classes', {
+                name: 'CSS Classes'
             });
         });
 
@@ -72,6 +77,10 @@ module.exports = function(doxed) {
         if (block.type === 'mixin') {
             block.name = block.name || this.grepPattern(/\.(\w+)\([^\)]*\)/, block.source.code);
             group.addItem('mixins', block);
+        }
+        else if (block.type === 'class') {
+            block.name = block.name || this.grepPattern(/\.(\w+)\([^\)]*\)/, block.source.code);
+            group.addItem('classes', block);
         }
         else if (block.type === 'selector') {
             block.name = block.name || this.grepPattern(/^([^\{]*)(\{|$)/, block.source.code)

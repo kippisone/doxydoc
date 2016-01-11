@@ -4,9 +4,10 @@
         font-weight: bold;
         color: @wolfGrey;
         margin-bottom: 10px;
-        margin-top: 10px;
+        margin: 20px 0 10px 0;
+
         &:first-child {
-            margin-top: 0;
+            margin-top: 10px;
         }
 
         .version {
@@ -24,44 +25,51 @@
     }
 
     h2 {
-        font-size: 20px;
+        font-size: 22px;
         font-weight: bold;
         color: @wolfGrey;
-        margin-bottom: 10px;
-        padding-top: 10px;
+        margin: 20px 0 10px 0;
         &:first-child {
             padding-top: 0;
         }
     }
 
     h3 {
-        font-size: 18px;
+        font-size: 20px;
         font-weight: bold;
-        color: @lagoonBlue;
-        margin-bottom: 10px;
-        padding-top: 10px;
+        color: @wolfGrey;
+        margin: 20px 0 10px 0;
         &:first-child {
             padding-top: 0;
         }
     }
 
     h4 {
-        font-size: 15px;
+        font-size: 18px;
         font-weight: bold;
-        color: @nightGrey;
-        margin-bottom: 10px;
-        padding-top: 10px;
+        color: @wolfGrey;
+        margin: 20px 0 10px 0;
         &:first-child {
             padding-top: 0;
         }
     }
 
     h5 {
-        font-size: 12px;
+        font-size: 16px;
         font-weight: bold;
         color: @wolfGrey;
-        margin-bottom: 5px;
-        padding-top: 10px;
+        margin: 5px 0;
+        &:first-child {
+            padding-top: 0;
+        }
+    }
+
+    h6 {
+        font-size: 14px;
+        font-weight: bold;
+        color: @wolfGrey;
+        margin: 5px 0;
+
         &:first-child {
             padding-top: 0;
         }
@@ -79,7 +87,47 @@
     }
 
     p {
-        padding: 5px 0;
+        margin: 10px 0;
+    }
+
+    ul {
+        list-style-type: disc;
+        padding-left: 20px;
+        margin: 15px;
+
+        > li {
+            list-style-type: disc;
+
+            > ul {
+                margin: 5px;
+                list-style-type: circle;
+                > li {
+                    list-style-type: circle;
+                }
+            }
+        }
+    }
+
+    ol {
+        list-style-type: decimal;
+        padding-left: 20px;
+        margin: 15px;
+
+        > li {
+            list-style-type: decimal;
+        }
+    }
+
+    code {
+        border: 1px solid #ccc;
+        padding: 2px 5px;
+        display: inline-block;
+        border-radius: 3px;
+        background-color: #eee;
+    }
+
+    .dcTable {
+        margin: 15px 0;
     }
 
     .groupBlockItem,
@@ -90,16 +138,25 @@
     .codeBox {
         max-height: 200px;
         overflow: auto;
-        background-color: #111;
-        border-radius: 10px;
+        background-color: #14171A;
         color: #ddd;
-        padding: 7px;
+        margin: 10px 0;
+        border-radius: 8px;
+
+        .codeBlock {
+            margin: 0;
+        }
     }
 
     .codeBlock {
+        display: block;
+        border: none;
         white-space: pre;
+        margin: 10px 0;
         font-family: monospace;
         background-color: #14171A;
+        border-radius: 8px;
+        padding: 7px;
     }
 
     .description {
@@ -145,63 +202,6 @@
                 opacity: 1;
             }
         }
-    }
-
-    .labels {
-        margin-left: 10px;
-        font-size: 13px;
-    }
-
-    .labelConstructor {
-        .dcLabelBrown;
-    }
-
-    .labelPrivate {
-        .dcLabelRed;
-    }
-
-    .labelProtected {
-        .dcLabelOrangeRed;
-    }
-
-    .labelDeprecated {
-        .dcLabelDarkRed;
-    }
-
-    .labelUnimplemented {
-        .dcLabelYellow;
-    }
-
-    .labelObject {
-        .dcLabelBlack;
-    }
-
-    .labelFunction {
-        .dcLableDarkPurple;
-    }
-
-    .labelArray {
-        .dcLabelBlack;
-    }
-
-    .labelNumber {
-        .dcLabelBlack;
-    }
-
-    .labelAny {
-        .dcLabelBlack;
-    }
-
-    .labelString {
-        .dcLabelBlack;
-    }
-
-    .labelBoolean {
-        .dcLabelBlack;
-    }
-
-    .labelColor {
-        .dcLabelBlack;
     }
 
     .dataTypes {

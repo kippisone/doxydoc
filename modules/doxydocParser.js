@@ -289,6 +289,7 @@ module.exports = (function() {
                 switch(tag.type) {
                     case 'module':
                     case 'mixin':
+                    case 'class':
                     case 'selector':
                         newTag.type = tag.type;
                         newTag.name = tag.string;

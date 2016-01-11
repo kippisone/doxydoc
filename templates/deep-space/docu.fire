@@ -62,6 +62,7 @@ html
                                                         td "Name"
                                                         td "Type"
                                                         td "Description"
+
                                                 :each $params : tbody
                                                     tr
                                                         td $name
@@ -79,7 +80,7 @@ html
                                                         td $name
                                                         td $$description
                                         :if $returns : div class="returnValue"
-                                            h5 "Returns: "
+                                            h5 "Returns: ".
                                                 span class="returnDatatype" $returns.dataTypes
                                             span $$returns.description
                                         :if $examples : div class="exampleBlock"

@@ -106,7 +106,7 @@ html {
 body {
   width: 100%;
   height: 100%;
-  font-size: 13px;
+  font-size: 14px;
   font-family: sans-serif;
   margin: 0;
 }
@@ -755,13 +755,28 @@ button.cancel:hover {
   transform: rotate(-270deg);
 }
 /**
-     * Styles a table
+     * Styles a table. The line background and hover effect is applied on the <tr> element.
      *
      * @mixin dcTable
      *
      * @example {html}
      * <table class="dcTable">
-     *     <!-- table body -->
+     *     <thead>
+     *         <tr>
+     *             <td>Color</td>
+     *             <td>Code</td>
+     *         </tr>
+     *     </thead>
+     *     <tbody>
+     *         <tr>
+     *             <td>Red</td>
+     *             <td>#ff0000</td>
+     *         </tr>
+     *         <tr>
+     *             <td>Green</td>
+     *             <td>#00ff00</td>
+     *         </tr>
+     *     </tbody>
      * </table>
      * 
      * @preview
@@ -777,8 +792,6 @@ button.cancel:hover {
      *             <td>Red</td>
      *             <td>#ff0000</td>
      *         </tr>
-     *     </tbody>
-     *     <tbody>
      *         <tr>
      *             <td>Green</td>
      *             <td>#00ff00</td>
@@ -799,20 +812,101 @@ table.dcTable caption {
   color: #fff;
   padding: 5px;
 }
-table.dcTable thead {
+table.dcTable thead td,
+table.dcTable tr > th {
   background-color: #ddd;
   font-weight: bold;
-}
-table.dcTable thead td {
   padding: 5px;
 }
-table.dcTable tbody:nth-child(even) td {
+table.dcTable tbody > tr:nth-child(even) td {
   background-color: #eee;
 }
-table.dcTable tbody:hover td {
+table.dcTable tbody > tr:hover td {
   background-color: #ddd;
 }
 table.dcTable td {
+  border-left: 1px solid 1px solid #c0c0c0;
+  padding: 5px;
+  vertical-align: top;
+  font-size: 14px;
+}
+/**
+     * Styles a table with multiple <tbody> tags. The line hover and background
+     * is applying on the bodytags. This allows you to define multiple rows per line.
+     *
+     * @mixin dcMultiTable
+     *
+     * @example {html}
+     * <table class="dcMultiTable">
+     *     <thead>
+     *         <tr>
+     *             <td>Color</td>
+     *             <td>Code</td>
+     *         </tr>
+     *     </thead>
+     *     <tbody>
+     *         <tr>
+     *             <td>Red</td>
+     *             <td>#ff0000</td>
+     *         </tr>
+     *     </tbody>
+     *     <tbody>
+     *         <tr>
+     *             <td>Green</td>
+     *             <td>#00ff00</td>
+     *         </tr>
+     *     </tbody>
+     * </table>
+     * 
+     * @preview
+     * <table class="dcMultiTable">
+     *     <thead>
+     *         <tr>
+     *             <td>Color</td>
+     *             <td>Code</td>
+     *         </tr>
+     *     </thead>
+     *     <tbody>
+     *         <tr>
+     *             <td>Red</td>
+     *             <td>#ff0000</td>
+     *         </tr>
+     *     </tbody>
+     *     <tbody>
+     *         <tr>
+     *             <td>Green</td>
+     *             <td>#00ff00</td>
+     *         </tr>
+     *     </tbody>
+     * </table>
+     */
+table.dcMultiTable {
+  border: 1px solid #c0c0c0;
+  border-collapse: collapse;
+  border-radius: 5px;
+  width: 100%;
+  background-color: #fff;
+}
+table.dcMultiTable caption {
+  border-bottom: none;
+  background-color: #0051CD;
+  color: #fff;
+  padding: 5px;
+}
+table.dcMultiTable thead {
+  background-color: #ddd;
+  font-weight: bold;
+}
+table.dcMultiTable thead td {
+  padding: 5px;
+}
+table.dcMultiTable tbody:nth-child(even) td {
+  background-color: #eee;
+}
+table.dcMultiTable tbody:hover td {
+  background-color: #ddd;
+}
+table.dcMultiTable td {
   border-left: 1px solid 1px solid #c0c0c0;
   padding: 5px;
   vertical-align: top;
@@ -3091,10 +3185,10 @@ table.dcTable td {
   font-weight: bold;
   color: #555;
   margin-bottom: 10px;
-  margin-top: 10px;
+  margin: 20px 0 10px 0;
 }
 .pageContent h1:first-child {
-  margin-top: 0;
+  margin-top: 10px;
 }
 .pageContent h1 .version {
   color: #333;
@@ -3109,43 +3203,48 @@ table.dcTable td {
   top: -10px;
 }
 .pageContent h2 {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
   color: #555;
-  margin-bottom: 10px;
-  padding-top: 10px;
+  margin: 20px 0 10px 0;
 }
 .pageContent h2:first-child {
   padding-top: 0;
 }
 .pageContent h3 {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
-  color: #0051CD;
-  margin-bottom: 10px;
-  padding-top: 10px;
+  color: #555;
+  margin: 20px 0 10px 0;
 }
 .pageContent h3:first-child {
   padding-top: 0;
 }
 .pageContent h4 {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: bold;
-  color: #232323;
-  margin-bottom: 10px;
-  padding-top: 10px;
+  color: #555;
+  margin: 20px 0 10px 0;
 }
 .pageContent h4:first-child {
   padding-top: 0;
 }
 .pageContent h5 {
-  font-size: 12px;
+  font-size: 16px;
   font-weight: bold;
   color: #555;
-  margin-bottom: 5px;
-  padding-top: 10px;
+  margin: 5px 0;
 }
 .pageContent h5:first-child {
+  padding-top: 0;
+}
+.pageContent h6 {
+  font-size: 14px;
+  font-weight: bold;
+  color: #555;
+  margin: 5px 0;
+}
+.pageContent h6:first-child {
   padding-top: 0;
 }
 .pageContent a:link,
@@ -3158,7 +3257,40 @@ table.dcTable td {
   text-decoration: underline;
 }
 .pageContent p {
-  padding: 5px 0;
+  margin: 10px 0;
+}
+.pageContent ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin: 15px;
+}
+.pageContent ul > li {
+  list-style-type: disc;
+}
+.pageContent ul > li > ul {
+  margin: 5px;
+  list-style-type: circle;
+}
+.pageContent ul > li > ul > li {
+  list-style-type: circle;
+}
+.pageContent ol {
+  list-style-type: decimal;
+  padding-left: 20px;
+  margin: 15px;
+}
+.pageContent ol > li {
+  list-style-type: decimal;
+}
+.pageContent code {
+  border: 1px solid #ccc;
+  padding: 2px 5px;
+  display: inline-block;
+  border-radius: 3px;
+  background-color: #eee;
+}
+.pageContent .dcTable {
+  margin: 15px 0;
 }
 .pageContent .groupBlockItem,
 .pageContent .itemBlockContent {
@@ -3167,15 +3299,23 @@ table.dcTable td {
 .pageContent .codeBox {
   max-height: 200px;
   overflow: auto;
-  background-color: #111;
-  border-radius: 10px;
+  background-color: #14171A;
   color: #ddd;
-  padding: 7px;
+  margin: 10px 0;
+  border-radius: 8px;
+}
+.pageContent .codeBox .codeBlock {
+  margin: 0;
 }
 .pageContent .codeBlock {
+  display: block;
+  border: none;
   white-space: pre;
+  margin: 10px 0;
   font-family: monospace;
   background-color: #14171A;
+  border-radius: 8px;
+  padding: 7px;
 }
 .pageContent .description {
   font-size: 14px;
@@ -3219,141 +3359,6 @@ table.dcTable td {
 .pageContent .preview .cssColorName:hover {
   opacity: 1;
 }
-.pageContent .labels {
-  margin-left: 10px;
-  font-size: 13px;
-}
-.pageContent .labelConstructor {
-  display: inline-block;
-  border-radius: 5px;
-  color: #fff;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #967657;
-}
-.pageContent .labelPrivate {
-  display: inline-block;
-  border-radius: 5px;
-  color: #fff;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #B10000;
-}
-.pageContent .labelProtected {
-  display: inline-block;
-  border-radius: 5px;
-  color: #fff;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #FF7E00;
-}
-.pageContent .labelDeprecated {
-  display: inline-block;
-  border-radius: 5px;
-  color: #fff;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #6B1426;
-}
-.pageContent .labelUnimplemented {
-  display: inline-block;
-  border-radius: 5px;
-  color: #fff;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #E1FF00;
-  color: #000;
-}
-.pageContent .labelObject {
-  display: inline-block;
-  border-radius: 5px;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #000;
-  color: #fff;
-}
-.pageContent .labelFunction {
-  display: inline-block;
-  border-radius: 5px;
-  color: #fff;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #430069;
-}
-.pageContent .labelArray {
-  display: inline-block;
-  border-radius: 5px;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #000;
-  color: #fff;
-}
-.pageContent .labelNumber {
-  display: inline-block;
-  border-radius: 5px;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #000;
-  color: #fff;
-}
-.pageContent .labelAny {
-  display: inline-block;
-  border-radius: 5px;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #000;
-  color: #fff;
-}
-.pageContent .labelString {
-  display: inline-block;
-  border-radius: 5px;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #000;
-  color: #fff;
-}
-.pageContent .labelBoolean {
-  display: inline-block;
-  border-radius: 5px;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #000;
-  color: #fff;
-}
-.pageContent .labelColor {
-  display: inline-block;
-  border-radius: 5px;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #000;
-  color: #fff;
-}
 .pageContent .dataTypes {
   margin-left: 5px;
 }
@@ -3396,7 +3401,6 @@ Sunburst-like style (c) Vasily Polovnyov <vast@whiteants.net>
 
 */
 .hljs {
-  border-radius: 5px;
   display: block;
   overflow-x: auto;
   padding: 5px;
@@ -3404,7 +3408,6 @@ Sunburst-like style (c) Vasily Polovnyov <vast@whiteants.net>
   color: #f8f8f8;
   -webkit-text-size-adjust: none;
   white-space: pre;
-  margin: 10px 0;
 }
 .hljs-comment,
 .hljs-javadoc {
@@ -3523,4 +3526,276 @@ Sunburst-like style (c) Vasily Polovnyov <vast@whiteants.net>
 .xml .css,
 .xml .hljs-cdata {
   opacity: 0.5;
+}
+/**
+ * Style collection
+ *
+ * @module Styles
+ */
+/**
+ * Styles a label
+ *
+ * @example
+ * <span class="label label{type}">My label</span>
+ */
+.labels {
+  margin-left: 10px;
+  font-size: 13px;
+}
+/**
+ * Styles a constructor label
+ *
+ * @example
+ * <span class="label labelConstructor">Constructor</span>
+ * 
+ * @preview
+ * <span class="label labelConstructor">Constructor</span>
+ */
+/**
+ * Styles a constructor label
+ *
+ * @example
+ * <span class="label labelConstructor">Constructor</span>
+ * 
+ * @preview
+ * <span class="label labelConstructor">Constructor</span>
+ */
+.labelConstructor {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #967657;
+}
+/**
+ * Styles a private label
+ *
+ * @example
+ * <span class="label labelPrivate">Private</span>
+ * 
+ * @preview
+ * <span class="label labelPrivate">Private</span>
+ */
+.labelPrivate {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #B10000;
+}
+/**
+ * Styles a protected label
+ *
+ * @example
+ * <span class="label labelProtected">Protected</span>
+ * 
+ * @preview
+ * <span class="label labelProtected">Protected</span>
+ */
+.labelProtected {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #FF7E00;
+}
+/**
+ * Styles a deprecated label
+ *
+ * @example
+ * <span class="label labelDeprecated">Deprecated</span>
+ * 
+ * @preview
+ * <span class="label labelDeprecated">Deprecated</span>
+ */
+.labelDeprecated {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #6B1426;
+}
+/**
+ * Styles a unimplemented label
+ *
+ * @example
+ * <span class="label labelUnimplemented">Unimplemented</span>
+ * 
+ * @preview
+ * <span class="label labelUnimplemented">Unimplemented</span>
+ */
+.labelUnimplemented {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #E1FF00;
+  color: #000;
+}
+/**
+ * Styles a object label
+ *
+ * @example
+ * <span class="label labelObject">Object</span>
+ * 
+ * @preview
+ * <span class="label labelObject">Object</span>
+ */
+.labelObject {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #000;
+  color: #fff;
+}
+/**
+ * Styles a function label
+ *
+ * @example
+ * <span class="label labelFunction">Function</span>
+ * 
+ * @preview
+ * <span class="label labelFunction">Function</span>
+ */
+.labelFunction {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #430069;
+}
+/**
+ * Styles a array label
+ *
+ * @example
+ * <span class="label labelArray">Array</span>
+ * 
+ * @preview
+ * <span class="label labelArray">Array</span>
+ */
+.labelArray {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #000;
+  color: #fff;
+}
+/**
+ * Styles a number label
+ *
+ * @example
+ * <span class="label labelNumber">Number</span>
+ * 
+ * @preview
+ * <span class="label labelNumber">Number</span>
+ */
+.labelNumber {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #000;
+  color: #fff;
+}
+/**
+ * Styles a any label
+ *
+ * @example
+ * <span class="label labelAny">Any</span>
+ * 
+ * @preview
+ * <span class="label labelAny">Any</span>
+ */
+.labelAny {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #000;
+  color: #fff;
+}
+/**
+ * Styles a string label
+ *
+ * @example
+ * <span class="label labelString">String</span>
+ * 
+ * @preview
+ * <span class="label labelString">String</span>
+ */
+.labelString {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #000;
+  color: #fff;
+}
+/**
+ * Styles a boolean label
+ *
+ * @example
+ * <span class="label labelBoolean">Boolean</span>
+ * 
+ * @preview
+ * <span class="label labelBoolean">Boolean</span>
+ */
+.labelBoolean {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #000;
+  color: #fff;
+}
+/**
+ * Styles a color label
+ *
+ * @example
+ * <span class="label labelColor">Color</span>
+ * 
+ * @preview
+ * <span class="label labelColor">Color</span>
+ */
+.labelColor {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #000;
+  color: #fff;
 }

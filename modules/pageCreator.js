@@ -65,7 +65,7 @@ PageCreator.prototype.createPages = function() {
     }
 
     //Parse navigation links
-    ['headerLinks', 'navigationLinks'].forEach(function(key) {
+    ['headerLinks', 'navigationLinks', 'shadowPages'].forEach(function(key) {
         if (!(key in this.conf)) {
             return;
         }
@@ -147,6 +147,9 @@ PageCreator.prototype.createPage = function(src, name, template, data) {
             source = fs.readFileSync(src, { encoding: 'utf8' });
         }
     }
+    else {
+        throw new Error('Page ' + src + ' not found!');
+    }
 
     var locals = extend(true, {}, this.locals);
     if (basePath) {
@@ -213,15 +216,34 @@ PageCreator.prototype.parseMarkdown = function(source) {
     var mdRenderer = new marked.Renderer();
     
     mdRenderer.code = function(code, language) {
-        var indention = /^\t|\s{2,4}/.exec(code);
-        if (indention) {
-            code = code.split('\n').map(function(line) {
-                return line.replace(indention[0], '');
-            }).join('\n');
-        }
+        // var indention = /^\t|\s{2,4}/.exec(code);
+        // if (false && indention) {
+        //     code = code.split('\n').map(function(line) {
+        //         return line.replace(indention[0], '');
+        //     }).join('\n');
+        // }
+
+        code = code.replace(/\&#96;/g, '`');
 
         code = highlightjs.highlightAuto(code).value;
-        return '<code class="hljs lang-' + language + '">' + code + '</code>';
+        return '<div class="codeBox"><code class="codeBlock hljs lang-' + language + '">' + code + '</code></div>';
+    };
+
+    // mdRenderer.html = function(html) {
+    //     console.log('HTML', html);
+    // };
+
+    mdRenderer.table = function(header, body) {
+        return '<table class="dcMultiTable">' + header + body + '</table>';
+    };
+
+    mdRenderer.tablerow = function(row) {
+        if (/^<th>/.test(row)) {
+            return '<thead><tr>' + row + '</tr></thead>';            
+        }
+        else {
+            return '<tbody><tr>' + row + '</tr></tbody>';
+        }
     };
 
     marked.setOptions({
@@ -230,7 +252,7 @@ PageCreator.prototype.parseMarkdown = function(source) {
         tables: true,
         breaks: true,
         pedantic: false,
-        sanitize: true,
+        sanitize: false,
         smartLists: true,
         smartypants: false
     });
@@ -287,7 +309,7 @@ PageCreator.prototype.getMetaInfos = function() {
 };
 
 PageCreator.prototype.prepareData = function() {
-    ['navigationLinks', 'headerLinks'].forEach(function(key) {
+    ['navigationLinks', 'headerLinks', 'shadowPages'].forEach(function(key) {
         if (!(key in this.locals)) {
             return;
         }
