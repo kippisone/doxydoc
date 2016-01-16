@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v0.4.8
+------
+
+* Bug fixes
+* npm module upgrades
+
 v0.4.7
 ------
 
