@@ -3,7 +3,7 @@
 var docblockParser = require('docblock-parser');
 var fl = require('node-fl');
 
-describe('DocBlockParser', function() {    
+describe.skip('DocBlockParser', function() {    
     describe('Test', function() {
         beforeEach(function() {
 

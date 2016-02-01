@@ -1,7 +1,7 @@
 'use strict';
 var DoxyDoc = require('../doxydoc');
 
-describe('LESS', function() {
+describe.skip('LESS', function() {
     var doxydoc;
     
     describe('Doc Block:', function() {

@@ -5,7 +5,7 @@ var path = require('path'),
 
 var DoxyDoc = require('../doxydoc');
 
-describe('DoxyDoc parser', function() {
+describe.skip('DoxyDoc parser', function() {
     var doxydoc;
 
     describe('grepDataTypes', function() {

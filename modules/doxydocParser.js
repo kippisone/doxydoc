@@ -296,6 +296,7 @@ module.exports = (function() {
                         break;
                     case 'method':
                     case 'function':
+                    case 'anotation':
                         newTag.type = tag.type;
                         newTag.name = tag.string || doxed.ctx.name;
                         break;

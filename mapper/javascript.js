@@ -24,9 +24,10 @@ module.exports = function(doxed) {
             moduleName = block.name;
             groupName = block.name;
          }
-         else if (block.group) {
-            groupName = block.group;
-         }
+         // else if (block.group) {
+         //    groupName = block.group;
+         // }
+         
 
         var group = this.setGroup(groupName, function() {
             this.defineGroup('items', {
@@ -44,6 +45,10 @@ module.exports = function(doxed) {
             this.defineGroup('events', {
                 name: 'Events'
             });
+
+            this.defineGroup('anotations', {
+                name: 'Anotations'
+            });            
         });
 
         if (block.type === 'module' && block.description) {
@@ -122,6 +127,9 @@ module.exports = function(doxed) {
         }
         else if ((block.type === 'function' || block.type === 'var') && block.name) {
             group.addItem('items', block);
+        }
+        else if ((block.type === 'anotation') && block.name) {
+            group.addItem('anotations', block);
         }
         else {
             group.addUnknown(block);

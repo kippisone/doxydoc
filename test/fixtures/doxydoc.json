@@ -1,0 +1,9 @@
+{
+    "name": "Doxydoc test",
+    "docs": [
+        {
+            "files": ["fruits/*"],
+            "output": "fruits.html"
+        }
+    ]
+}

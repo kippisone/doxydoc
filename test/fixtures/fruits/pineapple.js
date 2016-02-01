@@ -1,5 +1,7 @@
 /**
  * Pineapple module
+ *
+ * @package Fruits
  * @module Pineapple
  */
 module.exports = function() {

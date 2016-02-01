@@ -2,7 +2,7 @@
 
 var PageCreator = require ('../modules/pageCreator');
 
-describe.only('PageCreator', function() {
+describe.skip('PageCreator', function() {
     describe('scanHeadLines', function() {
         var pageCreator;
         

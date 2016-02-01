@@ -1,5 +1,5 @@
 {
-    "name": "DoxyDoc",
+    "name": "Doxydoc",
     "basePath": "/",
     "headerLinks": [
         {
@@ -24,6 +24,12 @@
             "link": "example-html.html",
             "file": "test/pages/example.html",
             "name": "HTML file"
+        }
+    ],
+    "docs": [
+        {
+            "files": [],
+            "output": ""
         }
     ],
     "indexPage": "README.md"

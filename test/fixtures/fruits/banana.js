@@ -3,7 +3,9 @@
  *
  * Very awesome banana module.
  * 
+ * @package Fruits
  * @module  banana
+ * 
  * @example
  *     var banana = require('banana');
  *     banana.peelIt();

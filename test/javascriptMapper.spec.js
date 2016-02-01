@@ -4,7 +4,7 @@ var path = require('path'),
 
 var DoxyDoc = require('../doxydoc');
 
-describe('Javascript', function() {
+describe.skip('Javascript', function() {
     var doxydoc;
     
     describe('Mapper', function() {

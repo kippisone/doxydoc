@@ -35,6 +35,7 @@ var PageCreator = function(conf) {
         this.locals.livereload = conf.livereload;
     }
     this.isDevelopment = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === undefined;
+    this.isDevelopment = true;
 };
 
 PageCreator.prototype.log = function() {
