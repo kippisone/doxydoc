@@ -28,10 +28,15 @@ class Docs {
         this.files.map(function(file) {
             let docblock = new Docblock();
             let result = docblock.parse(file.source, file.type);
+            this.setFileInfo(file);
             this.parseDoc(result);
-        });
+        }, this);
 
         return this.items;
+    }
+
+    setFileInfo(file) {
+        
     }
 
     parseDoc(docs) {
@@ -54,7 +59,7 @@ class Docs {
             else {
                 this.createUngroupedItem(doc.group, doc);
             }
-        });
+        }, this);
     }
 
     createPackage(doc) {
@@ -126,7 +131,7 @@ class Docs {
         groupItem.items.push(doc);
     }
 
-    createUngroupItem(group, doc) {
+    createUngroupedItem(group, doc) {
         var groupItem = this.getGroupItem(this.curSubmodule.items, 'ungrouped');
         groupItem.items.push(doc);
     }

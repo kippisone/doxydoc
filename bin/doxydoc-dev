@@ -55,7 +55,12 @@ if (files.length) {
     }];
 }
 
-doxydoc.create();
+doxydoc.create().then(function(result) {
+    console.log(result);
+}).catch(function(err) {
+   console.error(err.stack);
+   process.exit(1); 
+});
 
 
 
