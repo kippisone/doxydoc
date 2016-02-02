@@ -59,6 +59,9 @@ class Doxydoc {
         return co(function *() {
             let conf = yield this.readDoxydocFile();
             Object.assign(this, conf);
+            console.log(conf);
+            yield this.createDocs();
+            console.log(this.docs);
         }.bind(this));
     }
 
@@ -70,7 +73,10 @@ class Doxydoc {
         return co(function *() {
             for (let docs of this.docs) {
                 let newDocs = new Docs();
+                console.log('N', newDocs);
                 docs.docs = newDocs.parse(docs.files);
+
+                console.log('N', newDocs);
             }
         }.bind(this));
     }

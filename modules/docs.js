@@ -16,12 +16,10 @@ class Docs {
             let type = path.extname(file).substr(1);
             this.files[i] = {
                 name: name,
-                source: fl.read,
+                source: fl.read(file),
                 type: type
             };
         }
-        this.files = this.files.map(function(file) {
-        });
     }
 
     parse(files) {
@@ -32,6 +30,8 @@ class Docs {
             let result = docblock.parse(file.source, file.type);
             this.parseDoc(result);
         });
+
+        return this.items;
     }
 
     parseDoc(docs) {
@@ -50,6 +50,9 @@ class Docs {
             }
             else if (doc.group) {
                 this.createGroupItem(doc.group, doc);
+            }
+            else {
+                this.createUngroupedItem(doc.group, doc);
             }
         });
     }
@@ -108,6 +111,7 @@ class Docs {
         }
 
         var newGroup = {
+            type: group === 'ungrouped' ? 'ungrouped' : 'grouped',
             group: group,
             items: []
         };
@@ -119,6 +123,11 @@ class Docs {
 
     createGroupItem(group, doc) {
         var groupItem = this.getGroupItem(this.curSubmodule.items, group);
+        groupItem.items.push(doc);
+    }
+
+    createUngroupItem(group, doc) {
+        var groupItem = this.getGroupItem(this.curSubmodule.items, 'ungrouped');
         groupItem.items.push(doc);
     }
 }
