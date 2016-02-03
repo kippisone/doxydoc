@@ -36,11 +36,17 @@ class Docs {
     }
 
     setFileInfo(file) {
-        
+        this.curFile = path.basename(file);
     }
 
     parseDoc(docs) {
-        docs.forEach(function(doc) {
+        this.curSubmodule = {
+            name: this.curFile,
+            type: 'filemodule',
+            items: []
+        };
+        
+        docs.forEach(function(doc, index) {
             if (doc.package) {
                 this.createPackage(doc);
             }
