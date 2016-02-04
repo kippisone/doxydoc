@@ -1,0 +1,4 @@
+section class="packages"
+    :each $itmes : div class="package"
+        h1 $name
+        articla $description

@@ -7,6 +7,7 @@ var Docblock = require('docblock');
 class Docs {
     constructor() {
         this.items = [];
+        this._cache = {};
     }
 
     readFiles() {
@@ -36,30 +37,46 @@ class Docs {
     }
 
     setFileInfo(file) {
-        this.curFile = path.basename(file);
+        this.curFilepath = file;
+        this.curFilename = path.basename(file);
+    }
+
+    getCachedItem(keys) {
+        var key = keys.join('-');
+        return this._cache[key];
+    }
+
+    setCacheItem(keys, obj) {
+        var key = keys.join('-');
+        return this._cache[key] = obj;
     }
 
     parseDoc(docs) {
-        this.curSubmodule = {
-            name: this.curFile,
-            type: 'filemodule',
-            items: []
-        };
-        
         docs.forEach(function(doc, index) {
             if (doc.package) {
                 this.createPackage(doc);
             }
-            else if (doc.subpackage) {
+            
+            if (doc.subpackage) {
                 this.createSubpackage(doc);
             }
-            else if (doc.module) {
+            
+            if (doc.module) {
                 this.createModule(doc);
             }
-            else if (doc.submodule) {
+            
+            if (doc.submodule) {
                 this.createSubmodule(doc);
             }
-            else if (doc.group) {
+
+            if (!this.bucket) {
+                this.bucket = this.items;
+                this.createModule({
+                    module: this.curFilename
+                });
+            }
+            
+            if (doc.group) {
                 this.createGroupItem(doc.group, doc);
             }
             else {
@@ -69,49 +86,52 @@ class Docs {
     }
 
     createPackage(doc) {
-        this.curPackage = {
+        this.curPackage = this.getCachedItem([doc.package]) || {
+            file: this.curFile,
             name: doc.package,
             type: 'package',
             items: []
         };
 
-        this.curSubpackage = this.curPackage;
-        this.curModule = this.curPackage;
-        this.curSubmodule = this.curPackage;
-        this.items.push(this.curPackage);
+        this.bucket.push(this.curPackage);
+        this.bucket = this.curPackage.items;
+        this.setCacheItem([doc.package], this.curPackage);
     }
 
     createSubpackage(doc) {
-        this.curSubpackage = {
+        this.curSubpackage = this.getCachedItem([this.curPackage, doc.subpackage]) || {
             name: doc.subpackage,
             type: 'subpackage',
             items: []
         };
-        
-        this.curModule = this.curSubpackage;
-        this.curSubmodule = this.curSubpackage;
-        this.curPackage.items.push(this.curSubpackage);
+
+        this.bucket.push(this.curSubpackage);
+        this.bucket = this.curSubpackage.items
+        this.setCacheItem([this.curPackage, doc.subpackage], this.curSubpackage);
     }
 
     createModule(doc) {
-        this.curModule = {
+        this.curModule = this.getCachedItem([this.curPackage, this.curSubpackage], doc.module) || {
             name: doc.module,
             type: 'module',
             items: []
         };
         
-        this.curSubmodule = this.curModule;
-        this.curSubpackage.items.push(this.curModule);
+        this.bucket.push(this.curModule);
+        this.bucket = this.curModule.items;
+        this.setCacheItem([this.curPackage, this.curSubpackage, doc.module], this.curModule);
     }
 
     createSubmodule(doc) {
-        this.curSubmodule = {
+        this.curSubmodule = this.getCachedItem([this.curPackage, this.curSubpackage, this.curModule, doc.submodule]) || {
             name: doc.submodule,
             type: 'submodule',
             items: []
         };
         
-        this.curModule.items.push(this.curSubmodule);
+        this.bucket.push(this.curSubmodule);
+        this.bucket = this.curSubmodule.items;
+        this.setCacheItem([this.curPackage, this.curSubpackage, this.curModule, doc.subpackage], this.curSubpackage);
     }
 
     getGroupItem(items, group) {
@@ -121,7 +141,7 @@ class Docs {
             }
         }
 
-        var newGroup = {
+        var newGroup = this.getCachedItem([this.curPackage, this.curSubpackage, this.curModule, this.curSubmodule, group]) || {
             type: group === 'ungrouped' ? 'ungrouped' : 'grouped',
             group: group,
             items: []
@@ -129,16 +149,18 @@ class Docs {
 
         items.push(newGroup);
 
+        this.setCacheItem([this.curPackage, this.curSubpackage, this.curModule, this.curSubmodule, group], newGroup);
+
         return newGroup;
     }
 
     createGroupItem(group, doc) {
-        var groupItem = this.getGroupItem(this.curSubmodule.items, group);
+        var groupItem = this.getGroupItem(this.bucket, group);
         groupItem.items.push(doc);
     }
 
     createUngroupedItem(group, doc) {
-        var groupItem = this.getGroupItem(this.curSubmodule.items, 'ungrouped');
+        var groupItem = this.getGroupItem(this.bucket, 'ungrouped');
         groupItem.items.push(doc);
     }
 }

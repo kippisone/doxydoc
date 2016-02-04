@@ -1,0 +1,4 @@
+section class="groups"
+    :each $itmes : div class="group"
+        h1 $name
+        articla $description

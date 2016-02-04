@@ -2,7 +2,7 @@
     "name": "Doxydoc test",
     "docs": [
         {
-            "files": ["fruits/banana.js"],
+            "files": ["fruits/*.js"],
             "output": "fruits.html"
         }
     ]

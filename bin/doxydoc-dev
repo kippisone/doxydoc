@@ -56,7 +56,8 @@ if (files.length) {
 }
 
 doxydoc.create().then(function(result) {
-    console.log(result);
+    console.log('------------------------------------');
+    console.log(JSON.stringify(result, null, '  '));
 }).catch(function(err) {
    console.error(err.stack);
    process.exit(1); 
