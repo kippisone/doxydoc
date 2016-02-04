@@ -15,17 +15,22 @@ program.version(pkg.version)
     .option('-t, --template-dir <dir>', 'Use your own templates')
     .option('-f, --docu-filename <filename>', 'Sets a custom filename for the generated docu file')
     .option('-d, --doxydoc-file <filename>', 'Read configuration from <file> instead of doxydoc.json')
+    .option('-D, --data-file <filename>', 'Loads a custom datafile')
+    .option('-w, --working-dir <dir>', 'Sets a working dir')
     // .option('-c, --check', 'Checks documentation in <input> dir')
     .option('-r, --recursive', 'Traverse <input> recursive')
     .option('-l, --filter=<filter>', 'Files must match filter. --filter=*.js,*.css')
+    .option('-v, --verbose', 'Enables logging')
     .parse(process.argv);
 
 var conf = {
-    workingDir: process.cwd(),
     output: program.output,
     templateDir: program.templateDir,
-    docuFilename: program.docuFilename,
-    doxydocFile: program.doxydocFile
+    docuFilename: program.docuFilename ? path.resolve(process.cwd(), program.docuFilename) : null,
+    workingDir: program.workingDir ? path.resolve(process.cwd(), program.workingDir) : process.cwd(),
+    doxydocFile: program.doxydocFile ? path.resolve(process.cwd(), program.doxydocFile) : null,
+    dataFile: program.dataFile ? path.resolve(process.cwd(), program.dataFile) : null,
+    verbose: program.verbose
 };
 
 var files = [];
@@ -57,7 +62,7 @@ if (files.length) {
 
 doxydoc.create().then(function(result) {
     console.log('------------------------------------');
-    console.log(JSON.stringify(result, null, '  '));
+    // console.log(JSON.stringify(result, null, '  '));
 }).catch(function(err) {
    console.error(err.stack);
    process.exit(1); 

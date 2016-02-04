@@ -3,7 +3,7 @@
 var inspect = require('inspect.js');
 var Docs = require('../modules/docs');
 
-describe.only('Docs object', function() {    
+describe('Docs object', function() {    
     describe('class', function() {
         it('should be a Docs class', function() {
             inspect(Docs).isClass();
@@ -16,8 +16,9 @@ describe.only('Docs object', function() {
         });
     });
 
-    describe('title', function() {
+    describe('parseDoc', function() {
         var docs = new Docs();
+        docs.setFileInfo('/home/test/doxydoc/banana.js');
         
         it('should create a Docs object', function() {
             inspect(docs).isObject();
@@ -25,51 +26,41 @@ describe.only('Docs object', function() {
         });
 
         it('should set a package', function() {
-            docs.createPackage({
-                package: 'Test pack'
-            });
+            docs.createPackage('Test pack');
 
             inspect(docs.items).hasLength(1);
             inspect(docs.items[0]).isEql({
                 name: 'Test pack',
+                file: '/home/test/doxydoc/banana.js',
                 type: 'package',
                 items: []
             });
         });
 
-        it('all should pint to package', function() {
-            inspect(docs.curPackage).isEqual(docs.items[0]);
-            inspect(docs.curSubpackage).isEqual(docs.items[0]);
-            inspect(docs.curModule).isEqual(docs.items[0]);
-            inspect(docs.curSubmodule).isEqual(docs.items[0]);
+        it('all should point to package', function() {
+            inspect(docs.bucket).isEqual(docs.items[0].items);
         });
 
         it('should set a subpackage', function() {
-            docs.createSubpackage({
-                subpackage: 'Test subpack'
-            });
+            docs.createSubpackage('Test subpack');
 
             inspect(docs.items).hasLength(1);
             inspect(docs.items[0].items).isArray();
             inspect(docs.items[0].items).hasLength(1);
             inspect(docs.items[0].items[0]).isEql({
                 name: 'Test subpack',
+                file: '/home/test/doxydoc/banana.js',
                 type: 'subpackage',
                 items: []
             });
         });
 
         it('all should point to subpackage', function() {
-            inspect(docs.curPackage).isEqual(docs.items[0]);
-            inspect(docs.curSubpackage).isEqual(docs.items[0].items[0]);
-            inspect(docs.curModule).isEqual(docs.items[0].items[0]);
-            inspect(docs.curSubmodule).isEqual(docs.items[0].items[0]);
+            inspect(docs.bucket).isEqual(docs.items[0].items[0].items);
         });
 
         it('should set a module', function() {
-            docs.createModule({
-                module: 'Test module'
-            });
+            docs.createModule('Test module');
 
             inspect(docs.items).hasLength(1);
             inspect(docs.items[0].items).isArray();
@@ -78,22 +69,18 @@ describe.only('Docs object', function() {
             inspect(docs.items[0].items[0].items).hasLength(1);
             inspect(docs.items[0].items[0].items[0]).isEql({
                 name: 'Test module',
+                file: '/home/test/doxydoc/banana.js',
                 type: 'module',
                 items: []
             });
         });
 
         it('all should point to module', function() {
-            inspect(docs.curPackage).isEqual(docs.items[0]);
-            inspect(docs.curSubpackage).isEqual(docs.items[0].items[0]);
-            inspect(docs.curModule).isEqual(docs.items[0].items[0].items[0]);
-            inspect(docs.curSubmodule).isEqual(docs.items[0].items[0].items[0]);
+            inspect(docs.bucket).isEqual(docs.items[0].items[0].items[0].items);
         });
 
         it('should set a submodule', function() {
-            docs.createSubmodule({
-                submodule: 'Test submodule'
-            });
+            docs.createSubmodule('Test submodule');
 
             inspect(docs.items).hasLength(1);
             inspect(docs.items[0].items).isArray();
@@ -104,16 +91,14 @@ describe.only('Docs object', function() {
             inspect(docs.items[0].items[0].items[0].items).hasLength(1);
             inspect(docs.items[0].items[0].items[0].items[0]).isEql({
                 name: 'Test submodule',
+                file: '/home/test/doxydoc/banana.js',
                 type: 'submodule',
                 items: []
             });
         });
 
         it('all should point to submodule', function() {
-            inspect(docs.curPackage).isEqual(docs.items[0]);
-            inspect(docs.curSubpackage).isEqual(docs.items[0].items[0]);
-            inspect(docs.curModule).isEqual(docs.items[0].items[0].items[0]);
-            inspect(docs.curSubmodule).isEqual(docs.items[0].items[0].items[0].items[0]);
+            inspect(docs.bucket).isEqual(docs.items[0].items[0].items[0].items[0].items);
         });
 
         it('should add a method', function() {
@@ -212,4 +197,67 @@ describe.only('Docs object', function() {
             });
         });
     });
+
+describe.skip('Sandbox', function() {
+    it('Should build a nested docs structure', function() {
+        class DocsItem {
+            constructor(bucket) {
+                this.parent = bucket;
+                this.bucket = [];
+
+                bucket.push({ items: this.bucket});
+            }
+
+            set(data) {
+                this.bucket.push(data);
+            }
+
+            pack(data) {
+                var mod = {
+                    items: []
+                }
+
+                this.bucket.push(mod);
+                var m = new ModuleItem(mod);
+                m.set(data);
+            }
+
+            module(data) {
+                var mod = {
+                    items: []
+                }
+
+                this.bucket.push(mod);
+                var m = new ModuleItem(mod);
+                m.set(data);
+            }
+        }
+
+        class PackageItem extends DocsItem {
+            constructor(bucket) {
+                super(bucket);
+            }
+        }
+
+        class ModuleItem extends PackageItem {
+            constructor(bucket) {
+                super(bucket);
+            }   
+        }
+
+        var bucket = [];
+
+        var docs = new PackageItem(bucket);
+        docs.pack({
+            value: 'foo'
+        });
+
+
+        inspect(bucket).isEql({
+            items: [{
+                value: 'foo'
+            }]
+        });
+    });
+});
 });

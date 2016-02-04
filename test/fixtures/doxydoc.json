@@ -1,9 +1,18 @@
 {
-    "name": "Doxydoc test",
+    "name": "Doxydoc dev",
     "docs": [
         {
-            "files": ["fruits/*.js"],
-            "output": "fruits.html"
+            "data": "fruits.json",
+            "output": ["fruits.html"]
         }
+    ],
+    "pages": [
+
+    ],
+    "navigation": [
+
+    ],
+    "sidebar": [
+
     ]
 }

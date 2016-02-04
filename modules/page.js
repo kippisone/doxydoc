@@ -8,7 +8,9 @@ fl.debug = true;
 
 class Page {
     constructor(conf) {
-        this.data = {};
+        this.data = {
+            basePath: ''
+        };
     }
 
     setData(data) {

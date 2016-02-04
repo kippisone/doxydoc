@@ -8,6 +8,7 @@ class Docs {
     constructor() {
         this.items = [];
         this._cache = {};
+        this.bucket = this.items;
     }
 
     readFiles() {
@@ -53,85 +54,89 @@ class Docs {
 
     parseDoc(docs) {
         docs.forEach(function(doc, index) {
-            if (doc.package) {
-                this.createPackage(doc);
+            console.log('P', doc.tags.package);
+            if (doc.tags.package) {
+                this.createPackage(doc.tags.package);
             }
             
-            if (doc.subpackage) {
-                this.createSubpackage(doc);
-            }
+            // if (doc.tags.subpackage) {
+            //     this.createSubpackage(doc.tags.subpackage);
+            // }
             
-            if (doc.module) {
-                this.createModule(doc);
-            }
+            // if (doc.tags.module) {
+            //     this.createModule(doc.tags.module);
+            // }
             
-            if (doc.submodule) {
-                this.createSubmodule(doc);
-            }
+            // if (doc.tags.submodule) {
+            //     this.createSubmodule(doc.tags.submodule);
+            // }
 
-            if (!this.bucket) {
-                this.bucket = this.items;
-                this.createModule({
-                    module: this.curFilename
-                });
-            }
+            // if (!this.bucket) {
+            //     this.bucket = this.items;
+            //     this.createModule({
+            //         module: this.curFilename
+            //     });
+            // }
             
-            if (doc.group) {
-                this.createGroupItem(doc.group, doc);
-            }
-            else {
-                this.createUngroupedItem(doc.group, doc);
-            }
+            // if (doc.group) {
+            //     this.createGroupItem(doc.group, doc);
+            // }
+            // else {
+            //     this.createUngroupedItem(doc.group, doc);
+            // }
         }, this);
     }
 
-    createPackage(doc) {
-        this.curPackage = this.getCachedItem([doc.package]) || {
-            file: this.curFile,
-            name: doc.package,
+    createPackage(packageName) {
+        this.curPackage = this.getCachedItem([packageName]) || {
+            file: this.curFilepath,
+            name: packageName,
             type: 'package',
             items: []
         };
 
         this.bucket.push(this.curPackage);
         this.bucket = this.curPackage.items;
-        this.setCacheItem([doc.package], this.curPackage);
+        this.setCacheItem([packageName], this.curPackage);
     }
 
-    createSubpackage(doc) {
-        this.curSubpackage = this.getCachedItem([this.curPackage, doc.subpackage]) || {
-            name: doc.subpackage,
+    createSubpackage(subpackageName) {
+        this.curSubpackage = this.getCachedItem([this.curPackage, subpackageName]) || {
+            file: this.curFilepath,
+            name: subpackageName,
             type: 'subpackage',
             items: []
         };
 
         this.bucket.push(this.curSubpackage);
         this.bucket = this.curSubpackage.items
-        this.setCacheItem([this.curPackage, doc.subpackage], this.curSubpackage);
+        this.setCacheItem([this.curPackage, subpackageName], this.curSubpackage);
     }
 
-    createModule(doc) {
-        this.curModule = this.getCachedItem([this.curPackage, this.curSubpackage], doc.module) || {
-            name: doc.module,
+    createModule(moduleName) {
+        this.curModule = this.getCachedItem([this.curPackage, this.curSubpackage], moduleName) || {
+            file: this.curFilepath,
+            name: moduleName,
             type: 'module',
             items: []
         };
         
         this.bucket.push(this.curModule);
         this.bucket = this.curModule.items;
-        this.setCacheItem([this.curPackage, this.curSubpackage, doc.module], this.curModule);
+        this.setCacheItem([this.curPackage, this.curSubpackage, moduleName], this.curModule);
     }
 
-    createSubmodule(doc) {
-        this.curSubmodule = this.getCachedItem([this.curPackage, this.curSubpackage, this.curModule, doc.submodule]) || {
-            name: doc.submodule,
+    createSubmodule(submoduleName) {
+        this.curSubmodule = this.getCachedItem([this.curPackage, this.curSubpackage, this.curModule, submoduleName]) || {
+            file: this.curFilepath,
+            name: submoduleName,
             type: 'submodule',
             items: []
         };
         
         this.bucket.push(this.curSubmodule);
         this.bucket = this.curSubmodule.items;
-        this.setCacheItem([this.curPackage, this.curSubpackage, this.curModule, doc.subpackage], this.curSubpackage);
+        this.setCacheItem([this.curPackage, this.curSubpackage, this.curModule, submoduleName], this.curSubpackage);
     }
 
     getGroupItem(items, group) {

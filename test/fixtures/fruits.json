@@ -1,0 +1,485 @@
+[
+  {
+    "name": "Fruits package",
+    "type": "package",
+    "items": [
+      {
+        "name": "[object Object]",
+        "type": "module",
+        "items": [
+          {
+            "type": "ungrouped",
+            "group": "ungrouped",
+            "items": [
+              {
+                "title": "Banana test module",
+                "description": "Very awesome banana module.",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": false,
+                  "isDeprecated": false,
+                  "ignore": false,
+                  "package": "Fruits",
+                  "module": "banana",
+                  "examples": [
+                    {
+                      "type": "",
+                      "title": " ",
+                      "content": "var banana = require('banana');\n    banana.peelIt();"
+                    }
+                  ]
+                },
+                "code": "module.exports = function() {\n    'use strict';\n    \n    /**\n     * Test constant\n     * @const {string}\n     */\n    var NAME = 'banana';\n\n    /**\n     * Banana constructor\n     * @constructor\n     */\n    var Banana = function() {\n\n    };\n\n    /**\n     * Tastes method of Banana\n     * \n     * @return {string} Returns how bananas tastes\n     */\n    Banana.prototype.tastes = function() {\n        return 'awesome';\n    };\n\n    /**\n     * Private method\n     *\n     * @private\n     * @param {boolean} isGreen Returns true if banana is green\n     * @param {function} callback Callback function\n     * @returns {object} Returns this property\n     */\n    Banana.prototype.isGreen = function(green) {\n        \n    };\n\n    /**\n     * Is sweet property\n     *\n     * @property {boolean} isSweet\n     */\n    Banana.prototype.isSweet = false;\n\n    /**\n     * Protected method\n     *\n     * @protected\n     */\n    Banana.prototype.isProtected = function() {\n\n    };\n\n    /**\n     * Private method\n     *\n     * @private\n     */\n    Banana.prototype.isPrivate = function() {\n\n    };\n\n    /**\n     * Deprecated method\n     *\n     * @deprecated\n     */\n    Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Deprecated since method\n     *\n     * @deprecated v0.3.0\n     */\n    Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Unimplemented method\n     * @unimplemented\n     */\n    Banana.prototype.isUnimplemented = function() {\n\n    };\n\n    /**\n     * Add new banana\n     * @fires banana.add Fires a banana.add event\n     * @fires banana.change Fires a banana.change event\n     */\n    Banana.prototype.addBanana = function() {\n\n    };\n\n    /**\n     * Register listener\n     * @event banana.add Registers an add listener\n     * @event banana.change Registers a change listener\n     */\n    Banana.prototype.registerListener = function() {\n        \n    };\n\n    /**\n     * Has links\n     * \n     * @link Syntax http://doxydoc.com/syntax/syntax.html\n     * @link Jump to top #top\n     */\n    Banana.prototype.hasLinks = function() {\n        \n    };\n\n    /**\n     * Show a preview\n     * @preview {html}\n     * <button>\n     *   Click me!\n     * </button>\n     */\n    Banana.prototype.showPreview = function() {\n        \n    };\n\n    //--\n};",
+                "raw": "/**\n * Banana test module\n *\n * Very awesome banana module.\n * \n * @package Fruits\n * @module  banana\n * \n * @example\n *     var banana = require('banana');\n *     banana.peelIt();\n */",
+                "pos": 184
+              },
+              {
+                "title": "Tastes method of Banana",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": false,
+                  "isDeprecated": false,
+                  "ignore": false,
+                  "returns": {
+                    "type": "string",
+                    "description": "Returns how bananas tastes"
+                  }
+                },
+                "code": "Banana.prototype.tastes = function() {\n        return 'awesome';\n    };\n\n    /**\n     * Private method\n     *\n     * @private\n     * @param {boolean} isGreen Returns true if banana is green\n     * @param {function} callback Callback function\n     * @returns {object} Returns this property\n     */\n    Banana.prototype.isGreen = function(green) {\n        \n    };\n\n    /**\n     * Is sweet property\n     *\n     * @property {boolean} isSweet\n     */\n    Banana.prototype.isSweet = false;\n\n    /**\n     * Protected method\n     *\n     * @protected\n     */\n    Banana.prototype.isProtected = function() {\n\n    };\n\n    /**\n     * Private method\n     *\n     * @private\n     */\n    Banana.prototype.isPrivate = function() {\n\n    };\n\n    /**\n     * Deprecated method\n     *\n     * @deprecated\n     */\n    Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Deprecated since method\n     *\n     * @deprecated v0.3.0\n     */\n    Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Unimplemented method\n     * @unimplemented\n     */\n    Banana.prototype.isUnimplemented = function() {\n\n    };\n\n    /**\n     * Add new banana\n     * @fires banana.add Fires a banana.add event\n     * @fires banana.change Fires a banana.change event\n     */\n    Banana.prototype.addBanana = function() {\n\n    };\n\n    /**\n     * Register listener\n     * @event banana.add Registers an add listener\n     * @event banana.change Registers a change listener\n     */\n    Banana.prototype.registerListener = function() {\n        \n    };\n\n    /**\n     * Has links\n     * \n     * @link Syntax http://doxydoc.com/syntax/syntax.html\n     * @link Jump to top #top\n     */\n    Banana.prototype.hasLinks = function() {\n        \n    };\n\n    /**\n     * Show a preview\n     * @preview {html}\n     * <button>\n     *   Click me!\n     * </button>\n     */\n    Banana.prototype.showPreview = function() {\n        \n    };\n\n    //--\n};",
+                "raw": "/**\n     * Tastes method of Banana\n     * \n     * @return {string} Returns how bananas tastes\n     */",
+                "pos": 530
+              },
+              {
+                "title": "Private method",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": true,
+                  "isDeprecated": false,
+                  "ignore": false,
+                  "params": [
+                    {
+                      "type": "boolean",
+                      "name": "isGreen",
+                      "description": "Returns true if banana is green"
+                    },
+                    {
+                      "type": "function",
+                      "name": "callback",
+                      "description": "Callback function"
+                    }
+                  ],
+                  "returns": {
+                    "type": "object",
+                    "description": "Returns this property"
+                  }
+                },
+                "code": "Banana.prototype.isGreen = function(green) {\n        \n    };\n\n    /**\n     * Is sweet property\n     *\n     * @property {boolean} isSweet\n     */\n    Banana.prototype.isSweet = false;\n\n    /**\n     * Protected method\n     *\n     * @protected\n     */\n    Banana.prototype.isProtected = function() {\n\n    };\n\n    /**\n     * Private method\n     *\n     * @private\n     */\n    Banana.prototype.isPrivate = function() {\n\n    };\n\n    /**\n     * Deprecated method\n     *\n     * @deprecated\n     */\n    Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Deprecated since method\n     *\n     * @deprecated v0.3.0\n     */\n    Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Unimplemented method\n     * @unimplemented\n     */\n    Banana.prototype.isUnimplemented = function() {\n\n    };\n\n    /**\n     * Add new banana\n     * @fires banana.add Fires a banana.add event\n     * @fires banana.change Fires a banana.change event\n     */\n    Banana.prototype.addBanana = function() {\n\n    };\n\n    /**\n     * Register listener\n     * @event banana.add Registers an add listener\n     * @event banana.change Registers a change listener\n     */\n    Banana.prototype.registerListener = function() {\n        \n    };\n\n    /**\n     * Has links\n     * \n     * @link Syntax http://doxydoc.com/syntax/syntax.html\n     * @link Jump to top #top\n     */\n    Banana.prototype.hasLinks = function() {\n        \n    };\n\n    /**\n     * Show a preview\n     * @preview {html}\n     * <button>\n     *   Click me!\n     * </button>\n     */\n    Banana.prototype.showPreview = function() {\n        \n    };\n\n    //--\n};",
+                "raw": "/**\n     * Private method\n     *\n     * @private\n     * @param {boolean} isGreen Returns true if banana is green\n     * @param {function} callback Callback function\n     * @returns {object} Returns this property\n     */",
+                "pos": 831
+              },
+              {
+                "title": "Protected method",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": true,
+                  "isPrivate": false,
+                  "isDeprecated": false,
+                  "ignore": false
+                },
+                "code": "Banana.prototype.isProtected = function() {\n\n    };\n\n    /**\n     * Private method\n     *\n     * @private\n     */\n    Banana.prototype.isPrivate = function() {\n\n    };\n\n    /**\n     * Deprecated method\n     *\n     * @deprecated\n     */\n    Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Deprecated since method\n     *\n     * @deprecated v0.3.0\n     */\n    Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Unimplemented method\n     * @unimplemented\n     */\n    Banana.prototype.isUnimplemented = function() {\n\n    };\n\n    /**\n     * Add new banana\n     * @fires banana.add Fires a banana.add event\n     * @fires banana.change Fires a banana.change event\n     */\n    Banana.prototype.addBanana = function() {\n\n    };\n\n    /**\n     * Register listener\n     * @event banana.add Registers an add listener\n     * @event banana.change Registers a change listener\n     */\n    Banana.prototype.registerListener = function() {\n        \n    };\n\n    /**\n     * Has links\n     * \n     * @link Syntax http://doxydoc.com/syntax/syntax.html\n     * @link Jump to top #top\n     */\n    Banana.prototype.hasLinks = function() {\n        \n    };\n\n    /**\n     * Show a preview\n     * @preview {html}\n     * <button>\n     *   Click me!\n     * </button>\n     */\n    Banana.prototype.showPreview = function() {\n        \n    };\n\n    //--\n};",
+                "raw": "/**\n     * Protected method\n     *\n     * @protected\n     */",
+                "pos": 1084
+              },
+              {
+                "title": "Private method",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": true,
+                  "isDeprecated": false,
+                  "ignore": false
+                },
+                "code": "Banana.prototype.isPrivate = function() {\n\n    };\n\n    /**\n     * Deprecated method\n     *\n     * @deprecated\n     */\n    Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Deprecated since method\n     *\n     * @deprecated v0.3.0\n     */\n    Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Unimplemented method\n     * @unimplemented\n     */\n    Banana.prototype.isUnimplemented = function() {\n\n    };\n\n    /**\n     * Add new banana\n     * @fires banana.add Fires a banana.add event\n     * @fires banana.change Fires a banana.change event\n     */\n    Banana.prototype.addBanana = function() {\n\n    };\n\n    /**\n     * Register listener\n     * @event banana.add Registers an add listener\n     * @event banana.change Registers a change listener\n     */\n    Banana.prototype.registerListener = function() {\n        \n    };\n\n    /**\n     * Has links\n     * \n     * @link Syntax http://doxydoc.com/syntax/syntax.html\n     * @link Jump to top #top\n     */\n    Banana.prototype.hasLinks = function() {\n        \n    };\n\n    /**\n     * Show a preview\n     * @preview {html}\n     * <button>\n     *   Click me!\n     * </button>\n     */\n    Banana.prototype.showPreview = function() {\n        \n    };\n\n    //--\n};",
+                "raw": "/**\n     * Private method\n     *\n     * @private\n     */",
+                "pos": 1202
+              },
+              {
+                "title": "Deprecated method",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": false,
+                  "isDeprecated": {
+                    "tag": "deprecated",
+                    "value": ""
+                  },
+                  "ignore": false
+                },
+                "code": "Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Deprecated since method\n     *\n     * @deprecated v0.3.0\n     */\n    Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Unimplemented method\n     * @unimplemented\n     */\n    Banana.prototype.isUnimplemented = function() {\n\n    };\n\n    /**\n     * Add new banana\n     * @fires banana.add Fires a banana.add event\n     * @fires banana.change Fires a banana.change event\n     */\n    Banana.prototype.addBanana = function() {\n\n    };\n\n    /**\n     * Register listener\n     * @event banana.add Registers an add listener\n     * @event banana.change Registers a change listener\n     */\n    Banana.prototype.registerListener = function() {\n        \n    };\n\n    /**\n     * Has links\n     * \n     * @link Syntax http://doxydoc.com/syntax/syntax.html\n     * @link Jump to top #top\n     */\n    Banana.prototype.hasLinks = function() {\n        \n    };\n\n    /**\n     * Show a preview\n     * @preview {html}\n     * <button>\n     *   Click me!\n     * </button>\n     */\n    Banana.prototype.showPreview = function() {\n        \n    };\n\n    //--\n};",
+                "raw": "/**\n     * Deprecated method\n     *\n     * @deprecated\n     */",
+                "pos": 1324
+              },
+              {
+                "title": "Deprecated since method",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": false,
+                  "isDeprecated": {
+                    "tag": "deprecated",
+                    "value": "v0.3.0"
+                  },
+                  "ignore": false
+                },
+                "code": "Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Unimplemented method\n     * @unimplemented\n     */\n    Banana.prototype.isUnimplemented = function() {\n\n    };\n\n    /**\n     * Add new banana\n     * @fires banana.add Fires a banana.add event\n     * @fires banana.change Fires a banana.change event\n     */\n    Banana.prototype.addBanana = function() {\n\n    };\n\n    /**\n     * Register listener\n     * @event banana.add Registers an add listener\n     * @event banana.change Registers a change listener\n     */\n    Banana.prototype.registerListener = function() {\n        \n    };\n\n    /**\n     * Has links\n     * \n     * @link Syntax http://doxydoc.com/syntax/syntax.html\n     * @link Jump to top #top\n     */\n    Banana.prototype.hasLinks = function() {\n        \n    };\n\n    /**\n     * Show a preview\n     * @preview {html}\n     * <button>\n     *   Click me!\n     * </button>\n     */\n    Banana.prototype.showPreview = function() {\n        \n    };\n\n    //--\n};",
+                "raw": "/**\n     * Deprecated since method\n     *\n     * @deprecated v0.3.0\n     */",
+                "pos": 1462
+              },
+              {
+                "title": "Unimplemented method",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": false,
+                  "isDeprecated": false,
+                  "ignore": false,
+                  "unimplemented": true
+                },
+                "code": "Banana.prototype.isUnimplemented = function() {\n\n    };\n\n    /**\n     * Add new banana\n     * @fires banana.add Fires a banana.add event\n     * @fires banana.change Fires a banana.change event\n     */\n    Banana.prototype.addBanana = function() {\n\n    };\n\n    /**\n     * Register listener\n     * @event banana.add Registers an add listener\n     * @event banana.change Registers a change listener\n     */\n    Banana.prototype.registerListener = function() {\n        \n    };\n\n    /**\n     * Has links\n     * \n     * @link Syntax http://doxydoc.com/syntax/syntax.html\n     * @link Jump to top #top\n     */\n    Banana.prototype.hasLinks = function() {\n        \n    };\n\n    /**\n     * Show a preview\n     * @preview {html}\n     * <button>\n     *   Click me!\n     * </button>\n     */\n    Banana.prototype.showPreview = function() {\n        \n    };\n\n    //--\n};",
+                "raw": "/**\n     * Unimplemented method\n     * @unimplemented\n     */",
+                "pos": 1586
+              },
+              {
+                "title": "Add new banana",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": false,
+                  "isDeprecated": false,
+                  "ignore": false,
+                  "fires": [
+                    {
+                      "event": "banana.add",
+                      "description": "Fires a banana.add event"
+                    },
+                    {
+                      "event": "banana.change",
+                      "description": "Fires a banana.change event"
+                    }
+                  ]
+                },
+                "code": "Banana.prototype.addBanana = function() {\n\n    };\n\n    /**\n     * Register listener\n     * @event banana.add Registers an add listener\n     * @event banana.change Registers a change listener\n     */\n    Banana.prototype.registerListener = function() {\n        \n    };\n\n    /**\n     * Has links\n     * \n     * @link Syntax http://doxydoc.com/syntax/syntax.html\n     * @link Jump to top #top\n     */\n    Banana.prototype.hasLinks = function() {\n        \n    };\n\n    /**\n     * Show a preview\n     * @preview {html}\n     * <button>\n     *   Click me!\n     * </button>\n     */\n    Banana.prototype.showPreview = function() {\n        \n    };\n\n    //--\n};",
+                "raw": "/**\n     * Add new banana\n     * @fires banana.add Fires a banana.add event\n     * @fires banana.change Fires a banana.change event\n     */",
+                "pos": 1791
+              },
+              {
+                "title": "Has links",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": false,
+                  "isDeprecated": false,
+                  "ignore": false,
+                  "links": [
+                    {
+                      "name": "Syntax",
+                      "link": "http://doxydoc.com/syntax/syntax.html"
+                    }
+                  ],
+                  "unknown": [
+                    {
+                      "tag": "link",
+                      "value": "Jump to top #top"
+                    }
+                  ]
+                },
+                "code": "Banana.prototype.hasLinks = function() {\n        \n    };\n\n    /**\n     * Show a preview\n     * @preview {html}\n     * <button>\n     *   Click me!\n     * </button>\n     */\n    Banana.prototype.showPreview = function() {\n        \n    };\n\n    //--\n};",
+                "raw": "/**\n     * Has links\n     * \n     * @link Syntax http://doxydoc.com/syntax/syntax.html\n     * @link Jump to top #top\n     */",
+                "pos": 2193
+              },
+              {
+                "title": "Show a preview",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": false,
+                  "isDeprecated": false,
+                  "ignore": false,
+                  "preview": [
+                    {
+                      "type": "html",
+                      "name": "<button>",
+                      "description": "Click me!\n</button>"
+                    }
+                  ]
+                },
+                "code": "Banana.prototype.showPreview = function() {\n        \n    };\n\n    //--\n};",
+                "raw": "/**\n     * Show a preview\n     * @preview {html}\n     * <button>\n     *   Click me!\n     * </button>\n     */",
+                "pos": 2368
+              },
+              {
+                "title": "Pineapple module",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": false,
+                  "isDeprecated": false,
+                  "ignore": false,
+                  "package": "Fruits",
+                  "module": "Pineapple"
+                },
+                "code": "module.exports = function() {\n    'use strict';\n  \n    /**\n     * Taste variable\n     * @var {String}\n     * @group Pineapple2\n     */\n    var taste = 'sweet';\n\n    /**\n     * Eat method\n     */\n    var eat = function() {\n\n    };\n\n    /**\n     * Peal method\n     * @method peal\n     * @group Pineapple2\n     * @return {boolean} Is peeled\n     */\n    var peal = function() {\n\n    };\n\n};",
+                "raw": "/**\n * Pineapple module\n *\n * @package Fruits\n * @module Pineapple\n */",
+                "pos": 70
+              },
+              {
+                "title": "Eat method",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": false,
+                  "isDeprecated": false,
+                  "ignore": false
+                },
+                "code": "var eat = function() {\n\n    };\n\n    /**\n     * Peal method\n     * @method peal\n     * @group Pineapple2\n     * @return {boolean} Is peeled\n     */\n    var peal = function() {\n\n    };\n\n};",
+                "raw": "/**\n     * Eat method\n     */",
+                "pos": 265
+              }
+            ]
+          },
+          {
+            "type": "grouped",
+            "group": "const",
+            "items": [
+              {
+                "title": "Test constant",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": false,
+                  "isDeprecated": false,
+                  "ignore": false,
+                  "const": {
+                    "type": "string",
+                    "name": "NAME",
+                    "description": ""
+                  }
+                },
+                "code": "var NAME = 'banana';\n\n    /**\n     * Banana constructor\n     * @constructor\n     */\n    var Banana = function() {\n\n    };\n\n    /**\n     * Tastes method of Banana\n     * \n     * @return {string} Returns how bananas tastes\n     */\n    Banana.prototype.tastes = function() {\n        return 'awesome';\n    };\n\n    /**\n     * Private method\n     *\n     * @private\n     * @param {boolean} isGreen Returns true if banana is green\n     * @param {function} callback Callback function\n     * @returns {object} Returns this property\n     */\n    Banana.prototype.isGreen = function(green) {\n        \n    };\n\n    /**\n     * Is sweet property\n     *\n     * @property {boolean} isSweet\n     */\n    Banana.prototype.isSweet = false;\n\n    /**\n     * Protected method\n     *\n     * @protected\n     */\n    Banana.prototype.isProtected = function() {\n\n    };\n\n    /**\n     * Private method\n     *\n     * @private\n     */\n    Banana.prototype.isPrivate = function() {\n\n    };\n\n    /**\n     * Deprecated method\n     *\n     * @deprecated\n     */\n    Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Deprecated since method\n     *\n     * @deprecated v0.3.0\n     */\n    Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Unimplemented method\n     * @unimplemented\n     */\n    Banana.prototype.isUnimplemented = function() {\n\n    };\n\n    /**\n     * Add new banana\n     * @fires banana.add Fires a banana.add event\n     * @fires banana.change Fires a banana.change event\n     */\n    Banana.prototype.addBanana = function() {\n\n    };\n\n    /**\n     * Register listener\n     * @event banana.add Registers an add listener\n     * @event banana.change Registers a change listener\n     */\n    Banana.prototype.registerListener = function() {\n        \n    };\n\n    /**\n     * Has links\n     * \n     * @link Syntax http://doxydoc.com/syntax/syntax.html\n     * @link Jump to top #top\n     */\n    Banana.prototype.hasLinks = function() {\n        \n    };\n\n    /**\n     * Show a preview\n     * @preview {html}\n     * <button>\n     *   Click me!\n     * </button>\n     */\n    Banana.prototype.showPreview = function() {\n        \n    };\n\n    //--\n};",
+                "group": "const",
+                "name": "NAME",
+                "raw": "/**\n     * Test constant\n     * @const {string}\n     */",
+                "pos": 297
+              }
+            ]
+          },
+          {
+            "type": "grouped",
+            "group": "constructor",
+            "items": [
+              {
+                "title": "Banana constructor",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": false,
+                  "isDeprecated": false,
+                  "ignore": false,
+                  "constructor": "Banana"
+                },
+                "code": "var Banana = function() {\n\n    };\n\n    /**\n     * Tastes method of Banana\n     * \n     * @return {string} Returns how bananas tastes\n     */\n    Banana.prototype.tastes = function() {\n        return 'awesome';\n    };\n\n    /**\n     * Private method\n     *\n     * @private\n     * @param {boolean} isGreen Returns true if banana is green\n     * @param {function} callback Callback function\n     * @returns {object} Returns this property\n     */\n    Banana.prototype.isGreen = function(green) {\n        \n    };\n\n    /**\n     * Is sweet property\n     *\n     * @property {boolean} isSweet\n     */\n    Banana.prototype.isSweet = false;\n\n    /**\n     * Protected method\n     *\n     * @protected\n     */\n    Banana.prototype.isProtected = function() {\n\n    };\n\n    /**\n     * Private method\n     *\n     * @private\n     */\n    Banana.prototype.isPrivate = function() {\n\n    };\n\n    /**\n     * Deprecated method\n     *\n     * @deprecated\n     */\n    Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Deprecated since method\n     *\n     * @deprecated v0.3.0\n     */\n    Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Unimplemented method\n     * @unimplemented\n     */\n    Banana.prototype.isUnimplemented = function() {\n\n    };\n\n    /**\n     * Add new banana\n     * @fires banana.add Fires a banana.add event\n     * @fires banana.change Fires a banana.change event\n     */\n    Banana.prototype.addBanana = function() {\n\n    };\n\n    /**\n     * Register listener\n     * @event banana.add Registers an add listener\n     * @event banana.change Registers a change listener\n     */\n    Banana.prototype.registerListener = function() {\n        \n    };\n\n    /**\n     * Has links\n     * \n     * @link Syntax http://doxydoc.com/syntax/syntax.html\n     * @link Jump to top #top\n     */\n    Banana.prototype.hasLinks = function() {\n        \n    };\n\n    /**\n     * Show a preview\n     * @preview {html}\n     * <button>\n     *   Click me!\n     * </button>\n     */\n    Banana.prototype.showPreview = function() {\n        \n    };\n\n    //--\n};",
+                "group": "constructor",
+                "name": "Banana",
+                "raw": "/**\n     * Banana constructor\n     * @constructor\n     */",
+                "pos": 385
+              }
+            ]
+          },
+          {
+            "type": "grouped",
+            "group": "property",
+            "items": [
+              {
+                "title": "Is sweet property",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": false,
+                  "isDeprecated": false,
+                  "ignore": false,
+                  "property": {
+                    "type": "boolean",
+                    "name": "isSweet",
+                    "description": ""
+                  }
+                },
+                "code": "Banana.prototype.isSweet = false;\n\n    /**\n     * Protected method\n     *\n     * @protected\n     */\n    Banana.prototype.isProtected = function() {\n\n    };\n\n    /**\n     * Private method\n     *\n     * @private\n     */\n    Banana.prototype.isPrivate = function() {\n\n    };\n\n    /**\n     * Deprecated method\n     *\n     * @deprecated\n     */\n    Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Deprecated since method\n     *\n     * @deprecated v0.3.0\n     */\n    Banana.prototype.isDeprecated = function() {\n\n    };\n\n    /**\n     * Unimplemented method\n     * @unimplemented\n     */\n    Banana.prototype.isUnimplemented = function() {\n\n    };\n\n    /**\n     * Add new banana\n     * @fires banana.add Fires a banana.add event\n     * @fires banana.change Fires a banana.change event\n     */\n    Banana.prototype.addBanana = function() {\n\n    };\n\n    /**\n     * Register listener\n     * @event banana.add Registers an add listener\n     * @event banana.change Registers a change listener\n     */\n    Banana.prototype.registerListener = function() {\n        \n    };\n\n    /**\n     * Has links\n     * \n     * @link Syntax http://doxydoc.com/syntax/syntax.html\n     * @link Jump to top #top\n     */\n    Banana.prototype.hasLinks = function() {\n        \n    };\n\n    /**\n     * Show a preview\n     * @preview {html}\n     * <button>\n     *   Click me!\n     * </button>\n     */\n    Banana.prototype.showPreview = function() {\n        \n    };\n\n    //--\n};",
+                "group": "property",
+                "name": "isSweet",
+                "raw": "/**\n     * Is sweet property\n     *\n     * @property {boolean} isSweet\n     */",
+                "pos": 980
+              }
+            ]
+          },
+          {
+            "type": "grouped",
+            "group": "event",
+            "items": [
+              {
+                "title": "Register listener",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": false,
+                  "isDeprecated": false,
+                  "ignore": false,
+                  "event": {
+                    "name": "banana.change"
+                  }
+                },
+                "code": "Banana.prototype.registerListener = function() {\n        \n    };\n\n    /**\n     * Has links\n     * \n     * @link Syntax http://doxydoc.com/syntax/syntax.html\n     * @link Jump to top #top\n     */\n    Banana.prototype.hasLinks = function() {\n        \n    };\n\n    /**\n     * Show a preview\n     * @preview {html}\n     * <button>\n     *   Click me!\n     * </button>\n     */\n    Banana.prototype.showPreview = function() {\n        \n    };\n\n    //--\n};",
+                "group": "event",
+                "name": "banana.change",
+                "raw": "/**\n     * Register listener\n     * @event banana.add Registers an add listener\n     * @event banana.change Registers a change listener\n     */",
+                "pos": 1994
+              }
+            ]
+          },
+          {
+            "type": "grouped",
+            "group": {
+              "tag": "group",
+              "value": "Pineapple2"
+            },
+            "items": [
+              {
+                "title": "Taste variable",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": false,
+                  "isDeprecated": false,
+                  "ignore": false,
+                  "var": {
+                    "type": "String",
+                    "name": "taste",
+                    "description": ""
+                  }
+                },
+                "code": "var taste = 'sweet';\n\n    /**\n     * Eat method\n     */\n    var eat = function() {\n\n    };\n\n    /**\n     * Peal method\n     * @method peal\n     * @group Pineapple2\n     * @return {boolean} Is peeled\n     */\n    var peal = function() {\n\n    };\n\n};",
+                "group": {
+                  "tag": "group",
+                  "value": "Pineapple2"
+                },
+                "name": "taste",
+                "raw": "/**\n     * Taste variable\n     * @var {String}\n     * @group Pineapple2\n     */",
+                "pos": 205
+              },
+              {
+                "title": "Peal method",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": false,
+                  "isDeprecated": false,
+                  "ignore": false,
+                  "method": "peal",
+                  "returns": {
+                    "type": "boolean",
+                    "description": "Is peeled"
+                  }
+                },
+                "code": "var peal = function() {\n\n    };\n\n};",
+                "group": {
+                  "tag": "group",
+                  "value": "Pineapple2"
+                },
+                "name": "peal",
+                "raw": "/**\n     * Peal method\n     * @method peal\n     * @group Pineapple2\n     * @return {boolean} Is peeled\n     */",
+                "pos": 416
+              }
+            ]
+          },
+          {
+            "type": "grouped",
+            "group": {
+              "tag": "group",
+              "value": "Pineapple2"
+            },
+            "items": [
+              {
+                "title": "Taste variable",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": false,
+                  "isDeprecated": false,
+                  "ignore": false,
+                  "var": {
+                    "type": "String",
+                    "name": "taste",
+                    "description": ""
+                  }
+                },
+                "code": "var taste = 'sweet';\n\n    /**\n     * Eat method\n     */\n    var eat = function() {\n\n    };\n\n    /**\n     * Peal method\n     * @method peal\n     * @group Pineapple2\n     * @return {boolean} Is peeled\n     */\n    var peal = function() {\n\n    };\n\n};",
+                "group": {
+                  "tag": "group",
+                  "value": "Pineapple2"
+                },
+                "name": "taste",
+                "raw": "/**\n     * Taste variable\n     * @var {String}\n     * @group Pineapple2\n     */",
+                "pos": 205
+              },
+              {
+                "title": "Peal method",
+                "description": "",
+                "tags": {
+                  "isPublic": false,
+                  "isProtected": false,
+                  "isPrivate": false,
+                  "isDeprecated": false,
+                  "ignore": false,
+                  "method": "peal",
+                  "returns": {
+                    "type": "boolean",
+                    "description": "Is peeled"
+                  }
+                },
+                "code": "var peal = function() {\n\n    };\n\n};",
+                "group": {
+                  "tag": "group",
+                  "value": "Pineapple2"
+                },
+                "name": "peal",
+                "raw": "/**\n     * Peal method\n     * @method peal\n     * @group Pineapple2\n     * @return {boolean} Is peeled\n     */",
+                "pos": 416
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]  

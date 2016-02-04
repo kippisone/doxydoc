@@ -23,16 +23,53 @@ describe('Doxydoc', function() {
     });
 
     describe('readDoxydocFile', function(done) {
-        it('Should read conf from a doxydoc file', function(done) {
-            var doxydoc = new Doxydoc({
-                doxydocFile: path.join(__dirname, 'fixtures/doxydoc.json')
-            });
+        var sandbox = sinon.sandbox.create();
+        var readStub;
 
+        beforeEach(function() {
+            readStub = sandbox.stub(fl, 'read');
+        });
+
+        afterEach(function() {
+            sandbox.restore();    
+        });
+
+        it('Should read conf from a doxydoc file', function(done) {
+            var doxydoc = new Doxydoc();
+
+            readStub.returns(JSON.stringify({
+                name: 'Doxydoc dev'
+            }));
             inspect(doxydoc).isObject();
 
             doxydoc.readDoxydocFile().then(function(conf) {
                 inspect(conf).hasProps({
-                    name: 'Doxydoc test'
+                    name: 'Doxydoc dev',
+                    docs: [],
+                    pages: [],
+                    navigation: [],
+                    sidebar: [],
+                    scripts: [],
+                    styles: []
+                });
+
+                done();
+            }).catch(done);
+        });
+
+        it('Should convert scripts and styles properties into arrays', function(done) {
+            var doxydoc = new Doxydoc();
+
+            readStub.returns(JSON.stringify({
+                scripts: 'foo.js',
+                styles: 'bar.css'
+            }));
+
+            doxydoc.readDoxydocFile().then(function(conf) {
+                inspect.print(conf);
+                inspect(conf).hasProps({
+                    scripts: ['foo.js'],
+                    styles: ['bla.css']
                 });
 
                 done();
