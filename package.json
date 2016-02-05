@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "co": "^4.6.0",
+    "co-tasks": "^0.1.1",
     "commander": "^2.9.0",
     "docblock": "^0.1.1",
     "dox": "^0.8.0",

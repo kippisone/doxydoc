@@ -198,64 +198,134 @@ describe('Docs object', function() {
         });
     });
 
-describe.skip('Sandbox', function() {
+describe.only('Sandbox', function() {
     it('Should build a nested docs structure', function() {
         class DocsItem {
-            constructor(bucket) {
-                this.parent = bucket;
-                this.bucket = [];
+            constructor(bucket, type) {
+                let newBucket = {
+                    type: type || 'root',
+                    items: []
+                };
 
-                bucket.push({ items: this.bucket});
+                if (bucket) {
+                    this.parent = bucket;
+                    bucket.items.push(newBucket);
+                }
+
+                this.bucket = newBucket;
             }
 
             set(data) {
-                this.bucket.push(data);
+                Object.assign(this.bucket, data);
             }
 
             pack(data) {
-                var mod = {
-                    items: []
-                }
-
-                this.bucket.push(mod);
-                var m = new ModuleItem(mod);
-                m.set(data);
+                var p = new PackageItem(this.bucket);
+                p.set(data);
+                return p;
             }
 
-            module(data) {
-                var mod = {
-                    items: []
-                }
-
-                this.bucket.push(mod);
-                var m = new ModuleItem(mod);
+            mod(data) {
+                var m = new ModuleItem(this.bucket);
                 m.set(data);
+                return m;
+            }
+
+            group(data) {
+                var m = new GroupItem(this.bucket);
+                m.set(data);
+                return m;
+            }
+
+            getParentBucket(name) {
+                var parent = this.parent;
+                while (true) {
+                    if (!parent) {
+                        return this;
+                    }
+
+                    if (parent.type === name) {
+                        return parent;
+                    }
+
+                    parent = parent.parent;
+                }
             }
         }
 
         class PackageItem extends DocsItem {
             constructor(bucket) {
-                super(bucket);
+                super(bucket, 'package');
             }
         }
 
-        class ModuleItem extends PackageItem {
+        class ModuleItem extends DocsItem {
             constructor(bucket) {
-                super(bucket);
-            }   
+                super(bucket, 'module');
+            }
+
+            pack(data) {
+                var parent = this.getParentBucket('package');
+                console.log('PARENT', parent);
+                var p = new PackageItem(parent);
+                p.set(data);
+                return p;
+            }
         }
 
-        var bucket = [];
+        class GroupItem extends DocsItem {
+            constructor(bucket, group) {
+                super(bucket, 'group');
+            }
+        }
 
-        var docs = new PackageItem(bucket);
-        docs.pack({
+        var docs = new DocsItem();
+        var p = docs.pack({
             value: 'foo'
         });
 
+        var m = p.mod({
+            value: 'bla'
+        });
 
-        inspect(bucket).isEql({
+        m.group({
+            group: 'method',
+            value: 'G1'
+        });
+
+        m.group({
+            group: 'method',
+            value: 'G2'
+        });
+
+        m.pack({
+            value: 'pack 2'
+        });
+
+        inspect(docs.bucket).isEql({
+            type: 'root',
             items: [{
-                value: 'foo'
+                type: 'package',
+                value: 'foo',
+                items: [{
+                    type: 'module',
+                    value: 'bla',
+                    items: [{
+                        type: 'group',
+                        group: 'method',
+                        items: [],
+                        value: 'G1'
+                    }, {
+                        type: 'group',
+                        group: 'method',
+                        items: [],
+                        value: 'G2'
+                    }]
+                }]
+            }, {
+                type: 'package',
+                items: [],
+                value: 'Pack 2'
             }]
         });
     });
