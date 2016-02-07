@@ -1,8 +1,4 @@
 section class="modules"
+    h1 "Module: $title"
+    articla $description
     :each $itmes : div class="module"
-        h1 $name
-        articla $description
-        :each $items : section class="items"
-            :if $type.eq('module')
-                "Module"
-                >includes/group

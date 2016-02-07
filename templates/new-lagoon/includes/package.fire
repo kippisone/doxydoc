@@ -1,4 +1,9 @@
 section class="packages"
-    :each $itmes : div class="package"
-        h1 $name
-        articla $description
+    h1 "Package: $title"
+    article $description
+    div "Items: $items.length"
+    :each $itmes : div class="packageItems"
+        :if $atype.eq('module')
+            >includes/module
+        :else
+            "Other: $atype"

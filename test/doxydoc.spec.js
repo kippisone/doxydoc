@@ -75,6 +75,27 @@ describe('Doxydoc', function() {
                 done();
             }).catch(done);
         });
+
+        it('Should convert all docs.files properties into arrays', function(done) {
+            var doxydoc = new Doxydoc();
+
+            readStub.returns(JSON.stringify({
+                docs: [{
+                    files: 'foo.js'
+                }]
+            }));
+
+            doxydoc.readDoxydocFile().then(function(conf) {
+                inspect.print(conf);
+                inspect(conf).hasProps({
+                    docs: [{
+                        files: ['foo.js']
+                    }]
+                });
+
+                done();
+            }).catch(done);
+        });
     });
 
     describe('createDocs', function() {

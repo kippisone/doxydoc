@@ -5,7 +5,7 @@ html
         :each $scripts
             script src="$this"
 
-        link rel="Stylesheet" href="${basePath}main.css"
+        link rel="Stylesheet" href="${basePath}doxydoc.css"
         :each $styles
             link rel="Stylesheet" href="$this"
     body
@@ -25,12 +25,10 @@ html
                                         li 
                                             a href="#$link" $name
                 article class="pageContent"
-                    :each $docs
-                        :if $type.eq('package')
-                            "Package"
+                    :each $docs.items
+                        :if $atype.eq('package')
                             >includes/package
-                        :if $type.eq('module')
-                            "Module"
+                        :if $atype.eq('module')
                             >includes/module
                     hr
                     h1 id="top" $name

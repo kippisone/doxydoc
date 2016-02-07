@@ -14,7 +14,7 @@ class Page {
     }
 
     setData(data) {
-        this.data.docs = data;
+        Object.assign(this.data, data);
     }
 
     setTemplate(template) {

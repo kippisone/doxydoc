@@ -3,6 +3,7 @@
 var fl = require('node-fl');
 var path = require('path');
 var Docblock = require('docblock');
+var DocItem = require('./docItem');
 
 class Docs {
     constructor() {
@@ -27,14 +28,9 @@ class Docs {
     parse(files) {
         this.files = files;
         this.readFiles();
-        this.files.map(function(file) {
-            let docblock = new Docblock();
-            let result = docblock.parse(file.source, file.type);
-            this.setFileInfo(file);
-            this.parseDoc(result);
-        }, this);
+        var docs = this.parseDoc(this.files);
 
-        return this.items;
+        return docs;
     }
 
     setFileInfo(file) {
@@ -52,40 +48,46 @@ class Docs {
         return this._cache[key] = obj;
     }
 
-    parseDoc(docs) {
-        docs.forEach(function(doc, index) {
-            console.log('P', doc.tags.package);
-            if (doc.tags.package) {
-                this.createPackage(doc.tags.package);
-            }
-            
-            // if (doc.tags.subpackage) {
-            //     this.createSubpackage(doc.tags.subpackage);
-            // }
-            
-            // if (doc.tags.module) {
-            //     this.createModule(doc.tags.module);
-            // }
-            
-            // if (doc.tags.submodule) {
-            //     this.createSubmodule(doc.tags.submodule);
-            // }
+    parseDoc(files) {
+        var docParser = new DocItem();
+        var docItem = docParser;
 
-            // if (!this.bucket) {
-            //     this.bucket = this.items;
-            //     this.createModule({
-            //         module: this.curFilename
-            //     });
-            // }
+        files.forEach(function(file) {
+            let docblock = new Docblock();
+            let blocks = docblock.parse(file.source, file.type);
+            this.setFileInfo(file);
             
-            // if (doc.group) {
-            //     this.createGroupItem(doc.group, doc);
-            // }
-            // else {
-            //     this.createUngroupedItem(doc.group, doc);
-            // }
+            blocks.forEach(function(doc, index) {
+                if (doc.tags['package']) {
+                    docItem = docItem.addPackage(doc);
+                }
+                
+                if (doc.tags.subpackage) {
+                    docItem = docItem.addSubpackage(doc);
+                }
+                
+                if (doc.tags.module) {
+                    docItem = docItem.addModule(doc);
+                }
+                
+                if (doc.tags.submodule) {
+                    docItem = docItem.addSubmodule(doc);
+                }
+
+                if (doc.group) {
+                    docItem = docItem.addGroup(doc);
+                }
+                else {
+                    docItem = docItem.addContent(doc);
+                }
+
+            }, this);
+
         }, this);
+
+        return docParser.toObject();
     }
+
 
     createPackage(packageName) {
         this.curPackage = this.getCachedItem([packageName]) || {

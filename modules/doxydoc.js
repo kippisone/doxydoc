@@ -45,6 +45,7 @@ class Doxydoc {
             this.conf = yield this.readDoxydocFile();
             this.docs = this.conf.docs;
             yield this.createDocs();
+            console.log('DD', this.docs);
             yield this.createDocPages();
             yield this.copyStaticFiles();
             return this.docs;
@@ -77,12 +78,20 @@ class Doxydoc {
                 styles: []
             }, conf);
 
-            [ conf, conf.navigation, conf.sidebar ].forEach(function(prop) {
-                [ 'styles', 'scripts' ].forEach(function(key) {
+            [ conf, conf.navigation, conf.sidebar, conf.docs].forEach(function(prop) {
+                [ 'styles', 'scripts' , 'files'].forEach(function(key) {
                     if (prop[key] && typeof prop[key] === 'string') {
                         prop[key] = [prop[key]];
                     }
                 });
+            });
+
+            conf.docs = conf.docs.map(function(doc) {
+                if (doc.files && typeof doc.files === 'string') {
+                    doc.files = [doc.files];
+                }
+
+                return doc;
             });
 
             resolve(conf);
@@ -110,17 +119,17 @@ class Doxydoc {
             for (let docs of this.docs) {
                 if (docs.data) {
                     let customData = require(path.resolve(this.workingDir, docs.data));
+                    log.debug('Load custom data:', customData);
                     docs.docs = customData;
                 }
                 else {
                     let newDocs = new Docs();
-                    // console.log('N', newDocs);
 
                     var files = [];
                     for (let file of docs.files) {
                         if (file.indexOf('*') === -1) {
                             files.push(file);
-                            return;
+                            continue;
                         }
 
                         var fileScan = yield this.scanDir(this.workingDir, file);
@@ -129,6 +138,7 @@ class Doxydoc {
                         }));
                     }
 
+                    log.debug('Parse docs files:', files);
                     docs.docs = newDocs.parse(files);
                 }
             }
@@ -138,27 +148,30 @@ class Doxydoc {
     createDocPages() {
         return co(function *() {
             for (let docs of this.docs) {
-                var output = this.getOutputNames(docs.output);
                 if (typeof docs.output === 'string') {
                     docs.output = [docs.output];
                 }
-                
-                if (output.html) {
-                    log.debug('Write html output', output.html);
 
-                    var page = new Page();
-                    page.setData(docs.docs);
-                    page.setTemplate(path.join(this.templateDir, 'docs.fire'));
+                docs.output.forEach(function(filename) {
+                    var ext = path.extname(filename);
+                    var data = this.mergeMetaData(docs.docs);
+                    console.log('MERGE', data);
 
-                    log.debug('Write docs file:', output.html);
-                    page.render(output.html);
-                }
+                    if (ext === '.html') {
+                        log.debug('Write html output', filename);
+
+                        var page = new Page();
+                        page.setData(data);
+                        page.setTemplate(path.join(this.templateDir, 'docs.fire'));
+
+                        page.render(filename);
+                    }
+                    else if (ext === '.json') {
+                        log.debug('Write json output', filename);
+                        fl.write(filename, JSON.stringify(data, null, '  '));
+                    }
+                }, this);
                 
-                if (output.json) {
-                    log.debug('Write json output', output.json);
-                    console.log(docs.docs);
-                    fl.write(output.json, JSON.stringify(docs.docs, null, '  '));
-                }
             }
         }.bind(this));
     }
@@ -170,16 +183,6 @@ class Doxydoc {
         }.bind(this));
     }
 
-    getOutputNames(output) {
-        var outputNames = {};
-        output.forEach(function(name) {
-            var ext = path.extname(name).substr(1);
-            outputNames[ext] = path.resolve(this.workingDir, name);
-        }, this);
-
-        return outputNames;
-    }
-
     getGenericConf() {
         return {
             navigation: this.navigation,
@@ -187,6 +190,12 @@ class Doxydoc {
             styles: this.styles,
             scripts: this.scripts
         }
+    }
+
+    mergeMetaData(docs) {
+        return Object.assign(this.conf, {
+            docs: docs
+        });
     }
 }
 
