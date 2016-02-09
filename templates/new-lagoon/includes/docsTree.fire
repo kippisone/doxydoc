@@ -5,10 +5,29 @@ section class="docsTree"
                 h1 "Package: $title"
                     article $description
                     div "Items: $items.length"
-                    &next $items
+        :if $atype.eq('subpackage')
+            section class="subpackages"
+                h1 "Subpackage: $title"
+                    article $description
+                    div "Items: $items.length"
         :if $atype.eq('module')
             section class="modules"
                 h1 "Module: $title"
                     article $description
                     div "Items: $items.length"
-                    &next $items : section class="twig"
+        :if $atype.eq('submodule')
+            section class="submodules"
+                h1 "Supmodule: $title"
+                    article $description
+                    div "Items: $items.length"
+        :if $atype.eq('group')
+            section class="groups"
+                h1 "Group: $title"
+                    article $description
+                    div "Items: $items.length"
+        :if $atype.eq('content')
+            section class="contents"
+                h1 "Content: $title"
+                    article $description
+                    
+        &next $items : section class="$atype items"

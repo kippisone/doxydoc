@@ -7,6 +7,7 @@ var Page = require('./page');
 var fl = require('node-fl');
 var co = require('co');
 var log = require('logtopus');
+var copyDir = require('copy-dir');
 
 /**
  * Creates a Doxydoc pages
@@ -155,7 +156,6 @@ class Doxydoc {
                 docs.output.forEach(function(filename) {
                     var ext = path.extname(filename);
                     var data = this.mergeMetaData(docs.docs);
-                    console.log('MERGE', data);
 
                     if (ext === '.html') {
                         log.debug('Write html output', filename);
@@ -180,6 +180,7 @@ class Doxydoc {
         return co(function *() {
             log.debug('Coppy static files');
             fl.copy(path.join(this.templateDir, 'main.css'), path.join(this.workingDir, 'doxydoc.css'));
+            copyDir.sync(path.join(this.templateDir, 'img'), path.join(this.workingDir, 'img'));
         }.bind(this));
     }
 

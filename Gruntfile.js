@@ -30,6 +30,15 @@ module.exports = function(grunt) {
                     'templates/lagoon/main.css': 'templates/lagoon/less/main.less'
                 }
             },
+            'new-lagoon': {
+                options: {
+                    // relativeUrls: true,
+                    // rootpath: 'templates/new-lagoon/less/'
+                },
+                files: {
+                    'templates/new-lagoon/main.css': 'templates/new-lagoon/less/main.less'
+                }
+            },
             'deep-space': {
                 options: {
                     relativeUrls: true,

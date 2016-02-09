@@ -920,8 +920,8 @@ table.dcMultiTable td {
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url('templates/lagoon/less/dresscode/less/fonts//fontawesome-webfont.eot?v=4.4.0');
-  src: url('templates/lagoon/less/dresscode/less/fonts//fontawesome-webfont.eot?#iefix&v=4.4.0') format('embedded-opentype'), url('templates/lagoon/less/dresscode/less/fonts//fontawesome-webfont.woff2?v=4.4.0') format('woff2'), url('templates/lagoon/less/dresscode/less/fonts//fontawesome-webfont.woff?v=4.4.0') format('woff'), url('templates/lagoon/less/dresscode/less/fonts//fontawesome-webfont.ttf?v=4.4.0') format('truetype'), url('templates/lagoon/less/dresscode/less/fonts//fontawesome-webfont.svg?v=4.4.0#fontawesomeregular') format('svg');
+  src: url('../fonts//fontawesome-webfont.eot?v=4.4.0');
+  src: url('../fonts//fontawesome-webfont.eot?#iefix&v=4.4.0') format('embedded-opentype'), url('../fonts//fontawesome-webfont.woff2?v=4.4.0') format('woff2'), url('../fonts//fontawesome-webfont.woff?v=4.4.0') format('woff'), url('../fonts//fontawesome-webfont.ttf?v=4.4.0') format('truetype'), url('../fonts//fontawesome-webfont.svg?v=4.4.0#fontawesomeregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -3026,87 +3026,63 @@ table.dcMultiTable td {
 .pageHeader .subtitle:empty {
   display: none;
 }
-.pageLeft .moduleBlock {
-  background-color: #eee;
+.pageLeft .tree {
+  padding-left: 10px;
+}
+.pageLeft .tree.package {
+  background-color: #ccc;
   border-radius: 5px;
-  padding: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
+  padding: 3px;
 }
-.pageLeft .moduleBlock h1 {
-  color: #555;
-  font-size: 16px;
+.pageLeft .tree.package .packageLink {
+  color: #888;
   font-weight: bold;
-  margin: 0 0 10px 0;
-  white-space: pre;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  font-size: 15px;
 }
-.pageLeft .moduleBlock h2 {
-  color: #666;
-  font-size: 12px;
-  font-weight: bold;
-  margin: 0;
-  white-space: pre;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-.pageLeft .moduleBlock a:link,
-.pageLeft .moduleBlock a:active,
-.pageLeft .moduleBlock a:visited {
-  color: inherit;
-  text-decoration: none;
-}
-.pageLeft .groupBlockItem {
-  list-style-type: none;
-  padding: 0;
-}
-.pageLeft .groupBlockItem li {
-  list-style-type: none;
-}
-.pageLeft .groupBlockItem a:link,
-.pageLeft .groupBlockItem a:active,
-.pageLeft .groupBlockItem a:visited {
-  color: #111;
-  text-decoration: none;
-}
-.pageLeft .pageLinks .link {
-  display: block;
-}
-.pageLeft .pageLinks .twig {
-  padding-left: 15px;
-}
-.pageLeft .pageLinks .twig > .link a:link,
-.pageLeft .pageLinks .twig > .link a:active,
-.pageLeft .pageLinks .twig > .link a:visited {
-  color: #444;
-  font-weight: normal;
-}
-.pageLeft .pageLinks .twig > .link a:hover {
-  background-color: #0051CD;
-  color: #fff;
-  border-radius: 5px;
-}
-.pageLeft .pageLinks a:link,
-.pageLeft .pageLinks a:active,
-.pageLeft .pageLinks a:visited {
-  color: #111;
-  text-decoration: none;
+.pageLeft .tree.package .packageLink:before {
+  content: '';
+  width: 22px;
+  height: 22px;
   display: inline-block;
-  padding: 2px 5px;
+  background-image: url(img/packageGrey96.png);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
-.pageLeft .pageLinks a:link:before,
-.pageLeft .pageLinks a:active:before,
-.pageLeft .pageLinks a:visited:before {
+.pageLeft .tree.package .moduleLink {
+  color: #999;
+  font-weight: bold;
+  font-size: 15px;
+}
+.pageLeft .tree.package .moduleLink:before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  background-image: url(img/module96.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.pageLeft .tree.package .groupLink {
+  color: #888;
+  font-weight: bold;
+  font-size: 15px;
+}
+.pageLeft .tree.package .groupLink:before {
+  content: '';
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.pageLeft .tree.package .contentLink {
+  color: #888;
+  font-size: 15px;
+}
+.pageLeft .tree.package .contentLink:before {
   content: '›';
-  margin-right: 5px;
-}
-.pageLeft .pageLinks a:hover {
-  background-color: #0051CD;
-  color: #fff;
-  border-radius: 5px;
-}
-.pageLeft .subNavi {
-  margin-top: 10px;
+  display: inline-block;
+  vertical-align: middle;
 }
 .pageContent h1 {
   font-size: 24px;

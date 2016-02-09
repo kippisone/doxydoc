@@ -1,6 +1,6 @@
 {
   "name": "doxydoc",
-  "version": "0.4.7-41",
+  "version": "0.4.7-42",
   "description": "Source code documentation generator for Javascript, LESS and CSS",
   "main": "modules/doxydoc.js",
   "bin": {
@@ -28,6 +28,7 @@
     "co": "^4.6.0",
     "co-tasks": "^0.1.1",
     "commander": "^2.9.0",
+    "copy-dir": "0.0.8",
     "docblock": "^0.1.1",
     "dox": "^0.8.0",
     "dresscode-less": "^0.1.3",
