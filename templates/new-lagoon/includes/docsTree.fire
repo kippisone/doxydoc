@@ -1,0 +1,14 @@
+section class="docsTree"
+    :tree $docs.items : section class="tree"
+        :if $atype.eq('package')
+            section class="packages"
+                h1 "Package: $title"
+                    article $description
+                    div "Items: $items.length"
+                    &next $items
+        :if $atype.eq('module')
+            section class="modules"
+                h1 "Module: $title"
+                    article $description
+                    div "Items: $items.length"
+                    &next $items : section class="twig"

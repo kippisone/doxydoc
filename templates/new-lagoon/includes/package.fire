@@ -2,7 +2,7 @@ section class="packages"
     h1 "Package: $title"
     article $description
     div "Items: $items.length"
-    :each $itmes : div class="packageItems"
+    :each $items : div class="packageItems"
         :if $atype.eq('module')
             >includes/module
         :else
