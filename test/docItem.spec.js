@@ -2,12 +2,118 @@ var inspect = require('inspect.js');
 
 describe('DocItem', function() {
     var DocItem = require('../modules/docItem');
+
+    describe('RootItem', function() {
+        var ctx, rootItem;
+
+        beforeEach(function() {
+            ctx = { items: [] };
+            rootItem = new DocItem(ctx);    
+        });
+
+        it('Should create a root item', function() {
+            inspect(rootItem).isObject();
+        });
+    });
+
+    describe('PackageItem', function() {
+        var ctx, rootItem;
+
+        beforeEach(function() {
+            ctx = { items: [] };
+            rootItem = new DocItem(ctx);    
+        });
+
+        it('Should create a package item', function() {
+            var obj = rootItem.getInstance('package', 'test1');
+            inspect(obj).isObject();
+            inspect(rootItem.items).hasLength(1);
+            inspect(rootItem.items[0]).isEqual(obj);
+            inspect(obj.parent).isEqual(rootItem);
+        });
+
+        it('Should be unique', function() {
+            var obj = rootItem.getInstance('package', 'test1');
+            inspect(rootItem.items).hasLength(1);
+            inspect(rootItem.items[0]).isEqual(obj);
+            inspect(obj.parent).isEqual(rootItem);
+        });
+    });
+
+    describe('SubPackageItem', function() {
+        var ctx, rootItem;
+
+        beforeEach(function() {
+            ctx = { items: [] };
+            rootItem = new DocItem(ctx);    
+        });
+
+        it('Should create a subpackage item', function() {
+            var obj = rootItem.getInstance('subpackage');
+            inspect(obj).isObject();
+            inspect(rootItem.items).hasLength(1);
+            inspect(rootItem.items[0]).isEqual(obj);
+            inspect(obj.parent).isEqual(rootItem);
+        });
+    });
+
+    describe('ModelItem', function() {
+        var ctx, rootItem;
+
+        beforeEach(function() {
+            ctx = { items: [] };
+            rootItem = new DocItem(ctx);    
+        });
+
+        it('Should create a module item', function() {
+            var obj = rootItem.getInstance('module');
+            inspect(obj).isObject();
+            inspect(rootItem.items).hasLength(1);
+            inspect(rootItem.items[0]).isEqual(obj);
+            inspect(obj.parent).isEqual(rootItem);
+        });
+    });
+
+    describe('SubModelItem', function() {
+        var ctx, rootItem;
+
+        beforeEach(function() {
+            ctx = { items: [] };
+            rootItem = new DocItem(ctx);    
+        });
+
+        it('Should create a submodule item', function() {
+            var obj = rootItem.getInstance('submodule');
+            inspect(obj).isObject();
+            inspect(rootItem.items).hasLength(1);
+            inspect(rootItem.items[0]).isEqual(obj);
+            inspect(obj.parent).isEqual(rootItem);
+        });
+    });
+
+    describe('GroupItem', function() {
+        var ctx, rootItem;
+
+        beforeEach(function() {
+            ctx = { items: [] };
+            rootItem = new DocItem(ctx);    
+        });
+
+        it('Should create a group item', function() {
+            var obj = rootItem.getInstance('group');
+            inspect(obj).isObject();
+            inspect(rootItem.items).hasLength(1);
+            inspect(rootItem.items[0]).isEqual(obj);
+            inspect(obj.parent).isEqual(rootItem);
+        });
+    });
     
     describe('instance', function() {
         it('Should build a nested docs structure', function() {
 
             var docs = new DocItem();
             var p = docs.addPackage({
+                package: 'p1',
                 value: 'foo'
             });
 

@@ -23,34 +23,35 @@ class DocItem {
     }
 
     addPackage(data) {
-        var p = new PackageItem(this);
+        var p = this.getByName('package', data.package);
         p.set(data);
         return p;
     }
 
     addSubpackage(data) {
-        var p = new SubPackageItem(this);
+        var p = this.getByName('subpackage', data.subpackage);
         p.set(data);
         return p;
     }
 
     addModule(data) {
-        var m = new ModuleItem(this);
+        var m = this.getByName('module', data.module);
         m.set(data);
         return m;
     }
 
     addSubmodule(data) {
-        var m = new SubModuleItem(this);
+        var m = this.getByName('submodule', data.submodule);
         m.set(data);
         return m;
     }
 
     addGroup(data) {
-        var g = this.getByName('group', data.group) || new GroupItem(this);
+        var g = this.getByName('group', data.group);
         g.set(data);
         return g;
     }
+
 
     addContent(data) {
         var parent = this.getParentBucket('content');
@@ -64,6 +65,10 @@ class DocItem {
         'module', 'submodule', 'group', 'content'];
 
         var parent = this.parent;
+        if (!parent) {
+            return this;
+        }
+
         var nameIndex = parents.indexOf(name);
         
         while (parent.parent) {
@@ -77,15 +82,46 @@ class DocItem {
         return parent;
     }
 
+    getInstance(atype) {
+        let obj = {};
+
+        switch(atype) {
+            case 'package':
+                obj = new PackageItem(this);
+                break;
+            case 'subpackage':
+                obj = new SubPackageItem(this);
+                break;
+            case 'module':
+                obj = new ModuleItem(this);
+                break;
+            case 'submodule':
+                obj = new SubModuleItem(this);
+                break;
+            case 'group':
+                obj = new GroupItem(this);
+                break;
+            case 'content':
+                obj = new ContentItem(this);
+                break;
+            default:
+                obj = null;
+        }
+
+        return obj;
+    }
+
     getByName(atype, name) {
-        var bucket = this.getParentBucket(name);
-        for (let child of bucket.items || []) {
-            if (child.name === name) {
+        var parent = this.getParentBucket(atype);
+        for (let child of parent.items || []) {
+            if (child.aname === name) {
                 return child;
             }
         }
 
-        return null;
+        let obj = this.getInstance(atype);
+        obj.aname = name;
+        return obj;
     }
 
     toJSON() {
@@ -93,8 +129,10 @@ class DocItem {
     }
 
     toObject() {
-        var obj = this.data;
-        obj.atype = this.atype;
+        var obj = Object.assign({
+            atype: this.atype,
+            aname: this.aname
+        }, this.data);
 
         if (this.items) {
             obj.items = this.items.map(function(item) {
@@ -139,8 +177,7 @@ class SubPackageItem extends PackageItem {
     }
 
     addPackage(data) {
-        var parent = this.getParentBucket('package');
-        var p = new PackageItem(parent);
+        var p = this.getByName('package', data.package);
         p.set(data);
         return p;
     }
@@ -156,8 +193,7 @@ class ModuleItem extends SubPackageItem {
     }
 
     addSubpackage(data) {
-        var parent = this.getParentBucket('subpackage');
-        var p = new SubPackageItem(parent);
+        var p = this.getByName('subpackage', data.subpackage);
         p.set(data);
         return p;
     }
@@ -173,8 +209,7 @@ class SubModuleItem extends ModuleItem {
     }
 
     addModule(data) {
-        var parent = this.getParentBucket('module');
-        var p = new ModuleItem(parent);
+        var p = this.getByName('module', data.module);
         p.set(data);
         return p;
     }
@@ -191,8 +226,7 @@ class GroupItem extends SubModuleItem {
     }
 
     addSubmodule(data) {
-        var parent = this.getParentBucket('submodule');
-        var p = new SubModuleItem(parent);
+        var p = this.getByName('submodule', data.submodule);
         p.set(data);
         return p;
     }
@@ -210,8 +244,7 @@ class ContentItem extends GroupItem {
     }
 
     addGroup(data) {
-        var parent = this.getParentBucket('group');
-        var g = this.getByName('group', data.group) || new GroupItem(parent);
+        var g = this.getByName('group', data.group);
         g.set(data);
         return g;
     }
