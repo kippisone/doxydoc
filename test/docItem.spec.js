@@ -25,7 +25,7 @@ describe('DocItem', function() {
         });
 
         it('Should create a package item', function() {
-            var obj = rootItem.getInstance('package', 'test1');
+            var obj = rootItem.getInstance('package');
             inspect(obj).isObject();
             inspect(rootItem.items).hasLength(1);
             inspect(rootItem.items[0]).isEqual(obj);
@@ -33,7 +33,7 @@ describe('DocItem', function() {
         });
 
         it('Should be unique', function() {
-            var obj = rootItem.getInstance('package', 'test1');
+            var obj = rootItem.getInstance('package');
             inspect(rootItem.items).hasLength(1);
             inspect(rootItem.items[0]).isEqual(obj);
             inspect(obj.parent).isEqual(rootItem);
@@ -118,6 +118,7 @@ describe('DocItem', function() {
             });
 
             var m = p.addModule({
+                module: 'm1',
                 value: 'bla'
             });
 
@@ -140,35 +141,53 @@ describe('DocItem', function() {
             });
 
             m.addPackage({
+                package: 'p2',
                 value: 'P2'
             });
 
             inspect.print(docs.toObject());
-            inspect(docs.toObject()).isEql({
+            inspect(docs.toObject()).hasProps({
                 atype: 'root',
                 items: [{
                     atype: 'package',
-                    value: 'foo',
+                    aname: 'p1',
+                    data: {
+                        package: 'p1',
+                        value: 'foo'
+                    },
                     items: [{
                         atype: 'module',
-                        value: 'bla',
+                        aname: 'm1',
+                        data: {
+                            module: 'm1',
+                            value: 'bla'
+                        },
                         items: [{
                             atype: 'group',
-                            group: 'method',
+                            aname: 'method',
+                            data: {
+                                group: 'method',
+                                value: 'G2'
+                            },
                             items: [{
                                 atype: 'content',
-                                value: 'C1'
+                                data: {
+                                    value: 'C1'
+                                }
                             }, {
                                 atype: 'content',
-                                value: 'C2'
-                            }],
-                            value: 'G2'
+                                data: {
+                                    value: 'C2'
+                                }
+                            }]
                         }]
                     }]
                 }, {
                     atype: 'package',
                     items: [],
-                    value: 'P2'
+                    data: {
+                        value: 'P2'
+                    }
                 }]
             });
         });
@@ -184,11 +203,14 @@ describe('DocItem', function() {
                 value: 'bla'
             });
 
-            inspect(docs.toObject()).isEql({
+            inspect(docs.toObject()).hasProps({
                 atype: 'root',
                 items: [{
                     atype: 'module',
-                    value: 'foo',
+                    aname: '',
+                    data: {
+                        value: 'foo'
+                    },
                     items: [{
                         atype: 'content',
                         value: 'bla'
@@ -208,14 +230,18 @@ describe('DocItem', function() {
                 value: 'bla'
             });
 
-            inspect(docs.toObject()).isEql({
+            inspect(docs.toObject()).hasProps({
                 atype: 'root',
                 items: [{
                     atype: 'group',
-                    value: 'foo',
+                    data: {
+                        value: 'foo'
+                    },
                     items: [{
                         atype: 'content',
-                        value: 'bla'
+                        data: {
+                            value: 'bla'
+                        }
                     }]
                 }]
             });
@@ -232,14 +258,18 @@ describe('DocItem', function() {
                 value: 'bla'
             });
 
-            inspect(docs.toObject()).isEql({
+            inspect(docs.toObject()).hasProps({
                 atype: 'root',
                 items: [{
                     atype: 'package',
-                    value: 'foo',
+                    data: {
+                        value: 'foo'
+                    },
                     items: [{
                         atype: 'module',
-                        value: 'bla',
+                        data: {
+                            value: 'bla'
+                        },
                         items: []
                     }]
                 }]

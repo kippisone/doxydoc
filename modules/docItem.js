@@ -60,19 +60,19 @@ class DocItem {
         return c;
     }
 
-    getParentBucket(name) {
+    getParentBucket(aname) {
         var parents = ['root', 'package', 'submodule',
         'module', 'submodule', 'group', 'content'];
 
-        var parent = this.parent;
-        if (!parent) {
-            return this;
-        }
-
-        var nameIndex = parents.indexOf(name);
+        var parent = this;
+        var nameIndex = parents.indexOf(aname);
         
-        while (parent.parent) {
+        while (parent) {
             if (nameIndex > parents.indexOf(parent.atype)) {
+                return parent;
+            }
+
+            if (!parent.parent) {
                 return parent;
             }
 
@@ -82,27 +82,27 @@ class DocItem {
         return parent;
     }
 
-    getInstance(atype) {
+    getInstance(atype, parent) {
         let obj = {};
 
         switch(atype) {
             case 'package':
-                obj = new PackageItem(this);
+                obj = new PackageItem(parent || this);
                 break;
             case 'subpackage':
-                obj = new SubPackageItem(this);
+                obj = new SubPackageItem(parent || this);
                 break;
             case 'module':
-                obj = new ModuleItem(this);
+                obj = new ModuleItem(parent || this);
                 break;
             case 'submodule':
-                obj = new SubModuleItem(this);
+                obj = new SubModuleItem(parent || this);
                 break;
             case 'group':
-                obj = new GroupItem(this);
+                obj = new GroupItem(parent || this);
                 break;
             case 'content':
-                obj = new ContentItem(this);
+                obj = new ContentItem(parent || this);
                 break;
             default:
                 obj = null;
@@ -111,16 +111,16 @@ class DocItem {
         return obj;
     }
 
-    getByName(atype, name) {
+    getByName(atype, aname) {
         var parent = this.getParentBucket(atype);
         for (let child of parent.items || []) {
-            if (child.aname === name) {
+            if (child.aname === aname) {
                 return child;
             }
         }
 
-        let obj = this.getInstance(atype);
-        obj.aname = name;
+        let obj = this.getInstance(atype, parent);
+        obj.aname = aname;
         return obj;
     }
 
@@ -131,25 +131,15 @@ class DocItem {
     toObject() {
         var obj = Object.assign({
             atype: this.atype,
-            aname: this.aname
-        }, this.data);
+            aname: this.aname || '',
+            data: this.data
+        });
 
         if (this.items) {
             obj.items = this.items.map(function(item) {
                 return item.toObject();
             });
         }
-
-        // for (let key of Object.keys(this)) {
-        //     if (key === 'items') {
-        //         for (let item of this.items) {
-        //             obj[key].push(item.toObject());
-        //         }
-        //     }
-        //     else if (key !== 'parent') {
-        //         obj[key] = this[key];
-        //     }
-        // }
 
         return obj;
     }
