@@ -110,15 +110,15 @@ describe('Doxydoc', function() {
             });
 
             doxydoc.docs = [{
-                files: ['fruits/banana.js', 'fruits/pineapple.js']
+                files: [path.join(__dirname, 'fixtures/fruits/banana.js'), path.join(__dirname, 'fixtures/fruits/pineapple.js')]
             }];
 
             doxydoc.createDocs().then(function(docs) {
-                inspect(docs)
+                // inspect.print(doxydoc.docs);
+                inspect(doxydoc.docs[0].files)
                     .isArray()
                     .hasLength(2);
 
-                inspect.print(docs);
                 done();
             }).catch(done);
         });

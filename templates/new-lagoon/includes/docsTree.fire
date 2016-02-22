@@ -1,33 +1,36 @@
-section class="docsTree"
-    :tree $docs.items : section class="tree"
+section class="docsContent"
+    :tree $docs.items : section class="docsItem $atype"
         :if $atype.eq('package')
-            section class="packages"
-                h1 "Package: $title"
-                    article $description
-                    div "Items: $items.length"
+            section class="blockItem"
+                div class="typeLabel" "Package"
+                h1 "$aname"
+                h2 "$data.title"
+                article "$data.description"
         :if $atype.eq('subpackage')
-            section class="subpackages"
-                h1 "Subpackage: $title"
-                    article $description
-                    div "Items: $items.length"
+            section class="blockItem"
+                div class="typeLabel" "Subpackage"
+                h1 "$aname"
+                h2 "$data.title"
+                article "$data.description"
         :if $atype.eq('module')
-            section class="modules"
-                h1 "Module: $title"
-                    article $description
-                    div "Items: $items.length"
+            section class="blockItem"
+                div class="typeLabel" "Module"
+                h1 "$aname"
+                h2 "$data.title"
+                article "$data.description"
         :if $atype.eq('submodule')
-            section class="submodules"
-                h1 "Supmodule: $title"
-                    article $description
-                    div "Items: $items.length"
+            section class="blockItem"
+                div class="typeLabel" "Submodule"
+                h1 "$aname"
+                h2 "$data.title"
+                article "$data.description"
         :if $atype.eq('group')
-            section class="groups"
-                h1 "Group: $title"
-                    article $description
-                    div "Items: $items.length"
-        :if $atype.eq('content')
-            section class="contents"
-                h1 "Content: $title"
-                    article $description
+            section class="blockItem"
+                div class="typeLabel" "$aname"
+                h1 "$aname"
+                h2 "$data.title"
+                article "$data.description"
+                :each $items
+                    >includes/docsItem
                     
         &next $items : section class="$atype items"

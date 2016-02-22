@@ -14,10 +14,11 @@ program.version(pkg.version)
     .option('-o, --output <dir>', 'Write output to <dir>')
     .option('-t, --template <dir>', 'Use your own templates')
     .option('-f, --docu-filename <filename>', 'Sets a custom filename for the generated docu file')
-    .option('-d, --doxydoc-file <filename>', 'Read configuration from <file> instead of doxydoc.json')
+    .option('-x, --doxydoc-file <filename>', 'Read configuration from <file> instead of doxydoc.json')
     .option('-c, --check', 'Checks documentation in <input> dir')
     .option('-r, --recursive', 'Traverse <input> recursive')
     .option('-l, --filter=<filter>', 'Files must match filter. --filter=*.js,*.css')
+    .option('-d, --debug', 'Enables debug mode')
     .parse(process.argv);
 
 var files = [];
@@ -63,7 +64,7 @@ else {
     });
 
     if (program.output) {
-        doxydocPage.verbose = true;
+        doxydocPage.debug = program.debug;
         doxydocPage.files = files;
         doxydocPage.createPages();
     }

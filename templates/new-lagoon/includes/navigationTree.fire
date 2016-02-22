@@ -1,26 +1,25 @@
 section class="docsTree"
-    :tree $docs.items
-        ul class="tree $atype"
-            :if $atype.eq('package')
-                li class="item"
-                    a class="link packageLink" "$tags.package"
-                    &next $items
-            :if $atype.eq('subpackage')
-                li class="item"
-                    a class="link packageLink" "$title"
-                    &next $items
-            :if $atype.eq('module')
-                li class="item"
-                    a class="link moduleLink" "$title"
-                    &next $items
-            :if $atype.eq('submodule')
-                li class="item"
-                    a class="link moduleLink" "$title"
-                    &next $items
-            :if $atype.eq('group')
-                li class="item"
-                    a class="link groupLink" "$name"
-                    &next $items
-            :if $atype.eq('content')
-                li class="item"
-                    a class="link contentLink" "$title"
+    :tree $docs.items ul class="tree $atype"
+        :if $atype.eq('package')
+            li class="item"
+                a class="link packageLink" href="#package-$aname" "$aname"
+                &next $items
+        :if $atype.eq('subpackage')
+            li class="item"
+                a class="link packageLink" href="#subpacakge-$aname" "$aname"
+                &next $items
+        :if $atype.eq('module')
+            li class="item"
+                a class="link moduleLink" href="#module-$aname" "$aname"
+                &next $items
+        :if $atype.eq('submodule')
+            li class="item"
+                a class="link moduleLink" href="#submodule-$aname" "$aname"
+                &next $items
+        :if $atype.eq('group')
+            li class="item"
+                h3 class="groupTitle" "$aname"
+                &next $items
+        :if $atype.eq('content')
+            li class="item"
+                a class="link contentLink" href="#content-$aname" "$aname"

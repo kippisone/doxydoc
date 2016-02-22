@@ -15,15 +15,17 @@
             .packageLink {
                 &:before {
                     content: '';
-                    width: 22px;
-                    height: 22px;
+                    width: 16px;
+                    height: 16px;
                     display: inline-block;
-                    background-image: url(img/packageGrey96.png);
+                    background-image: url(img/package128.png);
                     background-repeat: no-repeat;
                     background-size: cover;
+                    vertical-align: middle;
+                    margin-right: 3px;
                 }
 
-                color: #888;
+                vertical-align: middle;
                 font-weight: bold;
                 font-size: 15px;
             }
@@ -31,15 +33,14 @@
             .moduleLink {
                 &:before {
                     content: '';
-                    width: 18px;
-                    height: 18px;
+                    width: 14px;
+                    height: 14px;
                     display: inline-block;
                     background-image: url(img/module96.png);
                     background-repeat: no-repeat;
                     background-size: cover;
                 }
 
-                color: #999;
                 font-weight: bold;
                 font-size: 15px;
             }
@@ -47,13 +48,12 @@
             .groupLink {
                 &:before {
                     content: '';
-                    width: 16px;
-                    height: 16px;
+                    width: 14px;
+                    height: 14px;
                     display: inline-block;
                     vertical-align: middle;
                 }
 
-                color: #888;
                 font-weight: bold;
                 font-size: 15px;
             }
@@ -63,11 +63,30 @@
                     content: '›';
                     display: inline-block;
                     vertical-align: middle;
+                    padding-right: 5px;
                 }
 
-                color: #888;
-                font-size: 15px;
+                font-size: 13px;
             }
         }
+    }
+
+    .link:link,
+    .link:visited,
+    .link:active {
+        display: inline-block;
+        padding: 2px 5px;
+        text-decoration: none;
+        color: #555;
+    }
+
+    .link:hover {
+        color: #333;
+        background-color: #bcb;
+        border-radius: 5px;
+    }
+
+    .item {
+
     }
 }

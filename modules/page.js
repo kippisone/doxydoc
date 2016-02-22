@@ -22,13 +22,12 @@ class Page {
     }
 
     render(file) {
-        console.log('READ', this.template);
         var tmpl = fl.read(this.template);
         var html = FireTPL.fire2html(tmpl, this.data, {
             includesPath: path.dirname(this.template)
         });
 
-        fl.write(file, html);
+        return html;
     }
 }
 

@@ -55,6 +55,7 @@ class Docs {
         files.forEach(function(file) {
             let docblock = new Docblock();
             let blocks = docblock.parse(file.source, file.type);
+            fl.write('blocks.json', JSON.stringify(blocks, null, '  '));
             this.setFileInfo(file);
             
             blocks.forEach(function(doc, index) {
@@ -76,8 +77,11 @@ class Docs {
 
                 if (doc.group) {
                     docItem = docItem.addGroup(doc);
+                    docItem = docItem.addContent(doc);
                 }
                 else {
+                    doc.group = 'ungrouped';
+                    docItem = docItem.addGroup(doc);
                     docItem = docItem.addContent(doc);
                 }
 

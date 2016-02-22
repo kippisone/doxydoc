@@ -276,5 +276,4 @@ describe('DocItem', function() {
             });
         });
     });
-
 });

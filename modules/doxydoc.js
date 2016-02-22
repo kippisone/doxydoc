@@ -24,15 +24,18 @@ class Doxydoc {
     constructor(conf) {
         conf = conf || {};
 
-        if (conf.verbose) {
+        if (conf.debug) {
             log.setLevel('debug');
         }
 
         this.workingDir = path.resolve(process.cwd(), conf.workingDir || process.cwd());
+        this.outputDir = path.resolve(this.workingDir, conf.outputDir || this.workingDir);
         this.doxydocFile = path.resolve(this.workingDir, conf.doxydocFile || 'doxydoc.json');
-        this.templateDir = path.resolve(this.workingDir, conf.templateDir || path.join(__dirname, '../templates/new-lagoon/'));
+        this.templateDir = path.resolve(__dirname, '../templates', conf.templateDir || path.join(__dirname, '../templates/new-lagoon/'));
+        this.livereload = conf.livereload === true ? 13987 : conf.livereload;
 
         log.debug('Working dir:', this.workingDir);
+        log.debug('Output dir:', this.outputDir);
         log.debug('Doxydoc file:', this.doxydocFile);
         log.debug('Template dir:', this.templateDir);
     }
@@ -84,8 +87,16 @@ class Doxydoc {
                     if (prop[key] && typeof prop[key] === 'string') {
                         prop[key] = [prop[key]];
                     }
-                });
-            });
+
+                    if (!prop[key]) {
+                        prop[key] = [];
+                    }
+
+                    if (this.livereload && key === 'scripts') {
+                        prop['scripts'].push('//localhost:' + this.livereload + '/livereload.js');
+                    }
+                }, this);
+            }, this);
 
             conf.docs = conf.docs.map(function(doc) {
                 if (doc.files && typeof doc.files === 'string') {
@@ -158,16 +169,18 @@ class Doxydoc {
                     var data = this.mergeMetaData(docs.docs);
 
                     if (ext === '.html') {
-                        log.debug('Write html output', filename);
-
                         var page = new Page();
                         page.setData(data);
                         page.setTemplate(path.join(this.templateDir, 'docs.fire'));
 
-                        page.render(filename);
+                        let html = page.render(filename);
+                        filename = path.resolve(this.outputDir, filename);
+                        log.debug('Write html output', filename);
+                        fl.write(filename, html);
                     }
                     else if (ext === '.json') {
                         log.debug('Write json output', filename);
+                        filename = path.resolve(this.outputDir, filename);
                         fl.write(filename, JSON.stringify(data, null, '  '));
                     }
                 }, this);
@@ -178,9 +191,9 @@ class Doxydoc {
 
     copyStaticFiles() {
         return co(function *() {
-            log.debug('Coppy static files');
-            fl.copy(path.join(this.templateDir, 'main.css'), path.join(this.workingDir, 'doxydoc.css'));
-            copyDir.sync(path.join(this.templateDir, 'img'), path.join(this.workingDir, 'img'));
+            log.debug('Coppy static files to', this.outputDir);
+            fl.copy(path.join(this.templateDir, 'main.css'), path.join(this.outputDir, 'doxydoc.css'));
+            copyDir.sync(path.join(this.templateDir, 'img'), path.join(this.outputDir, 'img'));
         }.bind(this));
     }
 

@@ -14,12 +14,12 @@ program.version(pkg.version)
     .option('-o, --output <dir>', 'Write output to <dir>')
     .option('-t, --template-dir <dir>', 'Use your own templates')
     .option('-f, --docu-filename <filename>', 'Sets a custom filename for the generated docu file')
-    .option('-d, --doxydoc-file <filename>', 'Read configuration from <file> instead of doxydoc.json')
+    .option('-x, --doxydoc-file <filename>', 'Read configuration from <file> instead of doxydoc.json')
     .option('-D, --data-file <filename>', 'Loads a custom datafile')
     .option('-w, --working-dir <dir>', 'Sets a working dir')
     .option('-r, --recursive', 'Traverse <input> recursive')
     .option('-l, --filter=<filter>', 'Files must match filter. --filter=*.js,*.css')
-    .option('-v, --verbose', 'Enables logging')
+    .option('-d, --debug', 'Enables debug mode')
     .parse(process.argv);
 
 var conf = {
@@ -29,7 +29,7 @@ var conf = {
     workingDir: program.workingDir ? path.resolve(process.cwd(), program.workingDir) : process.cwd(),
     doxydocFile: program.doxydocFile ? path.resolve(process.cwd(), program.doxydocFile) : null,
     dataFile: program.dataFile ? path.resolve(process.cwd(), program.dataFile) : null,
-    verbose: program.verbose
+    debug: program.debug
 };
 
 var files = [];

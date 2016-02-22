@@ -1,0 +1,74 @@
+[
+  {
+    "title": "Pineapple module",
+    "description": "",
+    "tags": {
+      "isPublic": false,
+      "isProtected": false,
+      "isPrivate": false,
+      "isDeprecated": false,
+      "ignore": false,
+      "package": "Fruits",
+      "module": "Pineapple"
+    },
+    "code": "module.exports = function() {\n    'use strict';\n  \n    /**\n     * Taste variable\n     * @var {String}\n     * @group Pineapple2\n     */\n    var taste = 'sweet';\n\n    /**\n     * Eat method\n     */\n    var eat = function() {\n\n    };\n\n    /**\n     * Peal method\n     * @method peal\n     * @group Pineapple2\n     * @return {boolean} Is peeled\n     */\n    var peal = function() {\n\n    };\n\n};",
+    "raw": "/**\n * Pineapple module\n *\n * @package Fruits\n * @module Pineapple\n */",
+    "pos": 70
+  },
+  {
+    "title": "Taste variable",
+    "description": "",
+    "tags": {
+      "isPublic": false,
+      "isProtected": false,
+      "isPrivate": false,
+      "isDeprecated": false,
+      "ignore": false,
+      "var": {
+        "type": "String",
+        "name": "taste",
+        "description": ""
+      }
+    },
+    "code": "var taste = 'sweet';\n\n    /**\n     * Eat method\n     */\n    var eat = function() {\n\n    };\n\n    /**\n     * Peal method\n     * @method peal\n     * @group Pineapple2\n     * @return {boolean} Is peeled\n     */\n    var peal = function() {\n\n    };\n\n};",
+    "group": "Pineapple2",
+    "name": "taste",
+    "raw": "/**\n     * Taste variable\n     * @var {String}\n     * @group Pineapple2\n     */",
+    "pos": 205
+  },
+  {
+    "title": "Eat method",
+    "description": "",
+    "tags": {
+      "isPublic": false,
+      "isProtected": false,
+      "isPrivate": false,
+      "isDeprecated": false,
+      "ignore": false
+    },
+    "code": "var eat = function() {\n\n    };\n\n    /**\n     * Peal method\n     * @method peal\n     * @group Pineapple2\n     * @return {boolean} Is peeled\n     */\n    var peal = function() {\n\n    };\n\n};",
+    "raw": "/**\n     * Eat method\n     */",
+    "pos": 265
+  },
+  {
+    "title": "Peal method",
+    "description": "",
+    "tags": {
+      "isPublic": false,
+      "isProtected": false,
+      "isPrivate": false,
+      "isDeprecated": false,
+      "ignore": false,
+      "method": "peal",
+      "returns": {
+        "type": "boolean",
+        "description": "Is peeled"
+      }
+    },
+    "code": "var peal = function() {\n\n    };\n\n};",
+    "group": "Pineapple2",
+    "name": "peal",
+    "raw": "/**\n     * Peal method\n     * @method peal\n     * @group Pineapple2\n     * @return {boolean} Is peeled\n     */",
+    "pos": 416
+  }
+]

@@ -23,25 +23,25 @@ class DocItem {
     }
 
     addPackage(data) {
-        var p = this.getByName('package', data.package);
+        var p = this.getByName('package', data.tags.package);
         p.set(data);
         return p;
     }
 
     addSubpackage(data) {
-        var p = this.getByName('subpackage', data.subpackage);
+        var p = this.getByName('subpackage', data.tags.subpackage);
         p.set(data);
         return p;
     }
 
     addModule(data) {
-        var m = this.getByName('module', data.module);
+        var m = this.getByName('module', data.tags.module);
         m.set(data);
         return m;
     }
 
     addSubmodule(data) {
-        var m = this.getByName('submodule', data.submodule);
+        var m = this.getByName('submodule', data.tags.submodule);
         m.set(data);
         return m;
     }
@@ -56,6 +56,7 @@ class DocItem {
     addContent(data) {
         var parent = this.getParentBucket('content');
         var c = new ContentItem(parent);
+        c.aname = data.name || data.title;
         c.set(data);
         return c;
     }
@@ -167,7 +168,7 @@ class SubPackageItem extends PackageItem {
     }
 
     addPackage(data) {
-        var p = this.getByName('package', data.package);
+        var p = this.getByName('package', data.tags.package);
         p.set(data);
         return p;
     }
@@ -183,7 +184,7 @@ class ModuleItem extends SubPackageItem {
     }
 
     addSubpackage(data) {
-        var p = this.getByName('subpackage', data.subpackage);
+        var p = this.getByName('subpackage', data.tags.subpackage);
         p.set(data);
         return p;
     }
@@ -199,7 +200,7 @@ class SubModuleItem extends ModuleItem {
     }
 
     addModule(data) {
-        var p = this.getByName('module', data.module);
+        var p = this.getByName('module', data.tags.module);
         p.set(data);
         return p;
     }
@@ -216,7 +217,7 @@ class GroupItem extends SubModuleItem {
     }
 
     addSubmodule(data) {
-        var p = this.getByName('submodule', data.submodule);
+        var p = this.getByName('submodule', data.tags.submodule);
         p.set(data);
         return p;
     }
