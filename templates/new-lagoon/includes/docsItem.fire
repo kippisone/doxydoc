@@ -1,7 +1,7 @@
 section class="docsItem"
     h3 $data.title
     article $data.description
-    :if $data.tags.params.length
+    :if $data.tags.params
         h4 "Params"
         :each $data.tags.params : table class="paramsTable"
             tr

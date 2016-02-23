@@ -9,6 +9,9 @@ var co = require('co');
 var log = require('logtopus');
 var copyDir = require('copy-dir');
 
+var Superjoin = require('superjoin');
+var lessc = require('less');
+
 /**
  * Creates a Doxydoc pages
  *
@@ -192,7 +195,8 @@ class Doxydoc {
     copyStaticFiles() {
         return co(function *() {
             log.debug('Coppy static files to', this.outputDir);
-            fl.copy(path.join(this.templateDir, 'main.css'), path.join(this.outputDir, 'doxydoc.css'));
+            yield this.createJSBundle();
+            yield this.createCSSBundle();
             copyDir.sync(path.join(this.templateDir, 'img'), path.join(this.outputDir, 'img'));
         }.bind(this));
     }
@@ -210,6 +214,34 @@ class Doxydoc {
         return Object.assign(this.conf, {
             docs: docs
         });
+    }
+
+    /**
+     * Creates a JS bundle, using superjoin
+     */
+    createJSBundle() {
+        var superjoin = new Superjoin({
+            verbose: this.verbose,
+            root: this.templateDir,
+            workingDir: this.templateDir,
+            npmDir: path.join(__dirname, '../node_modules'),
+            outfile: path.join(this.outputDir, 'doxydoc.js')
+        });
+
+        return superjoin.build();
+    }
+
+    createCSSBundle() {
+        return co(function *() {
+            let less = fl.read(path.join(this.templateDir, 'less/main.less'));
+            less = yield lessc.render(less, {
+                paths: [path.join(this.templateDir, 'less')],
+                filename: 'doxydoc.css',
+                compress: !true
+            });
+
+            fl.write(path.join(this.outputDir, 'doxydoc.css'), less.css);
+        }.bind(this));
     }
 }
 
