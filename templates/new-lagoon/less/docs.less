@@ -1,5 +1,4 @@
 .docsContent {
-
     .docsItem {
 
         .blockItem {
@@ -8,11 +7,11 @@
             border-radius: 7px;
             padding: 10px;
             margin-bottom: 10px;
-            text-transform: capitalize;
         }
 
         h1 {
             margin-top: 0;
+            text-transform: capitalize;
         }
 
         h2 {
@@ -20,24 +19,62 @@
             font-weight: normal;
             font-size: 15px;
         }
+
+        h3 {
+            color: @lagoonBlue;
+            font-size: 17px;
+            margin-top: 40px;
+        }
+
+        h4 {
+            color: #000;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+    }
+
+    .itemDescription {
+        font-size: 14px;
+        margin-bottom: 20px;
+
+        &:first-line {
+            color: #333;
+        }
+
+        code {
+            display: inline-block;
+            border: 1px solid #c0c0c0;
+            padding: 2px;
+            color: #444;
+        }
     }
 
     .typeLabel {
         position: absolute;
         right: 0;
         top: 0;
-        background-color: #ede;
+        background-color: #eed;
         color: #999;
         padding: 2px 5px;
         border-bottom-left-radius: 5px;
     }
 
     .paramsTable {
-        background-color: #ccd;
+        background-color: #ddd;
         min-width: 500px;
+        font-size: 13px;
+        border-radius: 5px;
+        border-collapse: collapse;
+
+        thead {
+            td {
+                background-color: #ccd;
+                font-size: 11px;
+            }
+        }
 
         td {
-            padding: 2px 5px;
+            padding: 3px 5px;
         }
     }
 }
