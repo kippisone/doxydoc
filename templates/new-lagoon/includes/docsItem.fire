@@ -4,7 +4,7 @@ section class="docsItem"
         p $data.title
         p $data.description
     :if $data.tags.params
-        h4 "Params"
+        h4 "Params:"
         table class="paramsTable"
             thead
                 tr
@@ -17,7 +17,7 @@ section class="docsItem"
                     td class="name" $name
                     td class="desc" $$description
     :if $data.tags.returns
-        h4 "Returns"
+        h4 "Returns:"
             span class="returns label label-$data.tags.returns.type" $data.tags.returns.type
         article class="desc" $data.tags.returns.description
 
@@ -25,4 +25,9 @@ section class="docsItem"
         h4 "Example:"
         :each $data.tags.examples : div class="examples"
             div class="codeBox"
-                code class="codeBlock $type" $$code
+                code class="codeBlock $type" $$content
+    :if $data.tags.previews : div class="previewBlock"
+        h4 "Example:"
+        :each $data.tags.previews : div class="previews"
+            div class="codeBox"
+                code class="codeBlock $type" $$content
