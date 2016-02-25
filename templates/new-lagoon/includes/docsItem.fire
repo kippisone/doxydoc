@@ -9,6 +9,12 @@ section class="docsItem"
             span class="label label-protected" "Protected"
         :if $data.tags.isPrivate
             span class="label label-private" "Private"
+        :if $data.tags.isUnimplemented
+            span class="label label-unimplemented" "Unimplemented"
+        :if $data.tags.isBeta
+            span class="label label-beta" "Beta"
+        :if $data.tags.isNew
+            span class="label label-new" "New"
     article class="itemDescription" 
         p $data.title
         p $data.description

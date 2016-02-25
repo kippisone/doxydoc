@@ -71,26 +71,18 @@ Tags:
 
     @public
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @protected
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @private
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @unimplemented
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @beta

@@ -29,7 +29,7 @@
     "co-tasks": "^0.2.0",
     "commander": "^2.9.0",
     "copy-dir": "0.0.8",
-    "docblock": "^0.1.4",
+    "docblock": "^0.1.5",
     "dox": "^0.8.0",
     "dresscode-less": "^0.2.0",
     "firetpl": "^0.6.1",
