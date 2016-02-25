@@ -15,12 +15,20 @@ section class="docsItem"
             span class="label label-beta" "Beta"
         :if $data.tags.isNew
             span class="label label-new" "New"
+        :if $data.tags.isDeprecated
+            span class="label label-deprecated" "Deprecated"
     article class="itemDescription" 
         p $data.title
         p $data.description
+        
+        :if $data.tags.links
+            h4 "Links:"
+                :each $data.tags.links
+                    div
+                        a class="link" href="$link" $name
     :if $data.tags.params
         h4 "Params:"
-        table class="paramsTable"
+        table class="lz-sharky-table"
             thead
                 tr
                     td "Type"
@@ -42,10 +50,10 @@ section class="docsItem"
             div class="codeBox"
                 code class="codeBlock $type" $$content
     :if $data.tags.previews : div class="previewBlock"
-        h4 "Example:"
+        h4 "Preview:"
         :each $data.tags.previews : div class="previewBlockws"
-            div class="codeBox"
-                code class="codeBlock $type" $$content
+            div class="previewBox"
+                code class="previewBlock $type" $$html
     :if $source : div
         h4 "Code:"
         div class="codeBox"

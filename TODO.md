@@ -7,6 +7,7 @@ Bugs:
 * @private tags are being ignored
 * Hashlink start is under sticky navi
 * Fix position of footer link
+* Example with // cuts of the right side
 
 TODO
 ----
@@ -30,6 +31,8 @@ TODO
 * Search
 * OG meta tags
 * Disable code preview
+* Tabed examples
+* Tabed previews
 
 
 Features:
@@ -88,51 +91,26 @@ Tags:
     @beta
 
     * Tmpl output
-    * Web styling
-    * Mobile styling
 
     @new
 
     * Tmpl output
-    * Web styling
-    * Mobile styling
 
     @deprecated
 
     * Tmpl output
-    * Web styling
-    * Mobile styling
 
     @example
 
     * Tmpl output
-    * Web styling
-    * Mobile styling
 
     @preview
 
     * Tmpl output
-    * Web styling
-    * Mobile styling
-
-    @type
-
-    * Tmpl output
-    * Web styling
-    * Mobile styling
 
     @link
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
-
-    @ignore
-
-    * Tmpl output
-    * Web styling
-    * Mobile styling
-
 
 ### Javascript
 

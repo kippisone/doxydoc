@@ -63,6 +63,10 @@ class Docs {
             blocks.forEach(function(doc, index) {
                 this.createFileParam(file, doc);
 
+                if (doc.tags.ignore) {
+                    return;
+                }
+
                 if (doc.code) {
                     this.createSource(doc);
                     delete doc.code;
