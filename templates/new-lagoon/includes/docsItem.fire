@@ -1,5 +1,8 @@
 section class="docsItem"
-    h3 $aname
+    section class="docsItemHead"
+        h3 $aname
+        :if $data.tags.version
+            span class="version" "$data.tags.version"
     article class="itemDescription" 
         p $data.title
         p $data.description
@@ -28,7 +31,7 @@ section class="docsItem"
                 code class="codeBlock $type" $$content
     :if $data.tags.previews : div class="previewBlock"
         h4 "Example:"
-        :each $data.tags.previews : div class="previews"
+        :each $data.tags.previews : div class="previewBlockws"
             div class="codeBox"
                 code class="codeBlock $type" $$content
     :if $source : div
