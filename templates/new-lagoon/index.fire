@@ -2,19 +2,22 @@ html
     head
         meta charset="UTF-8"
         script src="${basePath}doxydoc.js"
-        :each $scripts
+        :each $customJS
             script src="$this"
 
-        link rel="Stylesheet" href="${basePath}doxydoc.css"
-        :each $styles
+        link rel="Stylesheet" href="${basePath}main.css"
+        :each $customCSS
             link rel="Stylesheet" href="$this"
     body
         section class="pageMain"
             (> includes/header)
             section class="pageBody"
                 aside class="pageLeft"
-                    >includes/navigationTree
+                    :each $navigationLinks : div class="pageLinks"
+                        span class="link"
+                            a class="link $cssClass.or('')" href="$link" target="$target.ifFalse('_self')" $name
                 article class="pageContent"
-                    >includes/docsTree
-            footer class="pageFooter" "Documentation created with".
+                    $$content
+
+            footer class="pageFooter" "Documentation created bys".
                 a href="http://doxydoc.com" target="_blank" "DoxyDoc"

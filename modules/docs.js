@@ -19,6 +19,7 @@ class Docs {
             let type = path.extname(file).substr(1);
             this.files[i] = {
                 name: name,
+                file: file,
                 source: fl.read(file),
                 type: type
             };
@@ -34,8 +35,9 @@ class Docs {
     }
 
     setFileInfo(file) {
-        this.curFilepath = file;
-        this.curFilename = path.basename(file);
+        this.curFilepath = file.name;
+        this.curFilename = path.basename(file.name);
+        this.curFileType = path.extname(file.name).substr(1);
     }
 
     getCachedItem(keys) {
@@ -59,6 +61,13 @@ class Docs {
             this.setFileInfo(file);
             
             blocks.forEach(function(doc, index) {
+                this.createFileParam(file, doc);
+
+                if (doc.code) {
+                    this.createSource(doc);
+                    delete doc.code;
+                }
+                
                 if (doc.tags['package']) {
                     docItem = docItem.addPackage(doc);
                 }
@@ -84,7 +93,6 @@ class Docs {
                     docItem = docItem.addGroup(doc);
                     docItem = docItem.addContent(doc);
                 }
-
             }, this);
 
         }, this);
@@ -173,6 +181,21 @@ class Docs {
     createUngroupedItem(group, doc) {
         var groupItem = this.getGroupItem(this.bucket, 'ungrouped');
         groupItem.items.push(doc);
+    }
+
+    createFileParam(file, doc) {
+        doc.file = {
+            file: file.file,
+            name: file.name,
+            type: file.type
+        };
+    }
+
+    createSource(doc) {
+        doc.source = {
+            type: doc.file.type,
+            code: doc.code
+        }
     }
 }
 

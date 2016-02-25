@@ -154,6 +154,9 @@ class Doxydoc {
                     }
 
                     log.debug('Parse docs files:', files);
+                    files = files.map(f => {
+                        return path.resolve(this.workingDir, f);
+                    }, this);
                     docs.docs = newDocs.parse(files);
                 }
             }

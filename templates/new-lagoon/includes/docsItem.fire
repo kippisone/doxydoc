@@ -31,3 +31,8 @@ section class="docsItem"
         :each $data.tags.previews : div class="previews"
             div class="codeBox"
                 code class="codeBlock $type" $$content
+    :if $source : div
+        h4 "Code:"
+        div class="codeBox"
+            code class="codeBlock source.type" $$source.code
+
