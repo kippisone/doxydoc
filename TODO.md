@@ -47,44 +47,26 @@ Tags:
 
     @version
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @package
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @subpackage
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @module
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @submodule
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @group
 
-    * Tmpl output
-    * Web styling
-    * Mobile styling
-
-    @name
-
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @public

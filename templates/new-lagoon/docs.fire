@@ -5,6 +5,7 @@ html
         :each $scripts
             script src="$this"
 
+        link rel="Stylesheet" href="${basePath}doxydoc-less.css"
         link rel="Stylesheet" href="${basePath}doxydoc.css"
         :each $styles
             link rel="Stylesheet" href="$this"

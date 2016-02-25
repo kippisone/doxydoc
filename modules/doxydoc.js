@@ -11,6 +11,7 @@ var copyDir = require('copy-dir');
 
 var Superjoin = require('superjoin');
 var lessc = require('less');
+var stylus = require('stylus');
 
 /**
  * Creates a Doxydoc pages
@@ -243,7 +244,25 @@ class Doxydoc {
                 compress: !true
             });
 
-            fl.write(path.join(this.outputDir, 'doxydoc.css'), less.css);
+            fl.write(path.join(this.outputDir, 'doxydoc-less.css'), less.css);
+
+            // render stylus
+            let stl = fl.read(path.join(this.templateDir, 'stylus/main.styl'));
+            stl = stylus(stl)
+            .set('filename', path.join(this.outputDir, 'main.css'))
+            .include(path.join(this.templateDir, 'stylus'))
+            
+            let css = yield new Promise(function(resolve, reject) {
+                stl.render(function(err, css) {
+                    if (err) {
+                        return reject(err);
+                    }
+
+                    resolve(css);
+                });
+            });
+
+            fl.write(path.join(this.outputDir, 'doxydoc.css'), css);
         }.bind(this));
     }
 }

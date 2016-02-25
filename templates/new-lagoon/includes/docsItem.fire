@@ -1,8 +1,14 @@
 section class="docsItem"
     section class="docsItemHead"
-        h3 $aname
         :if $data.tags.version
-            span class="version" "$data.tags.version"
+            span class="label label-version" "$data.tags.version"
+        h3 $aname
+        :if $data.tags.isPublic
+            span class="label label-public" "Public"
+        :if $data.tags.isProtected
+            span class="label label-protected" "Protected"
+        :if $data.tags.isPrivate
+            span class="label label-private" "Private"
     article class="itemDescription" 
         p $data.title
         p $data.description
