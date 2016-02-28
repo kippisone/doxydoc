@@ -147,9 +147,9 @@ class Doxydoc {
                             continue;
                         }
 
-                        var fileScan = yield this.scanDir(this.workingDir, file);
+                        var fileScan = yield this.scanDir(dir, file);
                         files = files.concat(fileScan.map(function(file) {
-                            return file.name
+                            return file.name;
                         }));
                     }
 

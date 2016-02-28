@@ -53,3 +53,35 @@
     .arg
         display inline-block
         
+.previewBlock
+    margin-bottom 20px
+
+    .cssColorPreview
+        width 100px
+        height 100px
+        border-radius 10px
+        position relative
+
+    .cssColorName
+        position absolute
+        left 0
+        bottom 36px
+        right 0
+        text-align center
+        display block
+        background-color rgba(255, 255, 255, .7)
+        line-height 26px
+        font-size 18px
+        opacity 0
+        transition opacity .5s
+
+        &:hover 
+            opacity 1
+            
+    .previewBox
+        &.html
+            background-color: #eee;
+            border-radius: 5px;
+            padding: 5px;
+            margin-top: 20px;
+        

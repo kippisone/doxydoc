@@ -97,9 +97,9 @@ section class="docsItem"
                 code class="codeBlock $type" $$content
     :if $data.tags.previews : div class="previewBlock"
         h4 "Preview:"
-        :each $data.tags.previews : div class="previewBlockws"
-            div class="previewBox"
-                code class="previewBlock $type" $$html
+        :each $data.tags.previews
+            div class="previewBox $type"
+                $$html
     :if $source : div
         h4 "Code:"
         div class="codeBox"

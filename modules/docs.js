@@ -67,11 +67,15 @@ class Docs {
                     return;
                 }
 
+                if (doc.tags.var && doc.tags.var.type === 'color') {
+                    this.createColorPreview(doc);
+                }
+                
                 if (doc.code) {
                     this.createSource(doc);
                     delete doc.code;
                 }
-                
+
                 if (doc.tags['package']) {
                     docItem = docItem.addPackage(doc);
                 }
@@ -200,6 +204,32 @@ class Docs {
             type: doc.file.type,
             code: doc.code
         }
+    }
+
+    createColorPreview(doc) {
+        if (!doc.tags.previews) {
+            doc.tags.previews = [];
+        }
+
+        let color = this.grepPattern(/((#[a-fA-F0-9]{3,6})|(rgb(a)?\([^\)]+))/, doc.code || '');
+        let html = '<div class="cssColorPreview" style="background-color: ' + color + '"><span class="cssColorName">' +
+            color +
+        '</span></div>'
+        doc.tags.previews.push({
+            type: 'html',
+            html: html
+        });
+    }
+
+    grepPattern(pattern, str, index) {
+        index = index || 1;
+        
+        var match = str.match(pattern);
+        if (match && match[index]) {
+            return match[index];
+        }
+
+        return null;
     }
 }
 
