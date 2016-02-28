@@ -116,116 +116,74 @@ Tags:
 
     @param
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @property
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @method
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @function
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @mixin
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @class
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @const
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @var
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @constructor
 
-    * Tmpl output
-    * Web styling
-    * Mobile styling
-
-    @return
-
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @returns
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @default
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @event
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @fires
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @arg
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @async
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @callback
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @middleware
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @arg
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
 

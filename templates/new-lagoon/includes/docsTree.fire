@@ -28,9 +28,8 @@ section class="docsContent"
             section class="blockItem"
                 div class="typeLabel" "$aname"
                 h1 "$aname"
-                h2 "$data.title"
-                article "$data.description"
-                :each $items
-                    >includes/docsItem
+                :if $items
+                    :each $items
+                        >includes/docsItem
                     
         &next $items : section class="$atype items"

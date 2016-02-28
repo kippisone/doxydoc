@@ -2998,33 +2998,77 @@ table.dcMultiTable td {
 .fa-percent:before {
   content: "\f295";
 }
+.docsContent .docsItemHead {
+  position: relative;
+  margin-top: 40px;
+}
+.docsContent .docsItemHead .label-version {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  display: block;
+}
 .docsContent .docsItem .blockItem {
   position: relative;
   background-color: #eee;
   border-radius: 7px;
   padding: 10px;
   margin-bottom: 10px;
-  text-transform: capitalize;
 }
 .docsContent .docsItem h1 {
   margin-top: 0;
+  text-transform: capitalize;
 }
 .docsContent .docsItem h2 {
   margin-top: 0;
   font-weight: normal;
   font-size: 15px;
 }
+.docsContent .docsItem h3 {
+  color: #333;
+  font-size: 21px;
+  display: inline-block;
+}
+.docsContent .docsItem h4 {
+  color: #000;
+  font-size: 13px;
+  margin-top: 20px;
+}
+.docsContent .itemDescription {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.docsContent .itemDescription:first-line {
+  color: #333;
+}
+.docsContent .itemDescription code {
+  display: inline-block;
+  border: 1px solid #c0c0c0;
+  padding: 2px;
+  color: #444;
+}
 .docsContent .typeLabel {
   position: absolute;
   right: 0;
   top: 0;
-  background-color: #ede;
+  background-color: #eed;
   color: #999;
   padding: 2px 5px;
   border-bottom-left-radius: 5px;
 }
 .docsContent .paramsTable {
+  background-color: #ddd;
+  min-width: 500px;
+  font-size: 13px;
+  border-radius: 5px;
+  border-collapse: collapse;
+}
+.docsContent .paramsTable thead td {
   background-color: #ccd;
+  font-size: 11px;
+}
+.docsContent .paramsTable td {
+  padding: 3px 5px;
 }
 .pageBody {
   margin-left: 250px;
@@ -3305,16 +3349,6 @@ table.dcMultiTable td {
   background-color: #14171A;
   padding: 7px;
 }
-.pageContent .description {
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-.pageContent .description code {
-  display: inline-block;
-  border: 1px solid #c0c0c0;
-  padding: 2px;
-  color: #444;
-}
 .pageContent .noDescrition {
   color: #333;
 }
@@ -3352,141 +3386,6 @@ table.dcMultiTable td {
 }
 .pageContent .preview .cssColorName:hover {
   opacity: 1;
-}
-.pageContent .labels {
-  margin-left: 10px;
-  font-size: 13px;
-}
-.pageContent .labelConstructor {
-  display: inline-block;
-  border-radius: 5px;
-  color: #fff;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #967657;
-}
-.pageContent .labelPrivate {
-  display: inline-block;
-  border-radius: 5px;
-  color: #fff;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #B10000;
-}
-.pageContent .labelProtected {
-  display: inline-block;
-  border-radius: 5px;
-  color: #fff;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #FF7E00;
-}
-.pageContent .labelDeprecated {
-  display: inline-block;
-  border-radius: 5px;
-  color: #fff;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #6B1426;
-}
-.pageContent .labelUnimplemented {
-  display: inline-block;
-  border-radius: 5px;
-  color: #fff;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #E1FF00;
-  color: #000;
-}
-.pageContent .labelObject {
-  display: inline-block;
-  border-radius: 5px;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #000;
-  color: #fff;
-}
-.pageContent .labelFunction {
-  display: inline-block;
-  border-radius: 5px;
-  color: #fff;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #430069;
-}
-.pageContent .labelArray {
-  display: inline-block;
-  border-radius: 5px;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #000;
-  color: #fff;
-}
-.pageContent .labelNumber {
-  display: inline-block;
-  border-radius: 5px;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #000;
-  color: #fff;
-}
-.pageContent .labelAny {
-  display: inline-block;
-  border-radius: 5px;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #000;
-  color: #fff;
-}
-.pageContent .labelString {
-  display: inline-block;
-  border-radius: 5px;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #000;
-  color: #fff;
-}
-.pageContent .labelBoolean {
-  display: inline-block;
-  border-radius: 5px;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #000;
-  color: #fff;
-}
-.pageContent .labelColor {
-  display: inline-block;
-  border-radius: 5px;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-weight: normal;
-  vertical-align: middle;
-  background-color: #000;
-  color: #fff;
 }
 .pageContent .dataTypes {
   margin-left: 5px;
@@ -3677,9 +3576,9 @@ Sunburst-like style (c) Vasily Polovnyov <vast@whiteants.net>
  * @example
  * <span class="label label{type}">My label</span>
  */
-.labels {
+.label {
   margin-left: 10px;
-  font-size: 13px;
+  font-size: 14px;
 }
 /**
  * Styles a constructor label
@@ -3701,6 +3600,27 @@ Sunburst-like style (c) Vasily Polovnyov <vast@whiteants.net>
   font-weight: normal;
   vertical-align: middle;
   background-color: #967657;
+}
+/**
+ * Styles a public label
+ * 
+ * @class labelPublic
+ *
+ * @example
+ * <span class="label labelPublic">Public</span>
+ * 
+ * @preview
+ * <span class="label labelPublic">Public</span>
+ */
+.labelPublic {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #00826A;
 }
 /**
  * Styles a private label

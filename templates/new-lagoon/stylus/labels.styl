@@ -1,39 +1,61 @@
-$greenFrog = #256E2B
-$orangeSun = #F1BE2D
-$redCherry = #972D36
-$purplePlum = #4A176D
-$yellowSnow = #EAFF00
-$brownWood = #5A3914
-$blueLagoon = #1665E5
+@import "lyssl"
 
 .label
-    border-radius 5px
-    padding 4px
-    font-size 14px
-    color #fff
+.flag-label
+    lz-label()
     
-.label-public
-    background-color $greenFrog
+    &.label-public
+        background-color $greenFrog
 
-.label-protected
-    background-color $orangeSun
+    &.label-protected
+        background-color $orangeSun
 
-.label-private
-    background-color $redCherry
+    &.label-private
+        background-color $redCherry
+        
+    &.label-version
+        background-color $redCherry
+
+    &.label-unimplemented
+        background-color $purplePlum
+
+    &.label-beta
+        background-color $blueLagoon
+
+    &.label-static
+        background-color $blueLagoon
+
+    &.label-chainable
+        background-color $blueLagoon
+
+    &.label-async
+        background-color $redCherry
+        
+    &.label-new
+        background-color $yellowSnow
+        color #000
+
+.type-label
+    lz-label()
+    vertical-align middle
+
+    &.label-deprecated
+        background-color $brownWood
     
-.label-version
-    background-color $redCherry
+    &.label-any
+        background-color $greenFrog
 
-.label-unimplemented
-    background-color $purplePlum
+    &.label-boolean
+        background-color $brownWood
 
-.label-beta
-    background-color $blueLagoon
-    
-.label-new
-    background-color $yellowSnow
-    color #000
+    &.label-number
+        background-color $redCherry
+        
+    &.label-function
+        background-color $purplePlum
 
-.label-deprecated
-    background-color $brownWood
-
+    &.label-string
+        background-color $blueLagoon
+        
+    &.label-object
+        background-color $blackHole

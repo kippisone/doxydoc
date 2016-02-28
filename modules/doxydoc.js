@@ -53,7 +53,6 @@ class Doxydoc {
             this.conf = yield this.readDoxydocFile();
             this.docs = this.conf.docs;
             yield this.createDocs();
-            console.log('DD', this.docs);
             yield this.createDocPages();
             yield this.copyStaticFiles();
             return this.docs;
@@ -251,6 +250,7 @@ class Doxydoc {
             stl = stylus(stl)
             .set('filename', path.join(this.outputDir, 'main.css'))
             .include(path.join(this.templateDir, 'stylus'))
+            .include(path.join(__dirname, '../node_modules/lyssl'))
             
             let css = yield new Promise(function(resolve, reject) {
                 stl.render(function(err, css) {

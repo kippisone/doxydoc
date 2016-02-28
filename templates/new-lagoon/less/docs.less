@@ -1,7 +1,7 @@
 .docsContent {
     .docsItemHead {
         position: relative;
-            margin-top: 40px;
+        margin-top: 30px;
 
         .label-version {
             position: absolute;
@@ -9,41 +9,20 @@
             top: 10px;
             display: block;
         }
-    }
 
-    .docsItem {
-
-        .blockItem {
-            position: relative;
-            background-color: #eee;
-            border-radius: 7px;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        h1 {
-            margin-top: 0;
-            text-transform: capitalize;
-        }
-
-        h2 {
-            margin-top: 0;
-            font-weight: normal;
-            font-size: 15px;
-        }
-
-        h3 {
-            color: #333;
-            font-size: 21px;
-            display: inline-block;
-        }
-
-        h4 {
-            color: #000;
-            font-size: 13px;
-            margin-top: 20px;
+        .default {
+            font-size: 14px;
+            vertical-align: middle;
+            
+            &:before {
+                content: 'Default:';
+                color: #777;
+                fonr-size: 16px;
+                padding: 0 5px;
+            }
         }
     }
+
 
     .itemDescription {
         font-size: 14px;
