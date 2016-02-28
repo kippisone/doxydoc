@@ -38,8 +38,8 @@ section class="docsItem"
         :if $data.tags.isChainable
             span class="label label-chainable" "Chainable"
     article class="itemDescription" 
-        p $data.title
-        p $data.description
+        p $data.tags.title
+        p $data.tags.description
         
         :if $data.tags.links
             h4 "Links:"
@@ -100,8 +100,8 @@ section class="docsItem"
         :each $data.tags.previews
             div class="previewBox $type"
                 $$html
-    :if $source : div
+    :if $data.source : div
         h4 "Code:"
         div class="codeBox"
-            code class="codeBlock source.type" $$source.code
+            code class="codeBlock $data.source.type" $$data.source.code
 
