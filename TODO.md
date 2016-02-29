@@ -11,8 +11,6 @@ Bugs:
 
 TODO
 ----
-* Links
-* Strip source
 * Use glob
 * Improve documentation
 * New Screenshots

@@ -20,6 +20,7 @@ class DocItem {
 
     set(data) {
         Object.assign(this.data, data);
+        this.alink = this.createItemId();
     }
 
     addPackage(data) {
@@ -62,7 +63,7 @@ class DocItem {
     }
 
     getParentBucket(aname) {
-        var parents = ['root', 'package', 'submodule',
+        var parents = ['root', 'package', 'subpackage',
         'module', 'submodule', 'group', 'content'];
 
         var parent = this;
@@ -125,6 +126,22 @@ class DocItem {
         return obj;
     }
 
+    createItemId() {
+        let id = [this.aname];
+
+        let parent = this.parent;
+        while (parent) {
+            if (parent.atype === 'root') {
+                break;
+            }
+
+            id.unshift(parent.aname);
+            parent = parent.parent;
+        }
+
+        return id.map(escape).join('-');
+    }
+
     toJSON() {
         
     }
@@ -133,6 +150,7 @@ class DocItem {
         var obj = Object.assign({
             atype: this.atype,
             aname: this.aname || '',
+            alink: this.alink || '',
             data: this.data
         });
 

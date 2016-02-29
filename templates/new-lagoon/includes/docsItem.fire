@@ -2,7 +2,7 @@ section class="docsItem"
     section class="docsItemHead"
         :if $data.tags.version
             span class="label label-version" "$data.tags.version"
-        h3 $aname
+        h3 id="$alink" $aname
         " ".
         :if $data.tags.property
             span class="type-label label-$data.tags.property.type"

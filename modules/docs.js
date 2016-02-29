@@ -221,6 +221,16 @@ class Docs {
         });
     }
 
+    createPageId(doc) {
+        let pageId = [];
+
+        for (let key of ['package', 'subpackage', 'module', 'submodule']) {
+            if (doc.tags[key]) {
+                pageId.push();
+            }
+        }
+    }
+
     grepPattern(pattern, str, index) {
         index = index || 1;
         
