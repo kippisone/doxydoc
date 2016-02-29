@@ -4,14 +4,24 @@ Doxydoc TODO
 Bugs:
 -----
 
-* @private tags are being ignored
 * Hashlink start is under sticky navi
 * Fix position of footer link
 * Example with // cuts of the right side
 
 TODO
 ----
-* Use glob
+* Check Link creation
+* Check MD parser
+* Chaeck FIRE parser
+* Check HTML creation
+* Parse MD in descriptions (doc block)
+* Check sidebar navi
+* Deep space theme
+* Check CLI tool
+* Check Grunt plugin
+* Create gulp plugin
+* Remove LESS
+
 * Improve documentation
 * New Screenshots
 
