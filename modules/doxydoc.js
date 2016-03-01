@@ -243,7 +243,7 @@ class Doxydoc {
             sidebar: this.sidebar,
             styles: this.styles,
             scripts: this.scripts
-        }
+        };
     }
 
     mergeMetaData(docs) {
@@ -257,7 +257,7 @@ class Doxydoc {
      */
     createJSBundle() {
         var superjoin = new Superjoin({
-            verbose: this.verbose,
+            // verbose: this.verbose,
             root: this.templateDir,
             workingDir: this.templateDir,
             npmDir: path.join(__dirname, '../node_modules'),
