@@ -9,5 +9,5 @@ header class="pageHeader"
     :if $subtitle : div class="subtitle"
         $subtitle
     navi class="mainNavi"
-        :each $headerLinks : div class="links"
+        :each $navigation : div class="links"
             a class="link $cssClass.or('')" href="$link" $name

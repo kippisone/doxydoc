@@ -1,13 +1,85 @@
 'use strict';
 
-var PageCreator = require ('../modules/pageCreator');
+var fl = require ('node-fl');
+
+var Page = require ('../modules/page');
+var inspect = require('inspect.js');
+var sinon = require('sinon');
+inspect.useSinon(sinon);
+
+describe.only('Page', function() {
+    describe('Class', function() {
+        it('Should be a Page class', function() {
+            inspect(Page).isClass();
+        });
+    });
+
+    describe('render', function() {
+        it('Should render a page', function() {
+            var page = new Page();
+            page.setTemplate('page.fire');
+
+            var renderFTLStub = sinon.stub(page, 'parseFireTPL');
+            var readStub = sinon.stub(fl, 'read');
+            readStub.returns('TMPL');
+
+            page.render();
+
+            inspect(readStub).wasCalledOnce();
+            inspect(readStub).wasCalledWith('page.fire');
+            inspect(renderFTLStub).wasCalledOnce();
+            inspect(renderFTLStub).wasCalledWith('TMPL');
+            
+            renderFTLStub.restore();
+            readStub.restore();
+        });
+
+        it('Should render a markdown page', function() {
+            var page = new Page();
+            page.setTemplate('page.md');
+
+            var renderFTLStub = sinon.stub(page, 'parseMarkdown');
+            var readStub = sinon.stub(fl, 'read');
+            readStub.returns('TMPL');
+
+            page.render();
+
+            inspect(readStub).wasCalledOnce();
+            inspect(readStub).wasCalledWith('page.md');
+            inspect(renderFTLStub).wasCalledOnce();
+            inspect(renderFTLStub).wasCalledWith('TMPL');
+            
+            renderFTLStub.restore();
+            readStub.restore();
+        });
+
+        it('Should render a html page', function() {
+            var page = new Page();
+            page.setTemplate('page.html');
+
+            var parseHTMLStub = sinon.stub(page, 'parseHTML');
+            var readStub = sinon.stub(fl, 'read');
+            readStub.returns('TMPL');
+
+            page.render();
+
+            inspect(readStub).wasCalledOnce();
+            inspect(readStub).wasCalledWith('page.html');
+            inspect(parseHTMLStub).wasCalledOnce();
+            inspect(parseHTMLStub).wasCalledWith('TMPL');
+            
+            parseHTMLStub.restore();
+            readStub.restore();
+        });
+    });
+});
 
 describe.skip('PageCreator', function() {
     describe('scanHeadLines', function() {
         var pageCreator;
         
         beforeEach(function() {
-            pageCreator = new PageCreator();    
+            pageCreator = new PageCreator();
         });
 
         it('Should get a nested array of all head lines', function() {

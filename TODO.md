@@ -5,13 +5,11 @@ Bugs:
 -----
 
 * Hashlink start is under sticky navi
-* Fix position of footer link
 * Example with // cuts of the right side
 
 TODO
 ----
 * Check Link creation
-* Check MD parser
 * Chaeck FIRE parser
 * Check HTML creation
 * Parse MD in descriptions (doc block)
@@ -21,6 +19,9 @@ TODO
 * Check Grunt plugin
 * Create gulp plugin
 * Remove LESS
+* Remove npm symlinks
+* Check npm updates
+* Https for Website
 
 * Improve documentation
 * New Screenshots

@@ -53,8 +53,14 @@ class Doxydoc {
         return co(function *() {
             this.conf = yield this.readDoxydocFile();
             this.docs = this.conf.docs;
+            this.pages = this.conf.pages.concat(this.conf.sidebar, this.conf.navigation).filter(page => {
+                return !!page.file;
+            });
+
             yield this.createDocs();
             yield this.createDocPages();
+            yield this.resolveData();
+            yield this.createPages();
             yield this.copyStaticFiles();
             return this.docs;
         }.bind(this));
@@ -86,7 +92,7 @@ class Doxydoc {
                 styles: []
             }, conf);
 
-            [ conf, conf.navigation, conf.sidebar, conf.docs].forEach(function(prop) {
+            [ conf, conf.docs].forEach(function(prop) {
                 [ 'styles', 'scripts' , 'files'].forEach(function(key) {
                     if (prop[key] && typeof prop[key] === 'string') {
                         prop[key] = [prop[key]];
@@ -201,6 +207,27 @@ class Doxydoc {
         }.bind(this));
     }
 
+    createPages() {
+        return co(function *() {
+            for (let pageItem of this.pages) {
+                console.log('PAGE', pageItem);
+                let cont = path.resolve(this.workingDir, pageItem.file);
+                let tmpl = path.resolve(this.templateDir, 'page.fire');
+                let data = this.mergeMetaData(pageItem);
+
+                let page = new Page();
+                page.setData(data);
+                page.setTemplate(tmpl);
+                page.setContent(cont);
+
+                let html = page.render();
+                let outfile = path.resolve(this.outputDir, pageItem.link);
+                log.debug('Write page', pageItem.name, 'to', outfile);
+                fl.write(outfile, html);
+            }
+        }.bind(this));
+    }
+
     copyStaticFiles() {
         return co(function *() {
             log.debug('Coppy static files to', this.outputDir);
@@ -270,6 +297,20 @@ class Doxydoc {
 
             fl.write(path.join(this.outputDir, 'doxydoc.css'), css);
         }.bind(this));
+    }
+
+    resolveData() {
+        console.log('RESOLVE', this.conf);
+        for (let key of ['pages', 'navigation', 'sidebar']) {
+            let prop = this.conf[key];
+
+            for (let item of prop) {
+                item.target = item.target || '_self';
+                item.title = item.title || item.name;
+            }
+        }
+
+        return Promise.resolve();
     }
 }
 
