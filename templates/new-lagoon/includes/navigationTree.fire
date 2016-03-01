@@ -22,4 +22,4 @@ section class="docsTree"
                 &next $items
         :if $atype.eq('content')
             li class="item"
-                a class="link contentLink" href="#content-$aname" "$aname"
+                a class="link contentLink" href="#$alink" "$aname"

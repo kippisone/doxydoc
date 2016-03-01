@@ -4,17 +4,29 @@ Doxydoc TODO
 Bugs:
 -----
 
-* @private tags are being ignored
 * Hashlink start is under sticky navi
 * Fix position of footer link
 * Example with // cuts of the right side
 
 TODO
 ----
+* Check Link creation
+* Check MD parser
+* Chaeck FIRE parser
+* Check HTML creation
+* Parse MD in descriptions (doc block)
+* Check sidebar navi
+* Deep space theme
+* Check CLI tool
+* Check Grunt plugin
+* Create gulp plugin
+* Remove LESS
 
-* Mobile support
 * Improve documentation
 * New Screenshots
+
+* Init task
+* Mobile support
 * Use more html5 elements (http://www.mediaevent.de/xhtml/html5-tags.html)
 * Optional params
 
@@ -25,9 +37,6 @@ TODO
 * Placeholder funcs
     [[d:npmContributors]] calls npmContributors()
 * Read contributors from npm and implement it by replacing a placeholder
-* New js tags @class
-* Better comment parser
-* Label colors
 * Search
 * OG meta tags
 * Disable code preview
@@ -191,32 +200,18 @@ Tags:
 
     @var
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @mixin
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @function
 
-    * Tmpl output
-    * Web styling
-    * Mobile styling
-
-    @mixin
-
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
     @selector
 
-    * Tmpl output
-    * Web styling
     * Mobile styling
 
 

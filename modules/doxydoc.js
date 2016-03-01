@@ -1,6 +1,7 @@
 'use strict';
 
 var path = require('path');
+var glob = require('glob');
 
 var Docs = require('./docs');
 var Page = require('./page');
@@ -115,7 +116,12 @@ class Doxydoc {
 
     scanDir(dir, match) {
         return new Promise(function(resolve, reject) {
-            fl.scanDir(dir, match, function(err, files) {
+            let opts = {
+                cwd: dir,
+                nodir: true
+            };
+
+            glob(match, opts, function(err, files) {
                 if (err) {
                     return reject(err);
                 }
@@ -148,8 +154,8 @@ class Doxydoc {
                         }
 
                         var fileScan = yield this.scanDir(this.workingDir, file);
-                        files = files.concat(fileScan.map(function(file) {
-                            return file.name;
+                        files = files.concat(fileScan.map(file => {
+                            return path.join(this.workingDir, file);
                         }));
                     }
 
