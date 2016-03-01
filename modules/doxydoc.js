@@ -149,7 +149,7 @@ class Doxydoc {
 
                         var fileScan = yield this.scanDir(this.workingDir, file);
                         files = files.concat(fileScan.map(function(file) {
-                            return file.name
+                            return file.name;
                         }));
                     }
 
@@ -210,7 +210,7 @@ class Doxydoc {
             sidebar: this.sidebar,
             styles: this.styles,
             scripts: this.scripts
-        }
+        };
     }
 
     mergeMetaData(docs) {
@@ -224,7 +224,7 @@ class Doxydoc {
      */
     createJSBundle() {
         var superjoin = new Superjoin({
-            verbose: this.verbose,
+            // verbose: this.verbose,
             root: this.templateDir,
             workingDir: this.templateDir,
             npmDir: path.join(__dirname, '../node_modules'),
