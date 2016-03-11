@@ -220,6 +220,10 @@ class Doxydoc {
                 page.setTemplate(tmpl);
                 page.setContent(cont);
 
+                if (!pageItem.link) {
+                    throw new Error(`Missing link property in ${pageItem.name}`);
+                }
+
                 let html = page.render();
                 let outfile = path.resolve(this.outputDir, pageItem.link);
                 log.debug('Write page', pageItem.name, 'to', outfile);

@@ -63,7 +63,7 @@ doxydoc.create().then(function(result) {
     console.log('------------------------------------');
     // console.log(JSON.stringify(result, null, '  '));
 }).catch(function(err) {
-   console.error(err.stack);
+   console.error('ERR', err);
    process.exit(1); 
 });
 
