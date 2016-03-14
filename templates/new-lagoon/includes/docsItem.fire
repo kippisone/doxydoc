@@ -38,8 +38,8 @@ section class="docsItem"
         :if $data.tags.isChainable
             span class="label label-chainable" "Chainable"
     article class="itemDescription" 
-        p $data.tags.title
-        p $data.tags.description
+        p $$data.tags.title
+        p $$data.tags.description
         
         :if $data.tags.links
             h4 "Links:"
@@ -75,7 +75,7 @@ section class="docsItem"
                     td valign="top" 
                         span class="event" $event
                     td
-                        article $description
+                        article $$description
                         h5 "Args:"
                         :each $args : table class="fires-args-table"
                             tr
@@ -83,12 +83,12 @@ section class="docsItem"
                                     span class="arg" $name
                                 td
                                     span class="type-label label-$type" $type
-                                td class="desc" $description
+                                td class="desc" $$description
     :if $data.tags.returns : div class="return-block"
         h4 "Returns:"
         " ".
         span class="returns type-label label-$data.tags.returns.type" $data.tags.returns.type
-        article class="desc" $data.tags.returns.description
+        article class="desc" $$data.tags.returns.description
 
     :if $data.tags.examples : div class="exampleBlock"
         h4 "Example:"

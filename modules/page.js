@@ -26,14 +26,14 @@ class Page {
     }
 
     render() {
-        console.log('RENDER PAGE', this.template);
+        // console.log('RENDER PAGE', this.template);
         let tmpl = fl.read(this.template);
         let tmplType = path.extname(this.template);
         let html;
 
         let content;
         if (this.content) {
-            console.log('RENDER CONT', this.data);
+            // console.log('RENDER CONT', this.data);
             let contType = path.extname(this.content);
             let cont = fl.read(this.content);
 
@@ -48,6 +48,10 @@ class Page {
             }
 
             this.data.content = content;
+        }
+
+        if (this.data.docs.pageLinks) {
+            this.createPageLinks(content);
         }
 
         if (tmplType === '.fire') {
@@ -119,6 +123,99 @@ class Page {
 
     parseHTML(html) {
         return html;
+    }
+
+    /**
+     * Scans a html string and return an array of all <h*> tags with an id attribute
+     * @param  {String} html Input string
+     * @return {Array}      Array of found anchor links
+     */
+    createPageLinks(html) {
+        var reg = /<(h[1-6])[^>]+\bid\=["'](.*?)["'].*?>(.+?)<\/(a|h[1-6])>/g,
+            links = [],
+            tags = [];
+
+        var tagPath = [],
+            tagArr = {'h1': 1, 'h2': 2, 'h3': 3, 'h4': 4, 'h5': 5, 'h6': 6};
+
+        let loop = true;
+        while(loop) {
+            var match = reg.exec(html);
+            if (!match) {
+                break;
+            }
+
+            tagPath = tagPath.concat();
+
+            var tagPos = tagPath.indexOf(match[1]);
+            if (tagPos === -1) {
+                if (tagPath[0] && tagArr[tagPath[0]] > tagArr[match[1]]) {
+                    tagPath = [match[1]];
+                }
+                else {
+                    tagPath.push(match[1]);                
+                }
+            }
+            else {
+                tagPath = tagPath.slice(0, tagPos + 1);
+            }
+
+            tags.push({
+                link: match[2],
+                tag: match[1],
+                path: tagPath,
+                text: this.stripHtml(match[3])
+            });
+        }
+
+        var traverse = function(data, inTraversal) {
+            var result = [];
+
+            let loop = true;
+            while(loop) {
+                var item = data.shift();
+                if (!item) {
+                    break;
+                }
+
+                result.push({
+                    link: '#' + item.link,
+                    text: item.text
+                });
+
+                if (data[0] && data[0].path.length > item.path.length) {
+                    var itemProp = result[result.length - 1];
+                    if (data.length) {
+                        itemProp.items = traverse(data, true);
+                    }
+                }
+
+                if (inTraversal && data[0] && data[0].path.length < item.path.length) {
+                    break;
+                }
+            }
+
+            return result;
+        };
+
+        links = traverse(tags);
+
+        if (this.data.sidebar) {
+            for (var i = 0, len = this.data.sidebar.length; i < len; i++) {
+                if (this.data.sidebar[i].link === this.data.docs.link) {
+                    this.data.sidebar[i].subNavigation = links;
+                } 
+            }
+        }
+    }
+
+    /**
+     * Strip any html tags from a string
+     * @param  {String} str Input string
+     * @return {String}     Stripped string
+     */
+    stripHtml(str) {
+        return str.replace(/<\/?[a-zA-Z0-9]+.*?>/g, '');
     }
 }
 

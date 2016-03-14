@@ -34,15 +34,9 @@ class Doxydoc {
         }
 
         this.workingDir = path.resolve(process.cwd(), conf.workingDir || process.cwd());
-        this.outputDir = path.resolve(this.workingDir, conf.outputDir || this.workingDir);
         this.doxydocFile = path.resolve(this.workingDir, conf.doxydocFile || 'doxydoc.json');
-        this.templateDir = path.resolve(__dirname, '../templates', conf.templateDir || path.join(__dirname, '../templates/new-lagoon/'));
-        this.livereload = conf.livereload === true ? 13987 : conf.livereload;
 
-        log.debug('Working dir:', this.workingDir);
-        log.debug('Output dir:', this.outputDir);
-        log.debug('Doxydoc file:', this.doxydocFile);
-        log.debug('Template dir:', this.templateDir);
+        this.initConf = conf;
     }
 
     /**
@@ -52,6 +46,7 @@ class Doxydoc {
     create() {
         return co(function *() {
             this.conf = yield this.readDoxydocFile();
+            this.setConfiguration(this.conf);
             this.docs = this.conf.docs;
             this.pages = this.conf.pages.concat(this.conf.sidebar, this.conf.navigation).filter(page => {
                 return !!page.file;
@@ -89,8 +84,12 @@ class Doxydoc {
                 navigation: [],
                 sidebar: [],
                 scripts: [],
-                styles: []
+                styles: [],
+                indexPage: './'
             }, conf);
+
+            this.livereload = this.initConf.livereload || conf.livereload;
+            this.livereload = this.livereload === true ? 13987 : this.livereload;
 
             [ conf, conf.docs].forEach(function(prop) {
                 [ 'styles', 'scripts' , 'files'].forEach(function(key) {
@@ -103,7 +102,7 @@ class Doxydoc {
                     }
 
                     if (this.livereload && key === 'scripts') {
-                        prop['scripts'].push('//localhost:' + this.livereload + '/livereload.js');
+                        prop[key].push('//localhost:' + this.livereload + '/livereload.js');
                     }
                 }, this);
             }, this);
@@ -118,6 +117,25 @@ class Doxydoc {
 
             resolve(conf);
         }.bind(this));
+    }
+
+    setConfiguration(conf) {
+        this.outputDir = path.resolve(this.workingDir, this.initConf.outputDir || conf.outputDir || this.workingDir);
+        
+        this.templateDir = this.initConf.templateDir || conf.templateDir || 'new-lagoon';
+        if (['new-lagoon'].indexOf(this.templateDir) !== -1) {
+            this.templateDir = path.resolve(__dirname, '../templates', this.templateDir);
+        }
+        else {
+            this.templateDir =  path.resolve(this.workingDir, this.templateDir);            
+        }
+
+        
+        log.debug('Working dir:', this.workingDir);
+        log.debug('Output dir:', this.outputDir);
+        log.debug('Doxydoc file:', this.doxydocFile);
+        log.debug('Template dir:', this.templateDir);
+        log.debug('Livereload:', this.livereload);
     }
 
     scanDir(dir, match) {
@@ -210,7 +228,6 @@ class Doxydoc {
     createPages() {
         return co(function *() {
             for (let pageItem of this.pages) {
-                console.log('PAGE', pageItem);
                 let cont = path.resolve(this.workingDir, pageItem.file);
                 let tmpl = path.resolve(this.templateDir, 'page.fire');
                 let data = this.mergeMetaData(pageItem);
@@ -225,6 +242,8 @@ class Doxydoc {
                 }
 
                 let html = page.render();
+
+
                 let outfile = path.resolve(this.outputDir, pageItem.link);
                 log.debug('Write page', pageItem.name, 'to', outfile);
                 fl.write(outfile, html);

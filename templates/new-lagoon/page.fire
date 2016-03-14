@@ -14,15 +14,16 @@ html
             (> includes/header)
             section class="pageBody"
                 aside class="pageLeft"
-                    :each $sidebar : div class="pageLinks"
-                        span class="link"
-                            a href="$link" target="$target" $name
+                    :each $sidebar : nav class="sidebar-navi"
+                        ul class="link-list"
+                            li class="link-item"
+                                a class="link $cssClass.or('')" href="$link" target="$target" $name
 
-                    :if $pagenavi : section class="subNavi pageLinks"
-                        :tree $navigation : ul class="tree"
-                            li class="link"
-                                a class="link $cssClass.or('')" href="#$link" "$text"
-                                &next $items : ul class="twig"
+                                :if $subNavigation
+                                    :tree $subNavigation : ul class="sub-link-list"
+                                        li class="sub-link-item"
+                                            a class="link $cssClass.or('')" href="$link" "$text"
+                                            &next $subNavigation : ul class="sub-link-list"
                 article class="pageContent"
                     $$content
             footer class="pageFooter" "Documentation created with".

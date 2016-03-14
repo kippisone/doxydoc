@@ -9,18 +9,13 @@ Bugs:
 
 TODO
 ----
-* Check Link creation
-* Chaeck FIRE parser
-* Check HTML creation
-* Parse MD in descriptions (doc block)
-* Check sidebar navi
-* Deep space theme
 * Check CLI tool
-* Check Grunt plugin
-* Create gulp plugin
 * Remove LESS
+* Deep space theme
 * Remove npm symlinks
 * Check npm updates
+* Check Grunt plugin
+* Create gulp plugin
 * Https for Website
 
 * Improve documentation
@@ -43,6 +38,7 @@ TODO
 * Disable code preview
 * Tabed examples
 * Tabed previews
+* Nav tree folding
 
 
 Features:

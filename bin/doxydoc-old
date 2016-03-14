@@ -1,0 +1,74 @@
+#!/usr/bin/env node
+'use strict';
+
+var program = require('commander'),
+    path = require('path'),
+    pkg = require('../package.json');
+
+var readDir = require('fs-readdir-recursive');
+
+var DoxyDocPage = require('../doxydoc').DoxyDocPage;
+
+program.version(pkg.version)
+    .usage('[options] file1, files2, ...')
+    .option('-o, --output <dir>', 'Write output to <dir>')
+    .option('-t, --template <dir>', 'Use your own templates')
+    .option('-f, --docu-filename <filename>', 'Sets a custom filename for the generated docu file')
+    .option('-x, --doxydoc-file <filename>', 'Read configuration from <file> instead of doxydoc.json')
+    .option('-c, --check', 'Checks documentation in <input> dir')
+    .option('-r, --recursive', 'Traverse <input> recursive')
+    .option('-l, --filter=<filter>', 'Files must match filter. --filter=*.js,*.css')
+    .option('-d, --debug', 'Enables debug mode')
+    .parse(process.argv);
+
+var files = [];
+if (program.recursive) {
+    program.args.forEach(function(dir) {
+        dir = path.join(process.cwd(), dir);
+        files = files.concat(readDir(dir));
+    });
+
+    if (program.filter) {
+        var reg = program.filter
+            .replace(/,/g, '|')
+            .replace(/./g, '\.')
+            .replace(/\*/g, '.+');
+        reg = new RegExp(reg);
+    }
+}
+else {
+    files = program.args;
+}
+
+if (files.length === 0) {
+    console.log('No files found!');
+    process.exit(0);
+}
+
+if (program.check) {
+    var doxydocPage = new DoxyDocPage({
+        templateDir: program.template,
+        docuFilename: program.docuFilename,
+        doxydocFile: program.doxydocFile
+    });
+
+    doxydocPage.createDocu('json', files);
+    doxydocPage.showModuleTree();
+}
+else {
+    var doxydocPage = new DoxyDocPage({
+        templateDir: program.template,
+        output: program.output,
+        docuFilename: program.docuFilename,
+        doxydocFile: program.doxydocFile
+    });
+
+    if (program.output) {
+        doxydocPage.debug = program.debug;
+        doxydocPage.files = files;
+        doxydocPage.createPages();
+    }
+    else {
+        console.log(doxydocPage.createDocu('json', files));
+    }
+}
