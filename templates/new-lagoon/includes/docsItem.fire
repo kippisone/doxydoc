@@ -1,5 +1,5 @@
-section class="docsItem"
-    section class="docsItemHead"
+section class="docs-item"
+    section class="docs-item-head"
         :if $data.tags.version
             span class="label label-version" "$data.tags.version"
         h3 id="$alink" $aname
@@ -37,7 +37,7 @@ section class="docsItem"
             span class="label label-static" "Static"
         :if $data.tags.isChainable
             span class="label label-chainable" "Chainable"
-    article class="itemDescription" 
+    article class="item-description" 
         p $$data.tags.title
         p $$data.tags.description
         
@@ -93,15 +93,15 @@ section class="docsItem"
     :if $data.tags.examples : div class="exampleBlock"
         h4 "Example:"
         :each $data.tags.examples : div class="examples"
-            div class="codeBox"
+            div class="code-box"
                 code class="codeBlock $type" $$content
-    :if $data.tags.previews : div class="previewBlock"
+    :if $data.tags.previews : div class="preview-block"
         h4 "Preview:"
         :each $data.tags.previews
-            div class="previewBox $type"
+            div class="preview-box $type"
                 $$html
     :if $data.source : div
         h4 "Code:"
-        div class="codeBox"
+        div class="code-box"
             code class="codeBlock $data.source.type" $$data.source.code
 
