@@ -75,7 +75,7 @@ class Page {
 
     parseMarkdown(source) {
         var mdRenderer = new marked.Renderer();
-        
+
         mdRenderer.code = function(code, language) {
             // var indention = /^\t|\s{2,4}/.exec(code);
             // if (false && indention) {
@@ -87,7 +87,7 @@ class Page {
             code = code.replace(/\&#96;/g, '`');
 
             code = highlightjs.highlightAuto(code).value;
-            return '<div class="codeBox"><code class="codeBlock hljs lang-' + language + '">' + code + '</code></div>';
+            return '<div class="code-box"><code class="code-block hljs lang-' + language + '">' + code + '</code></div>';
         };
 
         // mdRenderer.html = function(html) {
@@ -100,7 +100,7 @@ class Page {
 
         mdRenderer.tablerow = function(row) {
             if (/^<th>/.test(row)) {
-                return '<thead><tr>' + row + '</tr></thead>';            
+                return '<thead><tr>' + row + '</tr></thead>';
             }
             else {
                 return '<tbody><tr>' + row + '</tr></tbody>';
@@ -153,7 +153,7 @@ class Page {
                     tagPath = [match[1]];
                 }
                 else {
-                    tagPath.push(match[1]);                
+                    tagPath.push(match[1]);
                 }
             }
             else {
@@ -204,7 +204,7 @@ class Page {
             for (var i = 0, len = this.data.sidebar.length; i < len; i++) {
                 if (this.data.sidebar[i].link === this.data.docs.link) {
                     this.data.sidebar[i].subNavigation = links;
-                } 
+                }
             }
         }
     }

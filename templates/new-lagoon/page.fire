@@ -5,17 +5,16 @@ html
         :each $scripts
             script src="$this"
 
-        link rel="Stylesheet" href="${basePath}doxydoc-less.css"
         link rel="Stylesheet" href="${basePath}doxydoc.css"
         :each $styles
             link rel="Stylesheet" href="$this"
     body
-        section class="pageMain"
+        section class="dd-page"
             (> includes/header)
-            section class="pageBody"
-                aside class="pageLeft"
-                    :each $sidebar : nav class="sidebar-navi"
-                        ul class="link-list"
+            section class="dd-body"
+                aside class="dd-sidebar"
+                    nav class="sidebar-navi"
+                        :each $sidebar : ul class="link-list"
                             li class="link-item"
                                 a class="link $cssClass.or('')" href="$link" target="$target" $name
 
@@ -24,7 +23,7 @@ html
                                         li class="sub-link-item"
                                             a class="link $cssClass.or('')" href="$link" "$text"
                                             &next $subNavigation : ul class="sub-link-list"
-                article class="pageContent"
+                article class="dd-content"
                     $$content
-            footer class="pageFooter" "Documentation created with".
+            footer class="dd-footer" "Documentation created with".
                 a href="http://doxydoc.com" target="_blank" "DoxyDoc"

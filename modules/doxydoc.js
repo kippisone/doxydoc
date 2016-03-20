@@ -11,7 +11,6 @@ var log = require('logtopus');
 var copyDir = require('copy-dir');
 
 var Superjoin = require('superjoin');
-var lessc = require('less');
 var stylus = require('stylus');
 
 /**
@@ -121,16 +120,16 @@ class Doxydoc {
 
     setConfiguration(conf) {
         this.outputDir = path.resolve(this.workingDir, this.initConf.outputDir || conf.outputDir || this.workingDir);
-        
+
         this.templateDir = this.initConf.templateDir || conf.templateDir || 'new-lagoon';
         if (['new-lagoon'].indexOf(this.templateDir) !== -1) {
             this.templateDir = path.resolve(__dirname, '../templates', this.templateDir);
         }
         else {
-            this.templateDir =  path.resolve(this.workingDir, this.templateDir);            
+            this.templateDir =  path.resolve(this.workingDir, this.templateDir);
         }
 
-        
+
         log.debug('Working dir:', this.workingDir);
         log.debug('Output dir:', this.outputDir);
         log.debug('Doxydoc file:', this.doxydocFile);
@@ -220,7 +219,7 @@ class Doxydoc {
                         fl.write(filename, JSON.stringify(data, null, '  '));
                     }
                 }, this);
-                
+
             }
         }.bind(this));
     }
@@ -292,22 +291,12 @@ class Doxydoc {
 
     createCSSBundle() {
         return co(function *() {
-            let less = fl.read(path.join(this.templateDir, 'less/main.less'));
-            less = yield lessc.render(less, {
-                paths: [path.join(this.templateDir, 'less')],
-                filename: 'doxydoc.css',
-                compress: !true
-            });
-
-            fl.write(path.join(this.outputDir, 'doxydoc-less.css'), less.css);
-
-            // render stylus
             let stl = fl.read(path.join(this.templateDir, 'stylus/main.styl'));
             stl = stylus(stl)
             .set('filename', path.join(this.outputDir, 'main.css'))
             .include(path.join(this.templateDir, 'stylus'))
             .include(path.join(__dirname, '../node_modules/lyssl'))
-            
+
             let css = yield new Promise(function(resolve, reject) {
                 stl.render(function(err, css) {
                     if (err) {
@@ -323,7 +312,7 @@ class Doxydoc {
     }
 
     resolveData() {
-        console.log('RESOLVE', this.conf);
+        //console.log('RESOLVE', this.conf);
         for (let key of ['pages', 'navigation', 'sidebar']) {
             let prop = this.conf[key];
 

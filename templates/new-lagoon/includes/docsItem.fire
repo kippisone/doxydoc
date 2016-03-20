@@ -37,10 +37,10 @@ section class="docs-item"
             span class="label label-static" "Static"
         :if $data.tags.isChainable
             span class="label label-chainable" "Chainable"
-    article class="item-description" 
+    article class="item-description"
         p $$data.tags.title
         p $$data.tags.description
-        
+
         :if $data.tags.links
             h4 "Links:"
                 :each $data.tags.links
@@ -72,7 +72,7 @@ section class="docs-item"
                     th "Description"
             :each $data.tags.fires : tbody
                 tr
-                    td valign="top" 
+                    td valign="top"
                         span class="event" $event
                     td
                         article $$description
@@ -90,11 +90,11 @@ section class="docs-item"
         span class="returns type-label label-$data.tags.returns.type" $data.tags.returns.type
         article class="desc" $$data.tags.returns.description
 
-    :if $data.tags.examples : div class="exampleBlock"
+    :if $data.tags.examples : div class="example-block"
         h4 "Example:"
         :each $data.tags.examples : div class="examples"
             div class="code-box"
-                code class="codeBlock $type" $$content
+                code class="code-block $type" $$content
     :if $data.tags.previews : div class="preview-block"
         h4 "Preview:"
         :each $data.tags.previews
@@ -103,5 +103,4 @@ section class="docs-item"
     :if $data.source : div
         h4 "Code:"
         div class="code-box"
-            code class="codeBlock $data.source.type" $$data.source.code
-
+            code class="code-block $data.source.type" $$data.source.code
