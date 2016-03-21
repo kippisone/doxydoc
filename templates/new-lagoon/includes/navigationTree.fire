@@ -19,7 +19,7 @@ section class="docs-navi"
         :if $atype.eq('group')
             li class="item"
                 h3 class="group-title" "$aname"
-                &next $items : ul class="sub-tree $items.atype"
+                &next $items : ul class="sub-tree ${atype}-items"
         :if $atype.eq('content')
             li class="item"
                 a class="link content-link" href="#$alink" "$aname"
