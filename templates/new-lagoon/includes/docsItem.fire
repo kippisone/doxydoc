@@ -38,8 +38,10 @@ section class="docs-item"
         :if $data.tags.isChainable
             span class="label label-chainable" "Chainable"
     article class="item-description"
-        p $$data.tags.title
-        p $$data.tags.description
+        :if $data.tags.title
+            p $$data.tags.title
+        :if $data.tags.description
+            p $$data.tags.description
 
         :if $data.tags.links
             h4 "Links:"

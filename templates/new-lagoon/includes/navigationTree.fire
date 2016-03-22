@@ -2,19 +2,19 @@ section class="docs-navi"
     :tree $docs.items : ul class="tree $atype"
         :if $atype.eq('package')
             li class="item"
-                a class="link package-link" href="#package-$aname" "$aname"
+                a class="link package-link" href="#$alink" "$aname"
                 &next $items : ul class="sub-tree $items.atype"
         :if $atype.eq('subpackage')
             li class="item"
-                a class="link package-link" href="#subpacakge-$aname" "$aname"
+                a class="link package-link" href="#$alink" "$aname"
                 &next $items : ul class="sub-tree $items.atype"
         :if $atype.eq('module')
             li class="item"
-                a class="link module-link" href="#module-$aname" "$aname"
+                a class="link module-link" href="#$alink" "$aname"
                 &next $items : ul class="sub-tree $items.atype"
         :if $atype.eq('submodule')
             li class="item"
-                a class="link module-link" href="#submodule-$aname" "$aname"
+                a class="link module-link" href="#$alink" "$aname"
                 &next $items : ul class="sub-tree $items.atype"
         :if $atype.eq('group')
             li class="item"

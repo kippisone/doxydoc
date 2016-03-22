@@ -2,31 +2,31 @@
     :if $atype.eq('package')
         section class="block-item"
             div class="type-label" "Package"
-            h1 "$aname"
+            h1 id="$alink" "$aname"
             h2 "$$data.title"
             article "$$data.description"
     :if $atype.eq('subpackage')
         section class="block-item"
             div class="type-label" "Subpackage"
-            h1 "$aname"
+            h1 id="$alink" "$aname"
             h2 "$$data.title"
             article "$$data.description"
     :if $atype.eq('module')
         section class="block-item"
             div class="type-label" "Module"
-            h1 "$aname"
+            h1 id="$alink" "$aname"
             h2 "$$data.title"
             article "$$data.description"
     :if $atype.eq('submodule')
         section class="block-item"
             div class="type-label" "Submodule"
-            h1 "$aname"
+            h1 id="$alink" "$aname"
             h2 "$$data.title"
             article "$$data.description"
     :if $atype.eq('group')
         section class="block-item"
             div class="type-label" "$aname"
-            h1 "$aname"
+            h1 id="$alink" "$aname"
             :if $items
                 :each $items
                     >includes/docsItem
