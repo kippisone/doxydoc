@@ -6,6 +6,7 @@ Bugs:
 
 * Hashlink start is under sticky navi
 * Example with // cuts of the right side
+* Code preview shows next line, indention should be removed
 
 TODO
 ----
@@ -19,6 +20,9 @@ TODO
 
 * Improve documentation
 * New Screenshots
+* DocBlock should use block description only for parent
+  If I have multiple scoping tags (@package, @module) both of them are getting the descriptions.
+  Descriptions should be part of the highest created scoping item
 
 --
 
@@ -35,6 +39,7 @@ TODO
 * OG meta tags
 * Disable code preview
 * Sorting of groups
+* Hide ungrouped
 * Nav tree folding
 * Tabed previews
 * Tabed examples
