@@ -10,7 +10,6 @@ Bugs:
 TODO
 ----
 * Check CLI tool
-* Remove LESS
 * Deep space theme
 * Remove npm symlinks
 * Check npm updates
@@ -210,5 +209,3 @@ Tags:
     @selector
 
     * Mobile styling
-
-

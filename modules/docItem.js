@@ -11,6 +11,21 @@ class DocItem {
         this.atype = atype || 'root';
         this.items = [];
         this.data = {};
+        this.displayNames = {
+            const: 'Constants',
+            ungrouped: 'Ungroupded',
+            method: 'Methods',
+            property: 'Properties',
+            event: 'Events',
+            var: 'Variables',
+            function: 'Functions',
+            middleware: 'Middlewares',
+            class: 'Classes',
+            constructor: 'Constructors',
+            callback: 'Callbacks',
+            mixin: 'Mixins',
+            selector: 'Selectors'
+        }
 
         if (parent) {
             this.parent = parent;
@@ -49,6 +64,7 @@ class DocItem {
 
     addGroup(data) {
         var g = this.getByName('group', data.group);
+        data.displayName = this.getDisplayName(data.group);
         g.set(data);
         return g;
     }
@@ -62,13 +78,21 @@ class DocItem {
         return c;
     }
 
+    getDisplayName(name) {
+        if (this.displayNames) {
+            return this.displayNames[name] || name;
+        }
+
+        return name;
+    }
+
     getParentBucket(aname) {
         var parents = ['root', 'package', 'subpackage',
         'module', 'submodule', 'group', 'content'];
 
         var parent = this;
         var nameIndex = parents.indexOf(aname);
-        
+
         while (parent) {
             if (nameIndex > parents.indexOf(parent.atype)) {
                 return parent;
@@ -80,7 +104,7 @@ class DocItem {
 
             parent = parent.parent;
         }
-        
+
         return parent;
     }
 
@@ -143,7 +167,7 @@ class DocItem {
     }
 
     toJSON() {
-        
+        return this.toObject;
     }
 
     toObject() {
@@ -254,6 +278,7 @@ class ContentItem extends GroupItem {
 
     addGroup(data) {
         var g = this.getByName('group', data.group);
+        data.displayName = this.getDisplayName(data.group);
         g.set(data);
         return g;
     }

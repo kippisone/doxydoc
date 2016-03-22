@@ -8,7 +8,7 @@ describe('DocItem', function() {
 
         beforeEach(function() {
             ctx = { items: [] };
-            rootItem = new DocItem(ctx);    
+            rootItem = new DocItem(ctx);
         });
 
         it('Should create a root item', function() {
@@ -21,7 +21,7 @@ describe('DocItem', function() {
 
         beforeEach(function() {
             ctx = { items: [] };
-            rootItem = new DocItem(ctx);    
+            rootItem = new DocItem(ctx);
         });
 
         it('Should create a package item', function() {
@@ -45,7 +45,7 @@ describe('DocItem', function() {
 
         beforeEach(function() {
             ctx = { items: [] };
-            rootItem = new DocItem(ctx);    
+            rootItem = new DocItem(ctx);
         });
 
         it('Should create a subpackage item', function() {
@@ -62,7 +62,7 @@ describe('DocItem', function() {
 
         beforeEach(function() {
             ctx = { items: [] };
-            rootItem = new DocItem(ctx);    
+            rootItem = new DocItem(ctx);
         });
 
         it('Should create a module item', function() {
@@ -79,7 +79,7 @@ describe('DocItem', function() {
 
         beforeEach(function() {
             ctx = { items: [] };
-            rootItem = new DocItem(ctx);    
+            rootItem = new DocItem(ctx);
         });
 
         it('Should create a submodule item', function() {
@@ -96,40 +96,49 @@ describe('DocItem', function() {
 
         beforeEach(function() {
             ctx = { items: [] };
-            rootItem = new DocItem(ctx);    
+            rootItem = new DocItem(ctx);
         });
 
         it('Should create a group item', function() {
             var obj = rootItem.getInstance('group');
+            inspect.print(obj.toObject());
             inspect(obj).isObject();
             inspect(rootItem.items).hasLength(1);
             inspect(rootItem.items[0]).isEqual(obj);
             inspect(obj.parent).isEqual(rootItem);
         });
     });
-    
+
     describe('instance', function() {
         it('Should build a nested docs structure', function() {
 
             var docs = new DocItem();
             var p = docs.addPackage({
-                package: 'p1',
-                value: 'foo'
+                tags: {
+                    package: 'p1',
+                    value: 'foo'
+                }
             });
 
             var m = p.addModule({
-                module: 'm1',
-                value: 'bla'
+                tags: {
+                    module: 'm1',
+                    value: 'bla'
+                }
             });
 
             m.addGroup({
-                group: 'method',
-                value: 'G1'
+                tags: {
+                    group: 'method',
+                    value: 'G1'
+                }
             });
 
             var g = m.addGroup({
-                group: 'method',
-                value: 'G2'
+                tags: {
+                    group: 'method',
+                    value: 'G2'
+                }
             });
 
             g.addContent({
@@ -141,11 +150,12 @@ describe('DocItem', function() {
             });
 
             m.addPackage({
-                package: 'p2',
-                value: 'P2'
+                tags: {
+                    package: 'p2',
+                    value: 'P2'
+                }
             });
 
-            inspect.print(docs.toObject());
             inspect(docs.toObject()).hasProps({
                 atype: 'root',
                 items: [{
@@ -191,16 +201,20 @@ describe('DocItem', function() {
                 }]
             });
         });
-    
-        it('Should add a module as first item', function() {
 
+        it('Should add a module as first item', function() {
             var docs = new DocItem();
             var p = docs.addModule({
-                value: 'foo'
+                tags: {
+                    module: 'foo',
+                    value: 'foo'
+                }
             });
 
             p.addContent({
-                value: 'bla'
+                tags: {
+                    value: 'bla'
+                }
             });
 
             inspect(docs.toObject()).hasProps({
@@ -218,7 +232,7 @@ describe('DocItem', function() {
                 }]
             });
         });
-    
+
         it('Should add a group as first item', function() {
 
             var docs = new DocItem();
@@ -246,16 +260,19 @@ describe('DocItem', function() {
                 }]
             });
         });
-    
-        it('Should add a content as first item', function() {
 
+        it('Should add a content as first item', function() {
             var docs = new DocItem();
             var p = docs.addPackage({
-                value: 'foo'
+                tags: {
+                    value: 'foo'
+                }
             });
 
             p.addModule({
-                value: 'bla'
+                tags: {
+                    value: 'bla'
+                }
             });
 
             inspect(docs.toObject()).hasProps({

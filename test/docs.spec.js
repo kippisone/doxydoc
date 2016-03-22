@@ -3,7 +3,7 @@
 var inspect = require('inspect.js');
 var Docs = require('../modules/docs');
 
-describe('Docs object', function() {    
+describe('Docs object', function() {
     describe('class', function() {
         it('should be a Docs class', function() {
             inspect(Docs).isClass();
@@ -18,8 +18,10 @@ describe('Docs object', function() {
 
     describe('parseDoc', function() {
         var docs = new Docs();
-        docs.setFileInfo('/home/test/doxydoc/banana.js');
-        
+        docs.setFileInfo({
+            name: '/home/test/doxydoc/banana.js'
+        });
+
         it('should create a Docs object', function() {
             inspect(docs).isObject();
             inspect(docs.items).isArray();

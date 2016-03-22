@@ -7,7 +7,7 @@ var inspect = require('inspect.js');
 var sinon = require('sinon');
 inspect.useSinon(sinon);
 
-describe.only('Page', function() {
+describe('Page', function() {
     describe('Class', function() {
         it('Should be a Page class', function() {
             inspect(Page).isClass();
@@ -29,7 +29,7 @@ describe.only('Page', function() {
             inspect(readStub).wasCalledWith('page.fire');
             inspect(renderFTLStub).wasCalledOnce();
             inspect(renderFTLStub).wasCalledWith('TMPL');
-            
+
             renderFTLStub.restore();
             readStub.restore();
         });
@@ -48,7 +48,7 @@ describe.only('Page', function() {
             inspect(readStub).wasCalledWith('page.md');
             inspect(renderFTLStub).wasCalledOnce();
             inspect(renderFTLStub).wasCalledWith('TMPL');
-            
+
             renderFTLStub.restore();
             readStub.restore();
         });
@@ -67,7 +67,7 @@ describe.only('Page', function() {
             inspect(readStub).wasCalledWith('page.html');
             inspect(parseHTMLStub).wasCalledOnce();
             inspect(parseHTMLStub).wasCalledWith('TMPL');
-            
+
             parseHTMLStub.restore();
             readStub.restore();
         });
@@ -77,7 +77,7 @@ describe.only('Page', function() {
 describe.skip('PageCreator', function() {
     describe('scanHeadLines', function() {
         var pageCreator;
-        
+
         beforeEach(function() {
             pageCreator = new PageCreator();
         });

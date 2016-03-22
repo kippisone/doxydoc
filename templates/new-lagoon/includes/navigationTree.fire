@@ -18,7 +18,7 @@ section class="docs-navi"
                 &next $items : ul class="sub-tree $items.atype"
         :if $atype.eq('group')
             li class="item"
-                h3 class="group-title" "$aname"
+                h3 class="group-title" "$data.displayName"
                 &next $items : ul class="sub-tree ${atype}-items"
         :if $atype.eq('content')
             li class="item"

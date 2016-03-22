@@ -50,7 +50,7 @@ class Page {
             this.data.content = content;
         }
 
-        if (this.data.docs.pageLinks) {
+        if (this.data.docs && this.data.docs.pageLinks) {
             this.createPageLinks(content);
         }
 

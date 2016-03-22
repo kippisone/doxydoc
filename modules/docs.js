@@ -14,7 +14,7 @@ class Docs {
 
     readFiles() {
         for (var i = 0, len = this.files.length; i < len; i++) {
-            let file = this.files[i];          
+            let file = this.files[i];
             let name = path.basename(file);
             let type = path.extname(file).substr(1);
             this.files[i] = {
@@ -59,7 +59,7 @@ class Docs {
             let blocks = docblock.parse(file.source, file.type);
             fl.write('blocks.json', JSON.stringify(blocks, null, '  '));
             this.setFileInfo(file);
-            
+
             blocks.forEach(function(doc, index) {
                 this.createFileParam(file, doc);
 
@@ -70,7 +70,7 @@ class Docs {
                 if (doc.tags.var && doc.tags.var.type === 'color') {
                     this.createColorPreview(doc);
                 }
-                
+
                 if (doc.code) {
                     this.createSource(doc);
                     delete doc.code;
@@ -79,15 +79,15 @@ class Docs {
                 if (doc.tags['package']) {
                     docItem = docItem.addPackage(doc);
                 }
-                
+
                 if (doc.tags.subpackage) {
                     docItem = docItem.addSubpackage(doc);
                 }
-                
+
                 if (doc.tags.module) {
                     docItem = docItem.addModule(doc);
                 }
-                
+
                 if (doc.tags.submodule) {
                     docItem = docItem.addSubmodule(doc);
                 }
@@ -142,7 +142,7 @@ class Docs {
             type: 'module',
             items: []
         };
-        
+
         this.bucket.push(this.curModule);
         this.bucket = this.curModule.items;
         this.setCacheItem([this.curPackage, this.curSubpackage, moduleName], this.curModule);
@@ -155,7 +155,7 @@ class Docs {
             type: 'submodule',
             items: []
         };
-        
+
         this.bucket.push(this.curSubmodule);
         this.bucket = this.curSubmodule.items;
         this.setCacheItem([this.curPackage, this.curSubpackage, this.curModule, submoduleName], this.curSubpackage);
@@ -233,7 +233,7 @@ class Docs {
 
     grepPattern(pattern, str, index) {
         index = index || 1;
-        
+
         var match = str.match(pattern);
         if (match && match[index]) {
             return match[index];
