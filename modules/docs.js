@@ -55,7 +55,7 @@ class Docs {
         var docItem = docParser;
 
         files.forEach(function(file) {
-            let docblock = new Docblock();
+            let docblock = new Docblock(file.type);
             let blocks = docblock.parse(file.source, file.type);
             fl.write('blocks.json', JSON.stringify(blocks, null, '  '));
             this.setFileInfo(file);
