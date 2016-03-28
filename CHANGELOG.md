@@ -1,6 +1,14 @@
 Changelog
 =========
 
+v0.5.0
+* Rewrote parser
+* Use docblock
+* Removed dox
+* Replace less with stylus
+* Major changes in doxydoc.json
+* Many bug fixes
+
 v0.4.7
 ------
 * Added `cssClass` option
