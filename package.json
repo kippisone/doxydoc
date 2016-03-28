@@ -46,6 +46,7 @@
     "lyssl": "^0.1.0",
     "marked": "^0.3.5",
     "node-fl": "0.0.2",
+    "node.extend": "^1.1.5",
     "stylus": "^0.54.2",
     "superjoin": "^0.3.2"
   },
