@@ -1,0 +1,155 @@
+@import "lyssl"
+
+/**
+ * Content
+ * Content area styles
+ *
+ * @module content
+ */
+.dd-content
+    padding 60px 10px 30px 10px
+
+    /**
+     * Heading styles
+     * @preview {html}
+     * <h1>Heading tags &lt;h1&gt;</h1>
+     * <h2>Heading tags &lt;h2&gt;</h2>
+     * <h3>Heading tags &lt;h3&gt;</h3>
+     * <h4>Heading tags &lt;h4&gt;</h4>
+     * <h5>Heading tags &lt;h5&gt;</h5>
+     * <h6>Heading tags &lt;h6&gt;</h6>
+     */
+
+    h1
+        color $greyWolf
+        font-size 24px
+        font-weight bold
+        margin 20px 0 10px 0
+
+        &:first-child
+            margin-top 10px
+
+        .version
+            color #333
+            font-size 11px
+            display inline-block
+            border-radius 5px
+            background-color $greyWolf
+            color #fff
+            padding 2px 5px
+            position relative
+            left 10px
+            top -10px
+
+    h2
+        font-size 22px
+        font-weight bold
+        color $greyWolf
+        margin 20px 0 10px 0
+
+    h3
+        font-size 20px
+        font-weight bold
+        color $greyWolf
+        margin 15px 0 10px 0
+
+    h4
+        font-size 18px
+        font-weight bold
+        color $greyWolf
+        margin 10px 0
+
+    h5
+        font-size 16px
+        font-weight bold
+        color $greyWolf
+        margin 5px 0
+
+    h6
+        font-size 14px
+        font-weight bold
+        color $greyWolf
+        margin 5px 0
+
+    /**
+     * Styles generic links
+     *
+     * @tag a
+     */
+
+    a:link,
+    a:visited,
+    a:active
+        color $blueLagoon
+        text-decoration none
+
+    a:hover
+        text-decoration underline
+
+    p
+        margin 10px 0
+
+    ul
+        list-style-type disc
+        padding-left 20px
+        margin 15px
+
+        > li
+            list-style-type disc
+
+            > ul
+                margin 5px
+                list-style-type circle
+                > li
+                    list-style-type circle
+    ol
+        list-style-type decimal
+        padding-left 20px
+        margin 15px
+
+        > li
+            list-style-type decimal
+
+    code
+        border 1px solid #ccc
+        padding 2px 5px
+        display inline-block
+        border-radius 3px
+        background-color #ddd
+
+    .code-box
+        max-height 200px
+        overflow auto
+        border-radius 5px
+        color #ddd
+        margin 10px 0
+
+        .code-block
+            margin 0
+
+    .code-block
+        display block
+        border 0
+        margin 10px 0
+        border-radius 5px
+        white-space pre
+        font-family monospace
+        background-color #14171A
+        padding 7px
+
+    .dd-grid-preview
+        li
+            width: 100px
+            height 100px
+            display inline-block
+            margin: 2px
+            border 1px solid darken(#e8e6f0, 3%)
+            background-color #e8e6f0
+            padding 5px
+            border-radius 3px
+            vertical-align middle
+            overflow hidden
+            transition .4s color
+
+            &:hover
+                color $blueLagoon
