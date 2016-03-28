@@ -1,0 +1,25 @@
+section class="docs-navi"
+    :tree $docs.items : ul class="tree $atype"
+        :if $atype.eq('package')
+            li class="item"
+                a class="link package-link" href="#$alink" "$aname"
+                &next $items : ul class="sub-tree $items.atype"
+        :if $atype.eq('subpackage')
+            li class="item"
+                a class="link package-link" href="#$alink" "$aname"
+                &next $items : ul class="sub-tree $items.atype"
+        :if $atype.eq('module')
+            li class="item"
+                a class="link module-link" href="#$alink" "$aname"
+                &next $items : ul class="sub-tree $items.atype"
+        :if $atype.eq('submodule')
+            li class="item"
+                a class="link module-link" href="#$alink" "$aname"
+                &next $items : ul class="sub-tree $items.atype"
+        :if $atype.eq('group')
+            li class="item"
+                h3 class="group-title" "$data.displayName"
+                &next $items : ul class="sub-tree ${atype}-items"
+        :if $atype.eq('content')
+            li class="item"
+                a class="link content-link" href="#$alink" "$aname"

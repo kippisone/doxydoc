@@ -106,7 +106,7 @@ html {
 body {
   width: 100%;
   height: 100%;
-  font-size: 13px;
+  font-size: 14px;
   font-family: sans-serif;
   margin: 0;
 }
@@ -120,6 +120,17 @@ body {
  * This module must be activated in *less mode* by adding `.dcButtons();` to your main.less file.
  * 
  * @module dcButtons
+ */
+/**
+ * Styles a generic button
+ * 
+ * @mixin button
+ *
+ * @example {html}
+ * <button>Button</button>
+ * 
+ * @preview
+ * <button>Button</button>
  */
 /**
  * dcLabels module
@@ -140,6 +151,11 @@ body {
  * dcFlipBox module
  * This module must be activated in *less mode* by adding `.dcFlipBox();` to your main.less file.
  * @module dcFlipBox
+ */
+/**
+ * dcFontAwesome module
+ * This module must be activated in *less mode* by adding `.dcFontAwesome();` to your main.less file.
+ * @module dcFontAwesome
  */
 /**
      * Reset h1 - h6 tags
@@ -171,17 +187,17 @@ p {
   margin: 0;
 }
 /**
-     * Styles a label
+     * Label base style.
      * 
      * @mixin label
      *
      * @example {html}
-     * <span class="label labelRed">Button</span>
+     * <span class="dcLabelRed">Button</span>
      * 
      * @preview
-     * <span class="label labelRed">Button</span>
+     * <span class="dcLabelRed">Button</span>
      */
-.label {
+.dcLabel {
   display: inline-block;
   border-radius: 5px;
   color: #fff;
@@ -190,45 +206,264 @@ p {
   font-weight: normal;
   vertical-align: middle;
 }
-.labelRed {
-  background-color: #b10000;
+/**
+     * Styles a red label
+     *
+     * @mixin dcLabelRed
+     * @example {html}
+     * <span class="dcLabelRed">Red label</span>
+     * 
+     * @preview
+     * <span class="dcLabelRed">Red label</span>
+     */
+.dcLabelRed {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #B10000;
 }
-.labelDarkRed {
-  background-color: #b10024;
+/**
+     * Styles a dark red label
+     *
+     * @mixin dcLabelDarkRed
+     * @example {html}
+     * <span class="dcLabelDarkRed">Dark red label</span>
+     * 
+     * @preview
+     * <span class="dcLabelDarkRed">Dark red label</span>
+     */
+.dcLabelDarkRed {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #6B1426;
 }
-.labelBlue {
-  background-color: #0051cd;
+/**
+     * Styles a blue label
+     *
+     * @mixin dcLabelBlue
+     * @example {html}
+     * <span class="dcLabelBlue">Blue label</span>
+     * 
+     * @preview
+     * <span class="dcLabelBlue">Blue label</span>
+     */
+.dcLabelBlue {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #0051CD;
 }
-.labelPurple {
-  background-color: #7a00ad;
+/**
+     * Styles a purple label
+     *
+     * @mixin dcLabelPurple
+     * @example {html}
+     * <span class="dcLabelPurple">Purple label</span>
+     * 
+     * @preview
+     * <span class="dcLabelPurple">Purple label</span>
+     */
+.dcLabelPurple {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #7A00AD;
 }
-.lableDarkPurple {
+/**
+     * Styles a dark purple label
+     *
+     * @mixin dcLableDarkPurple
+     * @example {html}
+     * <span class="dcLableDarkPurple">Dark purple label</span>
+     * 
+     * @preview
+     * <span class="dcLableDarkPurple">Dark purple label</span>
+     */
+.dcLableDarkPurple {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #430069;
 }
-.labelGrey {
-  background-color: #555555;
+/**
+     * Styles an orange label
+     *
+     * @mixin dcLabelOrangeRed
+     * @example {html}
+     * <span class="dcLabelOrangeRed">Orange label</span>
+     * 
+     * @preview
+     * <span class="dcLabelOrangeRed">Orange label</span>
+     */
+.dcLabelOrangeRed {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #FF7E00;
 }
-.labelOrangeRed {
-  background-color: #ff7e00;
-}
-.labelBrown {
+/**
+     * Styles a brown label
+     *
+     * @mixin dcLabelBrown
+     * @example {html}
+     * <span class="dcLabelBrown">Brown label</span>
+     * 
+     * @preview
+     * <span class="dcLabelBrown">Brown label</span>
+     */
+.dcLabelBrown {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #967657;
 }
-.labelDarkGreen {
-  background-color: #00826a;
+/**
+     * Styles a dark green label
+     *
+     * @mixin dcLabelDarkGreen
+     * @example {html}
+     * <span class="dcLabelDarkGreen">Dark green label</span>
+     * 
+     * @preview
+     * <span class="dcLabelDarkGreen">Dark green label</span>
+     */
+.dcLabelDarkGreen {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #00826A;
 }
-.labelGreen {
-  background-color: #008b12;
+/**
+     * Styles a green label
+     *
+     * @mixin dcLabelGreen
+     * @example {html}
+     * <span class="dcLabelGreen">Green label</span>
+     * 
+     * @preview
+     * <span class="dcLabelGreen">Green label</span>
+     */
+.dcLabelGreen {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #008B12;
 }
-.labelYellow {
-  background-color: #e1ff00;
+/**
+     * Styles a yellow label
+     *
+     * @mixin dcLabelYellow
+     * @example {html}
+     * <span class="dcLabelYellow">Yellow label</span>
+     * 
+     * @preview
+     * <span class="dcLabelYellow">Yellow label</span>
+     */
+.dcLabelYellow {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #E1FF00;
   color: #000;
 }
-.labelBlack {
+/**
+     * Styles a black label
+     *
+     * @mixin dcLabelBlack
+     * @example {html}
+     * <span class="dcLabelBlack">Black label</span>
+     * 
+     * @preview
+     * <span class="dcLabelBlack">Black label</span>
+     */
+.dcLabelBlack {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #000;
   color: #fff;
 }
-.labelGrey {
+/**
+     * Styles a grey label
+     *
+     * @mixin dcLabelGrey
+     * @example {html}
+     * <span class="dcLabelGrey">Grey label</span>
+     * 
+     * @preview
+     * <span class="dcLabelGrey">Grey label</span>
+     */
+.dcLabelGrey {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #555;
+}
+/**
+     * Styles a dark grey label
+     *
+     * @mixin dcLabelDarkGrey
+     * @example {html}
+     * <span class="dcLabelDarkGrey">Dark grey label</span>
+     * 
+     * @preview
+     * <span class="dcLabelDarkGrey">Dark grey label</span>
+     */
+.dcLabelDarkGrey {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
   background-color: #232323;
   color: #fff;
 }
@@ -237,7 +472,7 @@ dl {
 }
 dt {
   font-size: 11px;
-  color: #555555;
+  color: #555;
   margin-bottom: 2px;
 }
 dd {
@@ -251,7 +486,7 @@ dd {
 textarea,
 input[type=text],
 input[type=password] {
-  border: 1px solid #555555;
+  border: 1px solid #555;
   padding: 1px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -263,7 +498,7 @@ input[type=password] {
 input[type=text].error,
 input[type=password].error,
 textarea.error {
-  border-color: #b10000;
+  border-color: #B10000;
   border-width: 2px;
 }
 textarea {
@@ -302,7 +537,7 @@ div[data-xqform=input-suggest] input[type=text] {
   border-radius: 3px;
   line-height: 20px;
   vertical-align: middle;
-  background-color: #d5d5d5;
+  background-color: #D5D5D5;
 }
 .dcSwitch input[type=radio] {
   position: absolute;
@@ -311,7 +546,7 @@ div[data-xqform=input-suggest] input[type=text] {
 }
 .dcSwitch input[type=radio] + label {
   display: inline-block;
-  background-color: #d5d5d5;
+  background-color: #D5D5D5;
   color: #333;
   padding: 2px 5px;
   border-right: 1px solid #000;
@@ -320,7 +555,7 @@ div[data-xqform=input-suggest] input[type=text] {
   border-right: 0;
 }
 .dcSwitch input[type=radio]:checked + label {
-  background-color: #0051cd;
+  background-color: #0051CD;
   color: #fff;
 }
 /**
@@ -364,7 +599,7 @@ div[data-xqform=input-suggest] input[type=text] {
 }
 .dcCheck input[type=checkbox]:checked + label:before {
   color: #fff;
-  background-color: #0051cd;
+  background-color: #0051CD;
   border-color: #fff;
 }
 .dcCheck label {
@@ -430,7 +665,7 @@ button:focus,
      */
 button[type=submit],
 button.submit {
-  background-color: #0051cd;
+  background-color: #0051CD;
   color: #fff;
 }
 button[type=submit]:hover,
@@ -448,7 +683,7 @@ button.submit:hover {
      */
 button[type=reset],
 button.cancel {
-  background-color: #d5d5d5;
+  background-color: #D5D5D5;
   color: #333;
 }
 button[type=reset]:hover,
@@ -498,21 +733,19 @@ button.cancel:hover {
   color: #666;
   font-size: 14px;
   font-weight: bold;
+  cursor: pointer;
 }
 .dcFlipBox dt:hover {
-  color: #0051cd;
+  color: #0051CD;
 }
 .dcFlipBox dd {
-  opacity: 0;
   overflow: hidden;
+  display: none;
   -o-transition: all 0.35s ease-in;
   -moz-transition: all 0.35s ease-in;
   -webkit-transition: all 0.35s ease-in;
   -ms-transition: all 0.35s ease-in;
   transition: all 0.35s ease-in;
-}
-.dcFlipBox.active dd {
-  opacity: 1;
 }
 .dcFlipBox.active dt:before {
   -o-transform: rotate(-270deg);
@@ -522,17 +755,111 @@ button.cancel:hover {
   transform: rotate(-270deg);
 }
 /**
-     * Styles a table
+     * Styles a table. The line background and hover effect is applied on the <tr> element.
      *
      * @mixin dcTable
      *
      * @example {html}
      * <table class="dcTable">
-     *     <!-- table body -->
+     *     <thead>
+     *         <tr>
+     *             <td>Color</td>
+     *             <td>Code</td>
+     *         </tr>
+     *     </thead>
+     *     <tbody>
+     *         <tr>
+     *             <td>Red</td>
+     *             <td>#ff0000</td>
+     *         </tr>
+     *         <tr>
+     *             <td>Green</td>
+     *             <td>#00ff00</td>
+     *         </tr>
+     *     </tbody>
      * </table>
      * 
      * @preview
      * <table class="dcTable">
+     *     <thead>
+     *         <tr>
+     *             <td>Color</td>
+     *             <td>Code</td>
+     *         </tr>
+     *     </thead>
+     *     <tbody>
+     *         <tr>
+     *             <td>Red</td>
+     *             <td>#ff0000</td>
+     *         </tr>
+     *         <tr>
+     *             <td>Green</td>
+     *             <td>#00ff00</td>
+     *         </tr>
+     *     </tbody>
+     * </table>
+     */
+table.dcTable {
+  border: 1px solid #c0c0c0;
+  border-collapse: collapse;
+  border-radius: 5px;
+  width: 100%;
+  background-color: #fff;
+}
+table.dcTable caption {
+  border-bottom: none;
+  background-color: #0051CD;
+  color: #fff;
+  padding: 5px;
+}
+table.dcTable thead td,
+table.dcTable tr > th {
+  background-color: #ddd;
+  font-weight: bold;
+  padding: 5px;
+}
+table.dcTable tbody > tr:nth-child(even) td {
+  background-color: #eee;
+}
+table.dcTable tbody > tr:hover td {
+  background-color: #ddd;
+}
+table.dcTable td {
+  border-left: 1px solid 1px solid #c0c0c0;
+  padding: 5px;
+  vertical-align: top;
+  font-size: 14px;
+}
+/**
+     * Styles a table with multiple <tbody> tags. The line hover and background
+     * is applying on the bodytags. This allows you to define multiple rows per line.
+     *
+     * @mixin dcMultiTable
+     *
+     * @example {html}
+     * <table class="dcMultiTable">
+     *     <thead>
+     *         <tr>
+     *             <td>Color</td>
+     *             <td>Code</td>
+     *         </tr>
+     *     </thead>
+     *     <tbody>
+     *         <tr>
+     *             <td>Red</td>
+     *             <td>#ff0000</td>
+     *         </tr>
+     *     </tbody>
+     *     <tbody>
+     *         <tr>
+     *             <td>Green</td>
+     *             <td>#00ff00</td>
+     *         </tr>
+     *     </tbody>
+     * </table>
+     * 
+     * @preview
+     * <table class="dcMultiTable">
      *     <thead>
      *         <tr>
      *             <td>Color</td>
@@ -553,48 +880,48 @@ button.cancel:hover {
      *     </tbody>
      * </table>
      */
-table.dcTable {
+table.dcMultiTable {
   border: 1px solid #c0c0c0;
   border-collapse: collapse;
   border-radius: 5px;
   width: 100%;
-  background-color: #ffffff;
+  background-color: #fff;
 }
-table.dcTable caption {
+table.dcMultiTable caption {
   border-bottom: none;
-  background-color: #0051cd;
+  background-color: #0051CD;
   color: #fff;
   padding: 5px;
 }
-table.dcTable thead {
+table.dcMultiTable thead {
   background-color: #ddd;
   font-weight: bold;
 }
-table.dcTable thead td {
+table.dcMultiTable thead td {
   padding: 5px;
 }
-table.dcTable tbody:nth-child(even) td {
+table.dcMultiTable tbody:nth-child(even) td {
   background-color: #eee;
 }
-table.dcTable tbody:hover td {
+table.dcMultiTable tbody:hover td {
   background-color: #ddd;
 }
-table.dcTable td {
+table.dcMultiTable td {
   border-left: 1px solid 1px solid #c0c0c0;
   padding: 5px;
   vertical-align: top;
   font-size: 14px;
 }
 /*!
- *  Font Awesome 4.4.0 by @davegandy - http://fontawesome.io - @fontawesome
+ *  Font Awesome 4.5.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
  */
 /* FONT PATH
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url('templates/deep-space/less/dresscode/less/fonts//fontawesome-webfont.eot?v=4.4.0');
-  src: url('templates/deep-space/less/dresscode/less/fonts//fontawesome-webfont.eot?#iefix&v=4.4.0') format('embedded-opentype'), url('templates/deep-space/less/dresscode/less/fonts//fontawesome-webfont.woff2?v=4.4.0') format('woff2'), url('templates/deep-space/less/dresscode/less/fonts//fontawesome-webfont.woff?v=4.4.0') format('woff'), url('templates/deep-space/less/dresscode/less/fonts//fontawesome-webfont.ttf?v=4.4.0') format('truetype'), url('templates/deep-space/less/dresscode/less/fonts//fontawesome-webfont.svg?v=4.4.0#fontawesomeregular') format('svg');
+  src: url('../fonts//fontawesome-webfont.eot?v=4.5.0');
+  src: url('../fonts//fontawesome-webfont.eot?#iefix&v=4.5.0') format('embedded-opentype'), url('../fonts//fontawesome-webfont.woff2?v=4.5.0') format('woff2'), url('../fonts//fontawesome-webfont.woff?v=4.5.0') format('woff'), url('../fonts//fontawesome-webfont.ttf?v=4.5.0') format('truetype'), url('../fonts//fontawesome-webfont.svg?v=4.5.0#fontawesomeregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -648,7 +975,7 @@ table.dcTable td {
 }
 .fa-border {
   padding: .2em .25em .15em;
-  border: solid 0.08em #eeeeee;
+  border: solid 0.08em #eee;
   border-radius: .1em;
 }
 .fa-pull-left {
@@ -763,7 +1090,7 @@ table.dcTable td {
   font-size: 2em;
 }
 .fa-inverse {
-  color: #ffffff;
+  color: #fff;
 }
 /* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
    readers do not read off random characters that represent icons */
@@ -2611,32 +2938,138 @@ table.dcTable td {
 .fa-fonticons:before {
   content: "\f280";
 }
-.pageBody {
-  margin: 0 auto;
-  max-width: 1000px;
+.fa-reddit-alien:before {
+  content: "\f281";
 }
-.docu .pageContent {
+.fa-edge:before {
+  content: "\f282";
+}
+.fa-credit-card-alt:before {
+  content: "\f283";
+}
+.fa-codiepie:before {
+  content: "\f284";
+}
+.fa-modx:before {
+  content: "\f285";
+}
+.fa-fort-awesome:before {
+  content: "\f286";
+}
+.fa-usb:before {
+  content: "\f287";
+}
+.fa-product-hunt:before {
+  content: "\f288";
+}
+.fa-mixcloud:before {
+  content: "\f289";
+}
+.fa-scribd:before {
+  content: "\f28a";
+}
+.fa-pause-circle:before {
+  content: "\f28b";
+}
+.fa-pause-circle-o:before {
+  content: "\f28c";
+}
+.fa-stop-circle:before {
+  content: "\f28d";
+}
+.fa-stop-circle-o:before {
+  content: "\f28e";
+}
+.fa-shopping-bag:before {
+  content: "\f290";
+}
+.fa-shopping-basket:before {
+  content: "\f291";
+}
+.fa-hashtag:before {
+  content: "\f292";
+}
+.fa-bluetooth:before {
+  content: "\f293";
+}
+.fa-bluetooth-b:before {
+  content: "\f294";
+}
+.fa-percent:before {
+  content: "\f295";
+}
+.docsContent .docsItemHead {
+  position: relative;
+  margin-top: 30px;
+}
+.docsContent .docsItemHead .label-version {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  display: block;
+}
+.docsContent .docsItemHead .default {
+  font-size: 14px;
+  vertical-align: middle;
+}
+.docsContent .docsItemHead .default:before {
+  content: 'Default:';
+  color: #777;
+  fonr-size: 16px;
+  padding: 0 5px;
+}
+.docsContent .itemDescription {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.docsContent .itemDescription:first-line {
+  color: #333;
+}
+.docsContent .itemDescription code {
+  display: inline-block;
+  border: 1px solid #c0c0c0;
+  padding: 2px;
+  color: #444;
+}
+.docsContent .typeLabel {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: #eed;
+  color: #999;
+  padding: 2px 5px;
+  border-bottom-left-radius: 5px;
+}
+.docsContent .paramsTable {
+  background-color: #ddd;
+  min-width: 500px;
+  font-size: 13px;
+  border-radius: 5px;
+  border-collapse: collapse;
+}
+.docsContent .paramsTable thead td {
+  background-color: #ccd;
+  font-size: 11px;
+}
+.docsContent .paramsTable td {
+  padding: 3px 5px;
+}
+.pageBody {
   margin-left: 250px;
 }
 .pageLeft {
   width: 250px;
-  float: left;
+  position: fixed;
   left: 0;
   top: 50px;
+  bottom: 0;
+  background-color: #ddd;
   padding: 10px;
   box-sizing: border-box;
-}
-.pageLeft.sticky {
-  position: fixed;
-  top: 47px;
-  z-index: 9999;
+  overflow: auto;
 }
 .pageContent {
-  padding: 10px;
-  margin-bottom: 100px;
-}
-.pageLeft ~ .pageContent {
-  margin-left: 250px;
+  padding: 60px 10px 30px 10px;
 }
 .pageFooter {
   width: 100%;
@@ -2655,26 +3088,20 @@ table.dcTable td {
   color: inherit;
 }
 .pageFooter a:hover {
-  color: #0051cd;
+  color: #0051CD;
 }
 .pageHeader {
   width: 100%;
-  background-color: #232323;
+  height: 50px;
+  background-color: #0051CD;
   color: #fff;
   box-sizing: border-box;
   padding: 10px;
-  z-index: 2;
-}
-.pageHeader .headerContent {
-  max-width: 1000px;
-  margin: 0 auto;
-  position: relative;
-}
-.pageHeader .headerContent {
-  height: 150px;
+  position: fixed;
+  z-index: 9999;
 }
 .pageHeader .name {
-  font-size: 33px;
+  font-size: 23px;
   display: inline-block;
 }
 .pageHeader .version {
@@ -2689,9 +3116,7 @@ table.dcTable td {
   text-decoration: none;
 }
 .pageHeader .mainNavi {
-  position: absolute;
-  right: 0;
-  top: 0;
+  margin-left: 30px;
 }
 .pageHeader .mainNavi .links {
   display: inline-block;
@@ -2710,161 +3135,98 @@ table.dcTable td {
 .pageHeader .mainNavi a:hover {
   background-color: rgba(255, 255, 255, 0.4);
 }
-.pageHeader .headerLogo {
-  float: left;
-}
-.pageHeader .headerLogo img {
-  vertical-align: middle;
-  margin-right: 10px;
-}
 .pageHeader .subtitle {
-  font-size: 17px;
-}
-.pageNavi {
-  background-color: #343434;
-}
-.pageNavi .naviContent {
-  max-width: 1000px;
-  margin: 0 auto;
-  position: relative;
-  padding: 10px;
-  box-sizing: border-box;
-}
-.pageNavi a:link,
-.pageNavi a:active,
-.pageNavi a:visited {
   display: inline-block;
-  background-color: rgba(255, 255, 255, 0.2);
+  margin-left: 10px;
+}
+.pageHeader .subtitle:empty {
+  display: none;
+}
+.pageLeft .tree {
+  padding-left: 10px;
+}
+.pageLeft .tree.package {
   border-radius: 5px;
-  padding: 5px;
-  text-decoration: none;
-  color: #fff;
-  margin-right: 5px;
+  margin-bottom: 2px;
+  padding: 3px;
 }
-.pageNavi a:hover {
-  background-color: rgba(255, 255, 255, 0.4);
-}
-.pageNavi.sticky {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 47px;
-  z-index: 9999;
-}
-.pageLeft .moduleBlock {
-  background-color: #eee;
-  border-radius: 5px;
-  padding: 5px;
-  margin-bottom: 10px;
-}
-.pageLeft .moduleBlock h1 {
-  color: #555;
-  font-size: 16px;
+.pageLeft .tree.package .packageLink {
+  vertical-align: middle;
   font-weight: bold;
-  margin: 0 0 10px 0;
-  white-space: pre;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  font-size: 15px;
 }
-.pageLeft .moduleBlock h2 {
-  color: #666;
-  font-size: 12px;
+.pageLeft .tree.package .packageLink:before {
+  content: '';
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-image: url(img/package128.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  vertical-align: middle;
+  margin-right: 3px;
+}
+.pageLeft .tree.package .moduleLink {
   font-weight: bold;
-  margin: 0;
-  white-space: pre;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  font-size: 15px;
 }
-.pageLeft .moduleBlock a:link,
-.pageLeft .moduleBlock a:active,
-.pageLeft .moduleBlock a:visited {
-  color: inherit;
-  text-decoration: none;
+.pageLeft .tree.package .moduleLink:before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  background-image: url(img/module96.png);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
-.pageLeft .groupBlockItem {
-  list-style-type: none;
-  padding: 0;
+.pageLeft .tree.package .groupLink {
+  font-weight: bold;
+  font-size: 15px;
 }
-.pageLeft .groupBlockItem li {
-  list-style-type: none;
+.pageLeft .tree.package .groupLink:before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  vertical-align: middle;
 }
-.pageLeft .groupBlockItem a:link,
-.pageLeft .groupBlockItem a:active,
-.pageLeft .groupBlockItem a:visited {
-  color: #111;
-  text-decoration: none;
+.pageLeft .tree.package .contentLink {
+  font-size: 13px;
 }
-.pageLeft .pageLinks .link {
-  display: block;
+.pageLeft .tree.package .contentLink:before {
+  content: '›';
+  display: inline-block;
+  vertical-align: middle;
+  padding-right: 5px;
 }
-.pageLeft .pageLinks a:link,
-.pageLeft .pageLinks a:active,
-.pageLeft .pageLinks a:visited {
-  color: #111;
-  text-decoration: none;
+.pageLeft .link:link,
+.pageLeft .link:visited,
+.pageLeft .link:active {
   display: inline-block;
   padding: 2px 5px;
-}
-.pageLeft .pageLinks a:link:before,
-.pageLeft .pageLinks a:active:before,
-.pageLeft .pageLinks a:visited:before {
-  content: '›';
-  margin-right: 5px;
-}
-.pageLeft .pageLinks a:hover {
-  background-color: #0051cd;
-  color: #fff;
-  border-radius: 5px;
-}
-.pageLeft .subNavi {
-  background-color: #eee;
-  border-radius: 5px;
-  padding: 5px;
-  margin-bottom: 10px;
-}
-.pageLeft .subNavi .tree > .link:before {
-  content: '› ';
-}
-.pageLeft .subNavi .twig {
-  padding-left: 15px;
-}
-.pageLeft .subNavi .twig > .link:before {
-  content: '› ';
-}
-.pageLeft .subNavi .twig > .link a:link,
-.pageLeft .subNavi .twig > .link a:active,
-.pageLeft .subNavi .twig > .link a:visited {
-  color: #444;
-  font-weight: normal;
-}
-.pageLeft .subNavi .twig > .link a:hover {
-  color: #0051cd;
-}
-.pageLeft .subNavi a:link,
-.pageLeft .subNavi a:active,
-.pageLeft .subNavi a:visited {
-  color: #444;
   text-decoration: none;
-  font-size: 14px;
-  font-weight: bolder;
-  line-height: 20px;
+  color: #555;
 }
-.pageLeft .subNavi a:hover {
-  color: #0051cd;
+.pageLeft .link:hover {
+  color: #333;
+  background-color: #bcb;
+  border-radius: 5px;
 }
 .pageContent h1 {
   font-size: 24px;
   font-weight: bold;
-  color: #555555;
-  margin-bottom: 10px;
+  color: #555;
+  margin: 20px 0 10px 0;
+}
+.pageContent h1:first-child {
+  margin-top: 10px;
 }
 .pageContent h1 .version {
   color: #333;
   font-size: 11px;
   display: inline-block;
   border-radius: 5px;
-  background-color: #555555;
+  background-color: #555;
   color: #fff;
   padding: 2px 5px;
   position: relative;
@@ -2872,37 +3234,79 @@ table.dcTable td {
   top: -10px;
 }
 .pageContent h2 {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
-  color: #555555;
-  margin-bottom: 10px;
+  color: #555;
+  margin: 20px 0 10px 0;
 }
 .pageContent h3 {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
-  color: #0051cd;
-  margin-bottom: 10px;
+  color: #555;
+  margin: 15px 0 10px 0;
 }
 .pageContent h4 {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: bold;
-  color: #232323;
-  margin-bottom: 10px;
+  color: #555;
+  margin: 10px 0;
 }
 .pageContent h5 {
-  font-size: 12px;
+  font-size: 16px;
   font-weight: bold;
-  color: #555555;
-  margin-bottom: 5px;
+  color: #555;
+  margin: 5px 0;
+}
+.pageContent h6 {
+  font-size: 14px;
+  font-weight: bold;
+  color: #555;
+  margin: 5px 0;
 }
 .pageContent a:link,
 .pageContent a:visited,
 .pageContent a:active {
-  color: #0051cd;
+  color: #0051CD;
   text-decoration: none;
 }
 .pageContent a:hover {
   text-decoration: underline;
+}
+.pageContent p {
+  margin: 10px 0;
+}
+.pageContent ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin: 15px;
+}
+.pageContent ul > li {
+  list-style-type: disc;
+}
+.pageContent ul > li > ul {
+  margin: 5px;
+  list-style-type: circle;
+}
+.pageContent ul > li > ul > li {
+  list-style-type: circle;
+}
+.pageContent ol {
+  list-style-type: decimal;
+  padding-left: 20px;
+  margin: 15px;
+}
+.pageContent ol > li {
+  list-style-type: decimal;
+}
+.pageContent code {
+  border: 1px solid #ccc;
+  padding: 2px 5px;
+  display: inline-block;
+  border-radius: 3px;
+  background-color: #eee;
+}
+.pageContent .dcTable {
+  margin: 15px 0;
 }
 .pageContent .groupBlockItem,
 .pageContent .itemBlockContent {
@@ -2911,109 +3315,25 @@ table.dcTable td {
 .pageContent .codeBox {
   max-height: 200px;
   overflow: auto;
-  background-color: #111;
-  border-radius: 10px;
+  border-radius: 8px;
   color: #ddd;
-  padding: 7px;
+  margin: 10px 0;
+}
+.pageContent .codeBox .codeBlock {
+  margin: 0;
 }
 .pageContent .codeBlock {
+  display: block;
+  border: none;
+  margin: 10px 0;
+  border-radius: 8px;
   white-space: pre;
   font-family: monospace;
   background-color: #14171A;
-  padding: 0;
-}
-.pageContent .description {
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-.pageContent .description code {
-  display: inline-block;
-  border: 1px solid #c0c0c0;
-  padding: 2px;
-  color: #444;
+  padding: 7px;
 }
 .pageContent .noDescrition {
   color: #333;
-}
-.pageContent .preview {
-  margin-bottom: 20px;
-}
-.pageContent .preview .cssColorPreview {
-  width: 100px;
-  height: 100px;
-  border-radius: 5px;
-  position: relative;
-}
-.pageContent .preview .cssColorName {
-  position: absolute;
-  left: 0;
-  bottom: 36px;
-  right: 0;
-  text-align: center;
-  display: block;
-  background-color: rgba(255, 255, 255, 0.7);
-  line-height: 26px;
-  font-size: 18px;
-  opacity: 0;
-  -o-transition: opacity 0.5s;
-  -moz-transition: opacity 0.5s;
-  -webkit-transition: opacity 0.5s;
-  -ms-transition: opacity 0.5s;
-  transition: opacity 0.5s;
-}
-.pageContent .preview .cssColorName:hover {
-  opacity: 1;
-}
-.pageContent .labels {
-  margin-left: 10px;
-  font-size: 13px;
-}
-.pageContent .labelConstructor {
-  background-color: #967657;
-}
-.pageContent .labelPrivate {
-  background-color: #b10000;
-}
-.pageContent .labelProtected {
-  background-color: #ff7e00;
-}
-.pageContent .labelDeprecated {
-  background-color: #b10024;
-}
-.pageContent .labelUnimplemented {
-  background-color: #e1ff00;
-  color: #000;
-}
-.pageContent .labelObject {
-  background-color: #000;
-  color: #fff;
-}
-.pageContent .labelFunction {
-  background-color: #430069;
-}
-.pageContent .labelArray {
-  background-color: #000;
-  color: #fff;
-}
-.pageContent .labelNumber {
-  background-color: #000;
-  color: #fff;
-}
-.pageContent .labelAny {
-  background-color: #000;
-  color: #fff;
-}
-.pageContent .labelString {
-  background-color: #000;
-  color: #fff;
-}
-.pageContent .labelBoolean {
-  background-color: #000;
-  color: #fff;
-}
-.pageContent .labelColor {
-  background-color: #000;
-  color: #fff;
 }
 .pageContent .dataTypes {
   margin-left: 5px;
@@ -3021,13 +3341,12 @@ table.dcTable td {
 .pageContent .dataType {
   display: inline-block;
   border-radius: 5px;
+  color: #fff;
   padding: 2px 5px;
   font-size: 12px;
   font-weight: normal;
   vertical-align: middle;
-  background-color: #555555;
-  background-color: #232323;
-  color: #fff;
+  background-color: #555;
 }
 .pageContent .paramBlock {
   margin-bottom: 20px;
@@ -3047,8 +3366,320 @@ table.dcTable td {
   color: #000;
 }
 .pageContent .registrar {
-  color: #555555;
+  color: #555;
 }
 .pageContent .webLinks {
   margin-bottom: 10px;
+}
+/**
+ * Style collection
+ *
+ * @module Styles
+ */
+/**
+ * Styles a label
+ *
+ * @class label
+ * 
+ * @example
+ * <span class="label label{type}">My label</span>
+ */
+.label {
+  margin-left: 10px;
+  font-size: 14px;
+}
+/**
+ * Styles a constructor label
+ *
+ * @class labelConstructor
+ *
+ * @example
+ * <span class="label labelConstructor">Constructor</span>
+ * 
+ * @preview
+ * <span class="label labelConstructor">Constructor</span>
+ */
+.labelConstructor {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #967657;
+}
+/**
+ * Styles a public label
+ * 
+ * @class labelPublic
+ *
+ * @example
+ * <span class="label labelPublic">Public</span>
+ * 
+ * @preview
+ * <span class="label labelPublic">Public</span>
+ */
+.labelPublic {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #00826A;
+}
+/**
+ * Styles a private label
+ * 
+ * @class labelPrivate
+ *
+ * @example
+ * <span class="label labelPrivate">Private</span>
+ * 
+ * @preview
+ * <span class="label labelPrivate">Private</span>
+ */
+.labelPrivate {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #B10000;
+}
+/**
+ * Styles a protected label
+ * 
+ * @class labelProtected
+ *
+ * @example
+ * <span class="label labelProtected">Protected</span>
+ * 
+ * @preview
+ * <span class="label labelProtected">Protected</span>
+ */
+.labelProtected {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #FF7E00;
+}
+/**
+ * Styles a deprecated label
+ * 
+ * @class labelDeprecated
+ *
+ * @example
+ * <span class="label labelDeprecated">Deprecated</span>
+ * 
+ * @preview
+ * <span class="label labelDeprecated">Deprecated</span>
+ */
+.labelDeprecated {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #6B1426;
+}
+/**
+ * Styles a unimplemented label
+ * 
+ * @class labelUnimplemented
+ *
+ * @example
+ * <span class="label labelUnimplemented">Unimplemented</span>
+ * 
+ * @preview
+ * <span class="label labelUnimplemented">Unimplemented</span>
+ */
+.labelUnimplemented {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #E1FF00;
+  color: #000;
+}
+/**
+ * Styles a object label
+ * 
+ * @class labelObject
+ *
+ * @example
+ * <span class="label labelObject">Object</span>
+ * 
+ * @preview
+ * <span class="label labelObject">Object</span>
+ */
+.labelObject {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #000;
+  color: #fff;
+}
+/**
+ * Styles a function label
+ * 
+ * @class labelFunction
+ *
+ * @example
+ * <span class="label labelFunction">Function</span>
+ * 
+ * @preview
+ * <span class="label labelFunction">Function</span>
+ */
+.labelFunction {
+  display: inline-block;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #430069;
+}
+/**
+ * Styles a array label
+ * 
+ * @class labelArray
+ *
+ * @example
+ * <span class="label labelArray">Array</span>
+ * 
+ * @preview
+ * <span class="label labelArray">Array</span>
+ */
+.labelArray {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #000;
+  color: #fff;
+}
+/**
+ * Styles a number label
+ * 
+ * @class labelNumber
+ *
+ * @example
+ * <span class="label labelNumber">Number</span>
+ * 
+ * @preview
+ * <span class="label labelNumber">Number</span>
+ */
+.labelNumber {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #000;
+  color: #fff;
+}
+/**
+ * Styles a any label
+ * 
+ * @class labelAny
+ *
+ * @example
+ * <span class="label labelAny">Any</span>
+ * 
+ * @preview
+ * <span class="label labelAny">Any</span>
+ */
+.labelAny {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #000;
+  color: #fff;
+}
+/**
+ * Styles a string label
+ * 
+ * @class labelString
+ *
+ * @example
+ * <span class="label labelString">String</span>
+ * 
+ * @preview
+ * <span class="label labelString">String</span>
+ */
+.labelString {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #000;
+  color: #fff;
+}
+/**
+ * Styles a boolean label
+ * 
+ * @class labelBoolean
+ *
+ * @example
+ * <span class="label labelBoolean">Boolean</span>
+ * 
+ * @preview
+ * <span class="label labelBoolean">Boolean</span>
+ */
+.labelBoolean {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #000;
+  color: #fff;
+}
+/**
+ * Styles a color label
+ * 
+ * @class labelColor
+ *
+ * @example
+ * <span class="label labelColor">Color</span>
+ * 
+ * @preview
+ * <span class="label labelColor">Color</span>
+ */
+.labelColor {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: #000;
+  color: #fff;
 }

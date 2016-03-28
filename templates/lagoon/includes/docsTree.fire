@@ -1,0 +1,34 @@
+:tree $docs.items : section class="docs-content $atype"
+    :if $atype.eq('package')
+        section class="block-item"
+            div class="type-label" "Package"
+            h1 id="$alink" "$aname"
+            h2 "$$data.title"
+            article "$$data.description"
+    :if $atype.eq('subpackage')
+        section class="block-item"
+            div class="type-label" "Subpackage"
+            h1 id="$alink" "$aname"
+            h2 "$$data.title"
+            article "$$data.description"
+    :if $atype.eq('module')
+        section class="block-item"
+            div class="type-label" "Module"
+            h1 id="$alink" "$aname"
+            h2 "$$data.title"
+            article "$$data.description"
+    :if $atype.eq('submodule')
+        section class="block-item"
+            div class="type-label" "Submodule"
+            h1 id="$alink" "$aname"
+            h2 "$$data.title"
+            article "$$data.description"
+    :if $atype.eq('group')
+        section class="block-item"
+            div class="type-label" "$aname"
+            h1 id="$alink" "$data.displayName"
+            :if $items
+                :each $items
+                    >includes/docsItem
+
+    &next $items : section class="$atype items"

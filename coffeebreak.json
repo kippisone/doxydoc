@@ -1,6 +1,11 @@
 {
     "project": "DoxyDoc",
     "files":  "none",
-    "tests": "test/*.spec.js",
-    "watch": "modules/*.js"
+    "tests": [
+        "test/*.spec.js"
+    ],
+    "watch": [
+        "modules/*.js",
+        "test/*.spec.js"
+    ]
 }

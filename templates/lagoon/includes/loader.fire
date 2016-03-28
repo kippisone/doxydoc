@@ -1,0 +1,6 @@
+:if $type.eq('package')
+    "Package"
+    >includes/package
+:if $type.eq('module')
+    "Module"
+    >includes/module

@@ -1,0 +1,62 @@
+@import "lyssl"
+
+.label
+.flag-label
+    lz-label()
+
+    &.label-public
+        background-color $greenFrog
+
+    &.label-protected
+        background-color $orangeSun
+
+    &.label-private
+        background-color $redCherry
+
+    &.label-version
+        background-color $redCherry
+
+    &.label-unimplemented
+        background-color $purplePlum
+
+    &.label-beta
+        background-color $blueLagoon
+
+    &.label-static
+        background-color $blueLagoon
+
+    &.label-chainable
+        background-color $blueLagoon
+
+    &.label-async
+        background-color $redCherry
+
+    &.label-new
+        background-color $yellowSnow
+        color #000
+
+.type-label
+    lz-label()
+    vertical-align middle
+
+    &.label-deprecated
+        background-color $brownWood
+
+    &.label-any
+        background-color $greenFrog
+
+    &.label-boolean
+        background-color $brownWood
+
+    &.label-number
+        background-color $redCherry
+
+    &.label-function
+        background-color $purplePlum
+
+    &.label-string
+        background-color $blueLagoon
+
+    &.label-object
+    &.label-color
+        background-color $blackHole

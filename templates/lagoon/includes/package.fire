@@ -1,0 +1,9 @@
+section class="packages"
+    h1 "Package: $title"
+    article $description
+    div "Items: $items.length"
+    :each $items : div class="packageItems"
+        :if $atype.eq('module')
+            >includes/module
+        :else
+            "Other: $atype"

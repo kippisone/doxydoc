@@ -1,0 +1,46 @@
+/**
+ * Lemon less is a less doc example for the great doxydoc doc parser
+ * 
+ * @package Fruits
+ * @module Lemon
+ */
+
+/**
+ * Lemonze mixin lemonizes an element in great lemon colors.
+ * @mixin
+ */
+.lemonize() {
+    background-color: #B1FF00;
+    color: #6EB000;
+}
+
+/**
+ * Lemonze mixin lemonizes an element in great lemon colors.
+ * @mixin
+ * @param {color} color1 Background color
+ * @param {color} color2 Text color
+ */
+.lemonize(@color1, @color2) {
+    background-color: @color1;
+    color: @color2;
+}
+
+/**
+ * Lemon color code
+ * @var {color}
+ */
+@lemon: #B1FF00;
+
+/**
+ * CSS class declaration with an example
+ * 
+ * @selector
+ * @example
+ * <ul class="lemonizedList">
+ *   <li>I'm in lemon</li>
+ * <ul>
+ */
+.lemonizedList {
+    list-style-type: none;
+    color: @lemon;
+}

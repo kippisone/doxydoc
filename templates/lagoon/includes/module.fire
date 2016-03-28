@@ -1,0 +1,4 @@
+section class="modules"
+    h1 "Module: $title"
+    articla $description
+    :each $itmes : div class="module"

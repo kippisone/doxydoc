@@ -1,36 +1,27 @@
+/* eslint-env browser */
 'use strict';
 
 var hljs = require('highlight.js'),
     $ = require('jquery');
 
-require('dresscode-less');
-
 $(function() {
-    var els = document.getElementsByClassName('codeBlock');
+    var els = document.getElementsByClassName('code-block');
     for (var i = 0, len = els.length; i < len; i++) {
         hljs.highlightBlock(els[i]);
     }
 
     //Make navigation sticky
-    var headerHeight = $('.pageHeader').outerHeight(),
-        subNaviLeft = $('.pageBody').offset().left,
+    var headerHeight = $('.dd-header').outerHeight(),
         isSticky = false;
 
     $(document).scroll(function(e) {
         if (!isSticky && document.body.scrollTop > headerHeight) {
-            $('.stickyItem').addClass('sticky');
-            $('.pageLeft').css('left', subNaviLeft);
+            $(document.body).addClass('sticky');
             isSticky = true;
         }
         else if (isSticky && document.body.scrollTop < headerHeight) {
-            $('.stickyItem').removeClass('sticky');
-            $('.pageLeft').css('left', '');
+            $(document.body).removeClass('sticky');
             isSticky = false;
         }
     });
-
-    $(window).resize(function() {
-        subNaviLeft = $('.pageBody').offset().left;
-    });
 });
-

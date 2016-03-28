@@ -1,0 +1,26 @@
+html
+    head
+        meta charset="UTF-8"
+        script src="${basePath}doxydoc.js"
+        :each $scripts
+            script src="$this"
+
+        link rel="Stylesheet" href="${basePath}doxydoc.css"
+        :each $styles
+            link rel="Stylesheet" href="$this"
+    body
+        section class="dd-page"
+            (> includes/header)
+            aside class="dd-sidebar"
+                nav class="sidebar-navi"
+                    :each $sidebar : ul class="link-list"
+                        li class="link-item"
+                            a class="link $cssClass.or('')" href="$link" target="$target" $name
+            section class="dd-body"
+                section class="dd-body-content"
+                    aside class="dd-secondary-sidebar"
+                        >includes/navigationTree
+                    article class="dd-content"
+                        >includes/docsTree
+            footer class="dd-footer" "Documentation created with".
+                a href="http://doxydoc.com" target="_blank" "DoxyDoc"

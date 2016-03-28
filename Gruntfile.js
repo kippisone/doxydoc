@@ -23,8 +23,8 @@ module.exports = function(grunt) {
         less: {
             lagoon: {
                 options: {
-                    relativeUrls: true,
-                    rootpath: 'templates/lagoon/less/'
+                    // relativeUrls: true,
+                    // rootpath: 'templates/lagoon/less/'
                 },
                 files: {
                     'templates/lagoon/main.css': 'templates/lagoon/less/main.less'

@@ -1,30 +1,31 @@
 html
     head
-        title $title
         meta charset="UTF-8"
-        script type="text/javascript" src="${basePath}doxydoc.js"
-        :each $customJS
-            script type="text/javascript" src="$this"
-        :if $livereload
-            script type="text/javascript" src="//localhost:$livereload/livereload.js"
+        script src="${basePath}doxydoc.js"
+        :each $scripts
+            script src="$this"
 
-        link rel="Stylesheet" href="${basePath}main.css"
-        link rel="stylesheet" href="${basePath}highlight.css"
-        :each $customCSS
+        link rel="Stylesheet" href="${basePath}doxydoc.css"
+        :each $styles
             link rel="Stylesheet" href="$this"
     body
-        section class="pageMain"
+        section class="dd-page"
             (> includes/header)
-            section class="pageBody"
-                :if $navigation
-                    aside class="pageLeft stickyItem"
-                        section class="subNavi"
-                            :tree $navigation : ul class="tree"
-                                li class="link"
-                                    a href="#$link" "$text"
-                                    &next $items : ul class="twig"
-                article class="pageContent"
-                    $$content
-
-            footer class="pageFooter" "Documentation created by".
-                a href="http://doxydoc.com" target="_blank" "DoxyDoc"
+            aside class="dd-sidebar"
+                nav class="sidebar-navi"
+                    :each $sidebar : ul class="link-list"
+                        li class="link-item"
+                            a class="link $cssClass.or('')" href="$link" target="$target" $name
+            section class="dd-body"
+                section class="dd-body-content"
+                    :if $subNavigation
+                        :tree $subNavigation : ul class="sub-link-list"
+                            li class="sub-link-item"
+                                a class="link $cssClass.or('')" href="$link" "$text"
+                                    &next $subNavigation : ul class="sub-link-list"
+                    article class="dd-content"
+                        $$content
+            footer class="dd-footer"
+                section class="dd-footer-content"
+                    "Documentation created with".
+                    a href="http://doxydoc.com" target="_blank" "DoxyDoc"

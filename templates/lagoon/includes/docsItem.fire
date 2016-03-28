@@ -1,0 +1,108 @@
+section class="docs-item"
+    section class="docs-item-head"
+        :if $data.tags.version
+            span class="label label-version" "$data.tags.version"
+        h3 id="$alink" $aname
+        " ".
+        :if $data.tags.property
+            span class="type-label label-$data.tags.property.type"
+                "$data.tags.property.type"
+        :if $data.tags.const
+            span class="type-label label-$data.tags.const.type"
+                "$data.tags.const.type"
+        :if $data.tags.var
+            span class="type-label label-$data.tags.var.type"
+                "$data.tags.var.type"
+        :if $data.tags.default
+            " ".
+            span class="default"
+                "$data.tags.default"
+        :if $data.tags.isPublic
+            span class="label label-public" "Public"
+        :if $data.tags.isProtected
+            span class="label label-protected" "Protected"
+        :if $data.tags.isPrivate
+            span class="label label-private" "Private"
+        :if $data.tags.isUnimplemented
+            span class="label label-unimplemented" "Unimplemented"
+        :if $data.tags.isBeta
+            span class="label label-beta" "Beta"
+        :if $data.tags.isNew
+            span class="label label-new" "New"
+        :if $data.tags.isDeprecated
+            span class="label label-deprecated" "Deprecated"
+        :if $data.tags.isAsync
+            span class="label label-async" "Async"
+        :if $data.tags.isStatic
+            span class="label label-static" "Static"
+        :if $data.tags.isChainable
+            span class="label label-chainable" "Chainable"
+    article class="item-description"
+        :if $data.tags.title
+            p $$data.tags.title
+        :if $data.tags.description
+            p $$data.tags.description
+
+        :if $data.tags.links
+            h4 "Links:"
+                :each $data.tags.links
+                    div
+                        a class="link" href="$link" $name
+    :if $data.tags.params
+        h4 "Params:"
+        table class="params-table"
+            thead
+                tr
+                    th "Property"
+                    th "Type"
+                    th "Description"
+            :each $data.tags.params : tbody
+                tr
+                    td
+                        span class="name" $name
+                    td
+                        span class="type-label label-$type" $type
+                    td
+                        span class="desc" $$description
+    :if $data.tags.fires
+        h4 "Fires:"
+
+        table class="fires-table"
+            thead
+                tr
+                    th "Event"
+                    th "Description"
+            :each $data.tags.fires : tbody
+                tr
+                    td valign="top"
+                        span class="event" $event
+                    td
+                        article $$description
+                        h5 "Args:"
+                        :each $args : table class="fires-args-table"
+                            tr
+                                td
+                                    span class="arg" $name
+                                td
+                                    span class="type-label label-$type" $type
+                                td class="desc" $$description
+    :if $data.tags.returns : div class="return-block"
+        h4 "Returns:"
+        " ".
+        span class="returns type-label label-$data.tags.returns.type" $data.tags.returns.type
+        article class="desc" $$data.tags.returns.description
+
+    :if $data.tags.examples : div class="example-block"
+        h4 "Example:"
+        :each $data.tags.examples : div class="examples"
+            div class="code-box"
+                code class="code-block $type" $$content
+    :if $data.tags.previews : div class="preview-block"
+        h4 "Preview:"
+        :each $data.tags.previews
+            div class="preview-box $type"
+                $$html
+    :if $data.source : div
+        h4 "Code:"
+        div class="code-box"
+            code class="code-block $data.source.type" $$data.source.code

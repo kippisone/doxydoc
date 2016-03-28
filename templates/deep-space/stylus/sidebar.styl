@@ -1,0 +1,209 @@
+@import 'lyssl'
+
+/**
+ * Sidebar
+ * @module sidebar
+ */
+.dd-sidebar
+    width 100%
+    background-color #333
+    padding 10px
+    box-sizing border-box
+    overflow auto
+
+    .sidebar-navi
+        width 1000px
+        margin-left auto
+        margin-right auto
+
+        .link-item
+            float left
+
+        /**
+         * Styles a sidebar menu link
+         *
+         * @class .link
+         * @example {html}
+         * <a class="link" href="#foo">Foo</a>
+         */
+        .link
+            &:link,
+            &:visited
+                color #fff
+                text-decoration none
+                display inline-block
+                padding 5px
+                transition background-color .3s
+                background-color rgba(255, 255, 255, .1)
+                border-radius 5px
+                margin-right 5px
+                font-size 14px
+            &:hover
+                background-color $blueLagoon
+                color #fff
+                border-radius 5px
+                transition background-color .3s
+                background-color rgba(255, 255, 255, .2)
+
+        .sub-link-list
+            margin-left 20px
+
+            .link
+                &::before
+                    content '•'
+
+    .docs-navi
+        .link:link,
+        .link:visited,
+        .link:active
+            display inline-block
+            padding 2px 5px
+            text-decoration none
+            color #555
+
+        .link:hover
+            color #fff
+            background-color $blueLagoon
+            border-radius 5px
+
+        .package-link
+            lz-octicon(package, 18px, 3px)
+            font-size 15px
+            font-weight bold
+
+        .module-link
+            lz-octicon(gear, 18px, 3px)
+            font-size 15px
+            font-weight bold
+
+        .group-link
+            &:before
+                content ''
+                width 14px
+                height 14px
+                display inline-block
+                vertical-align middle
+
+            font-weight bold
+            font-size 15px
+
+        .content-link
+            &:before
+                content '›'
+                display inline-block
+                vertical-align middle
+                padding-right 5px
+
+            font-size 13px
+
+        .group-title
+            font-size 12px
+            color $greyWolf
+            margin-left 14px
+
+        .group-items
+            margin-left 14px
+
+.sticky
+    .dd-sidebar
+        position fixed
+        left 0
+        top 0
+        z-inde
+
+.dd-secondary-sidebar
+    width 250px
+    background-color #eee
+    padding 10px
+    box-sizing border-box
+    overflow auto
+    float left
+    margin-top 10px
+    border-radius 5px
+
+    .sidebar-navi
+        .link-item
+            margin 2px 0
+
+        /**
+         * Styles a sidebar menu link
+         *
+         * @class .link
+         * @example {html}
+         * <a class="link" href="#foo">Foo</a>
+         */
+        .link
+            &:link,
+            &:visited
+                color #111
+                text-decoration none
+                display inline-block
+                padding 2px 5px
+                transition background-color .3s
+            &:hover
+                background-color $blueLagoon
+                color #fff
+                border-radius 5px
+                transition background-color .3s
+            &::before
+                content '›'
+                margin-right 5px
+
+        .sub-link-list
+            margin-left 20px
+
+            .link
+                &::before
+                    content '•'
+
+    .docs-navi
+        .link:link,
+        .link:visited,
+        .link:active
+            display inline-block
+            padding 2px 5px
+            text-decoration none
+            color #555
+
+        .link:hover
+            color #fff
+            background-color $blueLagoon
+            border-radius 5px
+
+        .package-link
+            lz-octicon(package, 18px, 3px)
+            font-size 15px
+            font-weight bold
+
+        .module-link
+            lz-octicon(gear, 18px, 3px)
+            font-size 15px
+            font-weight bold
+
+        .group-link
+            &:before
+                content ''
+                width 14px
+                height 14px
+                display inline-block
+                vertical-align middle
+
+            font-weight bold
+            font-size 15px
+
+        .content-link
+            &:before
+                content '›'
+                display inline-block
+                vertical-align middle
+                padding-right 5px
+
+            font-size 13px
+
+        .group-title
+            font-size 12px
+            color $greyWolf
+            margin-left 14px
+
+        .group-items
+            margin-left 14px

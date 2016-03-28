@@ -6,7 +6,6 @@ html
             script src="$this"
 
         link rel="Stylesheet" href="${basePath}main.css"
-        link rel="stylesheet" href="${basePath}highlight.css"
         :each $customCSS
             link rel="Stylesheet" href="$this"
     body
@@ -39,7 +38,7 @@ html
                                 h3 id="$link" $name
                                 :each $items : div class="itemBlock"
                                     div class="itemBlockContent"
-                                        h4 id="$link" $title
+                                        h4 id="$link" $title.
                                             :each $dataTypes : span class="dataTypes"
                                                 span class="dataType dataType$this" $this
                                             :each $labels : span class="labels"
@@ -94,11 +93,7 @@ html
                                                     :if $title : h5
                                                         $title
                                                     div class="content $type" $$code
-                                        :if $source : div
-                                            h5 "Code:"
-                                            div class="codeBox"
-                                                code class="codeBlock $source.type" $$source.code
+                                       
 
 
-            footer class="pageFooter" "Documentation created by".
-                a href="http://doxydoc.com" target="_blank" "DoxyDoc"
+            
