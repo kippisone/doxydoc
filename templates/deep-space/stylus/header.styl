@@ -2,16 +2,14 @@
 
 .dd-header
     width 100%
-    height 50px
-    background-color $blueLagoon
+    height 150px
+    background-color $blackHole
     color #fff
     box-sizing border-box
     padding 10px
-    position fixed
-    z-index 9999
 
     .name
-        font-size 23px
+        font-size 33px
         display inline-block
 
     .version
@@ -28,6 +26,9 @@
     .main-navi
         margin-left 30px
         display inline-block
+        position absolute
+        right 5px
+        top 5px
 
         .links
             display inline-block
@@ -36,16 +37,25 @@
         a:active,
         a:visited
             display inline-block
-            background-color rgba(255, 255, 255, .2)
+            background-color rgba(255, 255, 255, .23)
             border-radius 5px
             padding 5px
             text-decoration none
             color #fff
             margin-right 5px
+            transition background-color .3s
 
         a:hover
-            background-color rgba(255, 255, 255, .4)
+            background-color rgba(255, 255, 255, .3)
 
     .subtitle
         display inline-block
         margin-left 10px
+        font-size 17px
+
+.dd-header-content
+    position relative
+    margin-left auto
+    margin-right auto
+    width 1000px
+    height 100%

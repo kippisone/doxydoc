@@ -1,13 +1,14 @@
 header class="dd-header"
-    :if $logoImage : div class="logo"
-        a class="logo-link" href="$indexPage"
-            img class="logo-image" src="$logoImage"
-    div class="name"
-        a class="logo-link" href="$indexPage" $name
-    div class="version" "v"
-        $version
-    :if $subtitle
-        div class="subtitle" $subtitle
-    nav class="main-navi"
-        :each $navigation : div class="links"
-            a class="link $cssClass.or('')" href="$link" $name
+    section class="dd-header-content"
+        :if $logoImage : div class="logo"
+            a class="logo-link" href="$indexPage"
+                img class="logo-image" src="$logoImage"
+        div class="name"
+            a class="logo-link" href="$indexPage" $name
+        div class="version" "v"
+            $version
+        :if $subtitle
+            div class="subtitle" $subtitle
+        nav class="main-navi"
+            :each $navigation : div class="links"
+                a class="link $cssClass.or('')" href="$link" $name

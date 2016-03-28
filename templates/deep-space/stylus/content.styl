@@ -7,7 +7,7 @@
  * @module content
  */
 .dd-content
-    padding 60px 10px 30px 10px
+    padding 10px 10px 30px 10px
 
     /**
      * Heading styles
@@ -139,10 +139,10 @@
 
     .dd-grid-preview
         li
-            width: 100px
+            width 100px
             height 100px
             display inline-block
-            margin: 2px
+            margin 2px
             border 1px solid darken(#e8e6f0, 3%)
             background-color #e8e6f0
             padding 5px
@@ -153,3 +153,6 @@
 
             &:hover
                 color $blueLagoon
+
+.dd-secondary-sidebar + .dd-content
+    margin-left 250px

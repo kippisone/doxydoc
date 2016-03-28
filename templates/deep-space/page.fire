@@ -11,19 +11,21 @@ html
     body
         section class="dd-page"
             (> includes/header)
+            aside class="dd-sidebar"
+                nav class="sidebar-navi"
+                    :each $sidebar : ul class="link-list"
+                        li class="link-item"
+                            a class="link $cssClass.or('')" href="$link" target="$target" $name
             section class="dd-body"
-                aside class="dd-sidebar"
-                    nav class="sidebar-navi"
-                        :each $sidebar : ul class="link-list"
-                            li class="link-item"
-                                a class="link $cssClass.or('')" href="$link" target="$target" $name
-
-                                :if $subNavigation
-                                    :tree $subNavigation : ul class="sub-link-list"
-                                        li class="sub-link-item"
-                                            a class="link $cssClass.or('')" href="$link" "$text"
-                                            &next $subNavigation : ul class="sub-link-list"
-                article class="dd-content"
-                    $$content
-            footer class="dd-footer" "Documentation created with".
-                a href="http://doxydoc.com" target="_blank" "DoxyDoc"
+                section class="dd-body-content"
+                    :if $subNavigation
+                        :tree $subNavigation : ul class="sub-link-list"
+                            li class="sub-link-item"
+                                a class="link $cssClass.or('')" href="$link" "$text"
+                                    &next $subNavigation : ul class="sub-link-list"
+                    article class="dd-content"
+                        $$content
+            footer class="dd-footer"
+                section class="dd-footer-content"
+                    "Documentation created with".
+                    a href="http://doxydoc.com" target="_blank" "DoxyDoc"
