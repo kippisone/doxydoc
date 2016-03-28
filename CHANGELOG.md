@@ -2,6 +2,8 @@ Changelog
 =========
 
 v0.5.0
+------
+
 * Rewrote parser
 * Use docblock
 * Removed dox
@@ -11,6 +13,7 @@ v0.5.0
 
 v0.4.7
 ------
+
 * Added `cssClass` option
 * Bug fixes
 
