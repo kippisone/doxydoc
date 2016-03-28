@@ -1,11 +1,27 @@
-var hljs = require('highlight.js');
+/* eslint-env browser */
+'use strict';
 
-require('dresscode-less');
+var hljs = require('highlight.js'),
+    $ = require('jquery');
 
-document.addEventListener('DOMContentLoaded', function() {
-    'use strict';
+$(function() {
     var els = document.getElementsByClassName('code-block');
     for (var i = 0, len = els.length; i < len; i++) {
         hljs.highlightBlock(els[i]);
     }
+
+    //Make navigation sticky
+    var headerHeight = $('.dd-header').outerHeight(),
+        isSticky = false;
+
+    $(document).scroll(function(e) {
+        if (!isSticky && document.body.scrollTop > headerHeight) {
+            $(document.body).addClass('sticky');
+            isSticky = true;
+        }
+        else if (isSticky && document.body.scrollTop < headerHeight) {
+            $(document.body).removeClass('sticky');
+            isSticky = false;
+        }
+    });
 });

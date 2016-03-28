@@ -10,13 +10,13 @@ Bugs:
 TODO
 ----
 * Check CLI tool
-* Deep space theme
 * Remove npm symlinks
 * Check npm updates
 * Check Grunt plugin
 * Create gulp plugin
 * Https for Website
 
+* Find a background image for deep-space theme
 * Improve documentation
 * New Screenshots
 * DocBlock should use block description only for parent
