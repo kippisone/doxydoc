@@ -121,8 +121,8 @@ class Doxydoc {
     setConfiguration(conf) {
         this.outputDir = path.resolve(this.workingDir, this.initConf.outputDir || conf.outputDir || this.workingDir);
 
-        this.templateDir = this.initConf.templateDir || conf.templateDir || 'new-lagoon';
-        if (['new-lagoon'].indexOf(this.templateDir) !== -1) {
+        this.templateDir = this.initConf.templateDir || conf.templateDir || 'lagoon';
+        if (['lagoon'].indexOf(this.templateDir) !== -1) {
             this.templateDir = path.resolve(__dirname, '../templates', this.templateDir);
         }
         else {

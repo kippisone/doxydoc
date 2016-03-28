@@ -23,20 +23,11 @@ module.exports = function(grunt) {
         less: {
             lagoon: {
                 options: {
-                    relativeUrls: true,
-                    rootpath: 'templates/lagoon/less/'
+                    // relativeUrls: true,
+                    // rootpath: 'templates/lagoon/less/'
                 },
                 files: {
                     'templates/lagoon/main.css': 'templates/lagoon/less/main.less'
-                }
-            },
-            'new-lagoon': {
-                options: {
-                    // relativeUrls: true,
-                    // rootpath: 'templates/new-lagoon/less/'
-                },
-                files: {
-                    'templates/new-lagoon/main.css': 'templates/new-lagoon/less/main.less'
                 }
             },
             'deep-space': {
