@@ -6,7 +6,6 @@ Bugs:
 
 * Hashlink start is under sticky navi
 * Example with // cuts of the right side
-* Code preview shows next line, indention should be removed
 
 TODO
 ----

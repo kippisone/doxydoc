@@ -26,7 +26,7 @@
     :if $atype.eq('group')
         section class="block-item"
             div class="type-label" "$aname"
-            h1 id="$alink" "$aname"
+            h1 id="$alink" "$data.displayName"
             :if $items
                 :each $items
                     >includes/docsItem
