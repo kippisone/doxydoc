@@ -129,6 +129,7 @@ class Doxydoc {
             this.templateDir =  path.resolve(this.workingDir, this.templateDir);
         }
 
+        this.disableSourceView = this.initConf.disableSourceView || conf.disableSourceView || false;
 
         log.debug('Working dir:', this.workingDir);
         log.debug('Output dir:', this.outputDir);
@@ -167,7 +168,9 @@ class Doxydoc {
                     docs.docs = customData;
                 }
                 else {
-                    let newDocs = new Docs();
+                    let newDocs = new Docs({
+                        disableSourceView: this.disableSourceView
+                    });
 
                     var files = [];
                     for (let file of docs.files) {
@@ -202,6 +205,10 @@ class Doxydoc {
                 docs.output.forEach(function(filename) {
                     var ext = path.extname(filename);
                     var data = this.mergeMetaData(docs.docs);
+
+                    if (!this.disableSourceView) {
+                        data.showSource = true;
+                            }
 
                     if (ext === '.html') {
                         var page = new Page();

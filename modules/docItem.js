@@ -24,7 +24,9 @@ class DocItem {
             constructor: 'Constructors',
             callback: 'Callbacks',
             mixin: 'Mixins',
-            selector: 'Selectors'
+            selector: 'Selectors',
+            tag: 'Tags',
+            anotation: 'Anotations'
         }
 
         if (parent) {

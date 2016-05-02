@@ -6,10 +6,12 @@ var Docblock = require('docblock');
 var DocItem = require('./docItem');
 
 class Docs {
-    constructor() {
+    constructor(conf) {
+        conf = conf || {};
         this.items = [];
         this._cache = {};
         this.bucket = this.items;
+        this.disableSourceView = conf.disableSourceView || false;
     }
 
     readFiles() {
@@ -62,6 +64,7 @@ class Docs {
 
             blocks.forEach(function(doc, index) {
                 this.createFileParam(file, doc);
+                let requireGroup = true;
 
                 if (doc.tags.ignore) {
                     return;
@@ -78,25 +81,29 @@ class Docs {
 
                 if (doc.tags['package']) {
                     docItem = docItem.addPackage(doc);
+                    requireGroup = false;
                 }
 
                 if (doc.tags.subpackage) {
                     docItem = docItem.addSubpackage(doc);
+                    requireGroup = false;
                 }
 
                 if (doc.tags.module) {
                     docItem = docItem.addModule(doc);
+                    requireGroup = false;
                 }
 
                 if (doc.tags.submodule) {
                     docItem = docItem.addSubmodule(doc);
+                    requireGroup = false;
                 }
 
                 if (doc.group) {
                     docItem = docItem.addGroup(doc);
                     docItem = docItem.addContent(doc);
                 }
-                else {
+                else if (requireGroup) {
                     doc.group = 'ungrouped';
                     docItem = docItem.addGroup(doc);
                     docItem = docItem.addContent(doc);
