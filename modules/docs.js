@@ -63,6 +63,7 @@ class Docs {
             this.setFileInfo(file);
 
             blocks.forEach(function(doc, index) {
+                this.parseJSBlocks(doc);
                 this.createFileParam(file, doc);
                 let requireGroup = true;
 
@@ -247,6 +248,19 @@ class Docs {
         }
 
         return null;
+    }
+
+    parseJSBlocks(doc) {
+        if (doc.tags.method) {
+            let args = [];
+            if (doc.tags.params) {
+                doc.tags.params.forEach(param => {
+                    args.push(param.name);
+                });
+            }
+
+            doc.syntax = doc.name + '(' + args.join(', ') + ')';
+        }
     }
 }
 

@@ -1,6 +1,7 @@
 html
     head
         meta charset="UTF-8"
+        title $name
         script src="${basePath}doxydoc.js"
         :each $scripts
             script src="$this"

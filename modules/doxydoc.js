@@ -208,7 +208,7 @@ class Doxydoc {
 
                     if (!this.disableSourceView) {
                         data.showSource = true;
-                            }
+                    }
 
                     if (ext === '.html') {
                         var page = new Page();
@@ -237,6 +237,12 @@ class Doxydoc {
                 let cont = path.resolve(this.workingDir, pageItem.file);
                 let tmpl = path.resolve(this.templateDir, 'page.fire');
                 let data = this.mergeMetaData(pageItem);
+
+                if (pageItem.data) {
+                    let customData = require(path.resolve(this.workingDir, pageItem.data));
+                    log.debug('Load custom data:', customData);
+                    data.data = customData;
+                }
 
                 let page = new Page();
                 page.setData(data);
