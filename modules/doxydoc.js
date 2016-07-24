@@ -7,7 +7,7 @@ var Docs = require('./docs');
 var Page = require('./page');
 var fl = require('node-fl');
 var co = require('co');
-var log = require('logtopus');
+var log = require('logtopus').getLogger('doxydoc');
 var copyDir = require('copy-dir');
 
 var Superjoin = require('superjoin');
