@@ -3,6 +3,7 @@
 var path = require('path');
 
 var inspect = require('inspect.js');
+var sinon = require('sinon');
 inspect.useSinon(sinon);
 
 var Doxydoc = require('../modules/doxydoc');
@@ -31,7 +32,7 @@ describe('Doxydoc', function() {
         });
 
         afterEach(function() {
-            sandbox.restore();    
+            sandbox.restore();
         });
 
         it('Should read conf from a doxydoc file', function(done) {

@@ -58,7 +58,7 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-release": "0.14.0",
     "inspect.js": "1.0.0",
-    "sinon": "^1.17.3"
+    "sinon": "^1.17.4"
   },
   "homepage": "http://doxydoc.com",
   "directories": {
