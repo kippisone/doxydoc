@@ -6,6 +6,9 @@
   "bin": {
     "doxydoc": "bin/doxydoc"
   },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter lagoon-reporter --recursive tests/*.spec.js"
+  },
   "repository": {
     "type": "git",
     "url": "git@github.com:Andifeind/doxydoc.git"
@@ -32,36 +35,36 @@
     "url": "https://github.com/Andifeind/doxydoc/issues"
   },
   "dependencies": {
-    "co": "^4.6.0",
-    "commander": "^2.9.0",
+    "co": "4.6.0",
+    "commander": "2.9.0",
     "copy-dir": "0.3.0",
     "docblock": "0.3.1",
-    "firetpl": "^0.6.2",
-    "fs-readdir-recursive": "^1.0.0",
+    "firetpl": "0.6.2",
+    "fs-readdir-recursive": "1.0.0",
     "glob": "7.0.5",
     "grunt": "1.0.1",
     "highlight.js": "9.5.0",
     "jquery": "3.1.0",
-    "logtopus": "0.2.1",
-    "lyssl": "^0.1.0",
-    "marked": "^0.3.5",
+    "logtopus": "0.3.0",
+    "lyssl": "0.1.0",
+    "marked": "0.3.5",
     "node-fl": "0.0.2",
-    "node.extend": "^1.1.5",
     "stylus": "0.54.5",
-    "superjoin": "^0.3.2"
+    "superjoin": "0.3.2"
   },
   "devDependencies": {
-    "grunt-bumpup": "^0.6.3",
-    "grunt-contrib-jshint": "^1.0.0",
-    "grunt-contrib-less": "^1.2.0",
+    "grunt-bumpup": "0.6.3",
+    "grunt-contrib-jshint": "1.0.0",
+    "grunt-contrib-less": "1.3.0",
     "grunt-contrib-uglify": "2.0.0",
-    "grunt-contrib-watch": "^1.0.0",
+    "grunt-contrib-watch": "1.0.0",
     "grunt-release": "0.14.0",
-    "inspect.js": "1.0.0",
-    "sinon": "^1.17.4"
+    "inspect.js": "1.2.0",
+    "lagoon-reporter": "^0.2.1",
+    "sinon": "1.17.5"
   },
-  "homepage": "http://doxydoc.com",
+  "homepage": "https://doxydoc.com",
   "directories": {
-    "test": "test"
+    "test": "tests"
   }
 }

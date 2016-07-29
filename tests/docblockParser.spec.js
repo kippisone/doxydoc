@@ -3,7 +3,7 @@
 // var docblockParser = require('docblock-parser');
 // var fl = require('node-fl');
 
-// describe.skip('DocBlockParser', function() {    
+// describe.skip('DocBlockParser', function() {
 //     describe('Test', function() {
 //         beforeEach(function() {
 
@@ -21,7 +21,7 @@
 
 //             while(true) {
 //                 match = reg.exec(comment);
-                
+
 //                 if (!match) {
 //                     break;
 //                 }
@@ -45,7 +45,7 @@
 //                 console.log('PARAM', x, i);
 //                 return multilineTilEmptyLineOrTag(x, i);
 //             };
-            
+
 //             var config = {
 //                 text: multilineTilTag,
 //                 default: multilineTilTag,
@@ -94,7 +94,7 @@
 
 //             while(true) {
 //                 match = reg.exec(comment);
-                
+
 //                 if (!match) {
 //                     break;
 //                 }
@@ -104,6 +104,6 @@
 //                 var res = docblockParser(config).parse(match[0]);
 //                 console.log(res);
 //             }
-//         }); 
+//         });
 //     });
 // });

@@ -9,12 +9,8 @@ Bugs:
 
 TODO
 ----
-* Check CLI tool
 * Remove npm symlinks
-* Check npm updates
-* Check Grunt plugin
 * Create gulp plugin
-* Https for Website
 
 * Find a background image for deep-space theme
 * Improve documentation

@@ -1,100 +1,67 @@
 #!/usr/bin/env node
 'use strict';
 
-var program = require('commander'),
-    path = require('path'),
-    pkg = require('../package.json');
+let program = require('commander');
+let path = require('path');
+let pkg = require('../package.json');
 
-var readDir = require('fs-readdir-recursive');
+let readDir = require('fs-readdir-recursive');
 
-var Doxydoc = require('../modules/doxydoc');
+let Doxydoc = require('../modules/doxydoc');
 
 program.version(pkg.version)
-    .usage('[options] file1, files2, ...')
-    .option('-o, --output-dir <dir>', 'Write output to <dir>')
-    .option('-t, --template-dir <dir>', 'Use your own templates')
-    .option('-f, --docu-filename <filename>', 'Sets a custom filename for the generated docu file')
-    .option('-x, --doxydoc-file <filename>', 'Read configuration from <file> instead of doxydoc.json')
-    .option('-D, --data-file <filename>', 'Loads a custom datafile')
-    .option('-w, --working-dir <dir>', 'Sets a working dir')
-    .option('-r, --recursive', 'Traverse <input> recursive')
-    .option('-l, --filter=<filter>', 'Files must match filter. --filter=*.js,*.css')
-    .option('-d, --debug', 'Enables debug mode')
-    .parse(process.argv);
+  .usage('[options] file1, files2, ...')
+  .option('-o, --output-dir <dir>', 'Write output to <dir>')
+  .option('-t, --template-dir <dir>', 'Use your own templates')
+  .option('-f, --docu-filename <filename>', 'Sets a custom filename for the generated docu file')
+  .option('-x, --doxydoc-file <filename>', 'Read configuration from <file> instead of doxydoc.json')
+  .option('-D, --data-file <filename>', 'Loads a custom datafile')
+  .option('-w, --working-dir <dir>', 'Sets a working dir')
+  .option('-r, --recursive', 'Traverse <input> recursive')
+  .option('-l, --filter=<filter>', 'Files must match filter. --filter=*.js,*.css')
+  .option('-d, --debug', 'Enables debug mode')
+  .parse(process.argv);
 
-var conf = {
-    outputDir: program.outputDir,
-    templateDir: program.templateDir,
-    docuFilename: program.docuFilename ? path.resolve(process.cwd(), program.docuFilename) : null,
-    workingDir: program.workingDir ? path.resolve(process.cwd(), program.workingDir) : process.cwd(),
-    doxydocFile: program.doxydocFile ? path.resolve(process.cwd(), program.doxydocFile) : null,
-    dataFile: program.dataFile ? path.resolve(process.cwd(), program.dataFile) : null,
-    debug: program.debug
+let conf = {
+  outputDir: program.outputDir,
+  templateDir: program.templateDir,
+  docuFilename: program.docuFilename ? path.resolve(process.cwd(), program.docuFilename) : null,
+  workingDir: program.workingDir ? path.resolve(process.cwd(), program.workingDir) : process.cwd(),
+  doxydocFile: program.doxydocFile ? path.resolve(process.cwd(), program.doxydocFile) : null,
+  dataFile: program.dataFile ? path.resolve(process.cwd(), program.dataFile) : null,
+  debug: program.debug
 };
 
-var files = [];
+let files = [];
 if (program.recursive) {
-    program.args.forEach(function(dir) {
-        dir = path.join(process.cwd(), dir);
-        files = files.concat(readDir(dir));
-    });
+  program.args.forEach(function(dir) {
+    dir = path.join(process.cwd(), dir);
+    files = files.concat(readDir(dir));
+  });
 
-    if (program.filter) {
-        var reg = program.filter
-            .replace(/,/g, '|')
-            .replace(/./g, '\.')
-            .replace(/\*/g, '.+');
-        reg = new RegExp(reg);
-    }
+  if (program.filter) {
+    let reg = program.filter
+      .replace(/,/g, '|')
+      .replace(/./g, '\.')
+      .replace(/\*/g, '.+');
+    reg = new RegExp(reg);
+  }
 }
 else {
-    files = program.args;
+  files = program.args;
 }
 
-var doxydoc = new Doxydoc(conf);
+let doxydoc = new Doxydoc(conf);
 if (files.length) {
-    doxydoc.docs = [{
-        files: files,
-        output: program.docuFilename || 'docs.html'
-    }];
+  doxydoc.docs = [{
+    files: files,
+    output: program.docuFilename || 'docs.html'
+  }];
 }
 
 doxydoc.create().then(function(result) {
-    console.log('------------------------------------');
-    // console.log(JSON.stringify(result, null, '  '));
+
 }).catch(function(err) {
-   console.error('ERR', err.stack);
-   process.exit(1); 
+  console.error('Doxydoc parse error', err.stack);
+  process.exit(1);
 });
-
-
-
-
-
-// if (program.check) {
-//     var doxydocPage = new DoxyDocPage({
-//         templateDir: program.template,
-//         docuFilename: program.docuFilename,
-//         doxydocFile: program.doxydocFile
-//     });
-
-//     doxydocPage.createDocu('json', files);
-//     doxydocPage.showModuleTree();
-// }
-// else {
-//     var doxydocPage = new DoxyDocPage({
-//         templateDir: program.template,
-//         output: program.output,
-//         docuFilename: program.docuFilename,
-//         doxydocFile: program.doxydocFile
-//     });
-
-//     if (program.output) {
-//         doxydocPage.verbose = true;
-//         doxydocPage.files = files;
-//         doxydocPage.createPages();
-//     }
-//     else {
-//         console.log(doxydocPage.createDocu('json', files));
-//     }
-// }
