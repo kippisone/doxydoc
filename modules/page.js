@@ -68,7 +68,6 @@ class Page {
     }
 
     parseFireTPL(source, includesPath) {
-        console.log('PAGE', this.data);
         return FireTPL.fire2html(source, this.data, {
             includesPath: includesPath
         });

@@ -1,0 +1,20 @@
+.dd-color-preview
+  width 100px
+  height 65px
+  border-radius 5px
+  padding-top 35px
+
+  .dd-color-name
+    background-color rgba(0, 0, 0, .4)
+    padding 5px
+    color #fff
+    display block
+    transform scale(0)
+    transition .3s .5s transform ease-in
+    text-align center
+    line-height 20px
+
+  &:hover
+    .dd-color-name
+      transform scale(1)
+      transition .3s transform ease-out

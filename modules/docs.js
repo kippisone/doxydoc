@@ -220,7 +220,7 @@ class Docs {
         }
 
         let color = this.grepPattern(/((#[a-fA-F0-9]{3,6})|(rgb(a)?\([^\)]+))/, doc.code || '');
-        let html = '<div class="cssColorPreview" style="background-color: ' + color + '"><span class="cssColorName">' +
+        let html = '<div class="dd-color-preview" style="background-color: ' + color + '"><span class="dd-color-name">' +
             color +
         '</span></div>'
         doc.tags.previews.push({
