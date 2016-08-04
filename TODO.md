@@ -5,7 +5,6 @@ Bugs:
 -----
 
 * Hashlink start is under sticky navi
-* Example with // cuts of the right side
 
 TODO
 ----

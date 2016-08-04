@@ -1,14 +1,19 @@
 Changelog
 =========
 
-v0.5.0
+v1.0.0
 ------
 
 * Rewrote parser
+* Add sass and stylus support
 * Use docblock
 * Removed dox
 * Replace less with stylus
 * Major changes in doxydoc.json
+* Show inline comments
+* Unescape `@` and `/` in output
+* Renamed some configuration properties
+* Upgrade npm modules
 * Many bug fixes
 
 v0.4.7
