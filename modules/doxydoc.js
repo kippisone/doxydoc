@@ -8,7 +8,6 @@ var Page = require('./page');
 var fl = require('node-fl');
 var co = require('co');
 var log = require('logtopus').getLogger('doxydoc');
-var copyDir = require('copy-dir');
 
 var Superjoin = require('superjoin');
 var stylus = require('stylus');
@@ -268,7 +267,6 @@ class Doxydoc {
       log.debug('Coppy static files to', this.outputDir);
       yield this.createJSBundle();
       yield this.createCSSBundle();
-      copyDir.sync(path.join(this.templateDir, 'img'), path.join(this.outputDir, 'img'));
     }.bind(this));
   }
 
