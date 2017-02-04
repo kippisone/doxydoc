@@ -3,7 +3,7 @@ Doxydoc source code documentation generator
 
 DoxyDoc is a source code documentation generator for Javascript, LESS and CSS.
 
-<br><br><img src="http://doxydoc.com/img/screenshot.jpg">
+<br><br><img src="https://doxydoc.com/img/screenshot.jpg">
 
 Installation
 ------------
@@ -40,14 +40,14 @@ DoxyDoc looks into a file for a @module tag and groups all comment blocks under 
  * Simple function
  */
 function foo() {
-    
+
 }
 
 /**
  * Simple function
  */
 function bar() {
-    
+
 }
 ```
 
@@ -60,7 +60,7 @@ The next function is placed in the same file, but shouldn't be under `myModule`.
  * @group secondModule
  */
 function blub() {
-    
+
 }
 ```
 
@@ -71,4 +71,3 @@ Syntax
 
 DoxyDoc supports lots of tags.
 See our [syntax declaration](http://doxydoc.com/syntax.html) page for more infos.
-
