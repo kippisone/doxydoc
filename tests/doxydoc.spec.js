@@ -121,4 +121,31 @@ describe('Doxydoc', function() {
       }).catch(done);
     });
   });
+
+  describe('relativePath', function() {
+    it('returns a relative path to a parent file', function() {
+      const page = new Doxydoc();
+      inspect(page.relativePath('foo/bar/index.html', 'index.html')).isEql('../../index.html');
+    });
+
+    it('returns a relative path to a child file', function() {
+      const page = new Doxydoc();
+      inspect(page.relativePath('index.html', 'foo/bar/index.html')).isEql('foo/bar/index.html');
+    });
+
+    it('returns a relative path to a sibling file', function() {
+      const page = new Doxydoc();
+      inspect(page.relativePath('foo.html', 'index.html')).isEql('index.html');
+    });
+
+    it('returns a relative path to a sibling file in another dir', function() {
+      const page = new Doxydoc();
+      inspect(page.relativePath('foo/bar.html', 'index.html')).isEql('../index.html');
+    });
+
+    it('returns a relative path to a sibling file in parent another dir', function() {
+      const page = new Doxydoc();
+      inspect(page.relativePath('blub/bar.html', 'foo/index.html')).isEql('../foo/index.html');
+    });
+  });
 });

@@ -235,7 +235,7 @@ class Doxydoc {
       for (let pageItem of this.pages) {
         let cont = path.resolve(this.workingDir, pageItem.file);
         let tmpl = path.resolve(this.templateDir, 'page.fire');
-        let data = this.mergeMetaData(pageItem);
+        let data = this.mergeMetaData(Object.assign({}, pageItem));
 
         if (pageItem.data) {
           let customData = require(path.resolve(this.workingDir, pageItem.data));
@@ -280,9 +280,46 @@ class Doxydoc {
   }
 
   mergeMetaData(docs) {
-    return Object.assign(this.conf, {
+    const curPage = docs.link;
+    const data = Object.assign({}, this.conf, {
       docs: docs
     });
+
+    if (curPage) {
+      for (const group of ['navigation', 'sidebar']) {
+        for (const item of data[group] || []) {
+          if (!/^http(s)?:\/\//.test(item.link)) {
+            item.link = this.relativePath(curPage, item.link);
+          }
+        }
+      }
+    }
+
+    return data;
+  }
+
+  relativePath(from, to) {
+    from = from.split('/');
+    to = to.split('/');
+
+    from.pop();
+    const newPath = [to.pop()];
+    const fillPath = [];
+    while(from.length || to.length) {
+      const f = from.pop();
+      const t = to.pop();
+
+      if (!t) {
+        newPath.unshift('..');
+      } else if (!f) {
+        newPath.unshift(t);
+      } else if (f !== t) {
+        newPath.unshift(t);
+        fillPath.push('..');
+      }
+    }
+
+    return fillPath.concat(newPath).join('/');
   }
 
   /**
