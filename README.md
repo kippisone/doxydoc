@@ -1,6 +1,8 @@
 Doxydoc source code documentation generator
 ===========================================
 
+[![Build Status](https://travis-ci.org/Andifeind/doxydoc.svg?branch=master)](https://travis-ci.org/Andifeind/doxydoc)
+
 DoxyDoc is a source code documentation generator for Javascript, LESS and CSS.
 
 <br><br><img src="https://doxydoc.com/img/screenshot.jpg">
